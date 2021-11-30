@@ -34,7 +34,7 @@ GLOBAL OPTIONS:
    --version, -v  print the version
 ```
 ### bitxhub init
-初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径
+初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
 ```bigquery
 bitxhub init   
 
@@ -45,7 +45,7 @@ y
 
 ```
 ### bitxhub config
-显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
+显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径。
 
 ```bigquery
 bitxhub --repo ./ config 

@@ -25,9 +25,6 @@ time="2021-11-29T18:07:37.723" level=info msg="Gateway service started" module=a
 
 ## 参数
 - passwd：指定节点私钥密码
-- config：指定节点配置路径，一般指bitxhub.toml
-- network：指定节点p2p网络配置文件，一般指network.toml
-- order：指定节点共识配置文件，一般指oeder.toml
 
 **若不指定以上配置，则默认至bitxhub --repo路径下寻找**
 ```
@@ -39,8 +36,5 @@ USAGE:
 
 OPTIONS:
    --passwd value   bitxhub key password
-   --config value   bitxhub config path
-   --network value  bitxhub network config path
-   --order value    bitxhub order config path
 
 ```
