@@ -107,7 +107,13 @@ nav:
           - 多语言SDK: bitxhub/dev/multiSDK.md
           - api: bitxhub/dev/api.md
           - 命令行说明:
-            - BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
+            - BitXHub:
+              - BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
+              - BitXHub start: bitxhub/dev/cmd/bitxhub_start.md
+              - BitXHub key: bitxhub/dev/cmd/bitxhub_key.md
+              - BitXHub version: bitxhub/dev/cmd/bitxhub_version.md
+              - BitXHub cert: bitxhub/dev/cmd/bitxhub_cert.md
+              - BitXHub client: bitxhub/dev/cmd/bitxhub_client.md
             - Pier: bitxhub/dev/cmd/pier_cmd.md
           - 跨链合约开发: bitxhub/dev/cross_contract.md
           - 应用链插件编写: bitxhub/dev/plugin.md
