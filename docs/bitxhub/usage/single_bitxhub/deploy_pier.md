@@ -41,7 +41,8 @@
     
     Step2: 获取需要部署的合约文件并解压
     ```
-    git clone https://github.com/meshplus/pier-client-ethereum.git && git checkout v1.6.2
+    git clone https://github.com/meshplus/pier-client-fabric.git 
+    cd pier-client-fabric && git checkout v1.6.2
     # 需要部署的合约文件就在example目录下
     #解压即可
     unzip -q contracts.zip
@@ -105,7 +106,7 @@
     cd pier-client-fabric && git checkout v1.6.2
     make fabric1.4
     
-    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文  件；
+    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
     2.pier编译之后会在跨链网关项目bin目录生成同名的二进制文件，需要将它拷贝到配置主目录方便后续执行。
     ```
     
@@ -115,7 +116,7 @@
 
 经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
 
-### 修改Pier自身的配置
+### 修改Pier配置
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 ```
 ./pier --repo=~/.pier init
@@ -179,7 +180,7 @@ validators = [
 
 ### 修改应用链插件的配置
 
-应用链插件的配置目录即是pier.toml中的config字段，它的模板在`pier-client-ethereum`或`pier-client-ethereum`项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可
+应用链插件的配置目录即是pier.toml中的config字段，它的模板在`pier-client-ethereum`或`pier-client-ethereum`项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可。
 
 === "Ethereum"
     ```shell

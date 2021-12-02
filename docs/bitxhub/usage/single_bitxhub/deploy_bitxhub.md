@@ -414,6 +414,5 @@ Order is ready                                module=app plugin_path=plugins/raf
 =======================================================
 ```
 
-curl --location -g --request GET 'http://172.16.13.122:9221/v1/info?type=0' \
---header 'Accept: application/json'
+
 
