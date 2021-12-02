@@ -14,7 +14,7 @@
     
     
       
-        <title>Pier - Bitxhub Document</title>
+        <title>跨链网关Pier - Bitxhub Document</title>
       
     
     
@@ -66,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#pier" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -93,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pier
+              跨链网关Pier
             
           </span>
         </div>
@@ -641,7 +646,7 @@
   
     <li class="md-nav__item">
       <a href="../../../usage/status_verification/" class="md-nav__link">
-        系统验证
+        系统验证与交易流程体验
       </a>
     </li>
   
@@ -686,10 +691,57 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5_1" type="checkbox" id="__nav_1_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5_1">
+          应用链管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="应用链管理" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          应用链管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../../function/appchain/" class="md-nav__link">
-        应用链管理
+      <a href="../../../function/relay_manager/" class="md-nav__link">
+        中继模式管理
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/direct_manager/" class="md-nav__link">
+        直连模式管理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -762,34 +814,6 @@
               
   
   
-  
-    <li class="md-nav__item">
-      <a href="../../multiSDK/" class="md-nav__link">
-        多语言SDK
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/" class="md-nav__link">
-        api
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
     
   
   
@@ -797,18 +821,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_3" type="checkbox" id="__nav_1_6_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_1_6_3">
+        <label class="md-nav__link" for="__nav_1_6_1">
           命令行说明
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="命令行说明" data-md-level="3">
-        <label class="md-nav__title" for="__nav_1_6_3">
+        <label class="md-nav__title" for="__nav_1_6_1">
           <span class="md-nav__icon md-icon"></span>
           命令行说明
         </label>
@@ -821,7 +845,7 @@
   
     <li class="md-nav__item">
       <a href="../bitxhub_cmd/" class="md-nav__link">
-        BitXHub
+        中继链BitXHub
       </a>
     </li>
   
@@ -840,10 +864,300 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          跨链网关Pier
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Pier
+        跨链网关Pier
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    子命令描述
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pier-appchain" class="md-nav__link">
+    pier appchain
+  </a>
+  
+    <nav class="md-nav" aria-label="pier appchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-client" class="md-nav__link">
+    pier client
+  </a>
+  
+    <nav class="md-nav" aria-label="pier client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-id" class="md-nav__link">
+    pier id
+  </a>
+  
+    <nav class="md-nav" aria-label="pier id">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-init" class="md-nav__link">
+    pier init
+  </a>
+  
+    <nav class="md-nav" aria-label="pier init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-interchain" class="md-nav__link">
+    pier interchain
+  </a>
+  
+    <nav class="md-nav" aria-label="pier interchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-p2p" class="md-nav__link">
+    pier p2p
+  </a>
+  
+    <nav class="md-nav" aria-label="pier p2p">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-rule" class="md-nav__link">
+    pier rule
+  </a>
+  
+    <nav class="md-nav" aria-label="pier rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-start" class="md-nav__link">
+    pier start
+  </a>
+  
+    <nav class="md-nav" aria-label="pier start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-version" class="md-nav__link">
+    pier version
+  </a>
+  
+    <nav class="md-nav" aria-label="pier version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -980,7 +1294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../design/pier/" class="md-nav__link">
+      <a href="../../../design/pier_cmd.md" class="md-nav__link">
         跨链网关设计方案
       </a>
     </li>
@@ -1084,7 +1398,7 @@
   
     <li class="md-nav__item">
       <a href="../../../operation/exception_problem_handling/" class="md-nav__link">
-        异常问题处
+        异常问题处理
       </a>
     </li>
   
@@ -1476,6 +1790,296 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    子命令描述
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pier-appchain" class="md-nav__link">
+    pier appchain
+  </a>
+  
+    <nav class="md-nav" aria-label="pier appchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-client" class="md-nav__link">
+    pier client
+  </a>
+  
+    <nav class="md-nav" aria-label="pier client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-id" class="md-nav__link">
+    pier id
+  </a>
+  
+    <nav class="md-nav" aria-label="pier id">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-init" class="md-nav__link">
+    pier init
+  </a>
+  
+    <nav class="md-nav" aria-label="pier init">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-interchain" class="md-nav__link">
+    pier interchain
+  </a>
+  
+    <nav class="md-nav" aria-label="pier interchain">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-p2p" class="md-nav__link">
+    pier p2p
+  </a>
+  
+    <nav class="md-nav" aria-label="pier p2p">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-rule" class="md-nav__link">
+    pier rule
+  </a>
+  
+    <nav class="md-nav" aria-label="pier rule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-start" class="md-nav__link">
+    pier start
+  </a>
+  
+    <nav class="md-nav" aria-label="pier start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-version" class="md-nav__link">
+    pier version
+  </a>
+  
+    <nav class="md-nav" aria-label="pier version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    用法
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    具体描述
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -1486,9 +2090,245 @@
                   </a>
                 
                 
-                  <h1>Pier</h1>
-                
-                
+                <h1 id="pier">Pier命令行</h1>
+<p><code>pier</code>命令有多组子命令，其作用是与应用链或中继链交互，<code>pier</code>命令描述如下：</p>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier - Manipulate the crosschain node
+
+USAGE:
+   pier [global options] command [command options] [arguments...]
+
+VERSION:
+   0.0.0
+
+COMMANDS:
+   appchain    Command about appchain in bitxhub
+   client      Command about appchain in pier
+   id          Get appchain id
+   init        Initialize pier local configuration
+   interchain  Query interchain info
+   p2p         Command about p2p
+   rule        Command about rule
+   start       Start a long-running daemon process
+   version     Show version about ap
+   help, h     Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --repo value   Pier repository path
+   --tls          enable tls between pier and bitxhub or not
+   --help, -h     show help
+   --version, -v  print the version
+</code></pre></div>
+<h2 id="_1">参数解释</h2>
+<ul>
+<li><code>--repo</code>：可选参数，指定pier节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。</li>
+<li><code>--tls</code>：可选参数，用于pier节点与bitxhub进行tls加密传输。如果不指定，默认为false。</li>
+</ul>
+<div class="highlight"><pre><span></span><code> GLOBAL OPTIONS:
+   --repo value   Pier repository path
+   --tls          enable tls between pier and bitxhub or not
+   --help, -h     show help
+   --version, -v  print the version
+</code></pre></div>
+<h2 id="_2">子命令描述</h2>
+<h3 id="pier-appchain">pier appchain</h3>
+<p><code>pier appchain</code>命令用于中继模式下，跨链网关Pier向中继链bitXHub实现应用链相关信息的注册、更新、变更等操作。</p>
+<h4 id="_3">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier appchain - Command about appchain <span class="k">in</span> bitxhub
+
+USAGE:
+   Pier appchain <span class="nb">command</span> <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
+
+COMMANDS:
+   register  Register appchain <span class="k">in</span> bitxhub
+   update    update appchain <span class="k">in</span> bitxhub
+   freeze    freeze appchain <span class="k">in</span> bitxhub
+   activate  activate appchain <span class="k">in</span> bitxhub
+   <span class="nb">logout</span>    <span class="nb">logout</span> appchain <span class="k">in</span> bitxhub
+   get       Get appchain info
+
+OPTIONS:
+   --help, -h  show <span class="nb">help</span>
+</code></pre></div>
+<h4 id="_4">具体描述</h4>
+<p><code>pier appchain</code>具体描述与使用示例参考<a href="http://localhost:8000/bitxhub/function/relay_manager/">中继模式管理</a>。</p>
+<h3 id="pier-client">pier client</h3>
+<p><code>pier client</code>命令用于直连模式的应用链管理。</p>
+<h4 id="_5">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier client - Command about appchain <span class="k">in</span> pier
+
+USAGE:
+   Pier client <span class="nb">command</span> <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
+
+COMMANDS:
+   register  Register appchain <span class="k">in</span> pier
+   update    Update appchain <span class="k">in</span> pier
+   audit     Audit appchain <span class="k">in</span> pier
+   get       Get appchain info
+   rule      register appchain validation rule
+
+OPTIONS:
+   --help, -h  show <span class="nb">help</span>
+</code></pre></div>
+<h4 id="_6">具体描述</h4>
+<p><code>pier appchain</code>具体描述与使用示例参考<a href="http://localhost:8000/bitxhub/function/direct_manager/">直连模式管理</a>。</p>
+<h3 id="pier-id">pier id</h3>
+<p><code>pier id</code>命令用于获取所绑定的应用链地址。</p>
+<h4 id="_7">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   pier id - Get appchain id
+
+USAGE:
+   pier id [arguments...]
+</code></pre></div>
+<h4 id="_8">具体描述</h4>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>$ pier --repo <span class="nv">$HOME</span>/.pier1 id 
+<span class="c1"># 控制台输出</span>
+0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb
+</code></pre></div>
+<h3 id="pier-init">pier init</h3>
+<p><code>pier init</code>命令用于初始化pier相关配置。如生成公私钥、ca证书等。</p>
+<h4 id="_9">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   pier init - Initialize pier local configuration
+
+USAGE:
+   pier init [arguments...]
+</code></pre></div>
+<h4 id="_10">具体描述</h4>
+<p><strong>样例：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 初始化pier1相关配置，配置文件目录为$HOME/.pier1</span>
+$ pier --repo <span class="nv">$HOME</span>/.pier1 init
+├── api     //直连模式下的api信息
+├── certs
+│   └── ca.pem
+├── key.json
+├── node.priv
+└── pier.toml
+</code></pre></div>
+<h3 id="pier-interchain">pier interchain</h3>
+<p><code>pier interchain</code>命令用于查询应用链的跨链交易信息。</p>
+<h4 id="_11">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier interchain - Query interchain info
+
+USAGE:
+   Pier interchain command [command options] [arguments...]
+
+COMMANDS:
+   ibtp  Query ibtp by id
+
+OPTIONS:
+   --key value  Specific key.json path
+   --help, -h   show help
+</code></pre></div>
+<h4 id="_12">具体描述</h4>
+<p><strong>参数解释</strong></p>
+<ul>
+<li><code>--key</code>：必选参数指定pier的key.json文件。</li>
+</ul>
+<p><strong>子命令</strong></p>
+<div class="highlight"><pre><span></span><code>USAGE:
+   Pier interchain command [command options] [arguments...]
+
+COMMANDS:
+   ibtp  Query ibtp by id
+</code></pre></div>
+<p><strong>样例：</strong></p>
+<div class="highlight"><pre><span></span><code>pier --repo <span class="nv">$HOME</span>/.pier1 interchain --key <span class="nv">$HOME</span>/.pier1/key.json ibtp --id 0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-1
+
+<span class="c1"># 控制台输出</span>
+INFO<span class="o">[</span><span class="m">16</span>:52:41.917<span class="o">]</span> Establish connection with bitxhub localhost:60013 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
+Tx hash: 0x82d3434e0a295B22A8e55884FEdd137d19e8cBDc32d5B593AD6D9AFB5cf59600
+tx:&lt;from:&lt;RawAddress:<span class="o">[</span><span class="m">255</span> <span class="m">129</span> <span class="m">153</span> <span class="m">250</span> <span class="m">228</span> <span class="m">140</span> <span class="m">128</span> <span class="m">139</span> <span class="m">69</span> <span class="m">102</span> <span class="m">125</span> <span class="m">160</span> <span class="m">204</span> <span class="m">170</span> <span class="m">238</span> <span class="m">131</span> <span class="m">155</span> <span class="m">26</span> <span class="m">16</span> <span class="m">203</span><span class="o">]</span> Address:<span class="s2">&quot;&quot;</span> &gt; to:&lt;RawAddress:<span class="o">[</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">10</span><span class="o">]</span> Address:<span class="s2">&quot;&quot;</span> &gt; timestamp:1638435054429909000 transaction_hash:&lt;RawHash:<span class="o">[</span><span class="m">130</span> <span class="m">211</span> <span class="m">67</span> <span class="m">78</span> <span class="m">10</span> <span class="m">41</span> <span class="m">91</span> <span class="m">34</span> <span class="m">168</span> <span class="m">229</span> <span class="m">88</span> <span class="m">132</span> <span class="m">254</span> <span class="m">221</span> <span class="m">19</span> <span class="m">125</span> <span class="m">25</span> <span class="m">232</span> <span class="m">203</span> <span class="m">220</span> <span class="m">50</span> <span class="m">213</span> <span class="m">181</span> <span class="m">147</span> <span class="m">173</span> <span class="m">109</span> <span class="m">154</span> <span class="m">251</span> <span class="m">92</span> <span class="m">245</span> <span class="m">150</span> <span class="m">0</span><span class="o">]</span> Hash:<span class="s2">&quot;&quot;</span> &gt; IBTP:&lt;from:<span class="s2">&quot;0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb&quot;</span> to:<span class="s2">&quot;0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1&quot;</span> index:1 timestamp:1638435054428680000 proof:<span class="s2">&quot;k\206\262s\3774\374\341\235k\200N\377Z?WG\255\244\352\242/\035I\300\036R\335\267\207[K&quot;</span> payload:<span class="s2">&quot;\022\221\001\n*0x5bFe03Dbd09817d4957693f672cc31A133Bb6084\022*0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f\032\020interchainCharge\&quot;\001A\&quot;\001B\&quot;\002102\000:\022interchainRollbackB\001AB\00210&quot;</span> &gt; nonce:4 signature:<span class="s2">&quot;T)\313\333~\316f\372.\010\235\234\222J\314@&lt;\202\260\243\367b\035\016\366\326y\3515\020\222\256</span>$<span class="s2">\010\314\035/\271H\217|~\302\233\353b\275\267ir\t\242\376\224\307q\217l\232\037DP\n\317\000&quot;</span> extra:<span class="s2">&quot;1&quot;</span> &gt; tx_meta:&lt;block_hash:<span class="s2">&quot;\326{90^\355a\236\342\235i\302\374+\352VI\030\242\211\335x\371w\221&gt;(\254%o\212\222&quot;</span> block_height:14 &gt;
+</code></pre></div>
+<h3 id="pier-p2p">pier p2p</h3>
+<p><code>pier p2p</code>命令用于直连模式下pier网络通信的pid。</p>
+<h4 id="_13">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier p2p - Command about p2p
+
+USAGE:
+   Pier p2p command [command options] [arguments...]
+
+COMMANDS:
+   id  get pier unique id in p2p network
+</code></pre></div>
+<h4 id="_14">具体描述</h4>
+<p><strong>样例：</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 初始化pier1相关配置，配置文件目录为$HOME/.pier1</span>
+$ pier --repo <span class="nv">$HOME</span>/.pier1 p2p id 
+
+<span class="c1">#控制台输出</span>
+QmNpQvh8Lm7gwt3sDqwJ1pgNn6taJLqdgtRVyZWhsD5bND
+</code></pre></div>
+<h3 id="pier-rule">pier rule</h3>
+<p><code>pier rule</code>命令用于中继模式下pier向中继链部署应用链验证规则。</p>
+<h4 id="_15">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier rule - Command about rule
+
+USAGE:
+   Pier rule command [command options] [arguments...]
+
+COMMANDS:
+   deploy  Deploy validation rule
+</code></pre></div>
+<h4 id="_16">具体描述</h4>
+<p><code>pier rule</code>具体描述与使用示例参考<a href="http://localhost:8000/bitxhub/function/direct_manager/">直连模式管理</a>的部署验证规则模块。</p>
+<h3 id="pier-start">pier start</h3>
+<p><code>pier start</code>命令用于启动pier。</p>
+<h4 id="_17">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   pier start - Start a long-running daemon process
+
+USAGE:
+   pier start [arguments...]
+</code></pre></div>
+<h4 id="_18">具体描述</h4>
+<p><strong>样例</strong>：</p>
+<div class="highlight"><pre><span></span><code>$ pier --repo <span class="nv">$HOME</span>/.pier1 start
+
+<span class="c1"># 控制台输出</span>
+Pier version: dev-release-1.6-1b5b79f
+App build date: <span class="m">2021</span>-12-01T17:50:14
+System version: darwin/amd64
+Golang version: go1.15.13
+
+INFO<span class="o">[</span><span class="m">17</span>:07:29.150<span class="o">]</span> Establish connection with bitxhub localhost:60013 successfully  <span class="nv">module</span><span class="o">=</span>app
+<span class="m">2021</span>-12-02T17:07:29.171+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin: starting plugin: <span class="nv">path</span><span class="o">=</span>/bin/sh <span class="nv">args</span><span class="o">=</span><span class="s2">&quot;[sh -c /Users/liruoxin/testRelay/release1.6/eth1/plugins/eth-client]&quot;</span>
+<span class="m">2021</span>-12-02T17:07:29.178+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin: plugin started: <span class="nv">path</span><span class="o">=</span>/bin/sh <span class="nv">pid</span><span class="o">=</span><span class="m">74023</span>
+<span class="m">2021</span>-12-02T17:07:29.178+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin: waiting <span class="k">for</span> RPC address: <span class="nv">path</span><span class="o">=</span>/bin/sh
+<span class="m">2021</span>-12-02T17:07:29.283+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin.sh: <span class="m">2021</span>-12-02T17:07:29.283+0800 <span class="o">[</span>DEBUG<span class="o">]</span> client: plugin address: <span class="nv">network</span><span class="o">=</span>unix <span class="nv">address</span><span class="o">=</span>/var/folders/xr/pnhf9j6n2k5_fysm6s0xkgt00000gn/T/plugin718241634
+<span class="m">2021</span>-12-02T17:07:29.283+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin: using plugin: <span class="nv">version</span><span class="o">=</span><span class="m">4</span>
+<span class="m">2021</span>-12-02T17:07:29.284+0800 <span class="o">[</span>TRACE<span class="o">]</span> plugin.stdio: waiting <span class="k">for</span> stdio data
+<span class="m">2021</span>-12-02T17:07:29.287+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin.sh: <span class="m">2021</span>-12-02T17:07:29.287+0800 <span class="o">[</span>INFO <span class="o">]</span> client: Basic appchain info: broker <span class="nv">address</span><span class="o">=</span>0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8 ethereum node <span class="nv">ip</span><span class="o">=</span>ws://127.0.0.1:8546
+<span class="m">2021</span>-12-02T17:07:29.416+0800 <span class="o">[</span>DEBUG<span class="o">]</span> plugin.sh: <span class="m">2021</span>-12-02T17:07:29.416+0800 <span class="o">[</span>INFO <span class="o">]</span> client: ContractABI: <span class="nv">addr</span><span class="o">=</span>0x5bfe03dbd09817d4957693f672cc31a133bb6084 <span class="nv">name</span><span class="o">=</span>transfer.abi
+Client Type: ethereum
+Pprof on localhost:44555
+…………
+</code></pre></div>
+<h3 id="pier-version">pier version</h3>
+<p><code>pier version</code>命令用于查询版本号。</p>
+<h4 id="_19">用法</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   pier version - Show version about ap
+
+USAGE:
+   pier version [arguments...]
+</code></pre></div>
+<h4 id="_20">具体描述</h4>
+<p><strong>样例</strong>：</p>
+<div class="highlight"><pre><span></span><code>$ pier --repo <span class="nv">$HOME</span>/.pier1 version
+
+Pier version: dev-release-1.6-1b5b79f
+App build date: <span class="m">2021</span>-12-01T17:50:14
+System version: darwin/amd64
+Golang version: go1.15.13
+</code></pre></div>
                 
               
               
@@ -1513,7 +2353,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../bitxhub_cmd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: BitXHub" rel="prev">
+        <a href="../bitxhub_cmd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 中继链BitXHub" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1522,7 +2362,7 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              BitXHub
+              中继链BitXHub
             </div>
           </div>
         </a>

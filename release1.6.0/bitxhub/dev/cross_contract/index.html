@@ -646,7 +646,7 @@
   
     <li class="md-nav__item">
       <a href="../../usage/status_verification/" class="md-nav__link">
-        系统验证
+        系统验证与交易流程体验
       </a>
     </li>
   
@@ -691,10 +691,57 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5_1" type="checkbox" id="__nav_1_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5_1">
+          应用链管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="应用链管理" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          应用链管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../function/appchain/" class="md-nav__link">
-        应用链管理
+      <a href="../../function/relay_manager/" class="md-nav__link">
+        中继模式管理
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../function/direct_manager/" class="md-nav__link">
+        直连模式管理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -768,50 +815,22 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../multiSDK/" class="md-nav__link">
-        多语言SDK
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../api/" class="md-nav__link">
-        api
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_3" type="checkbox" id="__nav_1_6_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_1_6_3">
+        <label class="md-nav__link" for="__nav_1_6_1">
           命令行说明
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="命令行说明" data-md-level="3">
-        <label class="md-nav__title" for="__nav_1_6_3">
+        <label class="md-nav__title" for="__nav_1_6_1">
           <span class="md-nav__icon md-icon"></span>
           命令行说明
         </label>
@@ -824,7 +843,7 @@
   
     <li class="md-nav__item">
       <a href="../cmd/bitxhub_cmd/" class="md-nav__link">
-        BitXHub
+        中继链BitXHub
       </a>
     </li>
   
@@ -838,7 +857,7 @@
   
     <li class="md-nav__item">
       <a href="../cmd/pier_cmd/" class="md-nav__link">
-        Pier
+        跨链网关Pier
       </a>
     </li>
   
@@ -1030,6 +1049,13 @@
       
         <li class="md-nav__item">
   <a href="#_11" class="md-nav__link">
+    使用示例
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
     总结
   </a>
   
@@ -1153,7 +1179,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../design/pier/" class="md-nav__link">
+      <a href="../../design/pier_cmd.md" class="md-nav__link">
         跨链网关设计方案
       </a>
     </li>
@@ -1257,7 +1283,7 @@
   
     <li class="md-nav__item">
       <a href="../../operation/exception_problem_handling/" class="md-nav__link">
-        异常问题处
+        异常问题处理
       </a>
     </li>
   
@@ -1807,6 +1833,13 @@
       
         <li class="md-nav__item">
   <a href="#_11" class="md-nav__link">
+    使用示例
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
     总结
   </a>
   
@@ -1834,7 +1867,7 @@
 <p>跨链接入方无需对broker合约进行修改，直接部署使用即可；同时为了简化业务合约的编写，我们设计了业务合约的相应接口。</p>
 <p>以下以以太坊上的solidity合约为例。</p>
 <h2 id="broker">Broker 合约接口</h2>
-<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="c1">// 提供给业务合约注册。注册且审核通过的业务合约才能调用Broker合约的跨链接口</span>
+<div class="highlight"><pre><span></span><code><span class="w">  </span><span class="c1">// 提供给业务合约注册。注册且审核通过的业务合约才能调用Broker合约的跨链接口，输入为具体的broker合约地址</span>
 <span class="w">  </span><span class="kt">function</span><span class="w"> </span><span class="nv">register</span><span class="p">(</span><span class="kt">string</span><span class="w"> </span><span class="nv">addr</span><span class="p">)</span><span class="w"> </span><span class="kt">public</span><span class="w"></span>
 
 <span class="w">  </span><span class="c1">// 提供给管理员审核已经注册的业务合约</span>
@@ -2123,7 +2156,90 @@
 <span class="p">}</span>
 </code></pre></div>
 <p><code>interchainSet</code> 接收参数 <code>key</code>，在本合约中设置<code>Key</code>值对应的<code>value</code>。该接口提供给<code>Broker</code>合约回写跨链获取数据的时候进行调用。</p>
-<h2 id="_11">总结</h2>
+<h2 id="_11">使用示例</h2>
+<p><strong>跨链场景</strong>：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。</p>
+<ol>
+<li>
+<p>在应用链部署broker合约与业务合约，具体部署流程参考<a href="https://meshplus.github.io/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/">部署跨链合约</a>。</p>
+</li>
+<li>
+<p>调用<code>register</code>方法注册业务合约。入参为需要进行跨链的业务合约地址。</p>
+</li>
+<li>调用<code>audit</code>对已经注册的业务合约进行审核，status为1说明审核通过。</li>
+<li><code>transfer</code>业务合约调用<code>setBalance</code>方法初始化账户。</li>
+<li><code>transfer</code>业务合约调用<code>transfer</code>方法发起跨链交易。</li>
+</ol>
+<div class="highlight"><pre><span></span><code>1.1 appchainA deploy ==&gt; brokerA addr：0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8  
+                         businessA addr: 0x5bFe03Dbd09817d4957693f672cc31A133Bb6084                                          
+1.2 appchainB deploy ==&gt; brokerB addr：0xC8C086200f92c9226b42079eCB3137eFc8752801  
+                         businessB addr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
+
+2.1 brokerA register ==&gt; addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084 //部署的业务合约地址
+2.2 brokerB register ==&gt; addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f //部署的业务合约地址
+
+3.1 brokerA audit ==&gt; addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084  
+                      status: 1
+3.2 brokeB audit ==&gt; addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f  
+                     status: 1  
+
+4.1 transferA setBalance ==&gt; id: Alice 
+                             amount: 100
+4.2 transfeB setBalance ==&gt; id: Bob 
+                            amount: 0
+
+    // destChainID为B链的PierID，可在终端通过pier --repo &lt;appchainB_config_path&gt; id获取 
+    // destAddr为B链的业务合约地址
+5 transferA transfer ==&gt; destChainID: 0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1 
+                        destAddr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
+                        sender: Alice
+                        receiver: Bob
+                        amount: 10
+</code></pre></div>
+<p>观察跨链网关与中继链日志</p>
+<div class="highlight"><pre><span></span><code># 网关pierA同步以太坊区块头并处理跨链交易，发送至中继链
+INFO[21:54:30.559] Persist block header                          height=18 module=bxh_lite
+WARN[21:54:30.560] query header: header at 18 not found          module=syncer
+INFO[21:54:32.568] Handle interchain tx wrapper                  count=0 height=18 index=0 module=syncer
+WARN[21:54:38.401] query header: header at 19 not found          module=syncer
+INFO[21:54:38.401] Persist block header                          height=19 module=bxh_lite
+INFO[21:54:40.404] Handle interchain tx wrapper                  count=1 height=19 index=0 module=syncer
+INFO[21:54:40.409] Apply tx                                      from=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 index=2 module=executor status=true type=RECEIPT_SUCCESS
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.412+0800 [INFO ] client: submit ibtp: id=0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-2 contract=0x5bFe03Dbd09817d4957693f672cc31A133Bb6084 func=
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.413+0800 [INFO ] client: arg: 0=
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.413+0800 [INFO ] client: InvokeIndexUpdate: ibtp=0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-2
+
+# 中继链将收到的跨链交易上链，并路由到网关PierB
+time=&quot;2021-12-01T21:54:30.420&quot; level=info msg=&quot;======== Replica 1 call execute, height=18&quot; module=order
+time=&quot;2021-12-01T21:54:30.430&quot; level=info msg=&quot;Generated block&quot; count=1 height=18 module=app
+time=&quot;2021-12-01T21:54:30.554&quot; level=info msg=&quot;Persisted block&quot; count=1 elapse=8.963884ms hash=0x4474C7a5db7049Da22cEB82324988f572e57Ba88926D4D8549110c433bAD01de height=18 module=executor
+
+# 网关PierB同步区块头并处理跨链交易，将回执类型跨链交易返回给中继链
+INFO[21:54:30.565] Persist block header                          height=18 module=bxh_lite
+WARN[21:54:30.567] query header: header at 18 not found          module=syncer
+INFO[21:54:32.568] Handle interchain tx wrapper                  count=1 height=18 index=0 module=syncer
+INFO[21:54:32.568] Apply tx                                      from=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 index=2 module=executor status=true type=INTERCHAIN
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.591+0800 [INFO ] client: submit ibtp: id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 contract=0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f func=interchainCharge
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 0=A
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 1=B
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 2=10
+2021-12-01T21:54:37.810+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:37.810+0800 [INFO ] client: log: index=0 data=0x0000000000000000000000000000000000000000000000000000000000000001
+INFO[21:54:37.813] Handle ibtp success                           id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 module=exchanger type=INTERCHAIN
+INFO[21:54:38.381] Persist block header                          height=19 module=bxh_lite
+WARN[21:54:38.381] query header: header at 19 not found          module=syncer
+INFO[21:54:40.384] Handle interchain tx wrapper                  count=0 height=19 index=0 module=syncer
+
+# 中继链将收到的回执类型的跨链交易上链，返回至网关PierA
+time=&quot;2021-12-01T21:54:38.311&quot; level=info msg=&quot;======== Replica 1 call execute, height=19&quot; module=order
+time=&quot;2021-12-01T21:54:38.312&quot; level=info msg=&quot;Generated block&quot; count=1 height=19 module=app
+time=&quot;2021-12-01T21:54:38.399&quot; level=info msg=&quot;Persisted block&quot; count=1 elapse=6.881ms hash=0xf676406e6f88FC0cF27b043e926e1e4a528E6Ee5ed62146e86D18F3ABA68D260 height=19 module=executor
+
+# 网关PierA收到跨链交易回执，返回给应用链A
+INFO[21:54:45.568] Execute callback                              fields.msg= index=2 module=executor status=true type=RECEIPT_SUCCESS
+INFO[21:54:45.569] Handle ibtp receipt success                   id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 module=exchanger type=RECEIPT_SUCCESS
+
+# 跨链交易完成，在应用链A上查询Alice的余额从100变更为90；在应用链B上查询Bob的余额从0变更为10
+</code></pre></div>
+<h2 id="_12">总结</h2>
 <p>经过上面的改造，你的业务合约已经具备跨链获取数据的功能了，完整的代码可以参考<a href="https://github.com/meshplus/pier-client-fabric/tree/master/example"><strong>这里</strong></a></p>
                 
               
@@ -2149,7 +2265,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../cmd/pier_cmd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Pier" rel="prev">
+        <a href="../cmd/pier_cmd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 跨链网关Pier" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -2158,7 +2274,7 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Pier
+              跨链网关Pier
             </div>
           </div>
         </a>

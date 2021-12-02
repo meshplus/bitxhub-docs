@@ -14,7 +14,7 @@
     
     
       
-        <title>BitXHub - Bitxhub Document</title>
+        <title>中继链BitXHub - Bitxhub Document</title>
       
     
     
@@ -66,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#bitxhub" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -93,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              BitXHub
+              中继链BitXHub
             
           </span>
         </div>
@@ -641,7 +646,7 @@
   
     <li class="md-nav__item">
       <a href="../../../usage/status_verification/" class="md-nav__link">
-        系统验证
+        系统验证与交易流程体验
       </a>
     </li>
   
@@ -686,10 +691,57 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5_1" type="checkbox" id="__nav_1_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5_1">
+          应用链管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="应用链管理" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          应用链管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../../function/appchain/" class="md-nav__link">
-        应用链管理
+      <a href="../../../function/relay_manager/" class="md-nav__link">
+        中继模式管理
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/direct_manager/" class="md-nav__link">
+        直连模式管理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -762,34 +814,6 @@
               
   
   
-  
-    <li class="md-nav__item">
-      <a href="../../multiSDK/" class="md-nav__link">
-        多语言SDK
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../api/" class="md-nav__link">
-        api
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
     
   
   
@@ -797,18 +821,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_3" type="checkbox" id="__nav_1_6_3" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_1_6_3">
+        <label class="md-nav__link" for="__nav_1_6_1">
           命令行说明
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="命令行说明" data-md-level="3">
-        <label class="md-nav__title" for="__nav_1_6_3">
+        <label class="md-nav__title" for="__nav_1_6_1">
           <span class="md-nav__icon md-icon"></span>
           命令行说明
         </label>
@@ -826,10 +850,377 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          中继链BitXHub
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        BitXHub
+        中继链BitXHub
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    子命令描述
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-config" class="md-nav__link">
+    bitxhub config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-init" class="md-nav__link">
+    bitxhub init
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-start" class="md-nav__link">
+    bitxhub start
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key" class="md-nav__link">
+    bitxhub key
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-gen" class="md-nav__link">
+    bitxhub key gen
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-convert" class="md-nav__link">
+    bitxhub key convert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-show" class="md-nav__link">
+    bitxhub key show
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-address" class="md-nav__link">
+    bitxhub key address
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-version" class="md-nav__link">
+    bitxhub version
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert" class="md-nav__link">
+    bitxhub cert
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub cert">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-ca" class="md-nav__link">
+    bitxhub cert ca
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-csr" class="md-nav__link">
+    bitxhub cert csr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-issue" class="md-nav__link">
+    bitxhub cert issue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-parse" class="md-nav__link">
+    bitxhub cert parse
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-priv" class="md-nav__link">
+    bitxhub cert priv
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub cert priv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client" class="md-nav__link">
+    bitxhub client
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-account" class="md-nav__link">
+    bitxhub client account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-chain" class="md-nav__link">
+    bitxhub client chain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-block" class="md-nav__link">
+    bitxhub client block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-network" class="md-nav__link">
+    bitxhub client network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-receipt" class="md-nav__link">
+    bitxhub client receipt
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-tx" class="md-nav__link">
+    bitxhub client tx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-validators" class="md-nav__link">
+    bitxhub client validators
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-delvpnode" class="md-nav__link">
+    bitxhub client delVPNode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-governance" class="md-nav__link">
+    bitxhub client governance
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client governance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    提案投票
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    提案查询
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    应用链管理
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -843,7 +1234,7 @@
   
     <li class="md-nav__item">
       <a href="../pier_cmd/" class="md-nav__link">
-        Pier
+        跨链网关Pier
       </a>
     </li>
   
@@ -980,7 +1371,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../design/pier/" class="md-nav__link">
+      <a href="../../../design/pier_cmd.md" class="md-nav__link">
         跨链网关设计方案
       </a>
     </li>
@@ -1084,7 +1475,7 @@
   
     <li class="md-nav__item">
       <a href="../../../operation/exception_problem_handling/" class="md-nav__link">
-        异常问题处
+        异常问题处理
       </a>
     </li>
   
@@ -1476,6 +1867,373 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    子命令描述
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-config" class="md-nav__link">
+    bitxhub config
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-init" class="md-nav__link">
+    bitxhub init
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-start" class="md-nav__link">
+    bitxhub start
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key" class="md-nav__link">
+    bitxhub key
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub key">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-gen" class="md-nav__link">
+    bitxhub key gen
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-convert" class="md-nav__link">
+    bitxhub key convert
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-show" class="md-nav__link">
+    bitxhub key show
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-key-address" class="md-nav__link">
+    bitxhub key address
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-version" class="md-nav__link">
+    bitxhub version
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert" class="md-nav__link">
+    bitxhub cert
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub cert">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-ca" class="md-nav__link">
+    bitxhub cert ca
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-csr" class="md-nav__link">
+    bitxhub cert csr
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-issue" class="md-nav__link">
+    bitxhub cert issue
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-parse" class="md-nav__link">
+    bitxhub cert parse
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-cert-priv" class="md-nav__link">
+    bitxhub cert priv
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub cert priv">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client" class="md-nav__link">
+    bitxhub client
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    参数解释
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-account" class="md-nav__link">
+    bitxhub client account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-chain" class="md-nav__link">
+    bitxhub client chain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-block" class="md-nav__link">
+    bitxhub client block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-network" class="md-nav__link">
+    bitxhub client network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-receipt" class="md-nav__link">
+    bitxhub client receipt
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-tx" class="md-nav__link">
+    bitxhub client tx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-validators" class="md-nav__link">
+    bitxhub client validators
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-delvpnode" class="md-nav__link">
+    bitxhub client delVPNode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-governance" class="md-nav__link">
+    bitxhub client governance
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client governance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    提案投票
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    提案查询
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    应用链管理
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -1486,9 +2244,632 @@
                   </a>
                 
                 
-                  <h1>BitXHub</h1>
-                
-                
+                <h1 id="bitxhub">bitxhub</h1>
+<p>中继链命令描述如下：</p>
+<div class="highlight"><pre><span></span><code>bitxhub -h
+
+NAME:
+   BitXHub - A leading inter-blockchain platform
+
+USAGE:
+   bitxhub [global options] command [command options] [arguments...]
+
+COMMANDS:
+   config   Operate bitxhub config
+   init     Initialize BitXHub local configuration
+   start    Start a long-running start process
+   key      Create and show key information
+   version  BitXHub version
+   cert     Certification tools
+   client   BitXHub client command
+   help, h  Shows a list of commands or help for one command
+</code></pre></div>
+<h2 id="_1">参数解释</h2>
+<ul>
+<li><code>--repo</code>: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
+<div class="highlight"><pre><span></span><code>GLOBAL OPTIONS:
+   --repo value   BitXHub storage repo path
+   --help, -h     show help
+   --version, -v  print the version
+</code></pre></div></li>
+</ul>
+<h2 id="_2">子命令描述</h2>
+<h3 id="bitxhub-config">bitxhub config</h3>
+<p>显示当前节点配置：如未指定<code>repo</code>则默认使用<code>~/.bitxhub/</code>路径，若路径下存在旧配置，则提示覆盖与否。</p>
+<div class="highlight"><pre><span></span><code>$ bitxhub config 
+
+{
+  &quot;cert&quot;: {
+    &quot;agency_cert_path&quot;: &quot;certs/agency.cert&quot;,
+    &quot;ca_cert_path&quot;: &quot;certs/ca.cert&quot;,
+    &quot;node_cert_path&quot;: &quot;certs/node.cert&quot;,
+    &quot;verify&quot;: true
+  },
+  &quot;executor&quot;: {
+    &quot;type&quot;: &quot;serial&quot;
+  },
+  &quot;gateway&quot;: {
+    &quot;AllowedOrigins&quot;: [
+      &quot;*&quot;
+    ]
+  },
+  &quot;genesis&quot;: {
+    &quot;admins&quot;: [
+      {
+        &quot;address&quot;: &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+        &quot;weight&quot;: 2
+      },
+      {
+        &quot;address&quot;: &quot;0x79a1215469FaB6f9c63c1816b45183AD3624bE34&quot;,
+        &quot;weight&quot;: 2
+      },
+      {
+        &quot;address&quot;: &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+        &quot;weight&quot;: 2
+      },
+      {
+        &quot;address&quot;: &quot;0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8&quot;,
+        &quot;weight&quot;: 2
+      }
+    ],
+    &quot;strategy&quot;: {
+      &quot;appchainmgr&quot;: &quot;SimpleMajority&quot;,
+      &quot;nodemgr&quot;: &quot;SimpleMajority&quot;,
+      &quot;rulemgr&quot;: &quot;SimpleMajority&quot;,
+      &quot;servicemgr&quot;: &quot;SimpleMajority&quot;
+    }
+  },
+  &quot;license&quot;: {
+    &quot;key&quot;: &quot;133847740289a8dc5447bfbaedf10ed5ee9460110e4ba6b455e33cf941253527f18dd721515c5142fcea9b6415ddad6b3f1696011a4bbc86f35833ae9296a3ea&quot;,
+    &quot;verifier&quot;: &quot;https://172.16.5.3:11443/v1/validation&quot;
+  },
+  &quot;limiter&quot;: {
+    &quot;capacity&quot;: 10000,
+    &quot;interval&quot;: 50000000,
+    &quot;quantum&quot;: 500
+  },
+  &quot;log&quot;: {
+    &quot;dir&quot;: &quot;logs&quot;,
+    &quot;filename&quot;: &quot;bitxhub.log&quot;,
+    &quot;level&quot;: &quot;info&quot;,
+    &quot;module&quot;: {
+      &quot;api&quot;: &quot;info&quot;,
+      &quot;consensus&quot;: &quot;info&quot;,
+      &quot;coreapi&quot;: &quot;info&quot;,
+      &quot;executor&quot;: &quot;info&quot;,
+      &quot;p2p&quot;: &quot;info&quot;,
+      &quot;profile&quot;: &quot;info&quot;,
+      &quot;router&quot;: &quot;info&quot;,
+      &quot;storage&quot;: &quot;info&quot;
+    },
+    &quot;report_caller&quot;: false
+  },
+  &quot;monitor&quot;: {
+    &quot;Enable&quot;: true
+  },
+  &quot;order&quot;: {
+    &quot;plugin&quot;: &quot;plugins/raft.so&quot;
+  },
+  &quot;ping&quot;: {
+    &quot;duration&quot;: 15000000000,
+    &quot;enable&quot;: true
+  },
+  &quot;port&quot;: {
+    &quot;gateway&quot;: 9091,
+    &quot;grpc&quot;: 60011,
+    &quot;monitor&quot;: 40011,
+    &quot;pprof&quot;: 53121
+  },
+  &quot;pprof&quot;: {
+    &quot;duration&quot;: 30000000000,
+    &quot;enable&quot;: true,
+    &quot;mode&quot;: &quot;memory&quot;,
+    &quot;ptype&quot;: &quot;http&quot;
+  },
+  &quot;repo_root&quot;: &quot;/Users/xxx/.bitxhub&quot;,
+  &quot;security&quot;: {
+    &quot;EnableTLS&quot;: false,
+    &quot;pem_file_path&quot;: &quot;certs/node.cert&quot;,
+    &quot;server_key_path&quot;: &quot;certs/node.priv&quot;
+  },
+  &quot;solo&quot;: false,
+  &quot;title&quot;: &quot;BitXHub configuration file&quot;,
+  &quot;txpool&quot;: {
+    &quot;batch_size&quot;: 500,
+    &quot;batch_timeout&quot;: 500000000
+  }
+}
+</code></pre></div>
+<h3 id="bitxhub-init">bitxhub init</h3>
+<p>初始化节点配置：如未指定<code>repo</code>则默认使用<code>~/.bitxhub/</code>路径</p>
+<div class="highlight"><pre><span></span><code>bitxhub init   
+
+initializing bitxhub at /Users/xxx/.bitxhub
+bitxhub configuration file already exists
+reinitializing would overwrite your configuration, Y/N?
+y
+</code></pre></div>
+<h3 id="_3"></h3>
+<h3 id="bitxhub-start">bitxhub start</h3>
+<p>该命令<code>bitxhub start</code>显示BitXHub的版本信息。
+它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
+例如:</p>
+<div class="highlight"><pre><span></span><code>bitxhub --repo &lt;node_config_path&gt; start                         
+
+BitXHub version: dev-fixx-1.6-2a2f39f                                                                                                           
+App build date: 2021-11-25T16:43:19                                                                                                                 
+System version: darwin/amd64                                                                                                                              
+Golang version: go1.14.15                                                                                                                                 
+
+time=&quot;2021-11-29T18:07:37.722&quot; level=info msg=&quot;MemPool batch size = 200&quot; module=order
+time=&quot;2021-11-29T18:07:37.722&quot; level=info msg=&quot;MemPool tx slice size = 200&quot; module=order
+time=&quot;2021-11-29T18:07:37.722&quot; level=info msg=&quot;MemPool batch seqNo = 6&quot; module=order
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;MemPool pool size = 50000&quot; module=order
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;Raft localID = 1&quot; module=order
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;Raft lastExec = 6  &quot; module=order
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;Raft snapshotCount = 1000&quot; module=order
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;GRPC service started&quot; module=api port=60011
+time=&quot;2021-11-29T18:07:37.723&quot; level=info msg=&quot;Gateway service started&quot; module=api port=9091
+</code></pre></div>
+<h4 id="_4">参数解释</h4>
+<ul>
+<li><code>passwd</code>：指定节点私钥密码</li>
+<li><code>config</code>：指定节点配置路径，一般指bitxhub.toml</li>
+<li><code>network</code>：指定节点p2p网络配置文件，一般指network.toml</li>
+<li><code>order</code>：指定节点共识配置文件，一般指oeder.toml</li>
+</ul>
+<p><strong>若不指定以上配置，则默认至bitxhub --repo路径下寻找</strong>。</p>
+<div class="highlight"><pre><span></span><code>NAME:
+   bitxhub start - Start a long-running start process
+
+USAGE:
+   bitxhub start [command options] [arguments...]
+
+OPTIONS:
+   --passwd value   bitxhub key password
+   --config value   bitxhub config path
+   --network value  bitxhub network config path
+   --order value    bitxhub order config path
+</code></pre></div>
+<h3 id="bitxhub-key">bitxhub key</h3>
+<h4 id="_5">功能</h4>
+<p>该命令<code>bitxhub key</code>提供针对bitxhub节点的私钥管理。
+它包含了私钥生成、私钥格式转换、私钥查看、地址查看。
+子命令信息如下:</p>
+<div class="highlight"><pre><span></span><code>NAME:
+BitXHub key - Create and show key information
+
+USAGE:
+BitXHub key command [command options] [arguments...]
+
+COMMANDS:
+gen      Create new Secp256k1 private key in specified directory
+convert  Convert the Secp256k1 private key to BitXHub key format
+show     Show BitXHub key from repo
+address  Show address from Secp256k1 private key
+</code></pre></div>
+<h4 id="_6">子命令</h4>
+<h5 id="bitxhub-key-gen">bitxhub key gen</h5>
+<ul>
+<li>生成节点私钥</li>
+<li>target: 指定生成路径</li>
+<li>passwd: 指定私钥密码</li>
+</ul>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub key gen - Create new Secp256k1 private key in specified directory
+
+USAGE:
+   BitXHub key gen [command options] [arguments...]
+
+OPTIONS:
+   --target value  Specific target directory
+   --passwd value  Specify password
+</code></pre></div>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>bitxhub key gen --target ~/.bitxhub
+
+key.json key is generated under directory /Users/xxx/.bitxhub
+</code></pre></div>
+<h5 id="bitxhub-key-convert">bitxhub key convert</h5>
+<ul>
+<li>私钥格式转换</li>
+<li>save：是否同时保存目标私钥</li>
+<li>priv: Secp256k1私钥地址，在bitxhub中一般指node.priv</li>
+<li>passwd: Secp256k1私钥密码</li>
+</ul>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub key convert - Convert the Secp256k1 private key to BitXHub key format
+
+USAGE:
+   BitXHub key convert [command options] [arguments...]
+
+OPTIONS:
+   --save, -s      Save BitXHub key into repo
+   --priv value    Specify private key path
+   --passwd value  Specify password
+</code></pre></div>
+<h5 id="bitxhub-key-show">bitxhub key show</h5>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>bitxhub key show     
+
+{
+ &quot;type&quot;: 3,
+ &quot;cipher&quot;: {
+  &quot;data&quot;: &quot;18bc2c685cc79d7098fa1f3b97f14541121b61b1d3492ef4f298c84844e7b380fa8e8a84dc44d910aa9dafddc0347c670bace2c74d8553a4c843ae58ce4aeb78&quot;,
+  &quot;cipher&quot;: &quot;AES-256&quot;
+ }
+}
+</code></pre></div>
+<h5 id="bitxhub-key-address">bitxhub key address</h5>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>bitxhub key address --path ./key.json --passwd 123
+
+0x3Db84D019fCd3A845e2fB3A21B56812Ffd933f19
+</code></pre></div>
+<h3 id="bitxhub-version">bitxhub version</h3>
+<p>该命令 <code>bitxhub version</code> 不含参数.</p>
+<div class="highlight"><pre><span></span><code>$ bitxhub version
+NAME:
+   bitxhub version - BitXHub version
+
+USAGE:
+   bitxhub version [arguments...]
+</code></pre></div>
+<p>该命令<code>bitxhub version</code>显示BitXHub的版本信息。
+它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
+例如:</p>
+<div class="highlight"><pre><span></span><code>BitXHub version: dev-fixx-1.6-2a2f39f
+App build date: 2021-11-25T15:01:28
+System version: darwin/amd64
+Golang version: go1.14.15
+</code></pre></div>
+<h3 id="bitxhub-cert">bitxhub cert</h3>
+<h4 id="_7">功能</h4>
+<p>该命令<code>bitxhub cert</code>提供一系列x509标准的证书工具，服务于中继链节点的准入机制。
+它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。
+子命令信息如下:</p>
+<div class="highlight"><pre><span></span><code>bitxhub cert -h                               
+
+NAME:
+   BitXHub cert - Certification tools
+
+USAGE:
+   BitXHub cert command [command options] [arguments...]
+
+COMMANDS:
+   ca      Generate ca cert and private key
+   csr     Generate csr file
+   issue   Issue certification by ca
+   parse   parse certification
+   priv    Generate and show private key for certificate
+   verify  verify cert
+</code></pre></div>
+<h4 id="_8">子命令</h4>
+<h5 id="bitxhub-cert-ca">bitxhub cert ca</h5>
+<p>生成根CA证书</p>
+<div class="highlight"><pre><span></span><code>bitxhub cert ca -h
+NAME:
+   BitXHub cert ca - Generate ca cert and private key
+
+USAGE:
+   BitXHub cert ca [arguments...]
+</code></pre></div>
+<h5 id="bitxhub-cert-csr">bitxhub cert csr</h5>
+<ul>
+<li><code>生成CSR描述</code></li>
+<li>key: 指定私钥路径</li>
+<li>org: 指定被签发人组织名称</li>
+<li>target: 指定目标CSR路径</li>
+</ul>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub cert csr - Generate csr file
+
+USAGE:
+   BitXHub cert csr [command options] [arguments...]
+
+OPTIONS:
+   --key value     Specify Secp256r1 private key path
+   --org value     Specify organization name
+   --target value  Specific target directory
+</code></pre></div>
+<h5 id="bitxhub-cert-issue">bitxhub cert issue</h5>
+<ul>
+<li><code>证书签发</code></li>
+<li>csr: 指定CSR描述文件路径</li>
+<li>is_ca: 指定签发人是否为CA证书</li>
+<li>key: 指定当前签发人私钥路径</li>
+<li>cert: 指定当前签发人证书路径</li>
+<li>target: 指定生成的证书路径</li>
+</ul>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub cert issue - Issue certification by ca
+
+USAGE:
+   BitXHub cert issue [command options] [arguments...]
+
+OPTIONS:
+   --csr value     Specify csr path
+   --is_ca value   Specify whether it&#39;s ca
+   --key value     Specify ca&#39;s secp256r1 private key path
+   --cert value    Specify ca certification path
+   --target value  Specific target directory
+</code></pre></div>
+<h5 id="bitxhub-cert-parse">bitxhub cert parse</h5>
+<ul>
+<li><code>证书解析</code></li>
+<li>path: 指定证书路径</li>
+</ul>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub cert parse - parse certification
+
+USAGE:
+   BitXHub cert parse [command options] [arguments...]
+
+OPTIONS:
+   --path value  certification path
+</code></pre></div>
+<h5 id="bitxhub-cert-priv">bitxhub cert priv</h5>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub cert priv - Generate and show private key for certificate
+
+USAGE:
+   BitXHub cert priv command [command options] [arguments...]
+
+COMMANDS:
+   gen  Create new private key
+   pid  Show pid from private key
+</code></pre></div>
+<h6 id="_9">子命令</h6>
+<p><strong>私钥生成</strong></p>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub cert priv gen - Create new private key
+
+USAGE:
+   BitXHub cert priv gen [command options] [arguments...]
+
+OPTIONS:
+   --name value    Specific private key name
+   --target value  Specific target directory
+</code></pre></div>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>bitxhub cert priv gen --name server --target ./
+
+server.priv key is generated under directory /Users/xxx/GolandProjectsTest/bitxhub-docs
+</code></pre></div>
+<p><strong>获取libp2p节点pid</strong></p>
+<div class="highlight"><pre><span></span><code>NAME:   BitXHub cert priv pid - Show pid from private keyUSAGE:   BitXHub cert priv pid [command options] [arguments...]OPTIONS:   --path value  Specific private key path
+</code></pre></div>
+<p>样例：</p>
+<div class="highlight"><pre><span></span><code>bitxhub cert priv pid --path ./server.priv     QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
+</code></pre></div>
+<h3 id="bitxhub-client">bitxhub client</h3>
+<h4 id="_10">功能</h4>
+<p>该命令<code>bitxhub client</code>提供中继链节点的客户端操作命令。
+它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
+子命令信息如下:
+<div class="highlight"><pre><span></span><code>bitxhub client
+
+NAME:
+   BitXHub client - BitXHub client command
+
+USAGE:
+   BitXHub client command [command options] [arguments...]
+
+COMMANDS:
+   account     Query account information
+   chain       Query bitxhub chain info
+   block       Query block
+   network     Query network info from node
+   receipt     Query receipt
+   tx          Transaction manipulation
+   validators  Query validator address
+   delVPNode   delete a vp node
+   governance  governance command                      
+</code></pre></div></p>
+<h4 id="_11">参数解释</h4>
+<ul>
+<li><code>gateway</code>: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；</li>
+<li><code>cert</code>: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
+<div class="highlight"><pre><span></span><code>OPTIONS:
+--gateway value  Specific gateway address (default: &quot;http://localhost:9091/v1/&quot;)
+--cert value     Specific ca cert file if https is enabled
+--help, -h       show help
+</code></pre></div></li>
+</ul>
+<h4 id="_12">子命令</h4>
+<h5 id="bitxhub-client-account">bitxhub client account</h5>
+<p>账户信息查询
+<div class="highlight"><pre><span></span><code>bitxhub   client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
+
+{
+  &quot;type&quot;: &quot;normal&quot;,
+  &quot;balance&quot;: 100000000,
+  &quot;contract_count&quot;: 0,
+  &quot;code_hash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
+}
+</code></pre></div></p>
+<h5 id="bitxhub-client-chain">bitxhub client chain</h5>
+<p>中继链信息查询
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client chain - Query bitxhub chain info
+
+USAGE:
+   BitXHub client chain command [command options] [arguments...]
+
+COMMANDS:
+   meta    Query bitxhub chain meta
+   status  Query bitxhub chain status
+
+OPTIONS:
+   --help, -h  show help
+</code></pre></div>
+- <code>normal</code>: 已处在共识状态
+<div class="highlight"><pre><span></span><code>bitxhub   client chain meta
+{&quot;height&quot;:&quot;1&quot;,&quot;block_hash&quot;:&quot;0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068&quot;}
+
+bitxhub   client chain status
+normal
+</code></pre></div></p>
+<h5 id="bitxhub-client-block">bitxhub client block</h5>
+<p>区块信息查询
+- 可指定区块号或区块Hash
+<div class="highlight"><pre><span></span><code>bitxhub   client block 1
+{&quot;block_header&quot;:{&quot;number&quot;:&quot;1&quot;,&quot;state_root&quot;:&quot;0xC3A3B54F593e638D8a9FAbf66b781EFcb14D0f013D7c3E3a02ef698294f6BBF5&quot;},&quot;block_hash&quot;:&quot;0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068&quot;,&quot;signature&quot;:&quot;74DK6FeGnAYBJ0pJ4bLwIaT9cp9YwIscenKsRc7myXUBQfvvLKhIpZqPJkf8tAI7V8u89SLOAdz94fo/ajKi+wA=&quot;}
+</code></pre></div></p>
+<h5 id="bitxhub-client-network">bitxhub client network</h5>
+<p>全网节点信息
+<div class="highlight"><pre><span></span><code>bitxhub   client network
+
+{
+  &quot;1&quot;: {
+    &quot;id&quot;: 1,
+    &quot;pid&quot;: &quot;QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL&quot;,
+    &quot;account&quot;: &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4001/p2p/&quot;
+    ]
+  },
+  &quot;2&quot;: {
+    &quot;id&quot;: 2,
+    &quot;pid&quot;: &quot;QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4&quot;,
+    &quot;account&quot;: &quot;0x79a1215469FaB6f9c63c1816b45183AD3624bE34&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4002/p2p/&quot;
+    ]
+  },
+  &quot;3&quot;: {
+    &quot;id&quot;: 3,
+    &quot;pid&quot;: &quot;QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS&quot;,
+    &quot;account&quot;: &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4003/p2p/&quot;
+    ]
+  },
+  &quot;4&quot;: {
+    &quot;id&quot;: 4,
+    &quot;pid&quot;: &quot;QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy&quot;,
+    &quot;account&quot;: &quot;0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4004/p2p/&quot;
+    ]
+  }
+}
+</code></pre></div></p>
+<h5 id="bitxhub-client-receipt">bitxhub client receipt</h5>
+<p>交易回执查询
+<div class="highlight"><pre><span></span><code>bitxhub   client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E
+
+{
+  &quot;tx_hash&quot;: &quot;0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E&quot;,
+  &quot;ret&quot;: null,
+  &quot;status&quot;: 0,
+  &quot;events&quot;: []
+}
+</code></pre></div></p>
+<h5 id="bitxhub-client-tx">bitxhub client tx</h5>
+<p>简单交易</p>
+<p><strong>交易发送</strong></p>
+<p><div class="highlight"><pre><span></span><code>bitxhub   client tx send --key scripts/build/node1/key.json --to 0x97c8B516D19edBf575D72a172Af7F418BE498C37 --amount 2 --type 0
+
+{&quot;tx_hash&quot;:&quot;0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E&quot;}
+</code></pre></div>
+<strong>交易查询</strong></p>
+<div class="highlight"><pre><span></span><code>bitxhub   client tx get 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E
+
+{&quot;tx&quot;:{&quot;from&quot;:&quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,&quot;to&quot;:&quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,&quot;timestamp&quot;:&quot;1638168425560507000&quot;,&quot;transaction_hash&quot;:&quot;0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E&quot;,&quot;payload&quot;:&quot;EAI=&quot;,&quot;nonce&quot;:&quot;2&quot;,&quot;signature&quot;:&quot;mdOdSzAOTDxfZ0VphvyDyir1lE8w31rUaSTtnj1us9NMhtUPVHz5bLcOBdZrmUfnaVhL3xGQxK3/P7WHmihxIQA=&quot;},&quot;tx_meta&quot;:{&quot;block_hash&quot;:&quot;HoMgbS+NeCRds5Qc/58NfHXA+jVCuhUcsc7p9IvJxMc=&quot;,&quot;block_height&quot;:&quot;3&quot;}}
+</code></pre></div>
+<h5 id="bitxhub-client-validators">bitxhub client validators</h5>
+<p>全网验证人信息
+<div class="highlight"><pre><span></span><code>bitxhub   client validators
+
+[
+  &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+  &quot;0x79a1215469FaB6f9c63c1816b45183AD3624bE34&quot;,
+  &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+  &quot;0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8&quot;
+]
+</code></pre></div></p>
+<h5 id="bitxhub-client-delvpnode">bitxhub client delVPNode</h5>
+<p>动态删除共识节点
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client delVPNode - delete a vp node
+
+USAGE:
+   BitXHub client delVPNode [command options] [arguments...]
+
+OPTIONS:
+   --pid value  pid of vp node
+</code></pre></div></p>
+<h5 id="bitxhub-client-governance">bitxhub client governance</h5>
+<p>提案治理命令
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance - governance command
+
+USAGE:
+   BitXHub client governance command [command options] [arguments...]
+
+COMMANDS:
+   vote       vote to a proposal
+   proposals  query proposals based on the condition
+   chain      appchain manage command
+</code></pre></div></p>
+<h6 id="_13"><strong>提案投票</strong></h6>
+<ul>
+<li>命令参数
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance vote - vote to a proposal
+
+USAGE:
+   BitXHub client governance vote [command options] [arguments...]
+
+OPTIONS:
+   --id value      proposal id
+   --info value    voting information, approve or reject
+   --reason value  reason to vote
+</code></pre></div></li>
+<li>样例
+<div class="highlight"><pre><span></span><code>bitxhub   client governance vote --info approve --reason test --id 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
+
+vote successfully! 
+0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
+</code></pre></div></li>
+</ul>
+<h6 id="_14"><strong>提案查询</strong></h6>
+<ul>
+<li>id: 提案id</li>
+<li>type: 提案类型，当前支持应用链管理</li>
+<li>status: 提案状态，是否通过</li>
+<li>from: 提案者地址
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance proposals - query proposals based on the condition
+
+USAGE:
+   BitXHub client governance proposals [command options] [arguments...]
+
+OPTIONS:
+   --id value      proposal id
+   --type value    proposal type, currently only AppchainMgr is supported
+   --status value  proposal status, one of proposed, approve or reject
+   --from value    the address of the account to which the proposal was made
+</code></pre></div></li>
+</ul>
+<h6 id="_15">应用链管理</h6>
+<ul>
+<li>status:查询应用链状态</li>
+<li>freeze:应用链冻结</li>
+<li>activate:应用链激活
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance chain - appchain manage command
+
+USAGE:
+   BitXHub client governance chain command [command options] [arguments...]
+
+COMMANDS:
+   status    query chain status by chain id
+   freeze    freeze appchain by chain id
+   activate  activate chain by chain id
+</code></pre></div></li>
+</ul>
                 
               
               
@@ -1513,7 +2894,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../../api/" class="md-footer__link md-footer__link--prev" aria-label="Previous: api" rel="prev">
+        <a href="../../../function/cross_invoke/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 跨链合约调用" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1522,20 +2903,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              api
+              跨链合约调用
             </div>
           </div>
         </a>
       
       
         
-        <a href="../pier_cmd/" class="md-footer__link md-footer__link--next" aria-label="Next: Pier" rel="next">
+        <a href="../pier_cmd/" class="md-footer__link md-footer__link--next" aria-label="Next: 跨链网关Pier" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Pier
+              跨链网关Pier
             </div>
           </div>
           <div class="md-footer__button md-icon">

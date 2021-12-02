@@ -672,7 +672,7 @@
         
           <li class="md-nav__item">
   <a href="#pier_1" class="md-nav__link">
-    修改Pier自身的配置
+    修改Pier配置
   </a>
   
 </li>
@@ -747,7 +747,7 @@
   
     <li class="md-nav__item">
       <a href="../../status_verification/" class="md-nav__link">
-        系统验证
+        系统验证与交易流程体验
       </a>
     </li>
   
@@ -792,10 +792,57 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5_1" type="checkbox" id="__nav_1_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5_1">
+          应用链管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="应用链管理" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          应用链管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../../../function/appchain/" class="md-nav__link">
-        应用链管理
+      <a href="../../../function/relay_manager/" class="md-nav__link">
+        中继模式管理
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/direct_manager/" class="md-nav__link">
+        直连模式管理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -867,50 +914,22 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../../dev/multiSDK/" class="md-nav__link">
-        多语言SDK
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../dev/api/" class="md-nav__link">
-        api
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
     
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_3" type="checkbox" id="__nav_1_6_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_1_6_3">
+        <label class="md-nav__link" for="__nav_1_6_1">
           命令行说明
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="命令行说明" data-md-level="3">
-        <label class="md-nav__title" for="__nav_1_6_3">
+        <label class="md-nav__title" for="__nav_1_6_1">
           <span class="md-nav__icon md-icon"></span>
           命令行说明
         </label>
@@ -923,7 +942,7 @@
   
     <li class="md-nav__item">
       <a href="../../../dev/cmd/bitxhub_cmd/" class="md-nav__link">
-        BitXHub
+        中继链BitXHub
       </a>
     </li>
   
@@ -937,7 +956,7 @@
   
     <li class="md-nav__item">
       <a href="../../../dev/cmd/pier_cmd/" class="md-nav__link">
-        Pier
+        跨链网关Pier
       </a>
     </li>
   
@@ -1074,7 +1093,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../design/pier/" class="md-nav__link">
+      <a href="../../../design/pier_cmd.md" class="md-nav__link">
         跨链网关设计方案
       </a>
     </li>
@@ -1178,7 +1197,7 @@
   
     <li class="md-nav__item">
       <a href="../../../operation/exception_problem_handling/" class="md-nav__link">
-        异常问题处
+        异常问题处理
       </a>
     </li>
   
@@ -1614,7 +1633,7 @@
         
           <li class="md-nav__item">
   <a href="#pier_1" class="md-nav__link">
-    修改Pier自身的配置
+    修改Pier配置
   </a>
   
 </li>
@@ -1705,7 +1724,8 @@
 <div class="highlight"><pre><span></span><code>go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
 </code></pre></div></p>
 <p>Step2: 获取需要部署的合约文件并解压
-<div class="highlight"><pre><span></span><code>git clone https://github.com/meshplus/pier-client-ethereum.git &amp;&amp; git checkout v1.6.2
+<div class="highlight"><pre><span></span><code>git clone https://github.com/meshplus/pier-client-fabric.git 
+cd pier-client-fabric &amp;&amp; git checkout v1.6.2
 # 需要部署的合约文件就在example目录下
 #解压即可
 unzip -q contracts.zip
@@ -1763,7 +1783,7 @@ git clone https://github.com/meshplus/pier-client-fabric.git
 cd pier-client-fabric &amp;&amp; git checkout v1.6.2
 make fabric1.4
 
-# 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文  件；
+# 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
 2.pier编译之后会在跨链网关项目bin目录生成同名的二进制文件，需要将它拷贝到配置主目录方便后续执行。
 </code></pre></div>
 <p><strong>二进制下载</strong></p>
@@ -1771,7 +1791,7 @@ make fabric1.4
 </div>
 </div>
 <p>经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 <code>export LD_LIBRARY_PATH=$(pwd)</code>命令指定依赖文件的路径，方便之后的操作。</p>
-<h3 id="pier_1">修改Pier自身的配置</h3>
+<h3 id="pier_1">修改Pier配置</h3>
 <p>在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 <div class="highlight"><pre><span></span><code>./pier --repo=~/.pier init
 </code></pre></div>
@@ -1829,34 +1849,47 @@ config = &quot;fabric&quot;
 </div>
 </div>
 <h3 id="_4">修改应用链插件的配置</h3>
-<p>应用链插件的配置目录即是pier.toml中的config字段，它的模板在<code>pier-client-ethereum</code>或<code>pier-client-ethereum</code>项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可</p>
-<div class="tabbed-set" data-tabs="4:2"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Ethereum</label><div class="tabbed-content">
-<p><div class="highlight"><pre><span></span><code><span class="c1"># 将ethereum插件拷贝到plugins目录下</span>
+<p>应用链插件的配置目录即是pier.toml中的config字段，它的模板在<code>pier-client-ethereum</code>或<code>pier-client-ethereum</code>项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可。</p>
+<div class="tabbed-set" data-tabs="4:1"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><label for="__tabbed_4_1">Ethereum</label><div class="tabbed-content">
+<div class="highlight"><pre><span></span><code><span class="c1"># 将ethereum插件拷贝到plugins目录下</span>
 cp ether-client ~/.pier/plugins/
 <span class="c1"># 切换到pier-client-ethereum项目路径下</span>
 <span class="nb">cd</span> pier-client-ethereum
 cp ./config <span class="nv">$HOME</span>/.pier/ether
 </code></pre></div>
-其中重要配置如下：
-<div class="highlight"><pre><span></span><code>├── account.key
+</div>
+</div>
+<p>​    其中重要配置如下：
+    <div class="highlight"><pre><span></span><code>├── account.key
 ├── broker.abi
 ├── ether.validators
 ├── ethereum.toml
 ├── password
 └── validating.wasm
 </code></pre></div>
-<strong>说明</strong>：account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费），broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi，ether.validators和validating.wasm一般不需要修改。ethereum.toml是需要重点修改的，需要根据应用链实际情况填写ethereum网络地址、broker合约地址及abi，账户的key等，示例如下：</p>
+说明**：</p>
+<ul>
+<li>account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）</li>
+<li>broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；</li>
+<li>ether.validators和validating.wasm一般不需要修改。</li>
+<li>
+<p>ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：</p>
 <div class="highlight"><pre><span></span><code>[ether]
 addr = &quot;wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a&quot;
 name = &quot;ether-kovan&quot;
 ## 此处合约地址需要替换成变量代表的实际字符串
-contract_address = &quot;$brokerAddr-kovan&quot;
+contract_address = &quot;$brokerAddr&quot;
 abi_path = &quot;broker.abi&quot;
 key_path = &quot;account.key&quot;
 password = &quot;password&quot;
+min_confirm = 1
+
+[contract_abi]
+&quot;($transfer) Addr&quot;=&quot;transfer.abi&quot;
 </code></pre></div>
-</div>
-<input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><label for="__tabbed_4_2">Fabric</label><div class="tabbed-content">
+</li>
+</ul>
+<div class="tabbed-set" data-tabs="5:1"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Fabric</label><div class="tabbed-content">
 <p><div class="highlight"><pre><span></span><code><span class="c1"># 将fabric插件拷贝到plugins目录下</span>
 cp fabric-client-1.4 ~/.pier/plugins/
 <span class="c1"># 切换到pier-client-fabric项目路径下</span>
@@ -1920,12 +1953,12 @@ appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957
 </code></pre></div></p>
 <h2 id="_6">部署验证规则</h2>
 <p>应用链只有在可用状态下可以部署验证规则，即需要应用链注册成功且中继链投票通过后才可以进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。</p>
-<div class="tabbed-set" data-tabs="5:2"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><label for="__tabbed_5_1">Ethereum</label><div class="tabbed-content">
+<div class="tabbed-set" data-tabs="6:2"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><label for="__tabbed_6_1">Ethereum</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>#以用户目录下的pier为例
 pier --repo ~/.pier rule deploy --path=~/.pier/ether/validating.wasm
 </code></pre></div>
 </div>
-<input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><label for="__tabbed_5_2">Fabric</label><div class="tabbed-content">
+<input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><label for="__tabbed_6_2">Fabric</label><div class="tabbed-content">
 <div class="highlight"><pre><span></span><code>#以用户目录下的pier为例
 pier --repo ~/.pier rule deploy --path=~/.pier/fabric/validating.wasm
 </code></pre></div>
