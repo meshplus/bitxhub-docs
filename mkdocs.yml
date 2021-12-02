@@ -100,12 +100,12 @@ nav:
           - 跨链网关直连模式部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
           - 系统验证与交易流程体验: bitxhub/usage/status_verification.md
       - 产品功能:
-        - 应用链管理: bitxhub/function/appchain.md
+        - 应用链管理:
+          - 中继模式管理: bitxhub/function/relay_manager.md
+          - 直连模式管理: bitxhub/function/direct_manager.md
         - 证书管理: bitxhub/function/cert_manage.md
         - 跨链合约调用: bitxhub/function/cross_invoke.md
       - 开发手册:
-          - 多语言SDK: bitxhub/dev/multiSDK.md
-          - api: bitxhub/dev/api.md
           - 命令行说明:
             - 中继链BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
             - 跨链网关Pier: bitxhub/dev/cmd/pier_cmd.md
