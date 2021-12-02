@@ -2,9 +2,9 @@
 
 跨链网关Pier能够支持跨链消息格式转换、跨链消息的路由、跨链操作的调用等核心功能，不仅保证不同格式的跨链消息能够安全可信的到达目标应用链，而且保证了跨链交易异常情况下来源链的安全。跨链网关为区块链互联形成网络提供了便捷的接入方式，旨在降低跨链互联的使用成本。在之前的文档中介绍了中继模式的pier安装步骤，下面介绍直连模式下pier的安装步骤。请注意，pier直连不依赖于中继链节点，所以本文档不赘述bitxhub的部署了。
 
-### 安装包获取
+## 安装包获取
 
-##### 源码安装
+### 源码安装
 
 跨链网关启动的话需要应用链插件，所以从源码安装的话，还需要编译相应的应用链插件的二进制。
 
@@ -27,7 +27,7 @@ git clone https://github.com/meshplus/pier-client-ethereum.git
 cd pier-client-ethereum
 make eth
 
-# 插件执行make的编译之后，都会在项目目录的之下的build目录生成相应的 .so 文件
+# 插件执行make的编译之后，都会在项目目录的之下的build目录生成相应的二进制文件
 ```
 
 编译跨链网关步骤会在 $GOPATH/bin 下生成 pier 二进制，运行下面的命令查看是否安装成功：
@@ -40,19 +40,24 @@ pier version
 如果正常安装会打印出类似下面的说明
 
 ```text
-Pier version: dev-release-1.6-7eb8c9a
-App build date: 2021-07-22T10:46:50
-System version: linux/amd64
-Golang version: go1.14.13
+Pier version: dev-release-1.6-1b5b79f
+App build date: 2021-12-01T17:50:14
+System version: darwin/amd64
+Golang version: go1.15.13
 ```
 
-##### **二进制安装**
+### **二进制安装**
 
-没有现有编译环境的用户，也可以在GitHub开源仓库下载编译好的二进制，地址：`https://github.com/meshplus/pier/releases`, 根据需要的版本进行下载即可。该部署包中包含了 Pier跨链网关的二进制和 pier-client-fabric 和 pier-client-ethereum 的应用链插件的二进制。
+没有现有编译环境的用户，也可以在GitHub开源仓库下载编译好的二进制。
 
-### 修改配置文件
+- [Pier二进制安装](https://github.com/meshplus/pier/releases)：, 根据需要的版本进行下载即可。
+- 网关插件安装：[pier-client-fabric](https://github.com/meshplus/pier-client-fabric/releases) 和 [pier-client-ethereum](https://github.com/meshplus/pier-client-ethereum/releases)  的应用链插件的二进制。
 
-##### 修改pier配置
+注意：网关与网关插件对应大版本号一致即可。如pier v1.6.x对应pier-client-ethereum v1.6.x。
+
+## 修改配置文件
+
+### 修改pier配置
 
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录
 
@@ -79,7 +84,7 @@ tree -L 1 ~/.pier1
 
 ```
 mkdir -p ~/.pier1/plugins
-cp fabric-client-1.4.so ~/.pier1/plugins
+cp fabric-client-1.4 ~/.pier1/plugins
 ```
 
 pier.toml 文件描述链跨链网关启动的必要配置，具体的配置项和说明如下：
@@ -102,6 +107,13 @@ http  = 44544
 pprof = 44555
 ```
 
+- 修改pier配置文件下的api文件信息
+
+```
+# 修改为上一步配置的http的端口号
+http://localhost:<http port>/v1/
+```
+
 - 修改跨链网关信息
 
 ```none
@@ -120,12 +132,14 @@ peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJ
 ```none
 [appchain]
 // 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
-plugin = "fabric-client-1.4.so"
+plugin = "fabric-client-1.4"
 // 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
 config = "fabric"
 ```
 
-##### 修改fabric插件配置
+网关pier适配以太坊插件的配置仿照上述步骤即可。
+
+### 修改fabric插件配置
 
 Fabric插件配置的模板在`pier-client-fabric`项目中，并且已经在GitHub上进行开源，所以直接在GitHub上下载代码即可
 
@@ -217,28 +231,99 @@ cp ./config $HOME/.pier1/fabric
   -----END CERTIFICATE-----
   ```
 
-  ### 启动程序
+### 修改ethereum插件配置
+
+ethereum插件配置的模板在`pier-client-ethereum`项目中，并且已经在GitHub上进行开源，所以直接在GitHub上下载代码即可
+
+```shell
+# 转到pier-client-ethereum项目路径下
+git clone https://github.com/meshplus/pier-client-ethereum.git && cd pier-client-ethereum
+cp ./config $HOME/.pier2/ether
+```
+
+配置目录结构
+
+```shell
+├── account.key
+├── broker.abi
+├── data_swapper.abi
+├── ether.validators
+├── ethereum.toml
+├── password
+├── pier.toml // 仅作参考，无需配置
+├── transfer.abi
+└── validating.wasm
+```
+
+**注意：**插件目录下的pier.toml仅作参考，系统使用的配置文件是位于pier的配置文件目录下的pier.toml。
+
+主要修改账户信息、abi，跨链合约设置。
+
+- **以太坊账户配置**
+
+  启动以太坊网络时，在指定的`datadir`目录下，将`keystore`的账户信息拷贝到account.key中。
 
   ```
-  #以用户目录下的pier1为例
-  pier --repo=~/pier1 start
+  cp <eth_datadir>/keystore/<account> $HOME/.pier2/ether/config/account.key
   ```
 
-  观察日志信息没有报错信息，pier启动成功
+- **修改Plugin配置文件ethereum.toml **
 
-  **说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
+  配置项和说明：
 
-  直连模式下，两边的跨链网关需要相互注册同时部署验证规则
+  | 配置项           | 说明                                  |
+  | ---------------- | ------------------------------------- |
+  | addr             | ethereum 区块链所在的服务器地址和端口 |
+  | name             | 以太坊链名称                          |
+  | contract_address | 部署的broker合约地址                  |
+  | key_path         | 账户信息                              |
+  | password         | 账户密码                              |
+  | min_confirm      | 最低确认区块数                        |
+  | contract_abi     | 部署的业务合约地址及所对应的abi       |
 
-  ~~~shell
-  idA=$(pier --repo ~/pier1 id)
-  idB=$(pier --repo ~/pier2 id)
-  pier --repo ~/pier1 client register --pier_id ${idB} --name fab --type fabric --desc simple --version 1 --validators ~/pier1/fabric/fabric.validators --consensusType raft
-  pier --repo ~/pier2 client register --pier_id ${idA} --name eth --type ethereum --desc simple --version 1 --validators ~/pier2/ethereum/ether.validators --consensusType raft
-  pier --repo ~/pier1 client rule --pier_id ${idB} --path ~/pier1/fabric/rule.wasm
-  pier --repo ~/pier2 client rule --pier_id ${idA} --path ~/pier2/ethereum/rule.wasm
-  ~~~
+  示例配置
 
-  完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作
-
+  ```
+  [ether]
+  addr = "ws://127.0.0.1:8546" // 若部署在服务器上，该为服务器地址
+  name = "appchain2"
+  contract_address = "0xC8C086200f92c9226b42079eCB3137eFc8752801"	// 该链部署的broker合约地址
+  key_path = "account.key"	// 确保提前更改了account.key
+  password = "password"
+  min_confirm = 1
   
+  [contract_abi]
+  0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f="transfer.abi"	// 替换为该链部署的业务合约地址
+  ```
+
+- **修改Plugin配置文件abi信息**
+
+  broker合约和业务合约如果使用的是插件的`example`文件下的合约，则不用更改相关abi内容。如果使用自定义的broker合约或业务合约，请替换为对应的abi文件。
+
+## 启动程序
+
+```
+#以用户目录下的pier1为例
+pier --repo=~/pier1 start
+
+#以用户目录下的pier2为例
+pier --repo=~/pier2 start
+```
+
+观察日志信息没有报错信息，pier启动成功
+
+**说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
+
+直连模式下，两边的跨链网关需要相互注册同时部署验证规则
+
+~~~shell
+idA=$(pier --repo ~/pier1 id)
+idB=$(pier --repo ~/pier2 id)
+pier --repo ~/pier1 client register --pier_id ${idB} --name fab --type fabric --desc simple --version 1 --validators ~/pier1/fabric/fabric.validators --consensusType raft
+pier --repo ~/pier2 client register --pier_id ${idA} --name eth --type ethereum --desc simple --version 1 --validators ~/pier2/ethereum/ether.validators --consensusType raft
+pier --repo ~/pier1 client rule --pier_id ${idB} --path ~/pier1/fabric/rule.wasm
+pier --repo ~/pier2 client rule --pier_id ${idA} --path ~/pier2/ethereum/rule.wasm
+~~~
+
+完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作
+

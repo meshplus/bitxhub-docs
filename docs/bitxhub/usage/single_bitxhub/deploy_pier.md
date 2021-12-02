@@ -183,6 +183,7 @@ validators = [
 应用链插件的配置目录即是pier.toml中的config字段，它的模板在`pier-client-ethereum`或`pier-client-ethereum`项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可。
 
 === "Ethereum"
+
     ```shell
     # 将ethereum插件拷贝到plugins目录下
     cp ether-client ~/.pier/plugins/
@@ -190,7 +191,7 @@ validators = [
     cd pier-client-ethereum
     cp ./config $HOME/.pier/ether
     ```
-    其中重要配置如下：
+​    其中重要配置如下：
     ```shell
     ├── account.key
     ├── broker.abi
@@ -199,17 +200,26 @@ validators = [
     ├── password
     └── validating.wasm
     ```
-    **说明**：account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费），broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi，ether.validators和validating.wasm一般不需要修改。ethereum.toml是需要重点修改的，需要根据应用链实际情况填写ethereum网络地址、broker合约地址及abi，账户的key等，示例如下：
+说明**：
+
+- account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+- broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
+- ether.validators和validating.wasm一般不需要修改。
+- ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
 
     ```
     [ether]
     addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
     name = "ether-kovan"
     ## 此处合约地址需要替换成变量代表的实际字符串
-    contract_address = "$brokerAddr-kovan"
+    contract_address = "$brokerAddr"
     abi_path = "broker.abi"
     key_path = "account.key"
     password = "password"
+    min_confirm = 1
+    
+    [contract_abi]
+    "($transfer) Addr"="transfer.abi"
     ```
 
 === "Fabric"
