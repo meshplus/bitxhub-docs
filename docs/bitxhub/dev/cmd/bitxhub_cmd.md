@@ -186,7 +186,7 @@ time="2021-11-29T18:07:37.723" level=info msg="GRPC service started" module=api 
 time="2021-11-29T18:07:37.723" level=info msg="Gateway service started" module=api port=9091
 ```
 
-#### 参数解释
+**参数解释**
 
 - `passwd`：指定节点私钥密码
 - `config`：指定节点配置路径，一般指bitxhub.toml
@@ -214,7 +214,7 @@ OPTIONS:
 
 ### bitxhub key
 
-#### 功能
+**功能**
 
 该命令`bitxhub key`提供针对bitxhub节点的私钥管理。
 它包含了私钥生成、私钥格式转换、私钥查看、地址查看。
@@ -340,7 +340,7 @@ Golang version: go1.14.15
 
 ### bitxhub cert
 
-#### 功能
+**功能**
 
 该命令`bitxhub cert`提供一系列x509标准的证书工具，服务于中继链节点的准入机制。
 它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。
@@ -499,7 +499,7 @@ bitxhub cert priv pid --path ./server.priv     QmWw4hPtm51jpxzKjyYMe3E7bNei9wdou
 
 
 ### bitxhub client
-#### 功能
+**功能**
 
 该命令`bitxhub client`提供中继链节点的客户端操作命令。
 它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
@@ -525,7 +525,8 @@ COMMANDS:
    governance  governance command                      
 ```
 
-#### 参数解释
+**参数解释**
+
 - `gateway`: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；
 - `cert`: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
 ```
@@ -693,7 +694,7 @@ COMMANDS:
    chain      appchain manage command
 
 ```
-###### **提案投票**
+**提案投票**
 
 -   命令参数
 ```bigquery
@@ -717,7 +718,7 @@ vote successfully!
 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
 
 ```
-###### **提案查询**
+**提案查询**
 
 - id: 提案id
 - type: 提案类型，当前支持应用链管理
@@ -737,7 +738,8 @@ OPTIONS:
    --from value    the address of the account to which the proposal was made
 ```
 
-###### 应用链管理
+**应用链管理**
+
 - status:查询应用链状态
 - freeze:应用链冻结
 - activate:应用链激活
