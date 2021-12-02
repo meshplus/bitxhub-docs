@@ -9,7 +9,7 @@
 ## Broker 合约接口
 
 ```solidity
-  // 提供给业务合约注册。注册且审核通过的业务合约才能调用Broker合约的跨链接口
+  // 提供给业务合约注册。注册且审核通过的业务合约才能调用Broker合约的跨链接口，输入为具体的broker合约地址
   function register(string addr) public
 
   // 提供给管理员审核已经注册的业务合约
@@ -355,6 +355,91 @@ func (s *KVStore) interchainSet(stub shim.ChaincodeStubInterface, args []string)
 
 `interchainSet` 接收参数 `key`，在本合约中设置`Key`值对应的`value`。该接口提供给`Broker`合约回写跨链获取数据的时候进行调用。
 
+## 使用示例
+
+**跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
+
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](https://meshplus.github.io/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/)。
+
+2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
+3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。
+4. `transfer`业务合约调用`setBalance`方法初始化账户。
+5. `transfer`业务合约调用`transfer`方法发起跨链交易。
+
+```
+1.1 appchainA deploy ==> brokerA addr：0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8  
+					 	 businessA addr: 0x5bFe03Dbd09817d4957693f672cc31A133Bb6084					 						 
+1.2 appchainB deploy ==> brokerB addr：0xC8C086200f92c9226b42079eCB3137eFc8752801  
+					 	 businessB addr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
+
+2.1 brokerA register ==> addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084 //部署的业务合约地址
+2.2 brokerB register ==> addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f //部署的业务合约地址
+
+3.1 brokerA audit ==> addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084  
+					  status: 1
+3.2 brokeB audit ==> addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f  
+					 status: 1	
+														
+4.1 transferA setBalance ==> id: Alice 
+							 amount: 100
+4.2 transfeB setBalance ==> id: Bob 
+							amount: 0
+													 
+    // destChainID为B链的PierID，可在终端通过pier --repo <appchainB_config_path> id获取	
+    // destAddr为B链的业务合约地址
+5 transferA transfer ==> destChainID: 0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1 
+						destAddr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
+						sender: Alice
+						receiver: Bob
+						amount: 10
+```
+
+观察跨链网关与中继链日志
+
+```
+# 网关pierA同步以太坊区块头并处理跨链交易，发送至中继链
+INFO[21:54:30.559] Persist block header                          height=18 module=bxh_lite
+WARN[21:54:30.560] query header: header at 18 not found          module=syncer
+INFO[21:54:32.568] Handle interchain tx wrapper                  count=0 height=18 index=0 module=syncer
+WARN[21:54:38.401] query header: header at 19 not found          module=syncer
+INFO[21:54:38.401] Persist block header                          height=19 module=bxh_lite
+INFO[21:54:40.404] Handle interchain tx wrapper                  count=1 height=19 index=0 module=syncer
+INFO[21:54:40.409] Apply tx                                      from=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 index=2 module=executor status=true type=RECEIPT_SUCCESS
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.412+0800 [INFO ] client: submit ibtp: id=0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-2 contract=0x5bFe03Dbd09817d4957693f672cc31A133Bb6084 func=
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.413+0800 [INFO ] client: arg: 0=
+2021-12-01T21:54:40.413+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:40.413+0800 [INFO ] client: InvokeIndexUpdate: ibtp=0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-2
+
+# 中继链将收到的跨链交易上链，并路由到网关PierB
+time="2021-12-01T21:54:30.420" level=info msg="======== Replica 1 call execute, height=18" module=order
+time="2021-12-01T21:54:30.430" level=info msg="Generated block" count=1 height=18 module=app
+time="2021-12-01T21:54:30.554" level=info msg="Persisted block" count=1 elapse=8.963884ms hash=0x4474C7a5db7049Da22cEB82324988f572e57Ba88926D4D8549110c433bAD01de height=18 module=executor
+
+# 网关PierB同步区块头并处理跨链交易，将回执类型跨链交易返回给中继链
+INFO[21:54:30.565] Persist block header                          height=18 module=bxh_lite
+WARN[21:54:30.567] query header: header at 18 not found          module=syncer
+INFO[21:54:32.568] Handle interchain tx wrapper                  count=1 height=18 index=0 module=syncer
+INFO[21:54:32.568] Apply tx                                      from=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 index=2 module=executor status=true type=INTERCHAIN
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.591+0800 [INFO ] client: submit ibtp: id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 contract=0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f func=interchainCharge
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 0=A
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 1=B
+2021-12-01T21:54:32.594+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:32.593+0800 [INFO ] client: arg: 2=10
+2021-12-01T21:54:37.810+0800 [DEBUG] plugin.sh: 2021-12-01T21:54:37.810+0800 [INFO ] client: log: index=0 data=0x0000000000000000000000000000000000000000000000000000000000000001
+INFO[21:54:37.813] Handle ibtp success                           id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 module=exchanger type=INTERCHAIN
+INFO[21:54:38.381] Persist block header                          height=19 module=bxh_lite
+WARN[21:54:38.381] query header: header at 19 not found          module=syncer
+INFO[21:54:40.384] Handle interchain tx wrapper                  count=0 height=19 index=0 module=syncer
+
+# 中继链将收到的回执类型的跨链交易上链，返回至网关PierA
+time="2021-12-01T21:54:38.311" level=info msg="======== Replica 1 call execute, height=19" module=order
+time="2021-12-01T21:54:38.312" level=info msg="Generated block" count=1 height=19 module=app
+time="2021-12-01T21:54:38.399" level=info msg="Persisted block" count=1 elapse=6.881ms hash=0xf676406e6f88FC0cF27b043e926e1e4a528E6Ee5ed62146e86D18F3ABA68D260 height=19 module=executor
+
+# 网关PierA收到跨链交易回执，返回给应用链A
+INFO[21:54:45.568] Execute callback                              fields.msg= index=2 module=executor status=true type=RECEIPT_SUCCESS
+INFO[21:54:45.569] Handle ibtp receipt success                   id=0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-2 module=exchanger type=RECEIPT_SUCCESS
+
+# 跨链交易完成，在应用链A上查询Alice的余额从100变更为90；在应用链B上查询Bob的余额从0变更为10
+```
 
 
 ## 总结

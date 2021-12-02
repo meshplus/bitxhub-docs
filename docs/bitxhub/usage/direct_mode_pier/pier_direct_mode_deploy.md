@@ -113,7 +113,7 @@ type = "direct" # relay or direct
 peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJzQTX", "/ip4/127.0.0.1/tcp/3004/p2p/QmWLrVrbJxkZxBZsr2UmNEz7eLgCExW6KTax89wDRMXaWw"]
 ```
 
-**注意：上面peers字段需要配置两方的pier的p2p地址，其中后面那一段是根据pier私钥生成的id，可以使用pier p2p id 命令来获取，这也是直连模式区别于中继模式的关键配置。**
+**注意：上面peers字段需要配置两方的pier的p2p地址，其中后面那一段是根据pier私钥生成的id，可以使用`pier p2p id `命令来获取，这也是直连模式区别于中继模式的关键配置。**
 
 - 修改应用链信息
 

@@ -98,7 +98,7 @@ nav:
             - 中继链部署: bitxhub/usage/single_bitxhub/deploy_bitxhub.md
             - 跨链网关部署: bitxhub/usage/single_bitxhub/deploy_pier.md
           - 跨链网关直连模式部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
-          - 系统验证: bitxhub/usage/status_verification.md
+          - 系统验证与交易流程体验: bitxhub/usage/status_verification.md
       - 产品功能:
         - 应用链管理: bitxhub/function/appchain.md
         - 证书管理: bitxhub/function/cert_manage.md
@@ -107,14 +107,8 @@ nav:
           - 多语言SDK: bitxhub/dev/multiSDK.md
           - api: bitxhub/dev/api.md
           - 命令行说明:
-            - BitXHub:
-              - BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
-              - BitXHub start: bitxhub/dev/cmd/bitxhub_start.md
-              - BitXHub key: bitxhub/dev/cmd/bitxhub_key.md
-              - BitXHub version: bitxhub/dev/cmd/bitxhub_version.md
-              - BitXHub cert: bitxhub/dev/cmd/bitxhub_cert.md
-              - BitXHub client: bitxhub/dev/cmd/bitxhub_client.md
-            - Pier: bitxhub/dev/cmd/pier_cmd.md
+            - 中继链BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
+            - 跨链网关Pier: bitxhub/dev/cmd/pier_cmd.md
           - 跨链合约开发: bitxhub/dev/cross_contract.md
           - 应用链插件编写: bitxhub/dev/plugin.md
           - 验证规则编写: bitxhub/dev/rule.md
@@ -122,13 +116,13 @@ nav:
       - 设计文档:
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
           - 跨链事务方案: bitxhub/design/interchain_transaction.md
-          - 跨链网关设计方案: bitxhub/design/pier.md
+          - 跨链网关设计方案: bitxhub/design/pier_cmd.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
       - 运维:
         - 查看日志: bitxhub/operation/node_log_view.md
         - 节点状态检测: bitxhub/operation/node_status_check.md
-        - 异常问题处: bitxhub/operation/exception_problem_handling.md
+        - 异常问题处理: bitxhub/operation/exception_problem_handling.md
       - 版本发布记录:
           - BitXHub v1.6.0: bitxhub/changelog/bitxhub_v1.6.0.md
           - BitXHub v1.5.0: bitxhub/changelog/bitxhub_v1.5.0.md
