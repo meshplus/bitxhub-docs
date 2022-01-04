@@ -2,7 +2,7 @@
 
 `pier`命令有多组子命令，其作用是与应用链或中继链交互，`pier`命令描述如下：
 
-```
+```shell
 NAME:
    Pier - Manipulate the crosschain node
 
@@ -32,12 +32,12 @@ GLOBAL OPTIONS:
 
 ```
 
-## 参数解释
+**参数解释**
 
 - `--repo`：可选参数，指定pier节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
 - `--tls`：可选参数，用于pier节点与bitxhub进行tls加密传输。如果不指定，默认为false。
 
-```
+```shell
  GLOBAL OPTIONS:
    --repo value   Pier repository path
    --tls          enable tls between pier and bitxhub or not
@@ -51,7 +51,7 @@ GLOBAL OPTIONS:
 
 `pier appchain`命令用于中继模式下，跨链网关Pier向中继链bitXHub实现应用链相关信息的注册、更新、变更等操作。
 
-#### 用法
+**用法**
 
 ```shell
 NAME:
@@ -73,7 +73,7 @@ OPTIONS:
 
 ```
 
-#### 具体描述
+**具体描述**
 
 `pier appchain`具体描述与使用示例参考[中继模式管理](http://localhost:8000/bitxhub/function/relay_manager/)。
 
@@ -83,7 +83,7 @@ OPTIONS:
 
 `pier client`命令用于直连模式的应用链管理。
 
-#### 用法
+**用法**
 
 ```shell
 NAME:
@@ -104,7 +104,7 @@ OPTIONS:
 
 ```
 
-#### 具体描述
+**具体描述**
 
 `pier appchain`具体描述与使用示例参考[直连模式管理](http://localhost:8000/bitxhub/function/direct_manager/)。
 
@@ -112,7 +112,7 @@ OPTIONS:
 
 `pier id`命令用于获取所绑定的应用链地址。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -122,9 +122,9 @@ USAGE:
    pier id [arguments...]
 ```
 
-#### 具体描述
+**具体描述**
 
-样例：
+**样例：**
 
 ```shell
 $ pier --repo $HOME/.pier1 id 
@@ -138,7 +138,7 @@ $ pier --repo $HOME/.pier1 id
 
 `pier init`命令用于初始化pier相关配置。如生成公私钥、ca证书等。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -148,7 +148,7 @@ USAGE:
    pier init [arguments...]
 ```
 
-#### 具体描述
+**具体描述**
 
 **样例：**
 
@@ -169,7 +169,7 @@ $ pier --repo $HOME/.pier1 init
 
 `pier interchain`命令用于查询应用链的跨链交易信息。
 
-#### 用法
+用法
 
 ```
 NAME:
@@ -186,7 +186,7 @@ OPTIONS:
    --help, -h   show help
 ```
 
-#### 具体描述
+**具体描述**
 
 **参数解释**
 
@@ -219,7 +219,7 @@ tx:<from:<RawAddress:[255 129 153 250 228 140 128 139 69 102 125 160 204 170 238
 
 `pier p2p`命令用于直连模式下pier网络通信的pid。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -232,7 +232,7 @@ COMMANDS:
    id  get pier unique id in p2p network
 ```
 
-#### 具体描述
+**具体描述**
 
 **样例：**
 
@@ -250,7 +250,7 @@ QmNpQvh8Lm7gwt3sDqwJ1pgNn6taJLqdgtRVyZWhsD5bND
 
 `pier rule`命令用于中继模式下pier向中继链部署应用链验证规则。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -263,7 +263,7 @@ COMMANDS:
    deploy  Deploy validation rule
 ```
 
-#### 具体描述
+**具体描述**
 
 `pier rule`具体描述与使用示例参考[直连模式管理](http://localhost:8000/bitxhub/function/direct_manager/)的部署验证规则模块。
 
@@ -273,7 +273,7 @@ COMMANDS:
 
 `pier start`命令用于启动pier。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -283,7 +283,7 @@ USAGE:
    pier start [arguments...]
 ```
 
-#### 具体描述
+**具体描述**
 
 **样例**：
 
@@ -314,7 +314,7 @@ Pprof on localhost:44555
 
 `pier version`命令用于查询版本号。
 
-#### 用法
+**用法**
 
 ```
 NAME:
@@ -324,7 +324,7 @@ USAGE:
    pier version [arguments...]
 ```
 
-#### 具体描述
+**具体描述**
 
 **样例**：
 

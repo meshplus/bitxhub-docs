@@ -18,7 +18,7 @@ BitXHub 于 2020 年 3 月正式开源，希望在开源社区共建下，针对
 
 **应用链（App-chain）**：负责承载不同应用场景下的具体应用的业务合约逻辑的区块链；
 
-为了适应不同的应用场景，BitXHub 的设计采用[灵活可组合架构](https://meshplus.github.io/bitxhub/bitxhub/architecture/flexible_aech/)，主要有三种架构：适配应用规模较大的**中继链架构**，处理效率更高效便捷的**链对链架构**以及区分层级关系的**主侧链架构**。
+为了适应不同的应用场景，BitXHub 的设计采用[灵活可组合架构](https://meshplus.github.io/bitxhub/bitxhub/architecture/flexible_aech/)，主要有三种架构：适配应用规模较大的中继链架构，处理效率更高效便捷的链对链架构以及区分层级关系的主侧链架构。
 
 ## <a name="ibtpAnchor">跨链协议</a>
 
