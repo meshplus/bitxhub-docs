@@ -854,7 +854,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/cmd/pier.md" class="md-nav__link">
+      <a href="../../dev/cmd/pier_cmd/" class="md-nav__link">
         跨链网关Pier
       </a>
     </li>
@@ -1167,8 +1167,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43" class="md-nav__link">
-    4.3 新增共识算法
+  <a href="#43-plugin" class="md-nav__link">
+    4.3 编译Plugin
   </a>
   
 </li>
@@ -1890,8 +1890,8 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43" class="md-nav__link">
-    4.3 新增共识算法
+  <a href="#43-plugin" class="md-nav__link">
+    4.3 编译Plugin
   </a>
   
 </li>
@@ -1961,24 +1961,17 @@
     <span class="c1">//获取账户最新的nonce</span>
     <span class="nx">GetPendingNonceByAccount</span><span class="p">(</span><span class="nx">account</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">uint64</span>
 
-    <span class="c1">//根据哈希获取指定的交易</span>
-    <span class="nx">GetPendingTxByHash</span><span class="p">(</span><span class="nx">hash</span> <span class="o">*</span><span class="nx">types</span><span class="p">.</span><span class="nx">Hash</span><span class="p">)</span> <span class="nx">pb</span><span class="p">.</span><span class="nx">Transaction</span>
-
     <span class="c1">//从共识删除指定的节点</span>
     <span class="nx">DelNode</span><span class="p">(</span><span class="nx">delID</span> <span class="kt">uint64</span><span class="p">)</span> <span class="kt">error</span>
-
-    <span class="c1">//订阅交易事件的通道</span>
-    <span class="nx">SubscribeTxEvent</span><span class="p">(</span><span class="nx">events</span> <span class="kd">chan</span><span class="o">&lt;-</span> <span class="nx">pb</span><span class="p">.</span><span class="nx">Transactions</span><span class="p">)</span> <span class="nx">event</span><span class="p">.</span><span class="nx">Subscription</span>
 <span class="p">}</span>
 </code></pre></div>
 <h3 id="22-config">2.2 Config参数</h3>
 <p>我们规定了下面一些参数可以从BitXHub传递给共识服务。</p>
 <div class="highlight"><pre><span></span><code><span class="kd">type</span> <span class="nx">Config</span> <span class="kd">struct</span> <span class="p">{</span>
    <span class="nx">Id</span>                 <span class="kt">uint64</span> <span class="c1">//节点ID</span>
-   <span class="nx">IsNew</span>              <span class="kt">bool</span> <span class="c1">//是否是新加入的节点</span>
    <span class="nx">RepoRoot</span>           <span class="kt">string</span> <span class="c1">//根路径</span>
    <span class="nx">StoragePath</span>        <span class="kt">string</span> <span class="c1">//存储文件路径</span>
-   <span class="nx">OrderType</span>          <span class="kt">string</span> <span class="c1">// 共识类型</span>
+   <span class="nx">PluginPath</span>         <span class="kt">string</span> <span class="c1">//插件文件路径</span>
    <span class="nx">PeerMgr</span>            <span class="nx">peermgr</span><span class="p">.</span><span class="nx">PeerManager</span> <span class="c1">//网络模块组件</span>
    <span class="nx">PrivKey</span>            <span class="nx">crypto</span><span class="p">.</span><span class="nx">PrivateKey</span> <span class="c1">//节点私钥</span>
    <span class="nx">Logger</span>             <span class="nx">logrus</span><span class="p">.</span><span class="nx">FieldLogger</span> <span class="c1">//日志组件</span>
@@ -2249,33 +2242,59 @@ batch_timeout = &quot;0.3s&quot;  # Block packaging time period.
         tx_slice_timeout    = &quot;0.1s&quot;  # Node broadcasts transactions if there are cached transactions, although set_size isn&#39;t reached yet
 </code></pre></div>
 <h3 id="42">4.2 项目结构</h3>
-<p>在<code>bitxhub/pkg/order</code>目录下开发对应的共识算法，目录结构与solo、raft模式类似</p>
+<p>该项目为BitXHub提供共识算法的插件化，具体项目结构如下：</p>
 <div class="highlight"><pre><span></span><code>./
-├── config.go
-├── node.go
-├── node_test.go
+├── Makefile //编译文件
+├── README.md
+├── build
+│ └── rbft.so //编译后的共识算法二进制插件
+├── go.mod
+├── go.sum
+├── order.toml //共识配置文件
+└── rbft //共识算法代码
+    ├── config.go
+    ├── node.go
+    └── stack.go
 </code></pre></div>
-<h3 id="43">4.3 新增共识算法</h3>
-<p><code>bitxhub-core</code>项目下定义了共识类型的注册方法。</p>
-<div class="highlight"><pre><span></span><code><span class="c1">// 注册对应的共识算法，在共识算法init中指定</span>
-<span class="kd">func</span> <span class="nx">RegisterRegistryConstructor</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">string</span><span class="p">,</span> <span class="nx">f</span> <span class="nx">RegistryConstructor</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">RegisterConstructorM</span><span class="p">[</span><span class="nx">typ</span><span class="p">]</span> <span class="p">=</span> <span class="nx">f</span>
-<span class="p">}</span>
-
-<span class="c1">// 根据bitxhub.toml文件的共识类型，加载对应的共识算法</span>
-<span class="kd">func</span> <span class="nx">GetRegistryConstructor</span><span class="p">(</span><span class="nx">typ</span> <span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="nx">RegistryConstructor</span><span class="p">,</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">registry</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="nx">RegisterConstructorM</span><span class="p">[</span><span class="nx">typ</span><span class="p">]</span>
-    <span class="k">if</span> <span class="p">!</span><span class="nx">ok</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;type %s registry is unsupported&quot;</span><span class="p">,</span> <span class="nx">typ</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">registry</span><span class="p">,</span> <span class="kc">nil</span>
-<span class="p">}</span>
+<p>其中注意在<code>go.mod</code>中需要引用BitXHub项目源码，需要让该插件项目与BitXHub在同一目录下（建议在$GOPATH路径下）。</p>
+<div class="highlight"><pre><span></span><code>replace github.com/meshplus/bitxhub =&gt; ../bitxhub/
 </code></pre></div>
-<p>在构造节点共识算法时，只需要在init方法中指定家在的具体newNode构造器即可，如solo模式下：
-<div class="highlight"><pre><span></span><code><span class="kd">func</span> <span class="nx">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">agency</span><span class="p">.</span><span class="nx">RegisterOrderConstructor</span><span class="p">(</span><span class="s">&quot;solo&quot;</span><span class="p">,</span> <span class="nx">NewNode</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div></p>
+<h3 id="43-plugin">4.3 编译Plugin</h3>
+<p>我们采用GO语言提供的插件模式，实现<code>BitXHub</code>对于Plugin的动态加载。</p>
+<p>编写<code>Makefile</code>编译文件：</p>
+<div class="highlight"><pre><span></span><code>SHELL :<span class="o">=</span> /bin/bash
+<span class="nv">CURRENT_PATH</span> <span class="o">=</span> <span class="k">$(</span>shell <span class="nb">pwd</span><span class="k">)</span>
+<span class="nv">GO</span>  <span class="o">=</span> <span class="nv">GO111MODULE</span><span class="o">=</span>on go
+plugin:
+   @mkdir -p build
+   <span class="k">$(</span>GO<span class="k">)</span> build --buildmode<span class="o">=</span>plugin -o build/rbft.so rbft/*.go
+</code></pre></div>
+<p>运行下面的命令，能够得到 <code>rbft.so</code>文件。</p>
+<div class="highlight"><pre><span></span><code>$ make plugin
+</code></pre></div>
+<p>修改节点的<code>bitxhub.toml</code></p>
+<div class="highlight"><pre><span></span><code>[order]
+  plugin = &quot;plugins/rbft.so&quot;
+</code></pre></div>
+<p>将你编写的动态链接文件和<code>order.toml</code>文件，分别放到节点的plugins文件夹和配置文件下。</p>
+<div class="highlight"><pre><span></span><code>./
+├── api
+├── bitxhub.toml
+├── certs
+│ ├── agency.cert
+│ ├── ca.cert
+│ ├── node.cert
+│ └── node.priv
+├── key.json
+├── logs
+├── network.toml
+├── order.toml //共识算法配置文件
+├── plugins
+│ ├── rbft.so //共识算法插件
+├── start.sh
+└── storage
+</code></pre></div>
+<p>结合我们提供的<code>BitXHub</code>中继链，就能接入到跨链平台来。</p>
                 
               
               
