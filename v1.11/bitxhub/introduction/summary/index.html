@@ -980,7 +980,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev/cmd/pier_cmd/" class="md-nav__link">
+      <a href="../../dev/cmd/pier.md" class="md-nav__link">
         跨链网关Pier
       </a>
     </li>
@@ -1750,7 +1750,7 @@
 <p><strong>中继链（Relay-chain）</strong>：用于应用链管理以及跨链交易的可信验证与可靠路由，是一种实现 IBTP 协议的开放许可链，确保跨链交易的事务一致性；</p>
 <p><strong>跨链网关（Pier）</strong>：由相应的应用链维护的服务程序，担任着区块链间收集和传播交易的角色，既可以支持应用链和中继链之间，也可以支持中继链与中继链之间的交互；</p>
 <p><strong>应用链（App-chain）</strong>：负责承载不同应用场景下的具体应用的业务合约逻辑的区块链；</p>
-<p>为了适应不同的应用场景，BitXHub 的设计采用<a href="https://meshplus.github.io/bitxhub/bitxhub/architecture/flexible_aech/">灵活可组合架构</a>，主要有三种架构：适配应用规模较大的**中继链架构**，处理效率更高效便捷的**链对链架构**以及区分层级关系的**主侧链架构**。</p>
+<p>为了适应不同的应用场景，BitXHub 的设计采用<a href="https://meshplus.github.io/bitxhub/bitxhub/architecture/flexible_aech/">灵活可组合架构</a>，主要有三种架构：适配应用规模较大的中继链架构，处理效率更高效便捷的链对链架构以及区分层级关系的主侧链架构。</p>
 <h2 id="_4"><a name="ibtpAnchor">跨链协议</a></h2>
 <p>不同区块链由于其底层平台的加密算法、区块结构等不同，不同区块链之间的消息不能直接通信。为了能够支持异构区块链之间的跨链交易路由和可信验证，BitXHub 设计了通用的跨链传输协议 <strong>IBTP</strong>（InterBlockchain Transfer Protocol）,允许异构资产、数据及服务进行跨链调用。
 该协议内容指定了相关跨链事件的来源链、目的链、跨链交易方法以及验证策略、签名等诸多信息，支持应用链与中继链、应用链与应用链间的交互操作，其结构如表 1-4 所示。应用链的跨链消息通过跨链网关转换成 IBTP 结构提交至中继链，中继链通过 IBTP 内容进行跨链交易的合法性验证及可靠路由。基于 IBTP 协议跨链网关可将不同应用链抛出的事件数据格式转换为统一结构。</p>
