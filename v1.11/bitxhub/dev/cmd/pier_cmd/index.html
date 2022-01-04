@@ -14,7 +14,7 @@
     
     
       
-        <title>Pier命令行 - Bitxhub Document</title>
+        <title>跨链网关Pier - Bitxhub Document</title>
       
     
     
@@ -98,7 +98,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Pier命令行
+              跨链网关Pier
             
           </span>
         </div>
@@ -172,6 +172,8 @@
         
   
   
+    
+  
 
 
   
@@ -183,7 +185,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../../introduction/summary/" class="md-tabs__link">
+      <a href="../../../introduction/summary/" class="md-tabs__link md-tabs__link--active">
         Home
       </a>
     </li>
@@ -306,12 +308,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" checked>
       
       
       
@@ -782,12 +786,14 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6" type="checkbox" id="__nav_1_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6" type="checkbox" id="__nav_1_6" checked>
       
       
       
@@ -808,12 +814,14 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" checked>
       
       
       
@@ -848,11 +856,122 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../pier.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          跨链网关Pier
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         跨链网关Pier
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    子命令描述
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pier-appchain" class="md-nav__link">
+    pier appchain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-client" class="md-nav__link">
+    pier client
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-id" class="md-nav__link">
+    pier id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-init" class="md-nav__link">
+    pier init
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-interchain" class="md-nav__link">
+    pier interchain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-p2p" class="md-nav__link">
+    pier p2p
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-rule" class="md-nav__link">
+    pier rule
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-start" class="md-nav__link">
+    pier start
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-version" class="md-nav__link">
+    pier version
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -988,7 +1107,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../../design/pier_cmd.md" class="md-nav__link">
+      <a href="../../../design/pier/" class="md-nav__link">
         跨链网关设计方案
       </a>
     </li>
@@ -1856,6 +1975,41 @@ Golang version: go1.15.13
       
         
 <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../bitxhub_cmd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 中继链BitXHub" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              中继链BitXHub
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../cross_contract/" class="md-footer__link md-footer__link--next" aria-label="Next: 跨链合约开发" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              跨链合约开发
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
