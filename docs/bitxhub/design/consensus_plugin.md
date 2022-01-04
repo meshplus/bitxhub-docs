@@ -43,8 +43,14 @@ type Order interface {
     //获取账户最新的nonce
     GetPendingNonceByAccount(account string) uint64
 
+	//根据哈希获取指定的交易
+    GetPendingTxByHash(hash *types.Hash) pb.Transaction
+
     //从共识删除指定的节点
     DelNode(delID uint64) error
+    
+	//订阅交易事件的通道
+	SubscribeTxEvent(events chan<- pb.Transactions) event.Subscription
 }
 ```
 
@@ -55,9 +61,10 @@ type Order interface {
 ```go
 type Config struct {
    Id                 uint64 //节点ID
+   IsNew              bool //是否是新加入的节点
    RepoRoot           string //根路径
    StoragePath        string //存储文件路径
-   PluginPath         string //插件文件路径
+   OrderType          string // 共识类型
    PeerMgr            peermgr.PeerManager //网络模块组件
    PrivKey            crypto.PrivateKey //节点私钥
    Logger             logrus.FieldLogger //日志组件
@@ -401,76 +408,38 @@ batch_timeout = "0.3s"  # Block packaging time period.
 
 ### 4.2 项目结构
 
-该项目为BitXHub提供共识算法的插件化，具体项目结构如下：
+在`bitxhub/pkg/order`目录下开发对应的共识算法，目录结构与solo、raft模式类似
 
 ```text
 ./
-├── Makefile //编译文件
-├── README.md
-├── build
-│ └── rbft.so //编译后的共识算法二进制插件
-├── go.mod
-├── go.sum
-├── order.toml //共识配置文件
-└── rbft //共识算法代码
-    ├── config.go
-    ├── node.go
-    └── stack.go
+├── config.go
+├── node.go
+├── node_test.go
+
 ```
 
-其中注意在`go.mod`中需要引用BitXHub项目源码，需要让该插件项目与BitXHub在同一目录下（建议在$GOPATH路径下）。
+### 4.3 新增共识算法
+`bitxhub-core`项目下定义了共识类型的注册方法。
 
-```none
-replace github.com/meshplus/bitxhub => ../bitxhub/
+```go
+// 注册对应的共识算法，在共识算法init中指定
+func RegisterRegistryConstructor(typ string, f RegistryConstructor) {
+    RegisterConstructorM[typ] = f
+}
+
+// 根据bitxhub.toml文件的共识类型，加载对应的共识算法
+func GetRegistryConstructor(typ string) (RegistryConstructor, error) {
+    registry, ok := RegisterConstructorM[typ]
+    if !ok {
+        return nil, fmt.Errorf("type %s registry is unsupported", typ)
+    }
+    return registry, nil
+}
 ```
 
-### 4.3 编译Plugin
-
-我们采用GO语言提供的插件模式，实现`BitXHub`对于Plugin的动态加载。
-
-编写`Makefile`编译文件：
-
-```shell
-SHELL := /bin/bash
-CURRENT_PATH = $(shell pwd)
-GO  = GO111MODULE=on go
-plugin:
-   @mkdir -p build
-   $(GO) build --buildmode=plugin -o build/rbft.so rbft/*.go
+在构造节点共识算法时，只需要在init方法中指定家在的具体newNode构造器即可，如solo模式下：
+```go
+func init() {
+    agency.RegisterOrderConstructor("solo", NewNode)
+}
 ```
-
-运行下面的命令，能够得到 `rbft.so`文件。
-
-```shell
-$ make plugin
-```
-
-修改节点的`bitxhub.toml`
-
-```none
-[order]
-  plugin = "plugins/rbft.so"
-```
-
-将你编写的动态链接文件和`order.toml`文件，分别放到节点的plugins文件夹和配置文件下。
-
-```text
-./
-├── api
-├── bitxhub.toml
-├── certs
-│ ├── agency.cert
-│ ├── ca.cert
-│ ├── node.cert
-│ └── node.priv
-├── key.json
-├── logs
-├── network.toml
-├── order.toml //共识算法配置文件
-├── plugins
-│ ├── rbft.so //共识算法插件
-├── start.sh
-└── storage
-```
-
-结合我们提供的`BitXHub`中继链，就能接入到跨链平台来。

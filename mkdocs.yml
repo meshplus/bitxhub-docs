@@ -108,7 +108,7 @@ nav:
       - 开发手册:
           - 命令行说明:
             - 中继链BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
-            - 跨链网关Pier: bitxhub/dev/cmd/pier_cmd.md
+            - 跨链网关Pier: bitxhub/dev/cmd/pier.md
           - 跨链合约开发: bitxhub/dev/cross_contract.md
           - 应用链插件编写: bitxhub/dev/plugin.md
           - 验证规则编写: bitxhub/dev/rule.md
