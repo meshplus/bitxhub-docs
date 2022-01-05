@@ -24,7 +24,7 @@ COMMANDS:
 ```
 
 ## 参数解释
-- `--repo`: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
+- `repo`: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
 ```
 GLOBAL OPTIONS:
    --repo value   BitXHub storage repo path
@@ -36,7 +36,7 @@ GLOBAL OPTIONS:
 ### bitxhub config
 显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
 
-```bigquery
+```shell
 $ bitxhub config 
 
 {
@@ -149,7 +149,7 @@ $ bitxhub config
 
 初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径
 
-```bigquery
+```shell
 bitxhub init   
 
 initializing bitxhub at /Users/xxx/.bitxhub
@@ -158,8 +158,6 @@ reinitializing would overwrite your configuration, Y/N?
 y
 
 ```
-
-### 
 
 ### bitxhub start
 
@@ -220,7 +218,7 @@ OPTIONS:
 它包含了私钥生成、私钥格式转换、私钥查看、地址查看。
 子命令信息如下:
 
-```bigquery
+```shell
 NAME:
 BitXHub key - Create and show key information
 
@@ -239,10 +237,10 @@ address  Show address from Secp256k1 private key
 ##### bitxhub key gen
 
 - 生成节点私钥
-- target: 指定生成路径
-- passwd: 指定私钥密码
+- `target`: 指定生成路径
+- `passwd`: 指定私钥密码
 
-```bigquery
+```shell
 NAME:
    BitXHub key gen - Create new Secp256k1 private key in specified directory
 
@@ -257,7 +255,7 @@ OPTIONS:
 
 样例：
 
-```bigquery
+```shell
 bitxhub key gen --target ~/.bitxhub
 
 key.json key is generated under directory /Users/xxx/.bitxhub
@@ -266,11 +264,11 @@ key.json key is generated under directory /Users/xxx/.bitxhub
 ##### bitxhub key convert
 
 - 私钥格式转换
-- save：是否同时保存目标私钥
-- priv: Secp256k1私钥地址，在bitxhub中一般指node.priv
-- passwd: Secp256k1私钥密码
+- `save`：是否同时保存目标私钥
+- `priv`: Secp256k1私钥地址，在bitxhub中一般指node.priv
+- `passwd`: Secp256k1私钥密码
 
-```bigquery
+```shell
 NAME:
    BitXHub key convert - Convert the Secp256k1 private key to BitXHub key format
 
@@ -287,7 +285,7 @@ OPTIONS:
 
 样例：
 
-```bigquery
+```shell
 bitxhub key show     
 
 {
@@ -303,7 +301,7 @@ bitxhub key show
 
 样例：
 
-```bigquery
+```shell
 bitxhub key address --path ./key.json --passwd 123
 
 0x3Db84D019fCd3A845e2fB3A21B56812Ffd933f19
@@ -371,7 +369,7 @@ COMMANDS:
 
 生成根CA证书
 
-```bigquery
+```shell
 bitxhub cert ca -h
 NAME:
    BitXHub cert ca - Generate ca cert and private key
@@ -385,11 +383,11 @@ USAGE:
 ##### bitxhub cert csr
 
 - `生成CSR描述`
-- key: 指定私钥路径
-- org: 指定被签发人组织名称
-- target: 指定目标CSR路径
+- `key`: 指定私钥路径
+- `org`: 指定被签发人组织名称
+- `target`: 指定目标CSR路径
 
-```bigquery
+```shell
 NAME:
    BitXHub cert csr - Generate csr file
 
@@ -406,13 +404,13 @@ OPTIONS:
 ##### bitxhub cert issue
 
 - `证书签发`
-- csr: 指定CSR描述文件路径
-- is_ca: 指定签发人是否为CA证书
-- key: 指定当前签发人私钥路径
-- cert: 指定当前签发人证书路径
-- target: 指定生成的证书路径
+- `csr`: 指定CSR描述文件路径
+- `is_ca`: 指定签发人是否为CA证书
+- `key`: 指定当前签发人私钥路径
+- `cert`: 指定当前签发人证书路径
+- `target`: 指定生成的证书路径
 
-```bigquery
+```shell
 NAME:
    BitXHub cert issue - Issue certification by ca
 
@@ -431,9 +429,9 @@ OPTIONS:
 ##### bitxhub cert parse
 
 - `证书解析`
-- path: 指定证书路径
+- `path`: 指定证书路径
 
-```bigquery
+```shell
 NAME:
    BitXHub cert parse - parse certification
 
@@ -446,7 +444,7 @@ OPTIONS:
 
 ##### bitxhub cert priv
 
-```bigquery
+```shell
 NAME:
    BitXHub cert priv - Generate and show private key for certificate
 
@@ -459,11 +457,9 @@ COMMANDS:
 
 ```
 
-###### 子命令
+###### **私钥生成**
 
-**私钥生成**
-
-```bigquery
+```shell
 NAME:
    BitXHub cert priv gen - Create new private key
 
@@ -477,21 +473,21 @@ OPTIONS:
 
 样例：
 
-```bigquery
+```shell
 bitxhub cert priv gen --name server --target ./
 
 server.priv key is generated under directory /Users/xxx/GolandProjectsTest/bitxhub-docs
 ```
 
-**获取libp2p节点pid**
+###### **获取libp2p节点pid**
 
-```bigquery
+```shell
 NAME:   BitXHub cert priv pid - Show pid from private keyUSAGE:   BitXHub cert priv pid [command options] [arguments...]OPTIONS:   --path value  Specific private key path
 ```
 
 样例：
 
-```bigquery
+```shell
 bitxhub cert priv pid --path ./server.priv     QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
 ```
 
@@ -537,7 +533,7 @@ OPTIONS:
 #### 子命令
 ##### bitxhub client account
 账户信息查询
-```bigquery
+```shell
 bitxhub   client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
 
 {
@@ -550,7 +546,7 @@ bitxhub   client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34
 ```
 ##### bitxhub client chain
 中继链信息查询
-```bigquery
+```shell
 NAME:
    BitXHub client chain - Query bitxhub chain info
 
@@ -565,7 +561,7 @@ OPTIONS:
    --help, -h  show help
 ```
 - `normal`: 已处在共识状态
-```bigquery
+```shell
 bitxhub   client chain meta
 {"height":"1","block_hash":"0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068"}
 
@@ -575,14 +571,14 @@ normal
 ##### bitxhub client block
 区块信息查询
 - 可指定区块号或区块Hash
-```bigquery
+```shell
 bitxhub   client block 1
 {"block_header":{"number":"1","state_root":"0xC3A3B54F593e638D8a9FAbf66b781EFcb14D0f013D7c3E3a02ef698294f6BBF5"},"block_hash":"0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068","signature":"74DK6FeGnAYBJ0pJ4bLwIaT9cp9YwIscenKsRc7myXUBQfvvLKhIpZqPJkf8tAI7V8u89SLOAdz94fo/ajKi+wA="}
 
 ```
 ##### bitxhub client network
 全网节点信息
-```bigquery
+```shell
 bitxhub   client network
 
 {
@@ -623,7 +619,7 @@ bitxhub   client network
 
 ##### bitxhub client receipt
 交易回执查询
-```bigquery
+```shell
 bitxhub   client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E
 
 {
@@ -640,21 +636,21 @@ bitxhub   client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6
 
 **交易发送**
 
-```bigquery
+```shell
 bitxhub   client tx send --key scripts/build/node1/key.json --to 0x97c8B516D19edBf575D72a172Af7F418BE498C37 --amount 2 --type 0
 
 {"tx_hash":"0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E"}
 ```
 **交易查询**
 
-```bigquery
+```shell
 bitxhub   client tx get 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E
 
 {"tx":{"from":"0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","to":"0x97c8B516D19edBf575D72a172Af7F418BE498C37","timestamp":"1638168425560507000","transaction_hash":"0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E","payload":"EAI=","nonce":"2","signature":"mdOdSzAOTDxfZ0VphvyDyir1lE8w31rUaSTtnj1us9NMhtUPVHz5bLcOBdZrmUfnaVhL3xGQxK3/P7WHmihxIQA="},"tx_meta":{"block_hash":"HoMgbS+NeCRds5Qc/58NfHXA+jVCuhUcsc7p9IvJxMc=","block_height":"3"}}
 ```
 ##### bitxhub client validators
 全网验证人信息
-```bigquery
+```shell
 bitxhub   client validators
 
 [
@@ -667,7 +663,7 @@ bitxhub   client validators
 
 ##### bitxhub client delVPNode
 动态删除共识节点
-```bigquery
+```shell
 NAME:
    BitXHub client delVPNode - delete a vp node
 
@@ -680,7 +676,7 @@ OPTIONS:
 
 ##### bitxhub client governance
 提案治理命令
-```bigquery
+```shell
 NAME:
    BitXHub client governance - governance command
 
@@ -696,7 +692,7 @@ COMMANDS:
 ###### **提案投票**
 
 -   命令参数
-```bigquery
+```shell
 NAME:
    BitXHub client governance vote - vote to a proposal
 
@@ -710,7 +706,7 @@ OPTIONS:
 
 ```
 - 样例
-```bigquery
+```shell
 bitxhub   client governance vote --info approve --reason test --id 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
 
 vote successfully! 
@@ -723,7 +719,7 @@ vote successfully!
 - type: 提案类型，当前支持应用链管理
 - status: 提案状态，是否通过
 - from: 提案者地址
-```bigquery
+```shell
 NAME:
    BitXHub client governance proposals - query proposals based on the condition
 
@@ -738,10 +734,10 @@ OPTIONS:
 ```
 
 ###### 应用链管理
-- status:查询应用链状态
-- freeze:应用链冻结
-- activate:应用链激活
-```bigquery
+- `status`:查询应用链状态
+- `freeze`:应用链冻结
+- `activate`:应用链激活
+```shell
 NAME:
    BitXHub client governance chain - appchain manage command
 
