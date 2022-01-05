@@ -3,6 +3,8 @@
 中继链命令描述如下：
 
 ```shell
+bitxhub -h
+
 NAME:
    BitXHub - A leading inter-blockchain platform
 
@@ -23,7 +25,7 @@ COMMANDS:
 
 **参数解释**
 
-- `--repo`: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
+- `repo`: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
 ```shell
 GLOBAL OPTIONS:
    --repo value   BitXHub storage repo path
@@ -217,7 +219,7 @@ time="2021-11-29T18:07:37.723" level=info msg="Gateway service started" module=a
 
 
 ### bitxhub key
-
+####**功能**
 该命令`bitxhub key`提供针对bitxhub节点的私钥管理。它包含了私钥生成、私钥格式转换、私钥查看、地址查看。子命令信息如下:
 
 ```shell
@@ -233,7 +235,7 @@ show     Show BitXHub key from repo
 address  Show address from Secp256k1 private key
 ```
 
-**子命令**
+####**子命令**
 
 #### bitxhub key gen
 
@@ -252,8 +254,8 @@ OPTIONS:
 
 **参数解释**
 
-- `--target`：指定生成路径；
-- `--passwd`：指定私钥密码。
+- `target`：指定生成路径；
+- `passwd`：指定私钥密码。
 
 **示例说明**
 
@@ -298,7 +300,7 @@ bitxhub key address --path ./key.json --passwd 123
 
 
 ### bitxhub version
-
+####**功能**
 该命令`bitxhub version`显示BitXHub的版本信息。它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
 
 ```shell
@@ -325,8 +327,7 @@ Golang version: go1.14.15
 
 ### bitxhub cert
 
-**功能**
-
+####**功能**
 该命令`bitxhub cert`提供一系列x509标准的证书工具，服务于中继链节点的准入机制。它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。说明信息如下:
 
 ```shell
@@ -347,8 +348,7 @@ COMMANDS:
 ```
 
 
-
-**子命令**
+####**子命令**
 
 #### bitxhub cert ca
 
@@ -425,7 +425,7 @@ OPTIONS:
 **参数解释**
 
 - `csr`: 指定CSR描述文件路径；
-- is_ca: 指定签发人是否为CA证书；
+- `is_ca`: 指定签发人是否为CA证书；
 - `key`: 指定当前签发人私钥路径；
 - `cert`: 指定当前签发人证书路径；
 - `target`: 指定生成的证书路径。
@@ -527,6 +527,8 @@ QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
 
 
 ### bitxhub client
+####**功能**
+
 该命令`bitxhub client`提供中继链节点的客户端操作命令。它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
 子命令信息如下:
 
@@ -553,13 +555,14 @@ COMMANDS:
 
 - `gateway`: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；
 - `cert`: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
-```
+
+```shell
 OPTIONS:
 --gateway value  Specific gateway address (default: "http://localhost:9091/v1/")
 --cert value     Specific ca cert file if https is enabled
 --help, -h       show help
 ```
-**子命令**
+####**子命令**
 
 #### bitxhub client account
 账户信息查询。
@@ -803,9 +806,9 @@ OPTIONS:
 ```
 **参数解释**
 
-- `--id`：必选参数。提案id，生成提案时将在控制台打印。
-- `--info`：必选参数。是否通过提案。approve为通过，reject为拒绝。
-- `--reason`：必选参数。投票理由说明。
+- `id`：必选参数。提案id，生成提案时将在控制台打印。
+- `info`：必选参数。是否通过提案。approve为通过，reject为拒绝。
+- `reason`：必选参数。投票理由说明。
 
 **示例说明**
 
