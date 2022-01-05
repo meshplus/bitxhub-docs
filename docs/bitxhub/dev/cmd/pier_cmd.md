@@ -75,7 +75,7 @@ OPTIONS:
 
 #### 具体描述
 
-`pier appchain`具体描述与使用示例参考[中继模式管理](https://meshplus.github.io/bitxhub/bitxhub/function/relay_manager/)。
+`pier appchain`具体描述与使用示例参考[中继模式管理](/bitxhub/bitxhub/function/relay_manager/)。
 
 
 
@@ -106,7 +106,7 @@ OPTIONS:
 
 #### 具体描述
 
-`pier appchain`具体描述与使用示例参考[直连模式管理](https://meshplus.github.io/bitxhub/bitxhub/function/direct_manager/)。
+`pier appchain`具体描述与使用示例参考[直连模式管理](/bitxhub/bitxhub/function/direct_manager/)。
 
 ### pier id
 
@@ -265,7 +265,7 @@ COMMANDS:
 
 #### 具体描述
 
-`pier rule`具体描述与使用示例参考[直连模式管理](https://meshplus.github.io/bitxhub/bitxhub/function/direct_manager/)的部署验证规则模块。
+`pier rule`具体描述与使用示例参考[直连模式管理](/bitxhub/bitxhub/function/direct_manager/)的部署验证规则模块。
 
 
 
