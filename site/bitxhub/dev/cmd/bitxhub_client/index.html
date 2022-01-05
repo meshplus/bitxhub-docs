@@ -1,0 +1,2097 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+    
+    
+      
+        <title>bitxhub client - Bitxhub Document</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.a57b2b03.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.3f5d1f46.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#000000">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
+    
+    
+      
+
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="blue">
+  
+    
+    <script>function __prefix(e){return new URL("../../../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bitxhub-client" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../../.." title="Bitxhub Document" class="md-header__button md-logo" aria-label="Bitxhub Document" data-md-component="logo">
+      
+  <img src="../../../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bitxhub Document
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              bitxhub client
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/meshplus/bitxhub/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    meshplus/bitxhub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../introduction/summary/" class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../goduck/" class="md-tabs__link">
+        Goduck
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../premo/usage/" class="md-tabs__link">
+        Premo
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../sdk/gosdk/" class="md-tabs__link">
+        SDK文档
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../../scan/" class="md-tabs__link">
+        跨链浏览器体验指南
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../../.." title="Bitxhub Document" class="md-nav__button md-logo" aria-label="Bitxhub Document" data-md-component="logo">
+      
+  <img src="../../../../assets/logo.png" alt="logo">
+
+    </a>
+    Bitxhub Document
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/meshplus/bitxhub/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    meshplus/bitxhub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1" type="checkbox" id="__nav_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Home" data-md-level="1">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_1" type="checkbox" id="__nav_1_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_1">
+          产品介绍
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="产品介绍" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_1">
+          <span class="md-nav__icon md-icon"></span>
+          产品介绍
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../introduction/summary/" class="md-nav__link">
+        平台介绍
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../introduction/conception/" class="md-nav__link">
+        基本概念
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../introduction/advantage/" class="md-nav__link">
+        产品优势
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../introduction/scenaries/" class="md-nav__link">
+        应用场景
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_2" type="checkbox" id="__nav_1_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_2">
+          整体架构
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="整体架构" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_2">
+          <span class="md-nav__icon md-icon"></span>
+          整体架构
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/flexible_arch/" class="md-nav__link">
+        产品架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/arch/" class="md-nav__link">
+        技术架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architecture/tx_flow/" class="md-nav__link">
+        交易流
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../quick_start/" class="md-nav__link">
+        快速开始
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_4" type="checkbox" id="__nav_1_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_4">
+          部署使用
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="部署使用" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_4">
+          <span class="md-nav__icon md-icon"></span>
+          部署使用
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/env/" class="md-nav__link">
+        环境准备
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/overall_description/" class="md-nav__link">
+        整体说明
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_4_3" type="checkbox" id="__nav_1_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_4_3">
+          单中继架构部署
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="单中继架构部署" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          单中继架构部署
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/single_bitxhub/deploy_bitxhub/" class="md-nav__link">
+        中继链部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/single_bitxhub/deploy_pier/" class="md-nav__link">
+        跨链网关部署
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/direct_mode_pier/pier_direct_mode_deploy/" class="md-nav__link">
+        跨链网关直连模式部署
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../usage/status_verification/" class="md-nav__link">
+        系统验证与交易流程体验
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5" type="checkbox" id="__nav_1_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5">
+          产品功能
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="产品功能" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_5">
+          <span class="md-nav__icon md-icon"></span>
+          产品功能
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_5_1" type="checkbox" id="__nav_1_5_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_5_1">
+          应用链管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="应用链管理" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_5_1">
+          <span class="md-nav__icon md-icon"></span>
+          应用链管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/relay_manager/" class="md-nav__link">
+        中继模式管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/direct_manager/" class="md-nav__link">
+        直连模式管理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/cert_manage/" class="md-nav__link">
+        证书管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../function/cross_invoke/" class="md-nav__link">
+        跨链合约调用
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6" type="checkbox" id="__nav_1_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_6">
+          开发手册
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发手册" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_6">
+          <span class="md-nav__icon md-icon"></span>
+          开发手册
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_6_1" type="checkbox" id="__nav_1_6_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_6_1">
+          命令行说明
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="命令行说明" data-md-level="3">
+        <label class="md-nav__title" for="__nav_1_6_1">
+          <span class="md-nav__icon md-icon"></span>
+          命令行说明
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bitxhub_cmd/" class="md-nav__link">
+        中继链BitXHub
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pier_cmd/" class="md-nav__link">
+        跨链网关Pier
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cross_contract/" class="md-nav__link">
+        跨链合约开发
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../plugin/" class="md-nav__link">
+        应用链插件编写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../rule/" class="md-nav__link">
+        验证规则编写
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../validator/" class="md-nav__link">
+        验证者信息生成
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_7" type="checkbox" id="__nav_1_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_7">
+          设计文档
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="设计文档" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_7">
+          <span class="md-nav__icon md-icon"></span>
+          设计文档
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/consensus_plugin/" class="md-nav__link">
+        共识算法插件方案
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/interchain_transaction/" class="md-nav__link">
+        跨链事务方案
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/pier/" class="md-nav__link">
+        跨链网关设计方案
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/privacy_protection/" class="md-nav__link">
+        隐私保护方案
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../design/rate-limiter/" class="md-nav__link">
+        API流控设计
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_8" type="checkbox" id="__nav_1_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_8">
+          运维
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="运维" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_8">
+          <span class="md-nav__icon md-icon"></span>
+          运维
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../operation/node_log_view/" class="md-nav__link">
+        查看日志
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../operation/node_status_check/" class="md-nav__link">
+        节点状态检测
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../operation/exception_problem_handling/" class="md-nav__link">
+        异常问题处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_1_9" type="checkbox" id="__nav_1_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_9">
+          版本发布记录
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="版本发布记录" data-md-level="2">
+        <label class="md-nav__title" for="__nav_1_9">
+          <span class="md-nav__icon md-icon"></span>
+          版本发布记录
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/bitxhub_v1.6.0.md" class="md-nav__link">
+        BitXHub v1.6.0
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/bitxhub_v1.5.0/" class="md-nav__link">
+        BitXHub v1.5.0
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/bitxhub_v1.4.0/" class="md-nav__link">
+        BitXHub v1.4.0
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../changelog/bitxhub_v1.3.0/" class="md-nav__link">
+        BitXHub v1.3.0
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../community_introduction/" class="md-nav__link">
+        社区介绍
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../join_us/" class="md-nav__link">
+        加入我们
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../faq/" class="md-nav__link">
+        FAQ
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Goduck
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Goduck" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Goduck
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../goduck/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Premo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Premo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Premo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../premo/usage/" class="md-nav__link">
+        使用文档
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          SDK文档
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="SDK文档" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          SDK文档
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../sdk/gosdk/" class="md-nav__link">
+        GoSDK使用文档
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../sdk/javasdk/" class="md-nav__link">
+        JavaSDK使用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../sdk/jssdk/" class="md-nav__link">
+        JsSDK使用文档
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          跨链浏览器体验指南
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="跨链浏览器体验指南" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          跨链浏览器体验指南
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../scan/" class="md-nav__link">
+        使用文档
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../scan/deploy_pier_testnet/" class="md-nav__link">
+        跨链网关接入
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    参数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    子命令
+  </a>
+  
+    <nav class="md-nav" aria-label="子命令">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-account" class="md-nav__link">
+    bitxhub client account
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-chain" class="md-nav__link">
+    bitxhub client chain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-block" class="md-nav__link">
+    bitxhub client block
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-network" class="md-nav__link">
+    bitxhub client network
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-receipt" class="md-nav__link">
+    bitxhub client receipt
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-tx" class="md-nav__link">
+    bitxhub client tx
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client tx">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    交易发送
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    交易查询
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-validators" class="md-nav__link">
+    bitxhub client validators
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-delvpnode" class="md-nav__link">
+    bitxhub client delVPNode
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-governance" class="md-nav__link">
+    bitxhub client governance
+  </a>
+  
+    <nav class="md-nav" aria-label="bitxhub client governance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    规则管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    节点管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    角色管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dapp" class="md-nav__link">
+    dapp管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    提案投票
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    提案查询
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    应用链管理
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bitxhub-client-did" class="md-nav__link">
+    bitxhub client did
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/meshplus/bitxhub/edit/master/docs/docs/bitxhub/dev/cmd/bitxhub_client.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="bitxhub-client">bitxhub client</h1>
+<h2 id="_1">功能</h2>
+<p>该命令<code>bitxhub client</code>提供中继链节点的客户端操作命令。
+它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理、did指令。
+子命令信息如下:
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client
+
+NAME:
+   BitXHub client - BitXHub client command
+
+USAGE:
+   BitXHub client command [command options] [arguments...]
+
+COMMANDS:
+   account     Query account information
+   chain       Query bitxhub chain info
+   block       Query block
+   network     Query network info from node
+   receipt     Query receipt
+   tx          Transaction manipulation
+   validators  Query validator address
+   delVPNode   delete a vp node
+   governance  governance command 
+   did         did command                     
+</code></pre></div></p>
+<h2 id="_2">参数</h2>
+<ul>
+<li><code>gateway</code>: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；</li>
+<li><code>cert</code>: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
+<div class="highlight"><pre><span></span><code>OPTIONS:
+--gateway value  Specific gateway address (default: &quot;http://localhost:9091/v1/&quot;)
+--cert value     Specific ca cert file if https is enabled
+--help, -h       show help
+</code></pre></div></li>
+</ul>
+<h2 id="_3">子命令</h2>
+<h3 id="bitxhub-client-account">bitxhub client account</h3>
+<p>账户信息查询
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
+
+{
+  &quot;type&quot;: &quot;normal&quot;,
+  &quot;balance&quot;: 100000000,
+  &quot;contract_count&quot;: 0,
+  &quot;code_hash&quot;: &quot;0x0000000000000000000000000000000000000000000000000000000000000000&quot;
+}
+</code></pre></div></p>
+<h3 id="bitxhub-client-chain">bitxhub client chain</h3>
+<p>中继链信息查询
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client chain - Query bitxhub chain info
+
+USAGE:
+   BitXHub client chain command [command options] [arguments...]
+
+COMMANDS:
+   meta    Query bitxhub chain meta
+   status  Query bitxhub chain status
+
+OPTIONS:
+   --help, -h  show help
+</code></pre></div>
+- <code>normal</code>: 已处在共识状态
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client chain meta
+{&quot;height&quot;:&quot;1&quot;,&quot;block_hash&quot;:&quot;0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068&quot;}
+
+bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client chain status
+normal
+</code></pre></div></p>
+<h3 id="bitxhub-client-block">bitxhub client block</h3>
+<p>区块信息查询
+- 可指定区块号或区块Hash
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client block 3
+{
+  &quot;block_header&quot;: {
+    &quot;number&quot;: &quot;3&quot;,
+    &quot;state_root&quot;: &quot;0xA4E28e95578F5b4276C766810e9673F674a850EE876b319956761fbA1d3d8269&quot;,
+    &quot;tx_root&quot;: &quot;0x7ffC813435b4D09acE5A2c6A33a51cd4bDf3b114cb292a3Ad2ca29c44ec8d5FB&quot;,
+    &quot;receipt_root&quot;: &quot;0x2b57252fCe72cA03e7C28Ee220Fe8946fD0D6038Ca1398a19A8D5c354aFF68Bc&quot;,
+    &quot;parent_hash&quot;: &quot;0xd3363F8f667c891c388fED72BbBE091e6A888b2B70920FA9e115539848e8C9B5&quot;,
+    &quot;timestamp&quot;: &quot;1638243559049301000&quot;,
+    &quot;version&quot;: &quot;MS4wLjA=&quot;,
+    &quot;Bloom&quot;: &quot;0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;
+  },
+  &quot;transactions&quot;: {
+    &quot;Transactions&quot;: [
+      {
+        &quot;from&quot;: &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+        &quot;to&quot;: &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+        &quot;timestamp&quot;: 1638243558643356000,
+        &quot;transaction_hash&quot;: &quot;0x1947a1339F0C27157f76bB40ea4E68b1a9B4b1AFAd0055fBE24885CC6Ea87e63&quot;,
+        &quot;payload&quot;: &quot;EgEy&quot;,
+        &quot;signature&quot;: &quot;SMIlWc7qFn6r3WdcvJslSSjAl/PzEW0gIxZB+Ey6zRwFx3bjJdJD+JQ1xPAjyUXP8M+Bc2szRN9KoIAw85WIvwE=&quot;
+      }
+    ]
+  },
+  &quot;block_hash&quot;: &quot;0x39e9364747342A9A48055C13eBbDDE3F19415bfaB19E58375CDa8Eccb4d5c7DB&quot;,
+  &quot;signature&quot;: &quot;qQIIEtSdXUxnVD8lXRrvwNJ0gUk4DS9X8w9c9EvlHMsbBSrVSy6+0mUx5ZT/m2coutpzSupDeRiFo5bfmTRK4gE=&quot;
+}
+</code></pre></div></p>
+<h3 id="bitxhub-client-network">bitxhub client network</h3>
+<p>全网节点信息
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client network
+
+{
+  &quot;1&quot;: {
+    &quot;id&quot;: 1,
+    &quot;pid&quot;: &quot;QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL&quot;,
+    &quot;account&quot;: &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4001/p2p/&quot;
+    ]
+  },
+  &quot;2&quot;: {
+    &quot;id&quot;: 2,
+    &quot;pid&quot;: &quot;QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4&quot;,
+    &quot;account&quot;: &quot;0x79a1215469FaB6f9c63c1816b45183AD3624bE34&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4002/p2p/&quot;
+    ]
+  },
+  &quot;3&quot;: {
+    &quot;id&quot;: 3,
+    &quot;pid&quot;: &quot;QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS&quot;,
+    &quot;account&quot;: &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4003/p2p/&quot;
+    ]
+  },
+  &quot;4&quot;: {
+    &quot;id&quot;: 4,
+    &quot;pid&quot;: &quot;QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy&quot;,
+    &quot;account&quot;: &quot;0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8&quot;,
+    &quot;hosts&quot;: [
+      &quot;/ip4/127.0.0.1/tcp/4004/p2p/&quot;
+    ]
+  }
+}
+</code></pre></div></p>
+<h3 id="bitxhub-client-receipt">bitxhub client receipt</h3>
+<p>交易回执查询
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client receipt 0x1947a1339F0C27157f76bB40ea4E68b1a9B4b1AFAd0055fBE24885CC6Ea87e63
+
+{
+  &quot;tx_hash&quot;: &quot;0x1947a1339F0C27157f76bB40ea4E68b1a9B4b1AFAd0055fBE24885CC6Ea87e63&quot;,
+  &quot;ret&quot;: null,
+  &quot;status&quot;: 0,
+  &quot;events&quot;: [],
+  &quot;gas_used&quot;: &quot;21000&quot;,
+  &quot;bloom&quot;: &quot;0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&quot;
+
+}
+</code></pre></div></p>
+<h3 id="bitxhub-client-tx">bitxhub client tx</h3>
+<p>简单交易</p>
+<h5 id="_4">交易发送</h5>
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client tx send --key scripts/build/node1/key.json --to 0x97c8B516D19edBf575D72a172Af7F418BE498C37 --amount 2 --type 0
+
+{&quot;tx_hash&quot;:&quot;0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E&quot;}
+</code></pre></div>
+<h4 id="_5">交易查询</h4>
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client tx get 0x1947a1339F0C27157f76bB40ea4E68b1a9B4b1AFAd0055fBE24885CC6Ea87e63
+
+{
+  &quot;txs&quot;: {
+    &quot;Transactions&quot;: [
+      {
+        &quot;from&quot;: &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+        &quot;to&quot;: &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+        &quot;timestamp&quot;: 1638243558643356000,
+        &quot;transaction_hash&quot;: &quot;0x1947a1339F0C27157f76bB40ea4E68b1a9B4b1AFAd0055fBE24885CC6Ea87e63&quot;,
+        &quot;payload&quot;: &quot;EgEy&quot;,
+        &quot;signature&quot;: &quot;SMIlWc7qFn6r3WdcvJslSSjAl/PzEW0gIxZB+Ey6zRwFx3bjJdJD+JQ1xPAjyUXP8M+Bc2szRN9KoIAw85WIvwE=&quot;
+      }
+    ]
+  },
+  &quot;tx_meta&quot;: [
+    {
+      &quot;block_hash&quot;: &quot;Oek2R0c0KppIBVwT673ePxlBW/qxnlg3XNqOzLTVx9s=&quot;,
+      &quot;block_height&quot;: &quot;3&quot;
+    }
+  ]
+}
+</code></pre></div>
+<h3 id="bitxhub-client-validators">bitxhub client validators</h3>
+<p>全网验证人信息
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client validators
+
+[
+  &quot;0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013&quot;,
+  &quot;0x79a1215469FaB6f9c63c1816b45183AD3624bE34&quot;,
+  &quot;0x97c8B516D19edBf575D72a172Af7F418BE498C37&quot;,
+  &quot;0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8&quot;
+]
+</code></pre></div></p>
+<h3 id="bitxhub-client-delvpnode">bitxhub client delVPNode</h3>
+<p>动态删除共识节点
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client delVPNode - delete a vp node
+
+USAGE:
+   BitXHub client delVPNode [command options] [arguments...]
+
+OPTIONS:
+   --pid value  pid of vp node
+</code></pre></div></p>
+<h3 id="bitxhub-client-governance">bitxhub client governance</h3>
+<p>提案治理命令
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance - governance command
+
+USAGE:
+   BitXHub client governance command [command options] [arguments...]
+
+COMMANDS:
+   vote       vote to a proposal
+   proposals  query proposals based on the condition
+   chain      appchain manage command
+   rule      rule manage command
+   node      node manage command
+   role      role manage command
+   dapp      dapp manage command
+</code></pre></div></p>
+<h4 id="_6">规则管理</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance rule - rule manage command
+
+USAGE:
+   BitXHub client governance rule command [command options] [arguments...]
+
+COMMANDS:
+   all        query all rules info of one chain
+   available  query available rule address of a chain
+   status     query rule status by rule address and chain id
+   update     update master rule with chain id
+</code></pre></div>
+<h4 id="_7">节点管理</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance node - node manage command
+
+USAGE:
+   BitXHub client governance node command [command options] [arguments...]
+
+COMMANDS:
+   status    query node status by node pid
+   register  register node
+   logout    logout node by node pid
+   all       query all nodes info
+</code></pre></div>
+<h4 id="_8">角色管理</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance role - role manage command
+
+USAGE:
+   BitXHub client governance role command [command options] [arguments...]
+
+COMMANDS:
+   status    query role status by role id
+   register  register role
+   update    update node for auditAdmin
+   freeze    freeze role by role id
+   activate  activate role by role id
+   logout    logout role by role id
+   all       query all roles info
+</code></pre></div>
+<h4 id="dapp">dapp管理</h4>
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance dapp - dapp manage command
+
+USAGE:
+   BitXHub client governance dapp command [command options] [arguments...]
+
+COMMANDS:
+   status    query dapp status by dapp id
+   myDapps   query dapps by owner addr
+   register  register dapp
+   update    update dapp
+   freeze    freeze dapp by dapp id
+   activate  activate dapp by dapp id
+   transfer  transfer dapp to other user
+   confirm   confirm dapp transfer
+   evaluate  evaluate dapp
+</code></pre></div>
+<h4 id="_9">提案投票</h4>
+<ul>
+<li>命令参数
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance vote - vote to a proposal
+
+USAGE:
+   BitXHub client governance vote [command options] [arguments...]
+
+OPTIONS:
+   --id value      proposal id
+   --info value    voting information, approve or reject
+   --reason value  reason to vote
+</code></pre></div></li>
+<li>样例
+<div class="highlight"><pre><span></span><code>bitxhub --repo=/Users/windiyi/IdeaProjects/bitxhub/scripts/build/node3 client governance vote --info approve --reason test --id 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
+
+vote successfully! 
+0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
+</code></pre></div></li>
+</ul>
+<h4 id="_10">提案查询</h4>
+<ul>
+<li>id: 提案id</li>
+<li>type: 提案类型，当前支持应用链管理</li>
+<li>status: 提案状态，是否通过</li>
+<li>from: 提案者地址
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance proposals - query proposals based on the condition
+
+USAGE:
+   BitXHub client governance proposals [command options] [arguments...]
+
+OPTIONS:
+   --id value      proposal id
+   --type value    proposal type, currently only AppchainMgr is supported
+   --status value  proposal status, one of proposed, approve or reject
+   --from value    the address of the account to which the proposal was made
+</code></pre></div></li>
+</ul>
+<h4 id="_11">应用链管理</h4>
+<ul>
+<li>status:查询应用链状态</li>
+<li>freeze:应用链冻结</li>
+<li>activate:应用链激活
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client governance chain - appchain manage command
+
+USAGE:
+   BitXHub client governance chain command [command options] [arguments...]
+
+COMMANDS:
+   status    query chain status by chain id
+   freeze    freeze appchain by chain id
+   activate  activate chain by chain id
+</code></pre></div></li>
+</ul>
+<h3 id="bitxhub-client-did">bitxhub client did</h3>
+<p>提案治理命令
+<div class="highlight"><pre><span></span><code>NAME:
+   BitXHub client did - did command
+
+USAGE:
+   BitXHub client did command [command options] [arguments...]
+
+COMMANDS:
+   init      init method-registry contract
+   addAdmin  add admin role for method-registry contract
+</code></pre></div></p>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+          <a href="#" class="md-top md-icon" data-md-component="top" data-md-state="hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"/></svg>
+            Back to top
+          </a>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        
+          Made with
+          <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+            Material for MkDocs
+          </a>
+        
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.tabs", "navigation.top", "search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.b1047164.min.js"></script>
+      
+    
+  </body>
+</html>
