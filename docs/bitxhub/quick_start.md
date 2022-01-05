@@ -3,7 +3,7 @@
 
 ## 1 环境准备
 
-> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](/bitxhub/bitxhub/usage/env/)。
+> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](/v1.6/bitxhub/usage/env/)。
 
 ## 2 下载 Goduck
 
