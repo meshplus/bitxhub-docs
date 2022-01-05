@@ -765,8 +765,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pier-appchain-register" class="md-nav__link">
-    pier appchain register
+  <a href="#pier-appchain-method-register" class="md-nav__link">
+    pier appchain method register
   </a>
   
 </li>
@@ -812,37 +812,10 @@
       
         <li class="md-nav__item">
   <a href="#3" class="md-nav__link">
-    3. 冻结应用链
+    3. 激活应用链
   </a>
   
-    <nav class="md-nav" aria-label="3. 冻结应用链">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pier-appchain-freeze" class="md-nav__link">
-    pier appchain freeze
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    示例说明
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
-    4. 激活应用链
-  </a>
-  
-    <nav class="md-nav" aria-label="4. 激活应用链">
+    <nav class="md-nav" aria-label="3. 激活应用链">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -853,7 +826,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     示例说明
   </a>
   
@@ -875,6 +848,20 @@
           <li class="md-nav__item">
   <a href="#pier-appchain-logout" class="md-nav__link">
     pier appchain logout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    示例说明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-appchain-get" class="md-nav__link">
+    Pier appchain get
   </a>
   
 </li>
@@ -1691,8 +1678,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pier-appchain-register" class="md-nav__link">
-    pier appchain register
+  <a href="#pier-appchain-method-register" class="md-nav__link">
+    pier appchain method register
   </a>
   
 </li>
@@ -1738,37 +1725,10 @@
       
         <li class="md-nav__item">
   <a href="#3" class="md-nav__link">
-    3. 冻结应用链
+    3. 激活应用链
   </a>
   
-    <nav class="md-nav" aria-label="3. 冻结应用链">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#pier-appchain-freeze" class="md-nav__link">
-    pier appchain freeze
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
-    示例说明
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4" class="md-nav__link">
-    4. 激活应用链
-  </a>
-  
-    <nav class="md-nav" aria-label="4. 激活应用链">
+    <nav class="md-nav" aria-label="3. 激活应用链">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1779,7 +1739,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     示例说明
   </a>
   
@@ -1801,6 +1761,20 @@
           <li class="md-nav__item">
   <a href="#pier-appchain-logout" class="md-nav__link">
     pier appchain logout
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    示例说明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pier-appchain-get" class="md-nav__link">
+    Pier appchain get
   </a>
   
 </li>
@@ -1837,32 +1811,44 @@
                 <h1 id="_1">中继模式管理</h1>
 <p>中继链支持对应用链的管理，包括注册、更新、冻结、注销应用链等功能。</p>
 <h2 id="1">1. 应用链注册</h2>
-<h3 id="pier-appchain-register">pier appchain register</h3>
+<h3 id="pier-appchain-method-register">pier appchain method register</h3>
 <p>对于需要加入跨链网络使用中继链进行跨链的应用链，需要首先由应用链管理员向中继链注册应用链，参数说明如下：</p>
 <p><div class="highlight"><pre><span></span><code>NAME:
-   Pier appchain register - Register appchain <span class="k">in</span> bitxhub
+   Pier appchain method register - Register appchain did method and info to bitxhub
 
 USAGE:
-   Pier appchain register <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
+   Pier appchain method register <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
 
 OPTIONS:
-   --name value           Specify appchain name
-   --type value           Specify appchain <span class="nb">type</span>
-   --desc value           Specify appchain description
-   --version value        Specify appchain version
-   --validators value     Specify appchain validators path
-   --consensusType value  Specify appchain consensus <span class="nb">type</span>
-   --addr value           Specify bitxhub node address
+   --admin-key value   Specific admin key path
+   --method value      Specific did sub method name<span class="o">(</span>like appchain<span class="o">)</span>
+   --doc-addr value    Specify the addr of did document
+   --doc-hash value    Specify the <span class="nb">hash</span> of did document
+   --name value        Specific appchain name
+   --type value        Specific appchain <span class="nb">type</span>
+   --desc value        Specific appchain description
+   --version value     Specific appchain version
+   --validators value  Specific appchain validators path
+   --consensus value   Specific appchain consensus <span class="nb">type</span>
+   --rule value        Specific appchain rule
+   --rule-url value    Specific appchain rule url
+   --reason value      Specify governance reason
 </code></pre></div>
 <strong>参数解释：</strong></p>
 <ul>
 <li><code>--repo</code>：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。</li>
-<li><code>--name</code>：必选参数，指定应用链名称。</li>
-<li><code>--type</code>：必选参数，指定应用链类型，如hyperchain、fabric等。</li>
+<li><code>--admin-key</code>：必选参数，管理员私钥地址，一般为admin.json。</li>
+<li><code>--method</code>：必选参数，did方法名。</li>
+<li><code>--doc-addr</code>：必选参数，指定did文件地址。</li>
+<li><code>--doc-hash</code>：必选参数，指定did文件的哈希值。</li>
+<li><code>--name</code>：必选参数，指定的应用了名称。</li>
+<li><code>--type</code>：指定的应用链类型。如fabric、flato。</li>
 <li><code>--desc</code>：必选参数，对应用链的描述信息。</li>
 <li><code>--version</code>：必选参数，指定应用链版本信息。</li>
 <li><code>--validators</code>：必选参数，指定应用链的验证人信息所在的文件路径。</li>
-<li><code>--consensusType</code>：必选参数，指定p应用链的共识类型，如rbft、raft等。</li>
+<li><code>--consensus</code>：必选参数，指定p应用链的共识类型，如rbft、raft等。</li>
+<li><code>--rule</code>：必选参数，指定验证规则地址。</li>
+<li><code>--rule_url</code>：指定验证规则url。</li>
 <li><code>--addr</code>：可选参数，指定要连接的中继链节点地址，如果不指定，默认使用$repo目录下pier.toml中指定的BitXHub节点地址。</li>
 </ul>
 <p>该命令向中继链发送一笔应用链注册的交易，中继链以交易的from（即当前pier公钥的地址）作为应用链的ID，生成一个应用链注册的提案。</p>
@@ -1877,27 +1863,52 @@ OPTIONS:
 <li><code>--reason</code>：必选参数，指定投票的原因。</li>
 </ul>
 <h3 id="_2">示例说明</h3>
-<p>比如进行fabric应用链的注册：
-<div class="highlight"><pre><span></span><code><span class="c1"># 参数说明</span>
-$ pier <span class="o">[</span>--repo &lt;repository&gt;<span class="o">]</span> appchain register --name &lt;appchain name&gt; --type &lt;appchain type&gt; --desc &lt;description&gt; --version &lt;appchain version&gt; --validators &lt;path of appchain validators file&gt; --consensusType &lt;appchain consensus type&gt; <span class="o">[</span>--addr &lt;bitxhub node address&gt;<span class="o">]</span>
+<p>比如进行fabric应用链的注册,现在 --doc-addr 和 --doc-hash 、--rule-url没有真正用到，使用下面示例的即可，验证规则需要提前注册（也可使用示例中内置验证规则地址）。验证者信息需要提前拷贝到repo目录下。注意在注册应用链时，确保已经正常启动中继链：
+<div class="highlight"><pre><span></span><code><span class="c1"># 具体样例</span>
 
-<span class="c1"># 具体样例</span>
-$ pier appchain register --name chainA --type fabric --desc chainA-desc --version <span class="m">1</span>.4.3 --validators config/fabric.validators --consensusType raft 
-INFO<span class="o">[</span><span class="m">11</span>:01:25.884<span class="o">]</span> Establish connection with bitxhub localhost:60011 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
-the register request was submitted successfully, chain id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442, proposal id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442-0
+$ <span class="nb">cd</span> &lt;bitxhub_project&gt; <span class="o">&amp;&amp;</span> make install
+
+<span class="c1"># 启动bitxhub</span>
+$ make cluster
+
+<span class="c1"># bitxhub管理员向pier管理员转账。注意更改为bitxhub项目地址</span>
+$ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/key.json --to 0xf2201f28368706EF75e3199b4f4DE2a24bA85CAe --amount <span class="m">100000000000000000000000000</span>
+
+$ pier --repo <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span> init relay
+<span class="c1"># 可以使用对应插件项目下的验证者信息，注意更改项目路径</span>
+$ cp ~/goproject/meshplus/pier-client-fabric/config/fabric.validators ./fabric/
+
+$ bitxhub client tx send --key ~/code/bitxhub/scripts/build/node1/key.json --to 0xf2201f28368706EF75e3199b4f4DE2a24bA85CAe --amount <span class="m">100000000000000000000000000</span>
+
+$ pier --repo <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span> appchain method register --admin-key ./key.json --method fabricappchain --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc<span class="o">=</span><span class="s2">&quot;test for fabric&quot;</span> --version v1.0.3 --validators ./fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
+
+Register appchain method info <span class="k">for</span> did:bitxhub:fabricappchain:. successfully, <span class="nb">wait</span> <span class="k">for</span> proposal 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0 to finish.
 </code></pre></div>
-如上例所示，应用链管理员提交应用链注册请求，应用链ID为0x8D093dd84717042b23546cdA396cEBB2F48D8442，提案号为0x8D093dd84717042b23546cdA396cEBB2F48D8442-0。中继链管理员需要对该提案进行审核并进行投票，命令如下：</p>
+如上例所示，应用链管理员提交应用链注册请求，应用链DID为did:bitxhub:fabricappchain:.，提案号为0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0。中继链管理员需要对该提案进行审核并进行投票，命令如下：</p>
 <p>如管理员对该提案审核后，认为该应用链提交对信息无误，投票通过，命令执行如下：
-<div class="highlight"><pre><span></span><code>$ bitxhub --repo ./scripts/build/node1 client governance vote --id 0x8D093dd84717042b23546cdA396cEBB2F48D8442-0 --info approve --reason <span class="s2">&quot;fabric appchain register&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nv">PROPOSAL_ID</span><span class="o">=</span>上面得到的ID
+
+<span class="c1"># 注意切换到bitxhub项目目录下</span>
+$ bitxhub --repo ./scripts/build/node1 client governance vote --id <span class="nv">$PROPOSAL_ID</span> --info approve --reason <span class="s2">&quot;fabric appchain register&quot;</span>
 vote successfully!
-$ bitxhub --repo ./scripts/build/node2 client governance vote --id 0x8D093dd84717042b23546cdA396cEBB2F48D8442-0 --info approve --reason <span class="s2">&quot;fabric appchain register&quot;</span>
+
+$ bitxhub --repo ./scripts/build/node2 client governance vote --id <span class="nv">$PROPOSAL_ID</span> --info approve --reason <span class="s2">&quot;fabric</span>
+<span class="s2">appchain register&quot;</span>
 vote successfully!
-$ bitxhub --repo ./scripts/build/node3 client governance vote --id 0x8D093dd84717042b23546cdA396cEBB2F48D8442-0 --info approve --reason <span class="s2">&quot;fabric appchain register&quot;</span>
+
+$ bitxhub --repo ./scripts/build/node3 client governance vote --id <span class="nv">$PROPOSAL_ID</span> --info approve --reason <span class="s2">&quot;fabric appchain register&quot;</span>
 vote successfully!
-$ bitxhub --repo ./scripts/build/node1 client governance proposals --id 0x8D093dd84717042b23546cdA396cEBB2F48D8442-0 
-Id                                            Type         Status   ApproveNum  RejectNum  ElectorateNum  ThresholdNum  Des
---                                            ----         ------   ----------  ---------  -------------  ------------  ---
-0x8D093dd84717042b23546cdA396cEBB2F48D8442-0  AppchainMgr  approve  <span class="m">3</span>           <span class="m">0</span>          <span class="m">4</span>              <span class="m">3</span>             register
+
+$ bitxhub --repo ./scripts/build/node1 client governance proposal query --id <span class="nv">$PROPOSAL_ID</span>
+
+<span class="o">========================================================================================</span>
+Id                                            ManagedObjectId               Type         EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
+--                                            ---------------               ----         ---------  ------   ---  --------  -------------  ----------           -----------  ---------
+0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0  did:bitxhub:fabricappchain:.  AppchainMgr  register   approve  <span class="m">3</span>/0  <span class="m">4</span>/4/3     false/true     <span class="m">1641348118114187000</span>               end of normal <span class="nv">voting</span>
+<span class="o">========================================================================================</span>
+* A/R：approve num / reject num
+* IE/AE/TE：the total number of electorate at the <span class="nb">time</span> of the initial proposal / the number of available electorate currently /the minimum threshold <span class="k">for</span> votes to take effect
+* Special/Super：is special proposal / is super admin voted
 </code></pre></div>
 可以看到该提案已经投票通过，应用链注册成功。</p>
 <h2 id="2">2. 更新应用链</h2>
@@ -1910,62 +1921,76 @@ USAGE:
    Pier appchain update <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
 
 OPTIONS:
-   --name value           Specify appchain name
-   --type value           Specify appchain <span class="nb">type</span>
-   --desc value           Specify appchain description
-   --version value        Specify appchain version
-   --validators value     Specify appchain validators path
-   --consensusType value  Specify appchain consensus <span class="nb">type</span>
-   --addr value           Specify bitxhub node address
+   --admin-key value       Specific admin key path
+   --id value              Specify appchain id<span class="o">(</span>did<span class="o">)</span>
+   --doc-addr value        Specify appchain did doc addr
+   --doc-hash value        Specify appchain did doc <span class="nb">hash</span>
+   --name value            Specify appchain name
+   --type value            Specify appchain <span class="nb">type</span>
+   --desc value            Specify appchain description
+   --version value         Specify appchain version
+   --validators value      Specify appchain validators path
+   --consensus-type value  Specify appchain consensus <span class="nb">type</span>
+   --reason value          Specify governance reason
 </code></pre></div></p>
-<p>该命令参数含义与应用链注册命令的参数一致，不再赘述。</p>
+<p><strong>参数解释：</strong></p>
+<ul>
+<li><code>--repo</code>：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。</li>
+<li><code>--admin-key</code>：必选参数，管理员私钥地址，一般为admin.json。</li>
+<li><code>--id</code>：必选参数，应用链的did。</li>
+<li><code>--doc-addr</code>：必选参数，指定did文件地址。</li>
+<li><code>--doc-hash</code>：必选参数，指定did文件的哈希值。</li>
+<li><code>--name</code>：必选参数，指定的应用了名称。</li>
+<li><code>--type</code>：指定的应用链类型。如fabric、flato。</li>
+<li><code>--desc</code>：必选参数，对应用链的描述信息。</li>
+<li><code>--version</code>：必选参数，指定应用链版本信息。</li>
+<li><code>--validators</code>：必选参数，指定应用链的验证人信息所在的文件路径。</li>
+<li><code>--consensus-type</code>：必选参数，指定p应用链的共识类型，如rbft、raft等。</li>
+<li><code>--reason</code>：可选参数，描述信息。</li>
+<li><code>--addr</code>：可选参数，指定要连接的中继链节点地址，如果不指定，默认使用$repo目录下pier.toml中指定的BitXHub节点地址。</li>
+</ul>
 <h3 id="_3">示例说明</h3>
 <p>比如进行fabric应用链的验证人信息发生变化，需要更新应用链，命令执行如下：
-<div class="highlight"><pre><span></span><code><span class="c1"># 参数说明</span>
-$ pier --repo &lt;repository&gt; appchain update --name &lt;appchain name&gt; --type &lt;appchain type&gt; --desc &lt;description&gt; --version &lt;appchain version&gt; --validators &lt;path of appchain validators file&gt; --consensusType &lt;appchain consensus type&gt; --addr &lt;bitxhub node address&gt;
+<div class="highlight"><pre><span></span><code><span class="c1"># 具体样例</span>
+$ pier --repo <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span> appchain update --admin-key ./key.json --id did:bitxhub:fabricappchain:. --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc<span class="o">=</span><span class="s2">&quot;test for fabric&quot;</span> --version v1.1.0 --validators./fabric/fabric.validators --consensus-type raft
 
-<span class="c1"># 具体样例</span>
-$ pier appchain update --name chainA --type fabric --desc chainA-desc --version <span class="m">1</span>.4.3 --validators config/fabric-new.validators --consensusType raft 
-INFO<span class="o">[</span><span class="m">11</span>:01:25.884<span class="o">]</span> Establish connection with bitxhub localhost:60011 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
-the update request was submitted successfully, proposal id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442-1
+the update request was submitted successfully，, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-1
 </code></pre></div></p>
 <p>管理员进行审核并投票，与注册应用链部分一致，不再赘述。</p>
-<h2 id="3">3. 冻结应用链</h2>
-<h3 id="pier-appchain-freeze">pier appchain freeze</h3>
-<p>如果应用链出现问题，应用链管理员可以申请冻结应用链。命令如下：
-<div class="highlight"><pre><span></span><code>pier --repo &lt;repository&gt; appchain freeze
-</code></pre></div></p>
-<h3 id="_4">示例说明</h3>
-<p>比如对之前已经注册过的应用链进行冻结，命令执行如下：
-<div class="highlight"><pre><span></span><code>$ pier appchain freeze
-INFO<span class="o">[</span><span class="m">11</span>:01:25.884<span class="o">]</span> Establish connection with bitxhub localhost:60011 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
-the freeze request was submitted successfully, proposal id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442-2
-</code></pre></div></p>
-<p>管理员进行审核并投票，与注册应用链部分一致，不再赘述。</p>
-<h2 id="4">4. 激活应用链</h2>
+<h2 id="3">3. 激活应用链</h2>
 <h3 id="pier-appchain-activate">pier appchain activate</h3>
 <p>如果冻结的应用链恢复正常，应用链管理员可以申请激活应用链。命令如下：
-<div class="highlight"><pre><span></span><code>pier --repo &lt;repository&gt; appchain activate
+<div class="highlight"><pre><span></span><code>$ pier --repo &lt;repository&gt; appchain activate --admin-key &lt;admin_key_json&gt; --id &lt;appchian_did&gt;
 </code></pre></div></p>
-<h3 id="_5">示例说明</h3>
+<h3 id="_4">示例说明</h3>
 <p>比如对之前已经冻结的应用链进行激活，命令执行如下：
-<div class="highlight"><pre><span></span><code>$ pier appchain freeze
+<div class="highlight"><pre><span></span><code>$ pier --repo <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span> appchain activate --admin-key ./key.json --id did:bitxhub:fabricappchain:.
 INFO<span class="o">[</span><span class="m">11</span>:01:25.884<span class="o">]</span> Establish connection with bitxhub localhost:60011 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
-the activate request was submitted successfully, proposal id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442-3
+the activate request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-2
 </code></pre></div></p>
 <p>管理员进行审核并投票，与注册应用链部分一致，不再赘述。</p>
 <h2 id="5">5. 注销应用链</h2>
 <h3 id="pier-appchain-logout">pier appchain logout</h3>
 <p>如果应用链退出跨链系统，不再进行跨链，应用链管理员可以向中继链提交注销应用链的提案。命令如下：
-<div class="highlight"><pre><span></span><code>pier --repo &lt;repository&gt; appchain <span class="nb">logout</span>
+<div class="highlight"><pre><span></span><code>pier --repo &lt;repository&gt; appchain <span class="nb">logout</span> --admin-key &lt;admin_key_json&gt; --id &lt;appchian_did&gt;
 </code></pre></div></p>
-<h3 id="_6">示例说明</h3>
+<h3 id="_5">示例说明</h3>
 <p>比如对之前激活的应用链进行注销，命令执行如下：
-<div class="highlight"><pre><span></span><code>$ pier appchain <span class="nb">logout</span> 
-INFO<span class="o">[</span><span class="m">11</span>:01:25.884<span class="o">]</span> Establish connection with bitxhub localhost:60011 successfully  <span class="nv">module</span><span class="o">=</span>rpcx
-the <span class="nb">logout</span> request was submitted successfully, proposal id is 0x8D093dd84717042b23546cdA396cEBB2F48D8442-4
+<div class="highlight"><pre><span></span><code>$ pier appchain <span class="nb">logout</span> --admin-key ./key.json --id did:bitxhub:fabricappchain:.
+the <span class="nb">logout</span> request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-3
 </code></pre></div></p>
 <p>管理员进行审核并投票，与注册应用链部分一致，不再赘述。</p>
+<h3 id="pier-appchain-get">Pier appchain get</h3>
+<p>获取应用链注册后的相关信息。命令如下：</p>
+<div class="highlight"><pre><span></span><code>pier --repo &lt;repository&gt; appchain get --admin-key &lt;admin_key_json&gt; --id &lt;appchian_did&gt;
+</code></pre></div>
+<h3 id="_6">示例说明</h3>
+<p>获取当前应用链相关信息，命令执行如下：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 具体样例</span>
+$ pier --repo <span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span> appchain get --admin-key ./key.json --id did:bitxhub:fabricappchain:.
+
+<span class="o">{</span><span class="s2">&quot;id&quot;</span>:<span class="s2">&quot;did:bitxhub:fabricappchain:.&quot;</span>,<span class="s2">&quot;name&quot;</span>:<span class="s2">&quot;fabricTest1&quot;</span>,<span class="s2">&quot;validators&quot;</span>:<span class="s2">&quot;-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIRAIBO31aZaSZoEYSy2AJuhJcwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzIuZXhhbXBsZS5jb20wHhcNMjAwMjA1MDgyMjAwWhcNMzAwMjAyMDgyMjAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjEub3Jn\nMi5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG3jszFPTbGm\ndAYg2BxmHMTDKfQReNw3p9ttMK130qF5lQo5zLBG8Sa3viOCLnvjjg6A/P+yKnwv\nisI/jEVE8T2jTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIMVL+daK7nMGr2/AQIXTSPFkdd3UiPVDkWtkh5ujnalEMAoGCCqGSM49\nBAMCA0gAMEUCIQDMYOQiYeMiQZTxlRkj/3/jjYvwwdCcX5AWuFmraiHkugIgFkX/\n6uiTSD0lz8P+wwlLf24cIABq2aZyi8q4gj0YfwA=\n-----END CERTIFICATE-----\n&quot;</span>,<span class="s2">&quot;consensus_type&quot;</span>:<span class="s2">&quot;raft&quot;</span>,<span class="s2">&quot;status&quot;</span>:<span class="s2">&quot;updating&quot;</span>,<span class="s2">&quot;chain_type&quot;</span>:<span class="s2">&quot;fabric&quot;</span>,<span class="s2">&quot;desc&quot;</span>:<span class="s2">&quot;test for fabric&quot;</span>,<span class="s2">&quot;version&quot;</span>:<span class="s2">&quot;v1.1.0&quot;</span>,<span class="s2">&quot;public_key&quot;</span>:<span class="s2">&quot;0x42444f30475a697746533934706e344169712b77365442417757663635787637724f616b4e786d536344465766394970546f694f7239712b6f6259386c514546617a434b316c714e32533446306b426e633542313034413d&quot;</span>,<span class="s2">&quot;owner_did&quot;</span>:<span class="s2">&quot;&quot;</span>,<span class="s2">&quot;did_doc_addr&quot;</span>:<span class="s2">&quot;./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi&quot;</span>,<span class="s2">&quot;did_doc_hash&quot;</span>:<span class="s2">&quot;QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzo111&quot;</span>,<span class="s2">&quot;fsm&quot;</span>:<span class="o">{}}</span>
+</code></pre></div>
                 
               
               

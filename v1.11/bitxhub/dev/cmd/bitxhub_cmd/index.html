@@ -916,6 +916,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#bitxhub-key-gen" class="md-nav__link">
     bitxhub key gen
   </a>
@@ -946,6 +960,19 @@
     bitxhub version
   </a>
   
+    <nav class="md-nav" aria-label="bitxhub version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -955,6 +982,20 @@
   
     <nav class="md-nav" aria-label="bitxhub cert">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#bitxhub-cert-ca" class="md-nav__link">
@@ -1023,6 +1064,20 @@
   
     <nav class="md-nav" aria-label="bitxhub client">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#bitxhub-client-account" class="md-nav__link">
@@ -1871,6 +1926,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#bitxhub-key-gen" class="md-nav__link">
     bitxhub key gen
   </a>
@@ -1901,6 +1970,19 @@
     bitxhub version
   </a>
   
+    <nav class="md-nav" aria-label="bitxhub version">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -1910,6 +1992,20 @@
   
     <nav class="md-nav" aria-label="bitxhub cert">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#bitxhub-cert-ca" class="md-nav__link">
@@ -1978,6 +2074,20 @@
   
     <nav class="md-nav" aria-label="bitxhub client">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    功能
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    子命令
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#bitxhub-client-account" class="md-nav__link">
@@ -2138,7 +2248,9 @@
                 
                 <h1 id="bitxhub">bitxhub</h1>
 <p>中继链命令描述如下：</p>
-<div class="highlight"><pre><span></span><code>NAME:
+<div class="highlight"><pre><span></span><code>bitxhub -h
+
+NAME:
    BitXHub - A leading inter-blockchain platform
 
 USAGE:
@@ -2156,7 +2268,7 @@ COMMANDS:
 </code></pre></div>
 <p><strong>参数解释</strong></p>
 <ul>
-<li><code>--repo</code>: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
+<li><code>repo</code>: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
 <div class="highlight"><pre><span></span><code>GLOBAL OPTIONS:
    --repo value   BitXHub storage repo path
    --help, -h     show <span class="nb">help</span>
@@ -2323,6 +2435,7 @@ Golang version: go1.14.15
 <span class="nv">time</span><span class="o">=</span><span class="s2">&quot;2021-11-29T18:07:37.723&quot;</span> <span class="nv">level</span><span class="o">=</span>info <span class="nv">msg</span><span class="o">=</span><span class="s2">&quot;Gateway service started&quot;</span> <span class="nv">module</span><span class="o">=</span>api <span class="nv">port</span><span class="o">=</span><span class="m">9091</span>
 </code></pre></div>
 <h3 id="bitxhub-key">bitxhub key</h3>
+<h4 id="_2"><strong>功能</strong></h4>
 <p>该命令<code>bitxhub key</code>提供针对bitxhub节点的私钥管理。它包含了私钥生成、私钥格式转换、私钥查看、地址查看。子命令信息如下:</p>
 <div class="highlight"><pre><span></span><code>NAME:
 BitXHub key - Create and show key information
@@ -2335,7 +2448,7 @@ gen      Create new Secp256k1 private key <span class="k">in</span> specified di
 show     Show BitXHub key from repo
 address  Show address from Secp256k1 private key
 </code></pre></div>
-<p><strong>子命令</strong></p>
+<h4 id="_3"><strong>子命令</strong></h4>
 <h4 id="bitxhub-key-gen">bitxhub key gen</h4>
 <div class="highlight"><pre><span></span><code>NAME:
    BitXHub key gen - Create new Secp256k1 private key <span class="k">in</span> specified directory
@@ -2349,8 +2462,8 @@ OPTIONS:
 </code></pre></div>
 <p><strong>参数解释</strong></p>
 <ul>
-<li><code>--target</code>：指定生成路径；</li>
-<li><code>--passwd</code>：指定私钥密码。</li>
+<li><code>target</code>：指定生成路径；</li>
+<li><code>passwd</code>：指定私钥密码。</li>
 </ul>
 <p><strong>示例说明</strong></p>
 <div class="highlight"><pre><span></span><code>$ bitxhub key gen --target ~/.bitxhub
@@ -2379,6 +2492,7 @@ key.json key is generated under directory /Users/xxx/.bitxhub
 0x3Db84D019fCd3A845e2fB3A21B56812Ffd933f19
 </code></pre></div>
 <h3 id="bitxhub-version">bitxhub version</h3>
+<h4 id="_4"><strong>功能</strong></h4>
 <p>该命令<code>bitxhub version</code>显示BitXHub的版本信息。它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。</p>
 <div class="highlight"><pre><span></span><code>NAME:
    bitxhub version - BitXHub version
@@ -2394,7 +2508,7 @@ System version: darwin/amd64
 Golang version: go1.14.15
 </code></pre></div>
 <h3 id="bitxhub-cert">bitxhub cert</h3>
-<p><strong>功能</strong></p>
+<h4 id="_5"><strong>功能</strong></h4>
 <p>该命令<code>bitxhub cert</code>提供一系列x509标准的证书工具，服务于中继链节点的准入机制。它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。说明信息如下:</p>
 <div class="highlight"><pre><span></span><code>NAME:
    BitXHub cert - Certification tools
@@ -2410,7 +2524,7 @@ COMMANDS:
    priv    Generate and show private key <span class="k">for</span> certificate
    verify  verify cert
 </code></pre></div>
-<p><strong>子命令</strong></p>
+<h4 id="_6"><strong>子命令</strong></h4>
 <h4 id="bitxhub-cert-ca">bitxhub cert ca</h4>
 <p>生成根CA证书</p>
 <div class="highlight"><pre><span></span><code>bitxhub cert ca -h
@@ -2464,7 +2578,7 @@ OPTIONS:
 <p><strong>参数解释</strong></p>
 <ul>
 <li><code>csr</code>: 指定CSR描述文件路径；</li>
-<li>is_ca: 指定签发人是否为CA证书；</li>
+<li><code>is_ca</code>: 指定签发人是否为CA证书；</li>
 <li><code>key</code>: 指定当前签发人私钥路径；</li>
 <li><code>cert</code>: 指定当前签发人证书路径；</li>
 <li><code>target</code>: 指定生成的证书路径。</li>
@@ -2532,6 +2646,7 @@ OPTIONS:
 QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
 </code></pre></div>
 <h3 id="bitxhub-client">bitxhub client</h3>
+<h4 id="_7"><strong>功能</strong></h4>
 <p>该命令<code>bitxhub client</code>提供中继链节点的客户端操作命令。它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
 子命令信息如下:</p>
 <div class="highlight"><pre><span></span><code>NAME:
@@ -2554,14 +2669,14 @@ COMMANDS:
 <p><strong>参数解释</strong></p>
 <ul>
 <li><code>gateway</code>: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；</li>
-<li><code>cert</code>: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
-<div class="highlight"><pre><span></span><code>OPTIONS:
---gateway value  Specific gateway address (default: &quot;http://localhost:9091/v1/&quot;)
---cert value     Specific ca cert file if https is enabled
---help, -h       show help
-</code></pre></div>
-<strong>子命令</strong></li>
+<li><code>cert</code>: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；</li>
 </ul>
+<div class="highlight"><pre><span></span><code>OPTIONS:
+--gateway value  Specific gateway address <span class="o">(</span>default: <span class="s2">&quot;http://localhost:9091/v1/&quot;</span><span class="o">)</span>
+--cert value     Specific ca cert file <span class="k">if</span> https is enabled
+--help, -h       show <span class="nb">help</span>
+</code></pre></div>
+<h4 id="_8"><strong>子命令</strong></h4>
 <h4 id="bitxhub-client-account">bitxhub client account</h4>
 <p>账户信息查询。
 <div class="highlight"><pre><span></span><code>bitxhub client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
@@ -2751,9 +2866,9 @@ OPTIONS:
 </code></pre></div>
 <strong>参数解释</strong></p>
 <ul>
-<li><code>--id</code>：必选参数。提案id，生成提案时将在控制台打印。</li>
-<li><code>--info</code>：必选参数。是否通过提案。approve为通过，reject为拒绝。</li>
-<li><code>--reason</code>：必选参数。投票理由说明。</li>
+<li><code>id</code>：必选参数。提案id，生成提案时将在控制台打印。</li>
+<li><code>info</code>：必选参数。是否通过提案。approve为通过，reject为拒绝。</li>
+<li><code>reason</code>：必选参数。投票理由说明。</li>
 </ul>
 <p><strong>示例说明</strong></p>
 <div class="highlight"><pre><span></span><code>$ bitxhub client governance vote --info approve --reason <span class="nb">test</span> --id 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0

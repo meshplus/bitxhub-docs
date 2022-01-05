@@ -829,8 +829,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pier-client-rule" class="md-nav__link">
-    pier client rule
+  <a href="#pier-client-rule-deploy" class="md-nav__link">
+    pier client rule deploy
   </a>
   
 </li>
@@ -1739,8 +1739,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#pier-client-rule" class="md-nav__link">
-    pier client rule
+  <a href="#pier-client-rule-deploy" class="md-nav__link">
+    pier client rule deploy
   </a>
   
 </li>
@@ -1873,8 +1873,10 @@ OPTIONS:
 pier <span class="o">[</span>--repo &lt;repository&gt;<span class="o">]</span> client register --pier_id &lt;connect Appchain addr&gt; --name &lt;srcAppchain name&gt; --type &lt;appchain type&gt; --validators &lt;path of appchain validators file&gt; --desc &lt;description&gt; --consensusType &lt;appchain consensus type&gt; --version &lt;appchain version&gt;
 
 <span class="c1"># 具体样例</span>
-<span class="nb">export</span> <span class="nv">idA</span><span class="o">=</span><span class="k">$(</span>pier --repo <span class="nv">$HOME</span>/.pier1 id<span class="k">)</span>
-<span class="nb">export</span> <span class="nv">idB</span><span class="o">=</span><span class="k">$(</span>pier --repo <span class="nv">$HOME</span>/.pier2 id<span class="k">)</span>
+
+$ <span class="nv">idA</span><span class="o">=</span><span class="k">$(</span>pier --repo <span class="nv">$HOME</span>/.pier1 id<span class="k">)</span>
+$ <span class="nv">idB</span><span class="o">=</span><span class="k">$(</span>pier --repo <span class="nv">$HOME</span>/.pier2 id<span class="k">)</span>
+
 <span class="c1"># pier1在pier2上注册</span>
 $ pier --repo <span class="nv">$HOME</span>/.pier2 client register --pier_id <span class="si">${</span><span class="nv">idA</span><span class="si">}</span> --name eth1 --type ethereum --validators <span class="nv">$HOME</span>/.pier1/ethereum/ether.validators --desc <span class="s2">&quot;test register direct eth1&quot;</span> --consensusType Pos --version <span class="m">1</span>.0.0
 <span class="c1"># 控制台输出</span>
@@ -1902,21 +1904,27 @@ appchain register successfully, appchain is 0x23Fb0E7eF676467563d37D820F1b1Fddb0
 </code></pre></div>
 <p>说明pier1所绑定的eth1在pier2注册成功。</p>
 <h2 id="3">3. 部署验证规则</h2>
-<h3 id="pier-client-rule">pier client rule</h3>
+<h3 id="pier-client-rule-deploy">pier client rule deploy</h3>
 <p>在注册完应用链后，还需要在网关部署验证规则，命令如下：</p>
-<div class="highlight"><pre><span></span><code>pier <span class="o">[</span>--repo &lt;repository&gt;<span class="o">]</span> client rule --pier_id &lt;connect Appchain addr&gt; --path &lt;rule_file&gt;
+<div class="highlight"><pre><span></span><code>NAME:
+   Pier rule deploy - Deploy validation rule
+
+USAGE:
+   Pier rule deploy <span class="o">[</span><span class="nb">command</span> options<span class="o">]</span> <span class="o">[</span>arguments...<span class="o">]</span>
+
+OPTIONS:
+   --path value       Specific rule path
+   --method value     Specific did sub method name<span class="o">(</span>like appchain<span class="o">)</span>
+   --admin-key value  Specific admin key path
+   --rule-url value   Specific appchain rule url
 </code></pre></div>
-<p>参数解释：</p>
+<p><strong>参数解释：</strong></p>
 <ul>
-<li>
-<p><code>--repo</code>：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。</p>
-</li>
-<li>
-<p><code>--pier_id</code>：必选参数，指定要连接的目的网关地址，网关地址可通过<code>pier [--repo &lt;coonect pier's repository&gt;] id</code>获得。</p>
-</li>
-<li>
-<p><code>--path</code>：必选参数，指定应用链的验证规则所在文件，一般为应用链插件配置文件下的<code>xxx.wasm</code>等。</p>
-</li>
+<li><code>--repo</code>：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。</li>
+<li><code>--path</code>：必选参数，指定应用链的验证规则所在文件，一般为应用链插件配置文件下的<code>xxx.wasm</code>等。</li>
+<li><code>--method</code>：必选参数，指定did名称。</li>
+<li><code>--admin-key</code>：必选参数，指定admin的私钥地址。</li>
+<li><code>--pier_id</code>：必选参数，指定验证规则的url。</li>
 </ul>
 <h3 id="_3">示例说明</h3>
 <p>比如pier1与pier2进行ethereum应用链的注册，命令执行如下：</p>
