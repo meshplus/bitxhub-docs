@@ -25,8 +25,8 @@
 下面以Ethereum和Fabric为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
 
 === "Ethereum"
-    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以下载pier-client-ethereum项目：	`git clone https://github.com/meshplus/pier-client-ethereum.git && git checkout v1.6.2`
-    
+    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.6.2/example)的exampe文件夹中获取。
+
     **说明：**
     1. 合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约；
     2. 首先部署broker合约，然后将返回的合约地址填入transfer合约中的`BrokerAddr`字段，这样业务合约才能正确跨链调用。
@@ -41,7 +41,8 @@
     
     Step2: 获取需要部署的合约文件并解压
     ```
-    git clone https://github.com/meshplus/pier-client-ethereum.git && git checkout v1.6.2
+    git clone https://github.com/meshplus/pier-client-fabric.git 
+    cd pier-client-fabric && git checkout v1.6.2
     # 需要部署的合约文件就在example目录下
     #解压即可
     unzip -q contracts.zip
@@ -105,7 +106,7 @@
     cd pier-client-fabric && git checkout v1.6.2
     make fabric1.4
     
-    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文  件；
+    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
     2.pier编译之后会在跨链网关项目bin目录生成同名的二进制文件，需要将它拷贝到配置主目录方便后续执行。
     ```
     
@@ -115,7 +116,7 @@
 
 经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
 
-### 修改Pier自身的配置
+### 修改Pier配置
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 ```
 ./pier --repo=~/.pier init
@@ -179,9 +180,10 @@ validators = [
 
 ### 修改应用链插件的配置
 
-应用链插件的配置目录即是pier.toml中的config字段，它的模板在`pier-client-ethereum`或`pier-client-ethereum`项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可
+应用链插件的配置目录即是pier.toml中的config字段，它的模板在`pier-client-ethereum`或`pier-client-ethereum`项目（之前拉取跨链合约时已经clone），直接在GitHub上下载代码即可。
 
 === "Ethereum"
+
     ```shell
     # 将ethereum插件拷贝到plugins目录下
     cp ether-client ~/.pier/plugins/
@@ -189,7 +191,7 @@ validators = [
     cd pier-client-ethereum
     cp ./config $HOME/.pier/ether
     ```
-    其中重要配置如下：
+​    其中重要配置如下：
     ```shell
     ├── account.key
     ├── broker.abi
@@ -198,17 +200,26 @@ validators = [
     ├── password
     └── validating.wasm
     ```
-    **说明**：account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费），broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi，ether.validators和validating.wasm一般不需要修改。ethereum.toml是需要重点修改的，需要根据应用链实际情况填写ethereum网络地址、broker合约地址及abi，账户的key等，示例如下：
+说明**：
+
+- account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+- broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
+- ether.validators和validating.wasm一般不需要修改。
+- ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
 
     ```
     [ether]
     addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
     name = "ether-kovan"
     ## 此处合约地址需要替换成变量代表的实际字符串
-    contract_address = "$brokerAddr-kovan"
+    contract_address = "$brokerAddr"
     abi_path = "broker.abi"
     key_path = "account.key"
     password = "password"
+    min_confirm = 1
+    
+    [contract_abi]
+    "($transfer) Addr"="transfer.abi"
     ```
 
 === "Fabric"

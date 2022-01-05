@@ -99,7 +99,7 @@ cargo install --git https://github.com/alexcrichton/wasm-gc
 然后使用wasm-gc进行精简：
 
 ```text
-wasm-gc xxx.wasm small-xxx.wasm
+wasm-gcxxx.wasm small-xxx.wasm
 ```
 
 获取的small-xxx.wasm就是可以部署到中继链的验证规则。
