@@ -47,8 +47,10 @@ OPTIONS:
 pier [--repo <repository>] client register --pier_id <connect Appchain addr> --name <srcAppchain name> --type <appchain type> --validators <path of appchain validators file> --desc <description> --consensusType <appchain consensus type> --version <appchain version>
 
 # 具体样例
-export idA=$(pier --repo $HOME/.pier1 id)
-export idB=$(pier --repo $HOME/.pier2 id)
+
+$ idA=$(pier --repo $HOME/.pier1 id)
+$ idB=$(pier --repo $HOME/.pier2 id)
+
 # pier1在pier2上注册
 $ pier --repo $HOME/.pier2 client register --pier_id ${idA} --name eth1 --type ethereum --validators $HOME/.pier1/ethereum/ether.validators --desc "test register direct eth1" --consensusType Pos --version 1.0.0
 # 控制台输出
@@ -90,21 +92,31 @@ $ pier --repo $HOME/.pier2 client get --pier_id 0xfF8199Fae48C808b45667DA0CcaAEe
 
 ## 3. 部署验证规则
 
-### pier client rule
+### pier client rule deploy
 
 在注册完应用链后，还需要在网关部署验证规则，命令如下：
 
 ```shell
-pier [--repo <repository>] client rule --pier_id <connect Appchain addr> --path <rule_file>
+NAME:
+   Pier rule deploy - Deploy validation rule
+
+USAGE:
+   Pier rule deploy [command options] [arguments...]
+
+OPTIONS:
+   --path value       Specific rule path
+   --method value     Specific did sub method name(like appchain)
+   --admin-key value  Specific admin key path
+   --rule-url value   Specific appchain rule url
 ```
 
-参数解释：
+**参数解释：**
 
 - `--repo`：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。
-
-- `--pier_id`：必选参数，指定要连接的目的网关地址，网关地址可通过`pier [--repo <coonect pier's repository>] id`获得。
-
-* `--path`：必选参数，指定应用链的验证规则所在文件，一般为应用链插件配置文件下的`xxx.wasm`等。
+- `--path`：必选参数，指定应用链的验证规则所在文件，一般为应用链插件配置文件下的`xxx.wasm`等。
+- `--method`：必选参数，指定did名称。
+- `--admin-key`：必选参数，指定admin的私钥地址。
+- `--pier_id`：必选参数，指定验证规则的url。
 
 ### 示例说明
 

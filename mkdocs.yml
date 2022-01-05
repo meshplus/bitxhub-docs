@@ -108,7 +108,7 @@ nav:
       - 开发手册:
           - 命令行说明:
             - 中继链BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
-            - 跨链网关Pier: bitxhub/dev/cmd/pier.md
+            - 跨链网关Pier: bitxhub/dev/cmd/pier_cmd.md
           - 跨链合约开发: bitxhub/dev/cross_contract.md
           - 应用链插件编写: bitxhub/dev/plugin.md
           - 验证规则编写: bitxhub/dev/rule.md
@@ -116,7 +116,7 @@ nav:
       - 设计文档:
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
           - 跨链事务方案: bitxhub/design/interchain_transaction.md
-          - 跨链网关设计方案: bitxhub/design/pier_cmd.md
+          - 跨链网关设计方案: bitxhub/design/pier.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
       - 运维:

@@ -16,19 +16,16 @@ COMMANDS:
    appchain    Command about appchain in bitxhub
    client      Command about appchain in pier
    id          Get appchain id
-   init        Initialize pier local configuration
+   init        Initialize pier core local configuration
+   config      Initialize pier plugins configuration
    interchain  Query interchain info
    p2p         Command about p2p
    rule        Command about rule
    start       Start a long-running daemon process
    version     Show version about ap
+   proposals   proposals manage command
+   show        Show pier key from repo
    help, h     Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --repo value   Pier repository path
-   --tls          enable tls between pier and bitxhub or not
-   --help, -h     show help
-   --version, -v  print the version
 
 ```
 
@@ -61,9 +58,10 @@ USAGE:
    Pier appchain command [command options] [arguments...]
 
 COMMANDS:
-   register  Register appchain in bitxhub
+   method    Command about appchain method
+   did       Command about appchain did
+   register  Register pier to bitxhub
    update    update appchain in bitxhub
-   freeze    freeze appchain in bitxhub
    activate  activate appchain in bitxhub
    logout    logout appchain in bitxhub
    get       Get appchain info
@@ -140,27 +138,139 @@ $ pier --repo $HOME/.pier1 id
 
 **用法**
 
-```
+```shell
 NAME:
-   pier init - Initialize pier local configuration
+   Pier init - Initialize pier core local configuration
 
 USAGE:
-   pier init [arguments...]
+   Pier init command [command options] [arguments...]
+
+COMMANDS:
+   relay   Initialize pier relay mode configuration
+   direct  Initialize pier direct mode configuration
+   union   Initialize pier union mode configuration
+
+OPTIONS:
+   --http-port value    Specify http port (default: 44544)
+   --pprof-port value   Specify pprof port (default: 44555)
+   --enable-tls         Enable TLS or not
+   --tlsca value        Specify TLS CA certificate path (default: "certs/ca.pem")
+   --common-name value  Specify common name to verify (default: "localhost")
+   --ha value           Specify if pier will run in single mode or high availability mode (default: "single")
+   --help, -h           show help
 ```
 
 **具体描述**
 
+**参数解释**
+
+- `--http-port`：可选参数，指定监听的http端口号，默认为44544。
+- `--pprof-port`：可选参数，指定pprof的端口号，默认为44555.
+- `--enable-tls`：可选参数，是否进行TLS加密传输，默认为false。
+- `--tlsca` ：可选参数，TLS CA路径，默认为certs/ca.pem。
+- `--common-name` ：可选参数，指定ca证书的域名。默认为localhost。
+- `--ha`：可选参数，选择网关是否高可用，高可用功能为商业版本，默认只有单个网关。
+
+
+
+#### pier init delay 
+
+中继模式网关初始化，命令参数如下：
+
+```shell
+NAME:
+   Pier init relay - Initialize pier relay mode configuration
+
+USAGE:
+   Pier init relay [command options] [arguments...]
+
+OPTIONS:
+   --addrs value       Specify bitxhub nodes' address (default: "localhost:60011", "localhost:60012", "localhost:60013", "localhost:60014")
+   --quorum value      Specify the quorum number of BitXHub (default: 2)
+   --validators value  Specify validators of bitxhub (default: "0x000f1a7a08ccc48e5d30f80850cf1cf283aa3abd", "0xe93b92f1da08f925bdee44e91e7768380ae83307", "0xb18c8575e3284e79b92100025a31378feb8100d6", "0x856E2B9A5FA82FD1B031D1FF6863864DBAC7995D")
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--addrs`：可选参数，指定bixhub各节点地址及端口号。
+- `--quorum`：可选参数，指定bixhub集群的quorum个数，与具体共识算法与节点规模相关。
+- `--validators`：可选参数，指定bitxhub管理员节点地址。
+
+
+
+#### pier init direct 
+
+直连模式网关初始化，命令参数如下：
+
+```shell
+NAME:
+   Pier init direct - Initialize pier direct mode configuration
+
+USAGE:
+   Pier init direct [command options] [arguments...]
+
+OPTIONS:
+   --peers value  Specify counter party peers to connect
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--peers`：必选参数，指定直连模式下pier的网络信息（包含自己）。
+
 **样例：**
+
+其中地址为pier启动时所在地址，端口号可任意指定可用端口，
 
 ```shell
 # 初始化pier1相关配置，配置文件目录为$HOME/.pier1
-$ pier --repo $HOME/.pier1 init
-├── api		//直连模式下的api信息
-├── certs
-│   └── ca.pem
-├── key.json
-├── node.priv
-└── pier.toml
+
+$ PID1=$(pier --repo .pier1 p2p id)
+$ PID2=$(pier --repo .pier1 p2p id)
+
+$ pier --repo .pier1 init direct --peers /ip4/127.0.0.1/tcp/3001/p2p/$PID1 --peers /ip4/127.0.0.1/tcp/3002/p2p/$PID2
+```
+
+
+
+#### Pier init union
+
+大规模模式下的初始化配置，命令如下：
+
+```shell
+NAME:
+   Pier init union - Initialize pier union mode configuration
+
+USAGE:
+   Pier init union [command options] [arguments...]
+
+OPTIONS:
+   --addrs value       Specify bitxhub nodes' address (default: "localhost:60011", "localhost:60012", "localhost:60013", "localhost:60014")
+   --connectors value  Specify the remote union peers to connect
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--addrs`：可选参数，指定bixhub各节点地址及端口号。
+
+- `--connectors`：必选参数，指定大规模模式下pier的网络信息（包含自己）。
+
+**样例：**
+
+其中地址为pier启动时所在地址，端口号可任意指定可用端口，
+
+```shell
+# 初始化pier1相关配置，配置文件目录为$HOME/.pier1
+
+$ PID1=$(pier --repo .pier1 p2p id)
+$ PID2=$(pier --repo .pier1 p2p id)
+
+$ pier --repo .pier1 init union --peers /ip4/127.0.0.1/tcp/3001/p2p/$PID1 --peers /ip4/127.0.0.1/tcp/3002/p2p/$PID2
 ```
 
 
@@ -261,6 +371,11 @@ USAGE:
 
 COMMANDS:
    deploy  Deploy validation rule
+   update  update master rule
+   logout  logout validation rule
+
+OPTIONS:
+   --help, -h  show help
 ```
 
 **具体描述**
@@ -331,7 +446,7 @@ USAGE:
 ```shell
 $ pier --repo $HOME/.pier1 version
 
-Pier version: dev-release-1.6-1b5b79f
+Pier version: dev-release-1.11-e1e7c14
 App build date: 2021-12-01T17:50:14
 System version: darwin/amd64
 Golang version: go1.15.13
