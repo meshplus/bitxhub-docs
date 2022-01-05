@@ -17,11 +17,11 @@
 
 #### 2. 跨链网关监听跨链事件
 
-跨链网关 A 通过应用链插件 A 监听到跨链事件Ta，应用链插件实质为跨链网关与应用链的交互模块，其设计思想参考[跨链网关设计方案](/bitxhub/bitxhub/design/pier/)。
+跨链网关 A 通过应用链插件 A 监听到跨链事件Ta，应用链插件实质为跨链网关与应用链的交互模块，其设计思想参考[跨链网关设计方案](/v1.11/bitxhub/design/pier/)。
 
 #### 3. 跨链网关转发跨链事件
 
-跨链网关 A 将跨链交易格式转换为中继链通用的<a href="/bitxhub/bitxhub/introduction/summary/#ibtpAnchor">IBTP结构</a>，并将IBTP封装为bxh交易类型 bxhTx1 提交到中继链BitXHub上，bxh交易类型如下图所示。
+跨链网关 A 将跨链交易格式转换为中继链通用的<a href="/v1.11/bitxhub/introduction/summary/#ibtpAnchor">IBTP结构</a>，并将IBTP封装为bxh交易类型 bxhTx1 提交到中继链BitXHub上，bxh交易类型如下图所示。
 
 | 参数      | 说明                                    |
 | --------- | --------------------------------------- |

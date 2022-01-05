@@ -1,6 +1,6 @@
 site_name: Bitxhub Document
-repo_url: https://github.com/meshplus/bitxhub
-repo_name: meshplus/bitxhub
+repo_url: https://github.com/meshplus/bitxhub-docs
+repo_name: meshplus/bitxhub-docs
 extra_css:
   - stylesheets/extra.css
 theme:
@@ -28,7 +28,7 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to light mode
-edit_uri: edit/master/docs/docs
+edit_uri: edit/master/docs
 
 extra:
   version:
