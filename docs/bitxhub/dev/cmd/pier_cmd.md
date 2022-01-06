@@ -275,13 +275,130 @@ $ pier --repo .pier1 init union --peers /ip4/127.0.0.1/tcp/3001/p2p/$PID1 --peer
 
 
 
+### pier config
+
+`pier config`命令用于配置应用链相关信息。
+
+**用法**
+
+```shell
+NAME:
+   Pier config - Initialize pier plugins configuration
+
+USAGE:
+   Pier config command [command options] [arguments...]
+
+COMMANDS:
+   fabric    Initialize pier and fabric plugin configuration
+   ethereum  Initialize pier and ethereum plugin configuration
+
+OPTIONS:
+   --redownload  Re-download plugin or not
+   --help, -h    show help
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--redownload`：可选参数，是否重新下载插件，默认为true。
+
+**子命令**
+
+#### pier config fabric
+
+配置fabric插件相关配置信息，并下载`pier-client-fabric`二进制文件，命令描述如下：
+
+```shell
+NAME:
+   Pier config fabric - Initialize pier and fabric plugin configuration
+
+USAGE:
+   Pier config fabric [command options] [arguments...]
+
+OPTIONS:
+   --crypto-config value  Specify the path to crypto-config directory
+   --config value         Specify the path to fabric config.yaml
+   --event-filter value   Specify the event filter on fabric chaincode
+   --username value       Specify the username to invoke fabric chaincode
+   --ccid value           Specify chaincode id to invoke
+   --channel-id value     Specify channel id
+   --org value            Specify the organization
+```
+
+**参数解释**
+
+- `--crypto-config`：必选参数，指定fabric的文件目录，一般与repo目录一致。
+
+- `--config`：可选参数，指定fabric的config.yaml文件目录，默认在$repo/fabric目录下。
+- `--event-filter`：可选参数，根据eventName过滤所需的事件。
+- `--username`：可选参数，指定调用合约的用户名，默认为Admin。
+- `--ccid`：可选参数，CCID 应匹配fabric的peer节点上链码的包名。
+- `--channel-id`：可选参数，fabric链码部署所在的通道名。
+- `--org`：可选参数，fabric上指定的peer节点所属的组织。
+
+**样例：**
+
+```shell
+# 注意，由于安装包的地址为github，下载可能较慢，可以重试几次或通过设置代理
+$ pier --repo .pier2 config fabric --crypto-config $(pwd)/.pier2
+
+Start downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.11.1/fabric-client-v1.11.1-darwin
+Finish downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.11.1/fabric-client-v1.11.1-darwin
+```
+
+
+
+#### pier config ethereum
+
+配置ethereum插件相关配置信息，并下载`pier-client-ethereum`二进制文件，命令描述如下：
+
+```shell
+NAME:
+   Pier config ethereum - Initialize pier and ethereum plugin configuration
+
+USAGE:
+   Pier config ethereum [command options] [arguments...]
+
+OPTIONS:
+   --addr value          Specify ethereum websocket address
+   --broker value        Specify ethereum broker contract address
+   --key value           Specify the ethereum key to sign the transaction
+   --password value      Specify the password of the key
+   --min-confirm value   Specify minimum blocks to confirm the transaction (default: 0)
+   --transfer value      Specify the transfer contract address
+   --data-swapper value  Specify the data swapper contract address
+```
+
+**参数解释**
+
+- `--addr`：以太坊的websocket地址，如果是自己搭建的私链，一般为ws://localhost:8546。
+- `--broker`：必选参数，broker合约部署地址。
+- `--key`：以太坊用于交易签名的账户私钥。默认为repo目录下的account.key，如果是自己搭建的私链，可以将datadir/keystore下的私钥复制到account.key中。
+- `--password`：以太坊账户密码。
+- `--min-confirm`：最小确认数，用于本地测试建议设置为0。
+- `--transfer`：transfer合约地址。
+- `--data-swapper`：data swapper合约地址。
+
+**样例：**
+
+```shell
+# 注意，由于安装包的地址为github，下载可能较慢，可以重试几次或通过设置代理
+$ pier --repo .pier2 config ethereum --broker 0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8 --addr ws://localhost:8546 --key account.key --password password --min-confirm 0
+
+Start downloading https://github.com/meshplus/pier-client-ethereum/releases/download/v1.11.2/eth-client-v1.11.2-darwin
+Finish downloading https://github.com/meshplus/pier-client-ethereum/releases/download/v1.11.2/eth-client-v1.11.2-darwin
+```
+
+
+
 ### pier interchain
 
 `pier interchain`命令用于查询应用链的跨链交易信息。
 
-用法
+**用法**
 
-```
+```shell
 NAME:
    Pier interchain - Query interchain info
 
@@ -304,18 +421,23 @@ OPTIONS:
 
 **子命令**
 
-```
-USAGE:
-   Pier interchain command [command options] [arguments...]
+#### Pier interchain ibtp
 
-COMMANDS:
-   ibtp  Query ibtp by id
+```
+NAME:
+   Pier interchain ibtp - Query ibtp by id
+
+USAGE:
+   Pier interchain ibtp [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specific ibtp id
 ```
 
 **样例：**
 
 ```shell
-pier --repo $HOME/.pier1 interchain --key $HOME/.pier1/key.json ibtp --id 0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-1
+$ pier --repo $HOME/.pier1 interchain --key $HOME/.pier1/key.json ibtp --id 0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb-0x23Fb0E7eF676467563d37D820F1b1Fddb0f9a2E1-1
 
 # 控制台输出
 INFO[16:52:41.917] Establish connection with bitxhub localhost:60013 successfully  module=rpcx
