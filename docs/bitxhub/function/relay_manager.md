@@ -183,7 +183,10 @@ the activate request was submitted successfully, proposal id is 0xCc9b389cEA6b1E
 
 管理员进行审核并投票，与注册应用链部分一致，不再赘述。
 
-## 5. 注销应用链
+
+
+## 4. 注销应用链
+
 ### pier appchain logout
 如果应用链退出跨链系统，不再进行跨链，应用链管理员可以向中继链提交注销应用链的提案。命令如下：
 ```shell
@@ -198,6 +201,10 @@ the logout request was submitted successfully, proposal id is 0xCc9b389cEA6b1E28
 ```
 
 管理员进行审核并投票，与注册应用链部分一致，不再赘述。
+
+
+
+## 5. 获取应用链信息
 
 ### Pier appchain get 
 

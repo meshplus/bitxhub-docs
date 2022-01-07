@@ -59,7 +59,6 @@ USAGE:
 
 COMMANDS:
    method    Command about appchain method
-   did       Command about appchain did
    register  Register pier to bitxhub
    update    update appchain in bitxhub
    activate  activate appchain in bitxhub
@@ -574,3 +573,60 @@ System version: darwin/amd64
 Golang version: go1.15.13
 ```
 
+
+
+### pier propsals 
+
+`pier proposals`命令用于撤销指定的提案。
+
+**用法**
+
+```shell
+NAME:
+   Pier proposals - proposals manage command
+
+USAGE:
+   Pier proposals command [command options] [arguments...]
+
+COMMANDS:
+   withdraw  withdraw a proposal
+
+```
+
+**子命令**
+
+#### Pier proposals withdraw
+
+```shell
+NAME:
+   Pier proposals withdraw - withdraw a proposal
+
+USAGE:
+   Pier proposals withdraw [command options] [arguments...]
+
+OPTIONS:
+   --admin-key value  Specific admin key path
+   --id value         proposal id
+   --reason value     Specify governance reason
+
+```
+
+**样例**
+
+当想要撤销某个提案时（如注册应用链的提案）使用如下命令。其中，proposal id 为想要撤销的提案号，提案生成参考[中继模式应用链管理](/v1.11/bitxhub/function/relay_manager/)。
+
+```shell
+# 应用链所在网关撤销提案
+$ pier --repo $(pwd) proposals withdraw --admin-key ./key.json --id 0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0 --reason "withdraw proposal"
+
+# 撤销提案后，在中继链查询提案状态可以看到提案状态为：withdrawn by the proposal sponsor
+$ bitxhub client governance proposal query -id 0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0
+========================================================================================
+Id                                            ManagedObjectId               Type         EventType  Status  A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
+--                                            ---------------               ----         ---------  ------  ---  --------  -------------  ----------           -----------  ---------
+0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0  did:bitxhub:fabricappchain:.  AppchainMgr  register   reject  0/0  4/4/3     false/false    1643088788665643000               withdrawn by the proposal sponsor
+========================================================================================
+* A/R：approve num / reject num
+* IE/AE/TE：the total number of electorate at the time of the initial proposal / the number of available electorate currently /the minimum threshold for votes to take effect
+* Special/Super：is special proposal / is super admin voted
+```
