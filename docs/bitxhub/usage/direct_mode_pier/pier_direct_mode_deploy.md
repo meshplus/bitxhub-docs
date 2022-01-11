@@ -12,19 +12,19 @@
 # 编译跨链网关本身
 cd $HOME
 git clone https://github.com/meshplus/pier.git
-cd pier
+cd pier && git checkout v1.18.0
 make prepare && make install
 
 # 编译Fabric
 cd $HOME
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric
+cd pier-client-fabric && git checkout v1.18.0
 make fabric1.4
 
 # 编译以太坊私链插件
 cd $HOME
 git clone https://github.com/meshplus/pier-client-ethereum.git
-cd pier-client-ethereum
+cd pier-client-ethereum && git checkout v1.18.0
 make eth
 
 # 插件执行make的编译之后，都会在项目目录的之下的build目录生成相应的二进制文件
@@ -40,10 +40,10 @@ pier version
 如果正常安装会打印出类似下面的说明
 
 ```text
-Pier version: dev-release-1.6-1b5b79f
-App build date: 2021-12-01T17:50:14
-System version: darwin/amd64
-Golang version: go1.15.13
+Pier version: dev-release-1.18-3826f39
+App build date: 2022-01-11T14:16:56
+System version: linux/amd64
+Golang version: go1.14.13
 ```
 
 ### **二进制安装**
@@ -53,7 +53,7 @@ Golang version: go1.15.13
 - [Pier二进制安装](https://github.com/meshplus/pier/releases)：, 根据需要的版本进行下载即可。
 - 网关插件安装：[pier-client-fabric](https://github.com/meshplus/pier-client-fabric/releases) 和 [pier-client-ethereum](https://github.com/meshplus/pier-client-ethereum/releases)  的应用链插件的二进制。
 
-注意：网关与网关插件对应大版本号一致即可。如pier v1.6.x对应pier-client-ethereum v1.6.x。
+注意：网关与网关插件对应大版本号一致即可。如pier v1.18.x对应pier-client-ethereum v1.18.x。
 
 ## 修改配置文件
 
@@ -82,17 +82,17 @@ tree -L 1 ~/.pier1
 
 导入插件二进制（hyperchain的插件二进制和配置文件示例需要内部授权）
 
-```
+```shell
 mkdir -p ~/.pier1/plugins
 cp fabric-client-1.4 ~/.pier1/plugins
 ```
 
 pier.toml 文件描述链跨链网关启动的必要配置，具体的配置项和说明如下：
 
-| 配置项     | 说明                              |
-| ---------- | --------------------------------- |
-| [port]     | http、grpc服务端口                |
-| [log]      | 日志输出相关设置                  |
+| 配置项     | 说明                             |
+| ---------- | --------------------------------|
+| [port]     | http、grpc服务端口               |
+| [log]      | 日志输出相关设置                 |
 | [bitxhub]  | 连接的bitxhub的IP地址、验证人地址 |
 | [appchain] | 对接的应用链的基础配置信息        |
 
@@ -100,9 +100,9 @@ pier.toml 文件描述链跨链网关启动的必要配置，具体的配置项�
 
 - 修改端口信息
 
-```none
+```toml
 [port]
-// 如果不冲突的话，可以不用修改
+# 如果不冲突的话，可以不用修改
 http  = 44544
 pprof = 44555
 ```
@@ -116,7 +116,7 @@ http://localhost:<http port>/v1/
 
 - 修改跨链网关信息
 
-```none
+```toml
 [mode]
 type = "direct" # relay or direct
 ...
@@ -129,12 +129,14 @@ peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJ
 
 - 修改应用链信息
 
-```none
+```toml
 [appchain]
-// 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
-plugin = "fabric-client-1.4"
-// 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
+# 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
 config = "fabric"
+# 应用链ID
+id = "fabappchain"
+# 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
+plugin = "fabric-client-1.4"
 ```
 
 网关pier适配以太坊插件的配置仿照上述步骤即可。
@@ -145,13 +147,14 @@ Fabric插件配置的模板在`pier-client-fabric`项目中，并且已经在Git
 
 ```shell
 # 转到pier-client-fabric项目路径下
-git clone https://github.com/meshplus/pier-client-fabric.git && cd pier-client-fabric
+git clone https://github.com/meshplus/pier-client-fabric.git 
+cd pier-client-fabric && git checkout v1.18.0
 cp ./config $HOME/.pier1/fabric
 ```
 
 配置目录结构
 
-```shell
+```text
 ├── crypto-config/
 ├── config.yaml
 ├── fabric.toml
@@ -201,7 +204,7 @@ cp ./config $HOME/.pier1/fabric
 
   示例配置
 
-  ```
+  ```toml
   addr = "localhost:7053" // 若Fabric部署在服务器上，该为服务器地址
   event_filter = "interchain-event-name"
   username = "Admin"
@@ -237,13 +240,14 @@ ethereum插件配置的模板在`pier-client-ethereum`项目中，并且已经�
 
 ```shell
 # 转到pier-client-ethereum项目路径下
-git clone https://github.com/meshplus/pier-client-ethereum.git && cd pier-client-ethereum
+git clone https://github.com/meshplus/pier-client-ethereum.git 
+cd pier-client-ethereum && git checkout v1.18.0
 cp ./config $HOME/.pier2/ether
 ```
 
 配置目录结构
 
-```shell
+```text
 ├── account.key
 ├── broker.abi
 ├── data_swapper.abi
@@ -267,42 +271,55 @@ cp ./config $HOME/.pier2/ether
   cp <eth_datadir>/keystore/<account> $HOME/.pier2/ether/config/account.key
   ```
 
-- **修改Plugin配置文件ethereum.toml **
+- **修改Plugin配置文件ethereum.toml**
 
   配置项和说明：
 
-  | 配置项           | 说明                                  |
-  | ---------------- | ------------------------------------- |
+  | 配置项           | 说明                                 |
+  | ---------------- | ------------------------------------|
   | addr             | ethereum 区块链所在的服务器地址和端口 |
   | name             | 以太坊链名称                          |
   | contract_address | 部署的broker合约地址                  |
-  | key_path         | 账户信息                              |
-  | password         | 账户密码                              |
+  | key_path         | 账户信息文件路径                      |
+  | password         | 账户密码文件路径                      |
   | min_confirm      | 最低确认区块数                        |
-  | contract_abi     | 部署的业务合约地址及所对应的abi       |
+  | timeout_height   | 超时回滚的区块数                       |
 
   示例配置
 
-  ```
+  ```toml
   [ether]
-  addr = "ws://127.0.0.1:8546" // 若部署在服务器上，该为服务器地址
-  name = "appchain2"
-  contract_address = "0xC8C086200f92c9226b42079eCB3137eFc8752801"	// 该链部署的broker合约地址
-  key_path = "account.key"	// 确保提前更改了account.key
+  addr = "ws://localhost:8546"
+  name = "ether"
+  contract_address = "0x09f0a8c66bc8bC6e29bF0A425CDD7aa133F40571"
+  key_path = "account.key"
   password = "password"
   min_confirm = 1
-  
-  [contract_abi]
-  0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f="transfer.abi"	// 替换为该链部署的业务合约地址
+  timeout_height = 100
   ```
-
-- **修改Plugin配置文件abi信息**
-
-  broker合约和业务合约如果使用的是插件的`example`文件下的合约，则不用更改相关abi内容。如果使用自定义的broker合约或业务合约，请替换为对应的abi文件。
-
 ## 启动程序
 
+准备工作：
+1. 两条应用链上A和B都部署broker合约和业务合约transfer和dataSwapper
+  - 部署broker合约时需要指定应用链的chainID、admin，将Validator置为空等，admin为自己的账户地址。
+  - 部署业务合约时，需要在address输入对应的broker合约地址
+配置如下所示：
+
+```text
+"","appchain1",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
+"","appchain2",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
 ```
+![](../../../assets/direct1.png)
+2. 本链业务合约注册到broker合约并审核通过
+  - `register`: 在本链的业务合约注册到本链的broker合约（addr为本连链业务合约地址）
+  ![](../../../assets/direct2.png)
+  - `audit` : Admin管理员审核通过
+  ![](../../../assets/direct3.png)
+3. 本链注册对方应用链和服务
+  应用链和服务的注册的流程参照直连模式下[应用链管理](/v1.18/bitxhub/function/direct_manager/)
+4. 启动跨链网关
+
+```shell
 #以用户目录下的pier1为例
 pier --repo=~/pier1 start
 
@@ -314,16 +331,7 @@ pier --repo=~/pier2 start
 
 **说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
 
-直连模式下，两边的跨链网关需要相互注册同时部署验证规则
-
-~~~shell
-idA=$(pier --repo ~/pier1 id)
-idB=$(pier --repo ~/pier2 id)
-pier --repo ~/pier1 client register --pier_id ${idB} --name fab --type fabric --desc simple --version 1 --validators ~/pier1/fabric/fabric.validators --consensusType raft
-pier --repo ~/pier2 client register --pier_id ${idA} --name eth --type ethereum --desc simple --version 1 --validators ~/pier2/ethereum/ether.validators --consensusType raft
-pier --repo ~/pier1 client rule --pier_id ${idB} --path ~/pier1/fabric/rule.wasm
-pier --repo ~/pier2 client rule --pier_id ${idA} --path ~/pier2/ethereum/rule.wasm
-~~~
+直连模式下，两边的跨链网关对应
 
 完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作
 

@@ -12,11 +12,11 @@
 # 1. 首先拉取bitxhub项目源代码
 git clone https://github.com/meshplus/bitxhub.git
 # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
-cd bitxhub && git checkout v1.11.2 && make build
+cd bitxhub && git checkout v1.18.0 && make build
 # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
-# 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.11.2
+# 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.18.0
 ./bin/bitxhub version
-# 注意⚠️：v1.11.2版本的bitxhub共识通过模块化的方式提供
+# 注意⚠️：v1.18.0版本的bitxhub共识通过模块化的方式提供
 ```
 
 **提示：在bitxhub v1.7.0及以上的版本，我们也提供了一键生成部署所需的文件包的make命令：make release-binary，执行完成后可以在项目的dist目录看到符合您系统的压缩包，解压即可使用。**
@@ -25,7 +25,7 @@ cd bitxhub && git checkout v1.11.2 && make build
 
 #### 二进制直接下载
 
-除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v1.11.2)，链接中已经包含了所需的二进制和依赖库，您只需跟据实际情况选择合适的版本和系统下载即可，建议使用最新的BitXHub发布版本。
+除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v1.18.0)，链接中已经包含了所需的二进制和依赖库，您只需跟据实际情况选择合适的版本和系统下载即可，建议使用最新的BitXHub发布版本。
 
 
 
@@ -42,11 +42,11 @@ cd bitxhub && git checkout v1.11.2 && make build
 ```
 # 1. 解压二进制压缩包
 mkdir bitxhub && cd bitxhub
-cp ~/Downloads/bitxhub_darwin_x86_64_v1.11.2.tar.gz .
-tar -zxvf bitxhub_darwin_x86_64_v1.11.2.tar.gz
+cp ~/Downloads/bitxhub_darwin_x86_64_v1.18.0.tar.gz .
+tar -zxvf bitxhub_darwin_x86_64_v1.18.0.tar.gz
 # 2. 解压配置文件压缩包(以raft共识为例)
 mkdir raft-nodes
-tar -zxvf example_bitxhub_v1.11.2.tar.gz -C raft-nodes/
+tar -zxvf example_bitxhub_v1.18.0.tar.gz -C raft-nodes/
 # 3. 将bitxhub和依赖库文件分别拷贝到4个节点的配置目录（以node1为例）
 cp bitxhub raft-nodes/node1/
 cp libwasmer.dylib raft-nodes/node1/
@@ -100,6 +100,7 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 | **[cert]**     | 是否开启认证节点p2p通信证书           |
 | **[order]**    | 共识模块，作为模块进行加载            |
 | **[executor]** | 执行引擎类型                          |
+| **[crypto]**   | 支持加密算法类型                       |
 | **[ledger]**   | 账本类型                              |
 | **[genesis]**  | 创世节点配置                          |
 
@@ -107,7 +108,7 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 
 1. 根据您机器实际分配的端口进行变更：
 
-```javascript
+```shell
 [port]
   gateway = 9091
   grpc = 60011
@@ -122,6 +123,40 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
   plugin = "raft" 
 ```
 
+3. 模块投票策略选择
+ZeroPermission代表简单治理策略，不需要管理员投票通过，提案在发起后自动通过
+SimpleMajority代表简单多数策略，需要管理员投票通过，根据阈值决定参与投票的人数
+
+```shell
+[[genesis.strategy]]
+    module = "appchain_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "proposal_strategy_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "rule_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "node_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "service_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "role_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+  [[genesis.strategy]]
+    module = "dapp_mgr"
+    typ = "ZeroPermission"
+    participate_threshold = 0
+```
 
 
 #### network.toml文件配置修改
