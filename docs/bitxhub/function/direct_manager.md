@@ -8,8 +8,7 @@
    - `chainID`：与部署broker合约的appchainID一致
    - `broker`：部署的broker合约地址
    - `ruleAddr`：验证规则地址
-   - `trustRoot`：信任根：
-
+   - `trustRoot`：应用链信任根，不同的共识算法的信任根的类型不同，对于PoW共识的应用链，`trustRoot`为某一个高度的区块头，对于PoS共识的区块链，`trustRoot`为验证人集合。
 例子说明
 ![](../../assets/direct4.png)
 
@@ -17,8 +16,7 @@
 同时需要注册对方应用链的服务信息，其具体参数如下：
    - `chainID`：与部署broker合约的appchainID一致
    - `serviceID`：业务合约地址
-   - `whiteList`：黑名单
-
+   - `whiteList`：黑名单，在黑名单内的服务无法调用该服务
 例子说明
 ![](../../assets/direct5.png)
 
