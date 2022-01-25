@@ -14,7 +14,6 @@ VERSION:
 
 COMMANDS:
    appchain    Command about appchain in bitxhub
-   client      Command about appchain in pier
    id          Get appchain id
    init        Initialize pier local configuration
    interchain  Query interchain info
@@ -69,34 +68,7 @@ COMMANDS:
 
 **具体描述**
 
-`pier appchain`具体描述与使用示例参考[中继模式管理](/v1.11/bitxhub/function/relay_manager/)。
-
-
-
-### pier client
-
-`pier client`命令用于直连模式的应用链管理。
-
-**用法**
-
-```shell
-NAME:
-   Pier client - Command about appchain in pier
-
-USAGE:
-   Pier client command [command options] [arguments...]
-
-COMMANDS:
-   register  Register appchain in pier
-   update    Update appchain in pier
-   audit     Audit appchain in pier
-   get       Get appchain info
-   rule      register appchain validation rule
-```
-
-**具体描述**
-
-`pier appchain`具体描述与使用示例参考[直连模式管理](/v1.11/bitxhub/bitxhub/function/direct_manager/)。
+`pier appchain`具体描述与使用示例参考[中继模式管理](/v1.18/bitxhub/function/relay_manager/)。
 
 ### pier id
 
@@ -450,7 +422,7 @@ OPTIONS:
 
 **具体描述**
 
-参考<a href="/v1.11/bitxhub/introduction/summary/#relayAnchor">pier network relay</a> 与<a href="/v1.11/bitxhub/introduction/summary/#directAnchor">pier network direct</a> 。
+参考<a href="/v1.18/bitxhub/introduction/summary/#relayAnchor">pier network relay</a> 与<a href="/v1.18/bitxhub/introduction/summary/#directAnchor">pier network direct</a> 。
 
 
 
@@ -553,8 +525,8 @@ OPTIONS:
 # 注意，由于安装包的地址为github，下载可能较慢，可以重试几次或通过设置代理
 $ pier --repo .pier2 plugin fabric --crypto-config $(pwd)/.pier2
 
-Start downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.11.1/fabric-client-v1.11.1-darwin
-Finish downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.11.1/fabric-client-v1.11.1-darwin
+Start downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.18.1/fabric-client-v1.18.1-darwin
+Finish downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.18.1/fabric-client-v1.18.1-darwin
 ```
 
 
@@ -632,7 +604,7 @@ OPTIONS:
 
 **具体描述**
 
-`pier rule`具体描述与使用示例参考[直连模式管理](/v1.11/bitxhub/bitxhub/function/direct_manager/)的部署验证规则模块。
+`pier rule`具体描述与使用示例参考[直连模式管理](/v1.18/bitxhub/bitxhub/function/direct_manager/)的部署验证规则模块。
 
 
 
@@ -684,13 +656,15 @@ INFO[2022-01-06T19:50:21.655] listenIBTPFromDestAdaptToServicePairCh direct:appc
 …………
 ```
 
+
+
 ### pier version
 
 `pier version`命令用于查询版本号。
 
 **用法**
 
-```
+```shell
 NAME:
    pier version - Show version about ap
 
@@ -709,5 +683,63 @@ Pier version: dev-release-1.18-3826f39
 App build date: 2022-01-06T17:04:07
 System version: darwin/amd64
 Golang version: go1.16.6
+```
+
+
+
+### pier propsals 
+
+`pier proposals`命令用于撤销指定的提案。
+
+**用法**
+
+```shell
+NAME:
+   Pier proposals - proposals manage command
+
+USAGE:
+   Pier proposals command [command options] [arguments...]
+
+COMMANDS:
+   withdraw  withdraw a proposal
+
+```
+
+**子命令**
+
+#### Pier proposals withdraw
+
+```shell
+NAME:
+   Pier proposals withdraw - withdraw a proposal
+
+USAGE:
+   Pier proposals withdraw [command options] [arguments...]
+
+OPTIONS:
+   --admin-key value  Specific admin key path
+   --id value         proposal id
+   --reason value     Specify governance reason
+
+```
+
+**样例**
+
+当想要撤销某个提案时（如注册应用链的提案）使用如下命令。其中，proposal id 为想要撤销的提案号，提案生成参考[中继模式应用链管理](/v1.18/bitxhub/function/relay_manager/)。
+
+```shell
+# 应用链所在网关撤销提案
+$ pier --repo $(pwd) proposals withdraw --admin-key ./key.json --id 0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0 --reason "withdraw proposal"
+
+# 撤销提案后，在中继链查询提案状态可以看到提案状态为：withdrawn by the proposal sponsor
+$ bitxhub client governance proposal query -id 0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0
+========================================================================================
+Id                                            ManagedObjectId               Type         EventType  Status  A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
+--                                            ---------------               ----         ---------  ------  ---  --------  -------------  ----------           -----------  ---------
+0x450884c9F7fdFc72E2bC1245306d15dE1750A880-0  did:bitxhub:fabricappchain:.  AppchainMgr  register   reject  0/0  4/4/3     false/false    1643088788665643000               withdrawn by the proposal sponsor
+========================================================================================
+* A/R：approve num / reject num
+* IE/AE/TE：the total number of electorate at the time of the initial proposal / the number of available electorate currently /the minimum threshold for votes to take effect
+* Special/Super：is special proposal / is super admin voted
 ```
 
