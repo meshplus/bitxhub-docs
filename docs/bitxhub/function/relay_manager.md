@@ -1,49 +1,71 @@
 # 中继模式管理
 
-中继链支持对应用链的管理，包括注册、更新、冻结、注销应用链等功能。
+## pier appchain
+
+在V1.18版本，中继链IBTP2.0模式将跨链单位从应用链级别细粒度为应用链某个服务。中继链支持对应用链与服务的管理，包括注册、更新、冻结、注销应用链等功能。
+
+```shell
+NAME:
+   Pier appchain - Command about appchain in bitxhub
+
+USAGE:
+   Pier appchain command [command options] [arguments...]
+
+COMMANDS:
+   service   Command about appchain service
+   register  Register appchain to bitxhub
+   update    update appchain in bitxhub
+   activate  activate appchain in bitxhub
+   logout    logout appchain in bitxhub
+   get       Get appchain info
+```
+
+
 
 ## 1. 应用链注册
-### pier appchain method register 
+### pier appchain register 
 对于需要加入跨链网络使用中继链进行跨链的应用链，需要首先由应用链管理员向中继链注册应用链，参数说明如下：
 
 ```shell
 NAME:
-   Pier appchain method register - Register appchain did method and info to bitxhub
+   Pier appchain register - Register appchain to bitxhub
 
 USAGE:
-   Pier appchain method register [command options] [arguments...]
+   Pier appchain register [command options] [arguments...]
 
 OPTIONS:
-   --admin-key value   Specific admin key path
-   --method value      Specific did sub method name(like appchain)
-   --doc-addr value    Specify the addr of did document
-   --doc-hash value    Specify the hash of did document
-   --name value        Specific appchain name
-   --type value        Specific appchain type
-   --desc value        Specific appchain description
-   --version value     Specific appchain version
-   --validators value  Specific appchain validators path
-   --consensus value   Specific appchain consensus type
-   --rule value        Specific appchain rule
-   --rule-url value    Specific appchain rule url
-   --reason value      Specify governance reason
+   --appchain-id value  Specify appchain id
+   --name value         Specify appchain name
+   --type value         Specify appchain type
+   --trustroot value    Specify appchain trustroot path
+   --broker value       Specify appchain broker contract address
+   --broker-cid value   Specify fabric broker contract channel ID, only for fabric appchain
+   --broker-ccid value  Specify fabric broker contract chaincode ID, only for fabric appchain
+   --broker-v value     Specify appchain broker contract version, only for fabric appchain
+   --desc value         Specify appchain description
+   --master-rule value  Specify appchain master-rule
+   --rule-url value     Specify appchain master-rule url
+   --admin value        Specify appchain admin addr list, multiple addresses are separated by ",". The current user is included by default.
+   --reason value       Specify governance reason
+   --addr value         Specific bitxhub node address
 ```
 **参数解释：**
 
 * `--repo`：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。
-* `--admin-key`：必选参数，管理员私钥地址，一般为admin.json。
-* `--method`：必选参数，did方法名。
-* `--doc-addr`：必选参数，指定did文件地址。
-* `--doc-hash`：必选参数，指定did文件的哈希值。
-* `--name`：必选参数，指定的应用了名称。
-* `--type`：指定的应用链类型。如fabric、flato。
-* `--desc`：必选参数，对应用链的描述信息。
-* `--version`：必选参数，指定应用链版本信息。
-* `--validators`：必选参数，指定应用链的验证人信息所在的文件路径。
-* `--consensus`：必选参数，指定p应用链的共识类型，如rbft、raft等。
-* `--rule`：必选参数，指定验证规则地址。
-* `--rule_url`：指定验证规则url。
-* `--addr`：可选参数，指定要连接的中继链节点地址，如果不指定，默认使用$repo目录下pier.toml中指定的BitXHub节点地址。
+* `--appchain-id`：必选参数，指定当前应用链id，该id用于填充IBTP的From或者To字段。
+* `--name` ：必选参数，指定当前应用链名称。
+*  `--type`：必选参数，指定当前应用链类型
+*  `--trustroot` ：必选参数，应用链信任根，不同的共识算法的信任根的类型不同，对于PoW共识非确定性共识类的应用链，`trustRoot`为某一个高度的区块头，对于PBFT确定性类共识的区块链，`trustRoot`为验证人集合。
+*  `--broker` ：可选参数，应用链上broker合约地址。
+*  `--broker-cid` ：可选参数，在使用fabric类型的应用链时，指定broker合约的channel id。
+*  `--broker-ccid` ：可选参数，在使用fabric类型的应用链时，指定broker合约的chaincode id。
+* `--broker-v`：可选参数，在使用fabric类型的应用链时，指定broker合约的版本号。
+*  `--desc`：必选参数，当前应用链注册的描述信息。
+*  `--master-rule` ：必选参数，所绑定的验证规则地址，需要提前在中继链部署相关验证规则或使用内置验证规则地址。
+*  `--rule-url` ：可选参数，验证规则url地址，如未设置可填写任意网址。
+*  `--admin` ：可选参数，应用链管理员地址，一般为所绑定网关的key.json。
+*  `--reason` ：可选参数，应用链注册的描述信息。
+*  `--addr` ：可选参数，指定所连接的中继链节点地址
 
 该命令向中继链发送一笔应用链注册的交易，中继链以交易的from（即当前pier公钥的地址）作为应用链的ID，生成一个应用链注册的提案。
 
@@ -68,49 +90,38 @@ $ cd <bitxhub_project> && make install
 # 启动bitxhub
 $ make cluster
 
-# bitxhub管理员向pier管理员转账。注意更改为bitxhub项目地址
-$ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/key.json --to 0xf2201f28368706EF75e3199b4f4DE2a24bA85CAe --amount 100000000000000000000000000
-
 $ pier --repo $(pwd) init relay
 # 可以使用对应插件项目下的验证者信息，注意更改项目路径
 $ cp ~/goproject/meshplus/pier-client-fabric/config/fabric.validators ./fabric/
 
-$ bitxhub client tx send --key ~/code/bitxhub/scripts/build/node1/key.json --to 0xf2201f28368706EF75e3199b4f4DE2a24bA85CAe --amount 100000000000000000000000000
+$ id=$(pier --repo $(pwd) id)
+# bitxhub管理员向pier管理员转账。注意更改为bitxhub项目地址
+$ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/key.json --to $id --amount 100000000000000000000000000
 
-$ pier --repo $(pwd) appchain method register --admin-key ./key.json --method fabricappchain --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.0.3 --validators ./fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
+$ pier --repo $(pwd) appchain register --appchain-id "fabappchain" --name "fabric1" --type "Fabric V1.4.3" --trustroot "fabric/fabric.validators" --broker-cid "mychannel" --broker-ccid "broker" --broker-v 1 --desc "test fabric" --master-rule "0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB" --rule-url "https://bitxhub.cn/" --admin $id --reason "reason"
 
-Register appchain method info for did:bitxhub:fabricappchain:. successfully, wait for proposal 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0 to finish.
+Register appchain successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0 to finish.
 ```
-如上例所示，应用链管理员提交应用链注册请求，应用链DID为did:bitxhub:fabricappchain:.，提案号为0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0。中继链管理员需要对该提案进行审核并进行投票，命令如下：
+如上例所示，应用链管理员提交应用链注册请求，提案号为0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0。中继链管理员需要对该提案进行审核并进行投票。
 
-如管理员对该提案审核后，认为该应用链提交对信息无误，投票通过，命令执行如下：
+**注意：如使用make cluster等方式启动中继链，默认的投票策略为ZeroPermission，即无需管理员进行投票。**
+
 ```shell
-$ PROPOSAL_ID=上面得到的ID
+$ PROPOSAL_ID=上面得到的ID，如 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0
 
-# 注意切换到bitxhub项目目录下
-$ bitxhub --repo ./scripts/build/node1 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
-vote successfully!
-
-$ bitxhub --repo ./scripts/build/node2 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric
-appchain register"
-vote successfully!
-
-$ bitxhub --repo ./scripts/build/node3 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
-vote successfully!
-
-$ bitxhub --repo ./scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
-
+# 查询中继链上提案状态
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
 ========================================================================================
-Id                                            ManagedObjectId               Type         EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
---                                            ---------------               ----         ---------  ------   ---  --------  -------------  ----------           -----------  ---------
-0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-0  did:bitxhub:fabricappchain:.  AppchainMgr  register   approve  3/0  4/4/3     false/true     1641348118114187000               end of normal voting
+Id                                            ManagedObjectId  Type          EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Reason  EndReason               extra
+--                                            ---------------  ----          ---------  ------   ---  --------  -------------  ----------           ------  ---------               -----
+0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0  fabappchain      appchain_mgr  register   approve  0/0  4/4/0     false/false    1643101796307170000  reason  zero permission reason  {"chain_info":{"id":"fabappchain","chain_name":"fabric1","chain_type":"Fabric V1.4.3","trust_root":"LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNLVENDQWMrZ0F3SUJBZ0lSQUlCTzMxYVphU1pvRVlTeTJBSnVoSmN3Q2dZSUtvWkl6ajBFQXdJd2N6RUwKTUFrR0ExVUVCaE1DVlZNeEV6QVJCZ05WQkFnVENrTmhiR2xtYjNKdWFXRXhGakFVQmdOVkJBY1REVk5oYmlCRwpjbUZ1WTJselkyOHhHVEFYQmdOVkJBb1RFRzl5WnpJdVpYaGhiWEJzWlM1amIyMHhIREFhQmdOVkJBTVRFMk5oCkxtOXlaekl1WlhoaGJYQnNaUzVqYjIwd0hoY05NakF3TWpBMU1EZ3lNakF3V2hjTk16QXdNakF5TURneU1qQXcKV2pCcU1Rc3dDUVlEVlFRR0V3SlZVekVUTUJFR0ExVUVDQk1LUTJGc2FXWnZjbTVwWVRFV01CUUdBMVVFQnhNTgpVMkZ1SUVaeVlXNWphWE5qYnpFTk1Bc0dBMVVFQ3hNRWNHVmxjakVmTUIwR0ExVUVBeE1XY0dWbGNqRXViM0puCk1pNWxlR0Z0Y0d4bExtTnZiVEJaTUJNR0J5cUdTTTQ5QWdFR0NDcUdTTTQ5QXdFSEEwSUFCRzNqc3pGUFRiR20KZEFZZzJCeG1ITVRES2ZRUmVOdzNwOXR0TUsxMzBxRjVsUW81ekxCRzhTYTN2aU9DTG52ampnNkEvUCt5S253dgppc0kvakVWRThUMmpUVEJMTUE0R0ExVWREd0VCL3dRRUF3SUhnREFNQmdOVkhSTUJBZjhFQWpBQU1Dc0dBMVVkCkl3UWtNQ0tBSU1WTCtkYUs3bk1HcjIvQVFJWFRTUEZrZGQzVWlQVkRrV3RraDV1am5hbEVNQW9HQ0NxR1NNNDkKQkFNQ0EwZ0FNRVVDSVFETVlPUWlZZU1pUVpUeGxSa2ovMy9qall2d3dkQ2NYNUFXdUZtcmFpSGt1Z0lnRmtYLwo2dWlUU0QwbHo4UCt3d2xMZjI0Y0lBQnEyYVp5aThxNGdqMFlmd0E9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K","broker":"eyJjaGFubmVsX2lkIjoibXljaGFubmVsIiwiY2hhaW5jb2RlX2lkIjoiYnJva2VyIiwiYnJva2VyX3ZlcnNpb24iOiIxIn0=","desc":"test fabric","version":0,"status":"available","fsm":null},"master_rule":{"address":"0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB","rule_url":"https://bitxhub.cn/","chain_id":"","master":true,"builtIn":false,"create_time":0,"status":"available","fsm":null},"admin_addrs":"0x0df6746854682fc8ce5A7729BBB14c7652ae4516"}
 ========================================================================================
 * A/R：approve num / reject num
 * IE/AE/TE：the total number of electorate at the time of the initial proposal / the number of available electorate currently /the minimum threshold for votes to take effect
 * Special/Super：is special proposal / is super admin voted
 
 ```
-可以看到该提案已经投票通过，应用链注册成功。
+可以看到该提案所需投票个数为0，即提案已经通过，应用链注册成功。
 
 ## 2. 更新应用链
 ### pier appchain update
@@ -123,45 +134,37 @@ USAGE:
    Pier appchain update [command options] [arguments...]
 
 OPTIONS:
-   --admin-key value       Specific admin key path
-   --id value              Specify appchain id(did)
-   --doc-addr value        Specify appchain did doc addr
-   --doc-hash value        Specify appchain did doc hash
-   --name value            Specify appchain name
-   --type value            Specify appchain type
-   --desc value            Specify appchain description
-   --version value         Specify appchain version
-   --validators value      Specify appchain validators path
-   --consensus-type value  Specify appchain consensus type
-   --reason value          Specify governance reason
+   --appchain-id value  Specify appchain id
+   --name value         Specify appchain name
+   --trustroot value    Specify appchain trustroot path
+   --desc value         Specify appchain description
+   --admin value        Specify appchain admin addr list, multiple addresses are separated by ",". The current user is included by default.
+   --reason value       Specify governance reason
 ```
 
-**参数解释：**
-
-* `--repo`：可选参数，指定pier配置文件所在目录，如果不指定，默认使用$HOME/.pier目录。
-* `--admin-key`：必选参数，管理员私钥地址，一般为admin.json。
-* `--id`：必选参数，应用链的did。
-* `--doc-addr`：必选参数，指定did文件地址。
-* `--doc-hash`：必选参数，指定did文件的哈希值。
-* `--name`：必选参数，指定的应用了名称。
-* `--type`：指定的应用链类型。如fabric、flato。
-* `--desc`：必选参数，对应用链的描述信息。
-* `--version`：必选参数，指定应用链版本信息。
-* `--validators`：必选参数，指定应用链的验证人信息所在的文件路径。
-* `--consensus-type`：必选参数，指定p应用链的共识类型，如rbft、raft等。
-* `--reason`：可选参数，描述信息。
-* `--addr`：可选参数，指定要连接的中继链节点地址，如果不指定，默认使用$repo目录下pier.toml中指定的BitXHub节点地址。
+该命令所有参数含义与应用链注册命令的部分参数描述相同，不再赘述。
 
 ### 示例说明
-比如进行fabric应用链的验证人信息发生变化，需要更新应用链，命令执行如下：
+比如进行fabric应用链的应用链名称，需要更新应用链，命令执行如下：
 ```shell
 # 具体样例
-$ pier --repo $(pwd) appchain update --admin-key ./key.json --id did:bitxhub:fabricappchain:. --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.1.0 --validators./fabric/fabric.validators --consensus-type raft
+$ pier --repo $(pwd) appchain update --appchain-id "fabappchain" --name "fabric2" --trustroot "fabric/fabric.validators" --desc "test update fabric appchain"  --admin $id --reason "reason"
+the update request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-2
 
-the update request was submitted successfully，, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-1
+# 查询更新前的应用链name
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric1
+# 控制台输出报错，说明appchain的name已更新
+invoke BVM contract failed when get appchain by name fabric1: call error: 1020014:the appchain(fabric1) does not exist: not found chain fabric1
+
+# 通过更新后的name在bitxhub进行应用链查询
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+# 控制台输出更新后的应用链注册信息
+Id           Name     Type           Broker                                                                   Status     Desc                         Version
+--           ----     ----           ------                                                                   ------     ----                         -------
+fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  available  test update fabric appchain  1
 ```
 
-管理员进行审核并投票，与注册应用链部分一致，不再赘述。
+以上示例说明应用链更新成功。
 
 
 
@@ -176,28 +179,59 @@ $ pier --repo <repository> appchain activate --admin-key <admin_key_json> --id <
 ### 示例说明
 比如对之前已经冻结的应用链进行激活，命令执行如下：
 ```shell
-$ pier --repo $(pwd) appchain activate --admin-key ./key.json --id did:bitxhub:fabricappchain:.
-INFO[11:01:25.884] Establish connection with bitxhub localhost:60011 successfully  module=rpcx
-the activate request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-2
+# 中继链管理员冻结应用链
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain freeze --id fabappchain --reason "test freeze appchain"
+proposal id is 0x79a1215469FaB6f9c63c1816b45183AD3624bE34-0
+
+# 查询应用链状态，发现已经变为frozen
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+Id           Name     Type           Broker                                                                   Status  Desc                         Version
+--           ----     ----           ------                                                                   ------  ----                         -------
+fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  frozen  test update fabric appchain  1
+
+# 激活应用链
+$ pier --repo $(pwd) appchain activate --appchain-id "fabappchain" --reason "activate appchain"
+the activate request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-3
+
+# 查询应用链状态，发现从frozen变为available
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+Id           Name     Type           Broker                                                                   Status     Desc                         Version
+--           ----     ----           ------                                                                   ------     ----                         -------
+fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  available  test update fabric appchain  1
 ```
 
-管理员进行审核并投票，与注册应用链部分一致，不再赘述。
+以上示例说明应用链在冻结后激活成功。
 
 ## 5. 注销应用链
 ### pier appchain logout
 如果应用链退出跨链系统，不再进行跨链，应用链管理员可以向中继链提交注销应用链的提案。命令如下：
 ```shell
-pier --repo <repository> appchain logout --admin-key <admin_key_json> --id <appchian_did>
+NAME:
+   Pier appchain logout - logout appchain in bitxhub
+
+USAGE:
+   Pier appchain logout [command options] [arguments...]
+
+OPTIONS:
+   --appchain-id value  Specify appchain id
+   --reason value       Specify governance reason
 ```
 
 ### 示例说明
 比如对之前激活的应用链进行注销，命令执行如下：
 ```shell
-$ pier appchain logout --admin-key ./key.json --id did:bitxhub:fabricappchain:.
-the logout request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-3
+# 注销应用链
+$ pier --repo $(pwd) appchain logout --appchain-id "fabappchain" --reason "activate appchain"
+the logout request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-4
+
+# 在中继链查询应用链状态，发现已经变为forbidden
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+Id           Name     Type           Broker                                                                   Status     Desc                         Version
+--           ----     ----           ------                                                                   ------     ----                         -------
+fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  forbidden  test update fabric appchain  1
 ```
 
-管理员进行审核并投票，与注册应用链部分一致，不再赘述。
+以上示例说明应用链注销成功。
 
 ### Pier appchain get 
 
@@ -213,8 +247,8 @@ pier --repo <repository> appchain get --admin-key <admin_key_json> --id <appchia
 
 ```shell
 # 具体样例
-$ pier --repo $(pwd) appchain get --admin-key ./key.json --id did:bitxhub:fabricappchain:.
+$ pier --repo $(pwd) appchain get --appchain-id "fabappchain"
 
-{"id":"did:bitxhub:fabricappchain:.","name":"fabricTest1","validators":"-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIRAIBO31aZaSZoEYSy2AJuhJcwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzIuZXhhbXBsZS5jb20wHhcNMjAwMjA1MDgyMjAwWhcNMzAwMjAyMDgyMjAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjEub3Jn\nMi5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG3jszFPTbGm\ndAYg2BxmHMTDKfQReNw3p9ttMK130qF5lQo5zLBG8Sa3viOCLnvjjg6A/P+yKnwv\nisI/jEVE8T2jTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIMVL+daK7nMGr2/AQIXTSPFkdd3UiPVDkWtkh5ujnalEMAoGCCqGSM49\nBAMCA0gAMEUCIQDMYOQiYeMiQZTxlRkj/3/jjYvwwdCcX5AWuFmraiHkugIgFkX/\n6uiTSD0lz8P+wwlLf24cIABq2aZyi8q4gj0YfwA=\n-----END CERTIFICATE-----\n","consensus_type":"raft","status":"updating","chain_type":"fabric","desc":"test for fabric","version":"v1.1.0","public_key":"0x42444f30475a697746533934706e344169712b77365442417757663635787637724f616b4e786d536344465766394970546f694f7239712b6f6259386c514546617a434b316c714e32533446306b426e633542313034413d","owner_did":"","did_doc_addr":"./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","did_doc_hash":"QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzo111","fsm":{}}
+{"id":"fabappchain","chain_name":"fabric2","chain_type":"Fabric V1.4.3","trust_root":"TFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVTkxWRU5EUVdNclowRjNTVUpCWjBsU1FVbENUek14WVZwaFUxcHZSVmxUZVRKQlNuVm9TbU4zUTJkWlNVdHZXa2w2YWpCRlFYZEpkMk42UlV3S1RVRnJSMEV4VlVWQ2FFMURWbFpOZUVWNlFWSkNaMDVXUWtGblZFTnJUbWhpUjJ4dFlqTktkV0ZYUlhoR2FrRlZRbWRPVmtKQlkxUkVWazVvWW1sQ1J3cGpiVVoxV1RKc2Vsa3lPSGhIVkVGWVFtZE9Wa0pCYjFSRlJ6bDVXbnBKZFZwWWFHaGlXRUp6V2xNMWFtSXlNSGhJUkVGaFFtZE9Wa0pCVFZSRk1rNW9Da3h0T1hsYWVrbDFXbGhvYUdKWVFuTmFVelZxWWpJd2QwaG9ZMDVOYWtGM1RXcEJNVTFFWjNsTmFrRjNWMmhqVGsxNlFYZE5ha0Y1VFVSbmVVMXFRWGNLVjJwQ2NVMVJjM2REVVZsRVZsRlJSMFYzU2xaVmVrVlVUVUpGUjBFeFZVVkRRazFMVVRKR2MyRlhXblpqYlRWd1dWUkZWMDFDVVVkQk1WVkZRbmhOVGdwVk1rWjFTVVZhZVZsWE5XcGhXRTVxWW5wRlRrMUJjMGRCTVZWRlEzaE5SV05IVm14amFrVm1UVUl3UjBFeFZVVkJlRTFYWTBkV2JHTnFSWFZpTTBwdUNrMXBOV3hsUjBaMFkwZDRiRXh0VG5aaVZFSmFUVUpOUjBKNWNVZFRUVFE1UVdkRlIwTkRjVWRUVFRRNVFYZEZTRUV3U1VGQ1J6TnFjM3BHVUZSaVIyMEtaRUZaWnpKQ2VHMUlUVlJFUzJaUlVtVk9kek53T1hSMFRVc3hNekJ4UmpWc1VXODFla3hDUnpoVFlUTjJhVTlEVEc1MmFtcG5Oa0V2VUN0NVMyNTNkZ3BwYzBrdmFrVldSVGhVTW1wVVZFSk1UVUUwUjBFeFZXUkVkMFZDTDNkUlJVRjNTVWhuUkVGTlFtZE9Wa2hTVFVKQlpqaEZRV3BCUVUxRGMwZEJNVlZrQ2tsM1VXdE5RMHRCU1UxV1RDdGtZVXMzYmsxSGNqSXZRVkZKV0ZSVFVFWnJaR1F6VldsUVZrUnJWM1JyYURWMWFtNWhiRVZOUVc5SFEwTnhSMU5OTkRrS1FrRk5RMEV3WjBGTlJWVkRTVkZFVFZsUFVXbFpaVTFwVVZwVWVHeFNhMm92TXk5cWFsbDJkM2RrUTJOWU5VRlhkVVp0Y21GcFNHdDFaMGxuUm10WUx3bzJkV2xVVTBRd2JIbzRVQ3QzZDJ4TVpqSTBZMGxCUW5FeVlWcDVhVGh4TkdkcU1GbG1kMEU5Q2kwdExTMHRSVTVFSUVORlVsUkpSa2xEUVZSRkxTMHRMUzBL","broker":"eyJjaGFubmVsX2lkIjoibXljaGFubmVsIiwiY2hhaW5jb2RlX2lkIjoiYnJva2VyIiwiYnJva2VyX3ZlcnNpb24iOiIxIn0=","desc":"test update fabric appchain","version":1,"status":"forbidden","fsm":{}}
 ```
 
