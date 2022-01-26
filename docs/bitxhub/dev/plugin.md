@@ -30,9 +30,9 @@
 
 **IBTP包**：满足IBTP的一个package，跨链请求都需要通过IBTP包进行。
 
-**来源链**：在跨链请求A->B中，A即为来源链。
+**来源链**：在跨链请求A->B中，A即为来源链服务。
 
-**目的链**：在跨链请求A->B中，B即为目的链。
+**目的链**：在跨链请求A->B中，B即为目的链服务。
 
 ## Plugin接口
 
@@ -42,7 +42,7 @@
 type Client interface {
 	
 	// 初始化Plugin服务
-    Initialize(configPath string, pierID string, extra []byte) error
+    Initialize(configPath string extra []byte) error
     
     // 启动Plugin服务的接口
     Start() error
@@ -51,24 +51,45 @@ type Client interface {
     Stop() error
 
     // Plugin负责将区块链上产生的跨链事件转化为标准的IBTP格式，Pier通过GetIBTP接口获取跨链请求再进行处理
-    GetIBTP() chan *pb.IBTP
+    GetIBTPCh() chan *pb.IBTP
+    
+    // Plugin负责将区块链上信任根变更的信息传递给中继链
+    GetUpdateMeta() chan *pb.UpdateMeta
 
     // Plugin 负责执行来源链过来的跨链请求，Pier调用SubmitIBTP提交收到的跨链请求。
-    SubmitIBTP(*pb.IBTP) (*pb.SubmitIBTPResponse, error)
+    // from: 来源链服务ID
+    // index: 跨链交易索引
+    // serviceID: 目的链服务ID
+    // ibtpType: 跨链交易类型<IBTP_INTERCHAIN, IBTP_RECEIPT_SUCCESS, IBTP_RECEIPT_FAILURE, IBTP_RECEIPT_ROLLBACK>
+    // content: 跨链调用内容编码
+    // proof: 中继链多签数据
+    // isEncrypted: content.payload是否加密
+	SubmitIBTP(from string, index uint64, serviceID string, ibtpType pb.IBTP_Type, content *pb.Content, proof *pb.BxhProof, isEncrypted bool) (*pb.SubmitIBTPResponse, error)
 
-    // GetOutMessage 负责在跨链合约中查询历史跨链请求。查询键值中to指定目的链，idx指定序号，查询结果为以Plugin负责的区块链作为来源链的跨链请求。
-    GetOutMessage(to string, idx uint64) (*pb.IBTP, error)
+    // Plugin 负责执行来源链过来的跨链请求，Pier调用SubmitIBTP提交收到的跨链请求。
+    // to: 目的链服务ID
+    // index: 跨链交易索引
+    // serviceID: 来源链服务ID
+    // ibtpType: 跨链交易类型<IBTP_INTERCHAIN, IBTP_RECEIPT_SUCCESS, IBTP_RECEIPT_FAILURE, IBTP_RECEIPT_ROLLBACK>
+    // result: 跨链调用结果编码
+    // proof: 中继链多签数据
+   SubmitReceipt(to string, index uint64, serviceID string, ibtpType pb.IBTP_Type, result *pb.Result, proof *pb.BxhProof) (*pb.SubmitIBTPResponse, error)
 
-    // GetInMessage 负责在跨链合约中查询历史跨链请求。查询键值中from指定来源链，idx指定序号，查询结果为以Plugin负责的区块链作为目的链的跨链请求。
-    GetInMessage(from string, idx uint64) ([][]byte, error)
 
-    // GetInMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为目的链的一系列跨链请求的序号信息。如果Plugin负责A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5。返回的map中，key值为来源链ID，value对应该来源链已发送的最新的跨链请求的序号，如{B:3, C:5}。
-    GetInMeta() (map[string]uint64, error)
+    // GetOutMessage 负责在跨链合约中查询历史跨链请求。查询键值中servicePair指定服务对，idx指定序号，查询结果为以Plugin负责的区块链作为来源链的跨链请求。
+	GetOutMessage(servicePair string, idx uint64) (*pb.IBTP, error)
 
-    // GetOutMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为来源链的一系列跨链请求的序号信息。如果Plugin负责A链，则A可能和多条链进行跨链，如A->B:3; A->C:5。返回的map中，key值为目的链ID，value对应已发送到该目的链的最新跨链请求的序号，如{B:3, C:5}。
+    // GetReceiptMessage 负责在跨链合约中查询历史跨链回执。查询键值中servicePair指定服务对，idx指定序号，查询结果为以Plugin负责的区块链作为目的链的跨链回执。
+	GetReceiptMessage(servicePair string, idx uint64) (*pb.IBTP, error)
+
+    // GetInMeta 是获取跨链回执相关的Meta信息的接口。以Plugin负责的区块链为目的链服务的一系列跨链请求的序号信息。如果Plugin负责A链服务，则A可能和多条链服务进行跨链，如A->B:3; A->C:5。返回的map中，key值为服务对（来源链服务ID+目的链服务ID），value对应已发送到该目的链的最新跨链请求的序号，如{A+B:3, A+C:5}。
+    GetInMeta() (map[string]uint64, error
+
+    // GetOutMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为来源链服务的一系列跨链请求的序号信息。如果Plugin负责A链服务，则A可能和多条链服务进行跨链，如A->B:3; A->C:5。返回的map中，key值为服务对（来源链服务ID+目的链服务ID），value对应已发送到该目的链的最新跨链请求的序号，如{A+B:3, A+C:5}。。
     GetOutMeta() (map[string]uint64, error)
 
-    // GetCallbackMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为来源链的一系列跨链请求的序号信息。如果Plugin负责A链，则A可能和多条链进行跨链，如A->B:3; A->C:5；同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，key值为目的链ID，value对应到该目的链最新的带回调跨链请求的序号，如{B:2, C:4}。（注意 CallbackMeta序号可能和outMeta是不一致的，这是由于由A发出的跨链请求部分是没有回调的）
+   
+    // GetCallbackMeta 是获取跨链请求相关的Meta信息的接口。
     GetCallbackMeta() (map[string]uint64, error)
 
     // CommitCallback 执行完IBTP包之后进行一些回调操作。
@@ -111,20 +132,23 @@ $ go mod init exmple/fabric-plugin
 首先来看看`Client自定义`具体结构
 
 ```go
-type Client struct {
-   meta     *ContractMeta
-   consumer *Consumer
-   eventC   chan *pb.IBTP
-   pierId   string
-   name     string
+type ContractMeta struct {
+	EventFilter string `json:"event_filter"`
+	Username    string `json:"username"`
+	CCID        string `json:"ccid"`
+	ChannelID   string `json:"channel_id"`
+	ORG         string `json:"org"`
 }
 
-type ContractMeta struct {
-   EventFilter string `json:"event_filter"`
-   Username    string `json:"username"`
-   CCID        string `json:"ccid"`
-   ChannelID   string `json:"channel_id"`
-   ORG         string `json:"org"`
+type Client struct {
+	meta       *ContractMeta
+	consumer   *Consumer
+	eventC     chan *pb.IBTP
+	appchainID string
+	name       string
+	outMeta    map[string]uint64
+	ticker     *time.Ticker
+	done       chan bool
 }
 ```
 
@@ -136,49 +160,55 @@ type ContractMeta struct {
 
 - name：自定的区块链的名称。
 
-- pierId：跨链网关注册在跨链平台中后产生的唯一ID，作为应用链的标识。
+- appchainID：跨链网关注册在跨链平台中后产生的唯一ID，作为应用链的标识。
 
 然后应该提供一个Client的实例化的接口（类似于构造函数），具体代码如下：
 
 ```go
-func (c *Client) Initialize(configPath, pierId string, extra []byte) error {
-    eventC := make(chan *pb.IBTP)
-    // read config from files
-    fabricConfig, err := UnmarshalConfig(configPath)
-    if err != nil {
-       return nil, fmt.Errorf("unmarshal config for plugin :%w", err)
-    }
+func (c *Client) Initialize(configPath, appchainID string, extra []byte) error {
+	eventC := make(chan *pb.IBTP)
+	fabricConfig, err := UnmarshalConfig(configPath)
+	if err != nil {
+		return fmt.Errorf("unmarshal config for plugin :%w", err)
+	}
 
-    // some basic configs about your chaincode 
-    contractmeta := &ContractMeta{
-          EventFilter: fabricConfig.EventFilter,
-          Username:    fabricConfig.Username,
-          CCID:        fabricConfig.CCID,
-          ChannelID:   fabricConfig.ChannelId,
-          ORG:         fabricConfig.Org,
-    }
+	contractmeta := &ContractMeta{
+		EventFilter: fabricConfig.EventFilter,
+		Username:    fabricConfig.Username,
+		CCID:        fabricConfig.CCID,
+		ChannelID:   fabricConfig.ChannelId,
+		ORG:         fabricConfig.Org,
+	}
 
-    // handler for listening on inter-chain events posted on your Fabric
-    mgh, err := newFabricHandler(contractmeta.EventFilter, eventC, pierId)
-    if err != nil {
-        return err
-    }
+	m := make(map[string]uint64)
+	if err := json.Unmarshal(extra, &m); err != nil {
+		return fmt.Errorf("unmarshal extra for plugin :%w", err)
+	}
+	if m == nil {
+		m = make(map[string]uint64)
+	}
 
-    done := make(chan bool)
-    csm, err := NewConsumer(configPath, contractmeta, mgh, done)
-    if err != nil {
-        return err
-    }
+	mgh, err := newFabricHandler(contractmeta.EventFilter, eventC, appchainID)
+	if err != nil {
+		return err
+	}
 
-    c.consumer = csm
-    c.eventC = eventC
-    c.meta = contractmeta
-    c.pierId = pierId
-    c.name = fabricConfig.Name
-    c.outMeta = m
-    c.ticker = time.NewTicker(2 * time.Second)
-    c.done = done
-    return nil
+	done := make(chan bool)
+	csm, err := NewConsumer(configPath, contractmeta, mgh, done)
+	if err != nil {
+		return err
+	}
+
+	c.consumer = csm
+	c.eventC = eventC
+	c.meta = contractmeta
+	c.appchainID = appchainID
+	c.name = fabricConfig.Name
+	c.outMeta = m
+	c.ticker = time.NewTicker(2 * time.Second)
+	c.done = done
+
+	return nil
 }
 ```
 
@@ -222,22 +252,17 @@ type Consumer struct {
 
 ```go
 type Event struct {
-   Index         uint64 `json:"index"`
-   DstChainID    string `json:"dst_chain_id"`
-   SrcContractID string `json:"src_contract_id"`
-   DstContractID string `json:"dst_contract_id"`
-   Func          string `json:"func"`
-   Args          string `json:"args"`
-   Argscb        string `json:"argscb"`
-   Rollback      string `json:"rollback"`
-   Argsrb        string `json:"argsrb"`
-   Callback      string `json:"callback"`
-   Proof         []byte `json:"proof"`
-   Extra         []byte `json:"extra"`
+	Index     uint64   `json:"index"`
+	DstFullID string   `json:"dst_full_id"`
+	SrcFullID string   `json:"src_full_id"`
+	Encrypt   bool     `json:"encrypt"`
+	CallFunc  CallFunc `json:"call_func"`
+	CallBack  CallFunc `json:"callback"`
+	RollBack  CallFunc `json:"rollback"`
 }
 ```
 
-Event结构也是自定义的，需要和在你的跨链合约中抛出的事件结构一致。一个跨链交易事件，一般来说需要指定目标应用链的ID `DstChainID`，目标应用链上智能合约的地址或者ID（Fabric上的chaincode没有合约地址）`DstContractID`，这次跨链交易的发起者的合约地址`SrcContractID`，跨链调用的函数名 `Func`，该函数的参数 `Args`，是否有跨链调用之后要执行的回调函数 `Callback`，为了该应用链上对于该事件的证明 `Proof`，用户可自定义的部分 `Extra`。
+Event结构也是自定义的，需要和在你的跨链合约中抛出的事件结构一致。一个跨链交易事件，一般来说需要指定目标应用链的ID `DstFullID`，目标应用链上智能合约服务ID（Fabric上的chaincode没有合约地址）`SrcFullID`，这次跨链交易的发起方服务ID,`Encrypt`是否要求加密，`CallFunc`，跨链调用的函数及参数， 是否有跨链调用之后要执行的回调函数及参数 `CallBack`，是否有跨链调用之后要执行的回滚函数及参数 `RollBack`。
 
 ### 读取配置
 
@@ -308,82 +333,17 @@ func UnmarshalConfig(configPath string) (*Fabric, error) {
 如果来源链要求将本链调用合约的结果返回的话，还需要构造相应的IBTP回执发回来源链。
 
 ```go
-func (c *Client) SubmitIBTP(ibtp *pb.IBTP) (*pb.SubmitIBTPResponse, error) {
-	pd := &pb.Payload{}
-	ret := &pb.SubmitIBTPResponse{}
-	if err := pd.Unmarshal(ibtp.Payload); err != nil {
-		return ret, fmt.Errorf("ibtp payload unmarshal: %w", err)
-	}
-	content := &pb.Content{}
-	if err := content.Unmarshal(pd.Content); err != nil {
-		return ret, fmt.Errorf("ibtp content unmarshal: %w", err)
-	}
+func (c *Client) SubmitIBTP(from string, index uint64, serviceID string, ibtpType pb.IBTP_Type, content *pb.Content, proof *pb.BxhProof, isEncrypted bool) (*pb.SubmitIBTPResponse, error) {
+	ret := &pb.SubmitIBTPResponse{Status: true}
 
-	if ibtp.Category() == pb.IBTP_UNKNOWN {
-		return nil, fmt.Errorf("invalid ibtp category")
-	}
-
-	logger.Info("submit ibtp", "id", ibtp.ID(), "contract", content.DstContractId, "func", content.Func)
-	for i, arg := range content.Args {
-		logger.Info("arg", strconv.Itoa(i), string(arg))
-	}
-
-	if ibtp.Category() == pb.IBTP_RESPONSE && content.Func == "" {
-		logger.Info("InvokeIndexUpdate", "ibtp", ibtp.ID())
-		_, resp, err := c.InvokeIndexUpdate(ibtp.From, ibtp.Index, ibtp.Category())
-		if err != nil {
-			return nil, err
-		}
-		ret.Status = resp.OK
-		ret.Message = resp.Message
-
-		return ret, nil
-	}
-
-	var result [][]byte
-	var chResp *channel.Response
-	callFunc := CallFunc{
-		Func: content.Func,
-		Args: content.Args,
-	}
-	bizData, err := json.Marshal(callFunc)
+	_, resp, err := c.InvokeInterchain(from, index, serviceID, uint64(ibtpType), content.Func, content.Args, uint64(proof.TxStatus), proof.MultiSign, isEncrypted)
 	if err != nil {
 		ret.Status = false
-		ret.Message = fmt.Sprintf("marshal ibtp %s func %s and args: %s", ibtp.ID(), callFunc.Func, err.Error())
-
-		res, _, err := c.InvokeIndexUpdate(ibtp.From, ibtp.Index, ibtp.Category())
-		if err != nil {
-			return nil, err
-		}
-		chResp = res
-	} else {
-		res, resp, err := c.InvokeInterchain(ibtp.From, ibtp.Index, content.DstContractId, ibtp.Category(), bizData)
-		if err != nil {
-			return nil, fmt.Errorf("invoke interchain for ibtp %s to call %s: %w", ibtp.ID(), content.Func, err)
-		}
-
-		ret.Status = resp.OK
-		ret.Message = resp.Message
-
-		// if there is callback function, parse returned value
-		result = util.ToChaincodeArgs(strings.Split(string(resp.Data), ",")...)
-		chResp = res
-	}
-
-	// If is response IBTP, then simply return
-	if ibtp.Category() == pb.IBTP_RESPONSE {
+		ret.Message = fmt.Sprintf("invoke interchain foribtp to call %s: %w", content.Func, err)
 		return ret, nil
 	}
-
-	proof, err := c.getProof(*chResp)
-	if err != nil {
-		return ret, err
-	}
-
-	ret.Result, err = c.generateCallback(ibtp, result, proof, ret.Status)
-	if err != nil {
-		return nil, err
-	}
+	ret.Status = resp.OK
+	ret.Message = resp.Message
 
 	return ret, nil
 }
