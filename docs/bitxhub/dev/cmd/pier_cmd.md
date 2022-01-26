@@ -16,16 +16,22 @@ COMMANDS:
    appchain    Command about appchain in bitxhub
    client      Command about appchain in pier
    id          Get appchain id
-   init        Initialize pier core local configuration
-   config      Initialize pier plugins configuration
+   init        Initialize pier local configuration
    interchain  Query interchain info
+   network     Modify pier network configuration
    p2p         Command about p2p
+   plugin      Initialize pier plugins configuration
    rule        Command about rule
    start       Start a long-running daemon process
    version     Show version about ap
    proposals   proposals manage command
-   show        Show pier key from repo
    help, h     Shows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+   --repo value   Pier repository path
+   --tls          enable tls between pier and bitxhub or not
+   --help, -h     show help
+   --version, -v  print the version
 
 ```
 
@@ -33,14 +39,6 @@ COMMANDS:
 
 - `--repo`：可选参数，指定pier节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
 - `--tls`：可选参数，用于pier节点与bitxhub进行tls加密传输。如果不指定，默认为false。
-
-```shell
- GLOBAL OPTIONS:
-   --repo value   Pier repository path
-   --tls          enable tls between pier and bitxhub or not
-   --help, -h     show help
-   --version, -v  print the version
-```
 
 ## 子命令描述
 
@@ -58,17 +56,12 @@ USAGE:
    Pier appchain command [command options] [arguments...]
 
 COMMANDS:
-   method    Command about appchain method
-   did       Command about appchain did
-   register  Register pier to bitxhub
+   service   Command about appchain service
+   register  Register appchain to bitxhub
    update    update appchain in bitxhub
    activate  activate appchain in bitxhub
    logout    logout appchain in bitxhub
    get       Get appchain info
-
-OPTIONS:
-   --help, -h  show help
-
 ```
 
 **具体描述**
@@ -484,7 +477,7 @@ QmNpQvh8Lm7gwt3sDqwJ1pgNn6taJLqdgtRVyZWhsD5bND
 
 **用法**
 
-```
+```shell
 NAME:
    Pier rule - Command about rule
 
@@ -492,19 +485,193 @@ USAGE:
    Pier rule command [command options] [arguments...]
 
 COMMANDS:
-   deploy  Deploy validation rule
-   update  update master rule
-   logout  logout validation rule
+   deploy    Deploy validation rule
+   register  Register validation rule
+   update    update master rule
+   logout    logout validation rule
+```
+
+**子命令**
+
+#### pier rule deploy
+
+**用法**
+
+```shell
+NAME:
+   Pier rule deploy - Deploy validation rule
+
+USAGE:
+   Pier rule deploy [command options] [arguments...]
 
 OPTIONS:
-   --help, -h  show help
+   --path value  Specify rule path
 ```
 
 **具体描述**
 
-`pier rule`具体描述与使用示例参考[直连模式管理](/v1.11/bitxhub/bitxhub/function/direct_manager/)的部署验证规则模块。
+**参数解释**
+
+- `--path`:指定wasm验证规则路径。
+
+**样例**
+
+以`pier-client-fabric`项目下的验证规则举例说明。
+
+```shell
+# 复制验证规则到当前的fabric目录下
+$ cp ~/goproject/meshplus/pier-client-fabric/config/validating.wasm ./fabric/
+
+$ pier --repo $(pwd) rule deploy --path ./fabric/validating.wasm
+# 控制台输出验证规则部署成功，输出验证规则地址用于验证规则注册或绑定应用链
+Deploy rule successfully: 0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB
+```
+
+#### pier rule register
+
+对于已注册的应用链，`pier rule register`可以注册多个验证规则，具体说明如下：
+
+**用法**
+
+```shell
+NAME:
+   Pier rule register - Register validation rule
+
+USAGE:
+   Pier rule register [command options] [arguments...]
+
+OPTIONS:
+   --appchain-id value  Specify appchain id
+   --rule value         Specify appchain rule addr
+   --rule-url value     Specify appchain rule url
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--appchain-id`：指定当前应用链的id。
+- `--rule`：指定验证规则地址，通过`pier rule deploy`生成。
+- `--rule-url`：验证规则的url地址，如果没有可以填写任意网址。
+
+**样例**
+
+以`pier-client-fabric`项目下的验证规则举例说明。
+
+```shell
+# 通过上诉pier rule deploy再次部署验证规则后，得到验证规则地址
+$ pier --repo $(pwd) rule deploy --path ./fabric/validating.wasm
+# 控制台输出验证规则部署成功，输出验证规则地址用于验证规则注册
+Deploy rule successfully: 0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd
+
+# 为应用链注册当前验证规则
+$ pier --repo $(pwd) rule register --appchain-id fabappchain --rule 0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd --rule-url https://github.com
+
+Register rule to bitxhub for appchain fabappchain successfully.
+```
 
 
+
+#### pier rule update
+
+`pier rule update`命令用于更新应用链所绑定的验证规则。
+
+注意：更新的验证规则需要通过`pier rule deploy`和`pier rule register`提前在中继链部署和注册）。
+
+**用法**
+
+```shell
+NAME:
+   Pier rule update - update master rule
+
+USAGE:
+   Pier rule update [command options] [arguments...]
+
+OPTIONS:
+   --addr value         Specify rule addr
+   --appchain-id value  Specify appchain id
+   --reason value       Specify governance reason
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--addr`：指定验证规则地址，通过`pier rule deploy`生成。
+
+- `--appchain-id`：指定当前应用链的id。
+- `--reason`：验证规则更新相关说明。
+
+**样例**
+
+以`pier-client-fabric`项目下的验证规则举例说明。
+
+```shell
+# 通过上诉pier rule register注册验证规则后，得到验证规则地址，并将该应用链绑定的验证规则更新为新注册的验证规则
+$ pier --repo $(pwd) rule update --appchain-id fabappchain --addr 0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd --reason "test update rule"
+# 控制台输出验证规则更新成功，输出更新验证规则的提案号用于中继链管理员投票
+Update master rule to bitxhub for appchain fabappchain successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-1 to finish.
+
+# 在中继链上查询该应用链所有的验证规则列表
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance rule all --id "fabappchain"
+ChainID      RuleAddress                                 Status     Master  CreateTime
+-------      -----------                                 ------     ------  ----------
+fabappchain  0x00000000000000000000000000000000000000a2  bindable   false   1643101796307170000
+fabappchain  0x00000000000000000000000000000000000000a0  bindable   false   1643101796307170000
+fabappchain  0x00000000000000000000000000000000000000a1  bindable   false   1643101796307170000
+fabappchain  0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB  bindable   false   1643101796307170000
+fabappchain  0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd  available  true    1643103182256151000
+```
+
+其中Master标识应用链目前绑定的验证规则，可以发现绑定的验证规则已更新为0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd。说明验证规则更新成功。
+
+#### pier rule logout
+
+**用法**
+
+```shell
+NAME:
+   Pier rule logout - logout validation rule
+
+USAGE:
+   Pier rule logout [command options] [arguments...]
+
+OPTIONS:
+   --addr value         Specify rule addr
+   --appchain-id value  Specify appchain id
+```
+
+**具体描述**
+
+**参数解释**
+
+- `--addr`：指定验证规则地址，通过`pier rule deploy`生成。
+
+- `--appchain-id`：指定当前应用链的id。
+
+**样例**
+
+将上述被替换的地址为0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB验证规则注销。
+
+```shell
+# 通过上诉pier rule register注册验证规则后，得到验证规则地址，并将该应用链绑定的验证规则更新为新注册的验证规则
+$ pier --repo $(pwd) rule logout --appchain-id fabappchain --addr 0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB
+
+# 控制台输出验证规则注销成功
+The logout request was submitted successfully
+
+# 在中继链上查询该应用链所有的验证规则列表
+$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance rule all --id "fabappchain"
+ChainID      RuleAddress                                 Status     Master  CreateTime
+-------      -----------                                 ------     ------  ----------
+fabappchain  0x00000000000000000000000000000000000000a2  bindable   false   1643101796307170000
+fabappchain  0x00000000000000000000000000000000000000a0  bindable   false   1643101796307170000
+fabappchain  0x00000000000000000000000000000000000000a1  bindable   false   1643101796307170000
+fabappchain  0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB  forbidden  false   1643101796307170000
+fabappchain  0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd  available  true    1643103182256151000
+```
+
+其中Status标识应用链目前所注册的验证规则的状态，可以发现地址为0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB的验证规则状态已被更改为forbitdden。说明该验证规则注销成功。
 
 ### pier start
 
