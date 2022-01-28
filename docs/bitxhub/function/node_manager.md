@@ -1,105 +1,115 @@
 # 节点管理
-中继链中继模式提供对中继链自身节点的增删管理功能。
+中继链中继模式提供对中继链自身节点的增删管理功能
 
 ## 1 概述
 中继链自身节点有共识节点和审计节点两种，中继链初始启动的节点都是共识节点。
 
-- 共识节点：参与共识；
-- 审计节点：不参与共识，只能同步数据。
+### 共识节点
+参与中继链共识
+
+关于共识节点，目前中继链只支持rbft共识算法的节点增删管理。而rbft共识只在BitXHub商业版本中支持，启动商业版本的BitXHub需要获取相应的LICENSE，并将LICENSE放在每个BitXHub节点的根目录下。  
+_（下文中的关于共识节点使用方法的介绍均为rbft共识算法下的共识节点）_
+
+此外，为了保证治理结果的不确定性不影响中继链上的节点共识，要求共识节点的治理操作只能逐个进行，即当有共识节点正在注册或注销过程中时，无法发起新的共识节点注册。
 
 
-⚠️注意：
-1. 关于共识节点，目前中继链只支持rbft共识算法的节点增删管理；
-2. rbft共识只在BitXHub商业版本中支持，启动商业版本的BitXHub需要获取相应的LICENSE，并将LICENSE放在每个BitXHub节点的根目录下；
-3. 关于审计节点,目前中继链支持注册注销的简单操作，但实际的审计节点有待后续实现。
+### 审计节点
 
- **注意：**  下文中的使用方法主要介绍rbft共识算法下的共识节点增删）
+不参与共识，只能同步数据
 
-## 2 增加节点
+关于审计节点，中继链上支持对审计节点信息的注册、注销、更新、绑定，实际的审计节点需要另外启动，中继链上的治理操作可以对审计节点同步数据的权限进行限制
+
+中继链的节点管理功能主要提供关于共识节点的注册、注销功能，关于审计节点的注册、更新、注销功能。
+
+## 2 共识节点注册
+
 ### 2.1 功能介绍
-目前中继链支持在使用rbft共识算法的情况下增加共识节点，新增过程中节点的一般状态转换如下：  
+目前中继链支持在使用rbft共识算法的情况下增加共识节点，注册过程中共识节点的一般状态转换如下：  
+`unavailable` --> `registering` --> `available`  
 
-```
-unavailable --> registering --> available
-```
-
-
-
-新增节点有以下几点需要注意：  
-（1）节点只能逐个的增加，即上一个节点的新增提案完成才可以继续增加下一个节点；  
-（2）共识节点增加时需要提供一个vpNodeId参数，该参数按可用共识节点的序号逐个递增，比如：当前有4个可用共识节点，那么这4个共识节点的vpNodeId一定分别是1、2、3、4，新增共识节点的id必须为5。
+_（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间过渡状态）_
 
 ### 2.2 使用方法
 
-#### 第一步：启动rbft共识的BitXHub
-bitxhub的默认共识类型是raft，如果要启动rbft共识的bitxhub，需要修改每个节点的bitxhub.toml配置文件，将共识类型参数改为rbft：
-```shell
-[order]
-  type = "rbft"
-```
-此外，rbft是在bitxhub商业版本中支持的，启动商业版本的bitxhub的命令如下：
-```shell
-$ make cluster TAGS=ent
-```
+bitxhub client governance node register
 
-#### 第二步：启动新节点
-新节点的启动需要先准备相关配置文件然后再启动，具体流程如下：  
-（1）为方便使用bitxhub本身命令行功能，需要先编译商业版本的bitxhub二进制文件，命令如下：
+注册共识节点相关参数解释 *（未列出参数与共识节点无关可忽略）*：
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
+- `--account`：指定新节点account信息，共识节点通常为节点配置目录下key.json对应的地址
+- `--type`：指定新节点类型，默认为共识节点`vpNode`
+- `--pid`：指定新共识节点的pid信息，通常为节点配置目录下certs/node.priv对应的pid
+- `--id`：指定新共识节点的id信息，通常为共识节点的递增序号，但不要求一定递增，新赠共识节点的id需要比现有所有可用共识节点的id大即可，即，4个创世共识节点的id分别为1/2/3/4，那么新增的第一个共识节点id>=5即可
+- `--reason`：可选参数，说明注册理由
 
-```shell
-make installent
-```
+_（注意，注册共识节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
 
-（2）线下向CA证书的代理机构请求准入证书。bitxhub命令行提供了生成证书功能，命令如下：
+### 2.3 示例说明
+
+前提条件：
+- 商业版本bitxhub已经启动，使用rbft共识，使用默认`ZeroPermission`投票策略，且相应二进制文件已编译
 
 ```shell
-// 生成自己的私钥
-// --name：指定私钥名称，默认使用node
-// --target：指定生成私钥位置
-$ bitxhub cert priv gen --name node --target .
-// 获取私钥的csr文件
-// --key：指定新节点私钥的路径
-// --org：指定新节点的组织名称
-// --target：指定生成文件路径
+# 1. 准备新共识节点的配置
+
+# 1.1 线下向CA证书的代理机构请求准入证书。bitxhub命令行提供了生成证书功能
+# 生成节点证书私钥
+$ pbitxhub cert priv gen --name node --target .
+node.priv key is generated under directory $(pwd)
+# 获取私钥的csr文件
 $ bitxhub cert csr --key ./node.priv --org Node --target .
-// 代理结构颁发证书
-// --csr：指定新节点csr文件的路径
-// --is_ca：指定当前是否是生成ca根证书（不是）
-// --key：指定代理机构私钥的路径，可以使用bitxhub项目scripts/certs目录下的agency.priv
-// --cert：指定代理机构证书的路径，可以使用bitxhub项目scripts/certs目录下的agency.cert
-// --target：指定生成文件路径
-$ bitxhub cert issue --csr node.csr --is_ca false --key $PROJECT_PATH/bitxhub/scripts/certs/agency.priv --cert $PROJECT_PATH/bitxhub/scripts/certs/agency.cert --target .
-```
+# 代理结构颁发证书
+$ bitxhub cert issue --csr node.csr --is_ca false --key $bitxhub_project_repo/scripts/certs/agency.priv --cert $bitxhub_project_repo/scripts/certs/agency.cert --target .
+# 当前目录下的node.cert即为需要的节点准入证书
+$ tree
+.
+├── node.cert
+├── node.csr
+└── node.priv
 
-（3）线下准备新节点的私钥（这个私钥与上文中用户获取证书的私钥不同，此私钥与节点network.toml中的account对应）。bitxhub命令行提供相关功能，命令如下：
-
-```shell
-// --target：指定生成私钥位置
-// --passwd：指定私钥密码
+# 1.2 线下准备新节点的私钥（这个私钥与上文中用户获取证书的私钥不同，此私钥与节点network.toml中的account对应）
+# 生成Secp256k1加密算法的私钥
 $ bitxhub key gen --target . --passwd bitxhub
-```
+key.json key is generated under directory $(pwd)
 
-（4）准备节点配置文件模板，命令如下：
-
-```shell
-// --repo：指定新节点配置文件路径
+# 1.3 准备节点启动配置文件
+# 生成节点配置文件模板
 $ bitxhub --repo ./node5 init
-```
-
-（5）将相关私钥证书拷贝到相应路径，包括新节点证书私钥、新节点证书、agency证书、ca证书、节点私钥、LICENSE，命令如下：
-
-```shell
+initializing bitxhub at ./node5
+# 拷贝节点ca证书及ca证书私钥到节点配置目录
 $ cp ./node.cert ./node5/certs/
 $ cp ./node.priv ./node5/certs/
-$ cp $PROJECT_PATH/bitxhub/scripts/certs/node1/certs/agency.cert ./node5/certs/
-$ cp $PROJECT_PATH/bitxhub/scripts/certs/node1/certs/ca.cert ./node5/certs/
+# 拷贝agency证书及ca根证书到节点配置目录
+$ cp $bitxhub_project_repo/scripts/certs/node1/certs/agency.cert ./node5/certs/
+$ cp $bitxhub_project_repo/scripts/certs/node1/certs/ca.cert ./node5/certs/
+# 拷贝节点私钥到配置目录
 $ cp ./key.json ./node5
-$ cp $LICENSE_PATH/LICENSE ./node5
-```
+# 拷贝商业版本许可到配置目录
+$ cp $license_repo/LICENSE ./node5
+# 检查完整的新节点配置文件
+$ tree node5
+node5
+├── LICENSE
+├── README.md
+├── appchain
+│   ├── eth_header.json
+│   └── eth_header1.json
+├── bitxhub.toml
+├── certs
+│   ├── agency.cert
+│   ├── agency.priv
+│   ├── ca.cert
+│   ├── node.cert
+│   ├── node.priv
+│   ├── server.key
+│   └── server.pem
+├── key.json
+├── network.toml
+└── order.toml
 
-（6）修改bitxhub.toml中端口信息和共识类型，需要修改的部分修改后如下：
-
-```shell
+# 1.4 修改节点配置信息
+# 修改bitxhub.toml配置信息
+$ vim ./node5/bitxhub.toml
+# 修改bitxhub.toml中端口信息和共识类型，需要修改的配置项修改后如下：
 [port]
   jsonrpc = 8885
   grpc = 60015
@@ -108,20 +118,18 @@ $ cp $LICENSE_PATH/LICENSE ./node5
   monitor = 40015
 [order]
   type = "rbft"
-```
-
-（7）在network.toml中添加新节点的网络信息，bitxhub命令行提供了根据相关私钥查看节点pid和account信息的功能
-
-```shell
-// 查看节点pid信息
+# 在network.toml中添加新节点的网络信息，bitxhub命令行提供了根据相关私钥查看节点pid和account信息的功能
+# 查看新节点pid信息
 $ bitxhub cert priv pid --path ./node5/certs/node.priv
-Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm
-// 查看节点account信息
+QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy
+# 查看新节点account信息
 $ bitxhub key show --path ./node5/key.json
-private key: 18fcb8f87c5ed7bc67bd0fc40248ecea7e65d7d624cc588ed5903e6b2caca339
-public key: 04ffa0e8a1353aa36ef7c4e986ec87d01e4692a7fc1b511d2f7e56a8573ebc54f76f7efa3e5eca17655a2c91d57fa060b30e395500c1bff7b3933477678d78d93c
-address: 0x9E887Aa2e8009C6c4b4aF7792e0afe71f0Dc1d64
-// 修改network.toml，将新节点网络信息添加到network.toml末尾，并修改id和new参数，修改后netwokr.toml如下：
+private key: 5ddfbd627c97563f922d104654adcbb6352fd64e783abaea8d7879e8e96543e4
+public key: 04b442e315c200f5d2261b5486e28f7d9d3e366d6f252c492dc15b232777fb720f655ec075fbd01a25eec5662994a10b1e7b8df12be134581c02d6e6fad57459a8
+address: 0x8fa7257AAD61f67957c77a7559c746561f39e202
+# 修改network.toml
+$ vim ./node5/network.toml
+# 将新节点网络信息添加到network.toml末尾，并修改id和new参数，修改后netwokr.toml如下：
 id = 5 # self id
 n = 4 # the number of primary vp nodes
 new = true # track whether the node is a new node
@@ -146,156 +154,314 @@ hosts = ["/ip4/127.0.0.1/tcp/4004/p2p/"]
 id = 4
 pid = "QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy"
 [[nodes]]
-account = "0x9E887Aa2e8009C6c4b4aF7792e0afe71f0Dc1d64"
+account = "0x8fa7257AAD61f67957c77a7559c746561f39e202"
 hosts = ["/ip4/127.0.0.1/tcp/4005/p2p/"]
 id = 5
-pid = "Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm"
-```
+pid = "QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy"
 
-（8）启动新节点，命令如下：
+# 建议完成以上步骤后拷贝一份已经准备好的节点配置文件备份，以备后续步骤如果出错不需要重新准备
+$ cp -r ./node5 ./node5_backup
 
-```shell
+# 2 启动新的共识节点
 $ bitxhub --repo ./node5 start
-```
+···（部分日志省略）
+ERRO[2022-02-17T15:37:20.349] Connect failed                                error="dial backoff" module=p2p node=2
+ERRO[2022-02-17T15:37:20.349] Connect failed                                error="dial backoff" module=p2p node=3
+ERRO[2022-02-17T15:37:20.349] Connect failed                                error="dial backoff" module=p2p node=1
+ERRO[2022-02-17T15:37:20.349] Connect failed                                error="dial backoff" module=p2p node=4
+···（后续日志省略）
 
-新节点后启动后会一直尝试连接bitxhub节点，但由于节点没有注册会一直连接失败，原节点也会一直拒绝新节点的连接。
+# 3 查询所有节点：四个初始的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type    Pid                                             VpNodeId  Name  Permission  Status     AuditAdminAddr
+-------                                     ----    ---                                             --------  ----  ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode  QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                           available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode  QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                           available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode  QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                           available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode  QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                           available
 
-- 新节点会打印出如下日志：
-
-```shell
-ERRO[2021-07-23T14:36:13.300] Connect failed                                error="dial backoff" module=p2p node=1
-ERRO[2021-07-23T14:36:13.326] Connect failed                                error="dial backoff" module=p2p node=4
-ERRO[2021-07-23T14:36:13.339] Connect failed                                error="dial backoff" module=p2p node=2
-ERRO[2021-07-23T14:36:14.005] Connect failed                                error="dial backoff" module=p2p node=3
-```
-
-- 原节点会打印出如下日志：
-
-```shell
-INFO[2021-07-23T14:35:12.804] Intercept a connection with an unavailable node, peer.Pid: Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm, peer.Id: 5, peer.status: registering  module=p2
-```
-
-​    
-
-
-#### 第三步：注册新节点
-中继链管理员注册新节点的命令如下：
-
-```shell
-// --repo：指定中继链管理员私钥的路径
-// --pid：指定新节点pid信息
-// --account：指定新节点account信息
-// --type：指定新节点类型
-// --id：指定共识节点的id
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance node register --pid Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm --account 0x9E887Aa2e8009C6c4b4aF7792e0afe71f0Dc1d64 --type vpNode --id 5
+# 4 注册新的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node register --account 0x8fa7257AAD61f67957c77a7559c746561f39e202 --type vpNode --pid QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy --id 5
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
-```
-根据上述命令执行的打印信息可以看到注册新节点的提案号为0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+# ZeroPermission策略下管理员投票可省略，即已注册成功
+# 等待少许时间后，新启动的node5节点将会打印出启动成功后的bitxhub loge
 
-#### 第四步：中继链管理员投票
-中继链管理员进行投票治理，默认四个管理员的情况下需要三个管理员投赞成票提案可通过，命令如下：
-
-```shell
-// --repo：指定中继链管理员key的路径
-// --id：指定治理提案的id，0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
-// --info：指定投票内容是approve或是reject
-// --reason：指定投票理由，可自定义
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node4 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 --info approve --reason reason
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node2 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 --info approve --reason reason
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 --info approve --reason reason
+# 5 查询所有节点：五个可用的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type    Pid                                             VpNodeId  Name  Permission  Status     AuditAdminAddr
+-------                                     ----    ---                                             --------  ----  ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode  QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                           available
+0x8fa7257AAD61f67957c77a7559c746561f39e202  vpNode  QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy  5                           available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode  QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                           available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode  QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                           available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode  QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                           available
 ```
 
-投票通过注册成功后，新节点将会自动与原节点连接成功，等待片刻（新节点需要同步区块）后新节点将会成功打印出bitxhub的logo:
-```shell
-=======================================================
-    ____     _    __    _  __    __  __            __
-   / __ )   (_)  / /_  | |/ /   / / / /  __  __   / /_
-  / __  |  / /  / __/  |   /   / /_/ /  / / / /  / __ \
- / /_/ /  / /  / /_   /   |   / __  /  / /_/ /  / /_/ /
-/_____/  /_/   \__/  /_/|_|  /_/ /_/   \__,_/  /_.___/
-=======================================================
-```
-
-#### 第五步：查看中继链节点信息
-中继链提供查看节点信息的命令如下：
-```shell
-// --repo：指定中继链管理员key的路径
-// --type：指定中继链节点类型
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance node all --type vpNode
-```
-执行结果如下，可以看到新增节点已经是可用状态
-```shell
-NodePid                                         type    VpNodeId  Account                                     Status
--------                                         ----    --------  -------                                     ------
-QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  vpNode  4         0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  available
-QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  vpNode  2         0x79a1215469FaB6f9c63c1816b45183AD3624bE34  available
-QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  vpNode  1         0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  available
-QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  vpNode  3         0x97c8B516D19edBf575D72a172Af7F418BE498C37  available
-Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm  vpNode  5         0x9E887Aa2e8009C6c4b4aF7792e0afe71f0Dc1d64  available
-```
-
-## 3 删除节点
+## 3 共识节点注销
 ### 3.1 功能介绍
-节点删除时的一般状态转换如下：  
-`available` --> `logouting` --> `unavailable`  
+共识节点注销时的一般状态转换如下：  
+`available` --> `logouting` --> `forbidden`  
+
+_（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间过渡状态）_
+
 删除节点有以下几点注意：  
-（1）节点删除后可以重新注册，不做类似应用链注销后不可重复注册的限制；  
-（2）初始节点不可以删除；  
-（3）删除共识节点时目前只支持删除按vpNodeId排序的最后一个节点，比如当前有5个可用共识节点，这5个共识节点的id一定分别是1、2、3、4、5，那么只能删除id为5的共识节点（这一点后续可能会改进）  
-（4）cluster模式删除节点时需要保证共识节点个数不少于4个
+（1）初始启动的节点不可以删除，通常为初始的4个节点；  
+（2）cluster模式删除节点时需要保证共识节点个数不少于4个
 
 ### 3.2 使用方法
 
-#### 第一步：中继链管理员删除节点
-中继链管理员除节点的命令如下：
+bitxhub client governance node logout
+
+参数解释：
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
+- `--account`：指定待删除节点account信息，共识节点通常为节点配置目录下key.json对应的地址
+- `--reason`：可选参数，说明注销理由
+
+_（注意，注销共识节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
+
+### 3.3 示例说明
+
+前提条件：
+- 接2.3示例
 ```shell
-// --repo：指定中继链管理员key的路径
-// --pid：待删除节点的pid
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance node logout --pid Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm
+# 查询所有节点：五个可用的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type    Pid                                             VpNodeId  Name  Permission  Status     AuditAdminAddr
+-------                                     ----    ---                                             --------  ----  ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode  QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                           available
+0x8fa7257AAD61f67957c77a7559c746561f39e202  vpNode  QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy  5                           available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode  QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                           available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode  QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                           available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode  QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                           available
+
+# 注销共识节点5
+$ bitxhub --repo $bitxhub_node_repo client governance node logout --account 0x8fa7257AAD61f67957c77a7559c746561f39e202
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
-```
-根据上述命令执行的打印信息可以看到删除节点的提案号为`0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1`。
+# ZeroPermission策略下管理员投票可省略，即已注销成功
 
-#### 第二步：中继链管理员投票
-中继链管理员进行投票治理，默认四个管理员的情况下需要三个管理员投赞成票提案可通过，命令如下：
+# 注销成功后，共识节点5会被中继链主动端口，打印日志如下：
+INFO[2022-02-17T16:06:37.514] Delete node [ID: 5, peerInfo: id:5 pid:"QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy" account:"0x8fa7257AAD61f67957c77a7559c746561f39e202" hosts:"/ip4/127.0.0.1/tcp/4005/p2p/" ]   module=p2p
+network config file changed:  "node5/network.toml": WRITE
+unmarshal config:  result must be addressable (a pointer)
+WARN[2022-02-17T16:06:37.543] Receive missing transaction [account: 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013, nonce: 0, hash: 0xe7789972fed4b61A8fcE043168CB2C99454Cb3C8228d6b7D9dCaD5e4028d11b3] from primary, we will replace the old transaction  module=order
+INFO[2022-02-17T16:06:37.543] ======== THIS NODE WILL STOP IN 3 SECONDS     module=order
+INFO[2022-02-17T16:06:37.543] Replica 5 need to process seqNo 1 as a null request  module=order
+INFO[2022-02-17T16:06:37.543] Replica 5 persist view=10/N=4 after updateN   module=order
+INFO[2022-02-17T16:06:37.543] ======== Replica 5 finished updateN, primary=3, n=4/f=1/view=10/h=0  module=order
+INFO[2022-02-17T16:06:40.548] RBFT stopping...                              module=order
+INFO[2022-02-17T16:06:40.548] ======== RBFT stopped!                        module=order
+INFO[2022-02-17T16:06:40.552] Disconnect peer [ID: 2, Pid: QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4]  module=p2p
+INFO[2022-02-17T16:06:40.552] Disconnect peer [ID: 3, Pid: QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS]  module=p2p
+INFO[2022-02-17T16:06:40.552] Disconnect peer [ID: 4, Pid: QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy]  module=p2p
+INFO[2022-02-17T16:06:40.552] Disconnect peer [ID: 1, Pid: QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL]  module=p2p
+INFO[2022-02-17T16:06:40.553] ======== THIS NODE HAS BEEN DELETED!!!        module=order
+
+# 查询所有节点：四个可用的共识节点，一个已注销的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type    Pid                                             VpNodeId  Name  Permission  Status     AuditAdminAddr
+-------                                     ----    ---                                             --------  ----  ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode  QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                           available
+0x8fa7257AAD61f67957c77a7559c746561f39e202  vpNode  QmVnKh44L2onm763Wqizprm7WNuwCpAMwtWWUytgxijHHy  5                           forbidden
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode  QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                           available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode  QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                           available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode  QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                           available
+```
+
+## 4 注册审计节点
+
+### 4.1 功能介绍
+
+中继链管理员可以向中继链上注册审计节点，需要注意的是注册审计节点时需要携带不为空的应用链审计权限（即需要至少注册一条应用链后再注册审计节点）。   
+注册过程中审计节点的状态转换如下：
+
+`unavailable` --> `registering` --> `available`
+
+_（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间过渡状态）_
+
+### 4.2 使用方法
+
+bitxhub client governance node register
+
+注册审计节点相关参数解释 *（未列出参数与审计节点无关可忽略）*：
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
+- `--account`：指定新节点account信息，审计节点通常为审计节点私钥key.json对应的地址
+- `--type`：指定新节点类型，默认为共识节点`vpNode`，注册审计节点时需要明确指定为`nvpNode`
+- `--name`：指定新审计节点的name，可随意自定义
+- `--permission`：指定新审计节点的应用链审计权限，即一个应用链id列表，不可以为空，如有多条应用链以逗号隔开
+- `--reason`：可选参数，说明注册理由
+
+_（注意，注册审计节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
+
+### 4.3 示例说明
+
+前提条件：
+- bitxhub已经启动，使用默认raft共识，使用默认`ZeroPermission`投票策略，且相应二进制文件已编译
+- pier配置文件已准备好，对应一个`Fabric V1.4.3`类型应用链
+- pier配置文件下的key.json对应中继链上一个有足够交易费余额的账户
+
 ```shell
-// --repo：指定中继链管理员key的路径
-// --id：指定治理提案的id，0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
-// --info：指定投票内容是approve或是reject
-// --reason：指定投票理由，可自定义
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node4 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1 --info approve --reason reason
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node2 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1 --info approve --reason reason
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1 --info approve --reason reason
+# 部署验证规则
+$ pier --repo $pier_repo rule deploy --path $pier_repo/fabric/validating.wasm
+Deploy rule successfully: 0x615bAa02f2751f3378c8c57F9eB084daD6A55a92
+
+# 注册应用链
+$ pier --repo $pier_repo appchain register --appchain-id appchain1 --name 应用链A --type "Fabric V1.4.3" --trustroot $pier_repo/fabric/fabric.validators --broker-cid "mychannel" --broker-ccid "broker" --broker-v 1 --desc "test fabric"  --master-rule 0x615bAa02f2751f3378c8c57F9eB084daD6A55a92 --rule-url "https://bitxhub.cn/" --admin 0x89cc4e498e073fe3A54524239226187f9Dc6414d
+Register appchain successfully, wait for proposal 0x89cc4e498e073fe3A54524239226187f9Dc6414d-0 to finish.
+# ZeroPermission策略下管理员投票可省略，即已注册成功
+
+# 查询所有节点：4个初始的共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
+
+# 注册审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node register --account 0x96B5619A637639E1651EADD49CDA5B8EF4882331 --type nvpNode --name node1 --permission appchain1
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+# ZeroPermission策略下管理员投票可省略，即已注册成功
+
+# 查询所有节点：4个初始的共识节点，1个新注册的审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node1  appchain1   available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
 ```
 
-投票通过后，被删除的节点会自动被停掉，打印出的日志如下：
+## 5 更新审计节点
+
+### 5.1 功能介绍
+
+中继链管理员可以更新中继链上记录的审计节点信息，具体可以更新的是审计节点的名称和权限。   
+更新过程中审计节点的状态转换如下：
+
+`available` --> `updating` --> `available`
+
+_（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间过渡状态）_
+
+### 5.2 使用方法
+
+bitxhub client governance node update
+
+参数解释：
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
+- `--account`：指定待更新节点account信息，通常为审计节点私钥key.json对应的地址
+- `--name`：指定待更新节点的name，可随意自定义，但不可以和其他审计节点重名
+- `--permission`：指定新待更新节点的应用链审计权限，即一个应用链id列表，不可以为空，如有多条应用链以逗号隔开
+- `--reason`：可选参数，说明更新理由
+
+_（注意，更新审计节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
+
+### 5.3 示例说明
+
+前提条件：
+- 接4.3示例
 ```shell
-INFO[2021-07-23T15:10:48.190] Delete node [ID: 5, peerInfo: id:5 pid:"Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm" account:"0x9E887Aa2e8009C6c4b4aF7792e0afe71f0Dc1d64" hosts:"/ip4/127.0.0.1/tcp/4005/p2p/" ]   module=p2p
-INFO[2021-07-23T15:10:48.451] Replica 5 need to process seqNo 1 as a null request  module=order
-INFO[2021-07-23T15:10:48.451] ======== THIS NODE WILL STOP IN 3 SECONDS     module=order
-INFO[2021-07-23T15:10:48.468] Replica 5 persist view=9/N=4 after updateN    module=order
-INFO[2021-07-23T15:10:48.468] ======== Replica 5 finished updateN, primary=2, n=4/f=1/view=9/h=0  module=order
-INFO[2021-07-23T15:10:51.460] Transaction cache stopped!                    module=order
-INFO[2021-07-23T15:10:51.460] RBFT stopping...                              module=order
-INFO[2021-07-23T15:10:51.461] ======== RBFT stopped!                        module=order
-INFO[2021-07-23T15:10:51.466] Disconnect peer [ID: 1, Pid: QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL]  module=p2p
-INFO[2021-07-23T15:10:51.466] Disconnect peer [ID: 2, Pid: QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4]  module=p2p
-INFO[2021-07-23T15:10:51.466] Disconnect peer [ID: 3, Pid: QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS]  module=p2p
-INFO[2021-07-23T15:10:51.466] Disconnect peer [ID: 4, Pid: QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy]  module=p2p
-INFO[2021-07-23T15:10:51.466] ======== THIS NODE HAS BEEN DELETED!!!        module=order
+# 查询所有节点：4个初始的共识节点，1个名称为node1权限为appchain1的审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node1  appchain1   available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
+
+# 更新审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node update --account 0x96B5619A637639E1651EADD49CDA5B8EF4882331 --name node2 --permission appchain1
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
+# ZeroPermission策略下管理员投票可省略，即已更新成功
+
+# 查询所有节点：4个初始的共识节点，1个名称更新为node2权限为appchain1的审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node2  appchain1   available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
 ```
 
-## 4 其他功能
+## 6 注销审计节点
+
+### 6.1 功能介绍
+
+中继链管理员可以注销中继链上已注册的审计节点，审计节点注销后即失去从中继链上同步数据的权限，与其绑定的审计管理员也会被系统自动冻结（详见身份管理中关于审计管理员的介绍）。  
+审计节点注销时的一般状态转换如下：  
+`*` --> `logouting` --> `forbidden`
+
+_（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间过渡状态）_
+
+### 6.2 使用方法
+
+bitxhub client governance node logout
+
+参数解释：
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
+- `--account`：指定待删除节点account信息，审计节点通常为私钥key.json对应的地址
+- `--reason`：可选参数，说明注销理由
+
+_（注意，注销审计节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
+
+### 6.3 示例说明
+
+前提条件：
+- 接5.3示例
+
+```shell
+# 查询所有节点：4个初始的共识节点，1个可用的审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node2  appchain1   available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
+
+# 注销审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node logout --account 0x96B5619A637639E1651EADD49CDA5B8EF4882331
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-2
+# ZeroPermission策略下管理员投票可省略，即已注销成功
+
+# 查询所有节点：4个初始的共识节点，1个已注销的审计节点
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node2  appchain1   forbidden
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
+```
+
+## 7 其他功能
 中继链还提供了其他查询节点信息的功能。
+以下给出的示例说明的前提条件均为接上文6.3示例
 
-- 查询中继链所有指定类型节点，默认查询共识节点，命令如下：
-
+### 7.1 查询所有节点
+示例说明：
 ```shell
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance node all
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+Account                                     Type     Pid                                             VpNodeId  Name   Permission  Status     AuditAdminAddr
+-------                                     ----     ---                                             --------  ----   ----------  ------     --------------
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  vpNode   QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  2                            available
+0x96B5619A637639E1651EADD49CDA5B8EF4882331  nvpNode                                                  0         node2  appchain1   forbidden
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  vpNode   QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  3                            available
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  vpNode   QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  4                            available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                            available
 ```
 
-- 查询中继链某个节点状态，命令如下：
-
+### 7.2 查询某个节点的状态
+示例说明：
 ```shell
-$ bitxhub --repo $PROJECT_PATH/bitxhub/scripts/build/node1 client governance node status --pid Qmb6ZaaCw6dYPL7ifLAG2gugXf61jo9q4eEfQ3USNBaubm
+$ bitxhub --repo $bitxhub_node_repo client governance node status --account 0x96B5619A637639E1651EADD49CDA5B8EF4882331
+node  is forbidden
 ```
