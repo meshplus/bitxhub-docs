@@ -13,38 +13,38 @@
   function register(string addr) public
 
   // 提供给管理员审核已经注册的业务合约
-  function audit(string addr, bool status) public returns(bool)
+  function audit(string addr, int64 status) public returns(bool)
 
   // getInnerMeta 是获取跨链请求相关的Meta信息的接口。以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
   // 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5。
   // 返回的map中，key值为来源链ID，value对应该来源链已发送的最新的跨链请求的序号，如{B:3, C:5}。
-  function getInnerMeta() public view returns(address[] memory, uint64[] memory)
+  function getInnerMeta() public view returns(string[] memory, uint64[] memory)
 
   // getOuterMeta 是获取跨链请求相关的Meta信息的接口。以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
   // 如果以Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5。
   // 返回的map中，key值为目的链ID，value对应已发送到该目的链的最新跨链请求的序号，如{B:3, C:5}。
-  function getOuterMeta() public view returns(address[] memory, uint64[] memory)
+  function getOuterMeta() public view returns(string[] memory, uint64[] memory)
 
   // getCallbackMeta 是获取跨链请求相关的Meta信息的接口。以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
   // 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5；同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
   // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，key值为目的链ID，value对应到该目的链最新的带回调跨链请求的序号，
   // 如{B:2, C:4}。（注意 callbackMeta序号可能和outMeta是不一致的，这是由于由A发出的跨链请求部分是没有回调的）
-  function getCallbackMeta() public view returns(address[] memory, uint64[] memory)
+  function getCallbackMeta() public view returns(string[] memory, uint64[] memory)
 
-  // getInMessage 查询历史跨链请求所在的区块高度。查询键值中srcChainID指定来源链，idx指定序号，查询结果为以Broker所在的区块链作为目的链的跨链请求所在的区块高度。
-  function getInMessage(string srcChainID, uint64 idx) public view returns (uint)
+  // getInMessage 查询历史跨链请求所在的区块高度。查询键值中from指定来源链，idx指定序号，查询结果为以Broker所在的区块链作为目的链的跨链请求所在的区块高度。
+  function getInMessage(string memory from, uint64 idx) public view returns (uint)
 
-  // getOutMessage 查询历史跨链请求所在的区块高度。查询键值中dstChainID指定目的链，idx指定序号，查询结果为以Broker所在的区块链作为来源链的跨链请求所在的区块高度。
-  function getOutMessage(string dstChainID, uint64 idx) public view returns (uint)
+  // getOutMessage 查询历史跨链请求所在的区块高度。查询键值中to指定目的链，idx指定序号，查询结果为以Broker所在的区块链作为来源链的跨链请求所在的区块高度。
+  function getOutMessage(string memory to, uint64 idx) public view returns (uint)
 
   // 提供给跨链网关调用的接口，跨链网关收到跨链请求时会调用该接口。
-  function invokeInterchain(address srcChainID, uint64 index, address destAddr, bool req, bytes calldata bizCallData) payable external
+  function invokeInterchain(string calldata srcChainMethod, uint64 index, address destAddr, bool req, bytes calldata bizCallData) payable external
   	
   // 提供给跨链网关调用的接口，当跨链网关收到无效当跨链请求时会调用该接口。
-  function invokeIndexUpdateWithError(address srcChainID, uint64 index, bool req, string memory err) public
+  function invokeIndexUpdateWithError(string memory srcChainMethod, uint64 index, bool req, string memory err) public
 
   // 提供给业务合约发起通用的跨链交易的接口。
-  function emitInterchainEvent(address destChainID, string memory destAddr, string memory funcs, string memory args, string memory argscb, string memory argsrb) public onlyWhiteList
+  function emitInterchainEvent(string memory destContractDID, string memory funcs, string memory args, string memory argscb, string memory argsrb) public onlyWhiteList
 
   // 提供给合约部署初始化使用
   function initialize() public
@@ -72,19 +72,19 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
 
 ```solidity
   // 发起一笔跨链交易的接口
-  function transfer(string dstChainID, string destAddr, string sender, string receiver, string amount) public
+  function transfer(string memory destContractDID, string memory sender, string memory receiver, string memory amount) public
 
   // 提供给Broker合约收到跨链充值所调用的接口
-  function interchainCharge(string sender, string receiver, uint64 val) public onlyBroker returns(bool)
+  function interchainCharge(string memory sender, string memory receiver, uint64 val) public onlyBroker returns(bool)
 
   // 跨链交易失败之后，提供给Broker合约进行回滚的接口
-  function interchainRollback(string sender, uint64 val) public onlyBroker
+  function interchainRollback(string memory sender, uint64 val) public onlyBroker
 
   // 获取transfer合约中某个账户的余额
-  function getBalance(string id) public view returns(uint64)
+  function getBalance(string memory id) public view returns(uint64)
 
   // 在transfer合约中给某个账户设置一定的余额
-  function setBalance(string id, uint64 amount) public
+  function setBalance(string memory id, uint64 amount) public
 }
 ```
 
@@ -92,13 +92,13 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
 
 ```solidity
   // 发起一个跨链获取数据交易的接口
-  function get(string dstChainID, string dstAddr, string key) public
+  function get(string memory destContractDID, string memory key) public
 
   // 提供给Broker合约调用，当Broker收到跨链获取数据的请求时取数据的接口
-  function interchainGet(string key) public onlyBroker returns(bool, string memory)
+  function interchainGet(string memory key) public onlyBroker returns(bool, string memory)
 
   // 跨链获取到的数据回写的接口
-  function interchainSet(string key, string value) public onlyBroker
+  function interchainSet(string memory key, string memory value) public onlyBroker
 ```
 
 ## 具体实现
@@ -153,17 +153,17 @@ contract DataSwapper {
 contract DataSwapper {
     // broker合约地址
 	address BrokerAddr = 0x2346f3BA3F0B6676aa711595daB8A27d0317DB57;
-    Broker broker = Broker(BrokerAddr);
+	Broker broker = Broker(BrokerAddr);
 
 	...
 
-	function get(address destChainID, string memory destAddr, string memory key) public {
+	function get(string memory destContractDID, string memory key) public {
         broker.emitInterchainEvent(destChainID, destAddr, "interchainGet,interchainSet,", key, key, "");
 	}
 }
 
 contract Broker {
-    function emitInterchainEvent(address destChainID, string memory destAddr, string memory funcs, string memory args, string memory argscb, string memory argsrb) public;
+    function emitInterchainEvent(string memory destContractDID, string memory funcs, string memory args, string memory argscb, string memory argsrb) public;
 }
 ```
 
@@ -277,7 +277,7 @@ func main() {
 const (
 	channelID               = "mychannel"
 	brokerContractName      = "broker"
-    emitInterchainEventFunc = "EmitInterchainEvent"
+	emitInterchainEventFunc = "EmitInterchainEvent"
 )
 
 func (s *KVStore) get(stub shim.ChaincodeStubInterface, args []string) peer.Response {
@@ -367,23 +367,23 @@ func (s *KVStore) interchainSet(stub shim.ChaincodeStubInterface, args []string)
 5. `transfer`业务合约调用`transfer`方法发起跨链交易。
 
 ```
-1.1 appchainA deploy ==> brokerA addr：0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8  
-					 	 businessA addr: 0x5bFe03Dbd09817d4957693f672cc31A133Bb6084					 						 
-1.2 appchainB deploy ==> brokerB addr：0xC8C086200f92c9226b42079eCB3137eFc8752801  
-					 	 businessB addr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
+1.1 appchainA deploy ==> brokerA addr：0xFb23Af09e3E8D83fd5575De9558920Bf351F05E8
+                         businessA addr: 0x5bFe03Dbd09817d4957693f672cc31A133Bb6084					 						 
+1.2 appchainB deploy ==> brokerB addr：0xC8C086200f92c9226b42079eCB3137eFc8752801   
+                         businessB addr: 0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f
 
 2.1 brokerA register ==> addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084 //部署的业务合约地址
 2.2 brokerB register ==> addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f //部署的业务合约地址
 
 3.1 brokerA audit ==> addr：0x5bFe03Dbd09817d4957693f672cc31A133Bb6084  
-					  status: 1
+                      status: 1
 3.2 brokeB audit ==> addr：0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f  
-					 status: 1	
+                     status: 1	
 														
 4.1 transferA setBalance ==> id: Alice 
-							 amount: 100
+                             amount: 100
 4.2 transfeB setBalance ==> id: Bob 
-							amount: 0
+                            amount: 0
 													 
     // destChainID为B链的PierID，可在终端通过pier --repo <appchainB_config_path> id获取	
     // destAddr为B链的业务合约地址
