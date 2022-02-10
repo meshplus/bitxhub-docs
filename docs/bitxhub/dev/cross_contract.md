@@ -359,7 +359,7 @@ func (s *KVStore) interchainSet(stub shim.ChaincodeStubInterface, args []string)
 
 **跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
 
-1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](/v1.11/bitxhub/usage/single_bitxhub/deploy_pier/)。
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](/v1.18/bitxhub/usage/single_bitxhub/deploy_pier/)。
 
 2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
 3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。
