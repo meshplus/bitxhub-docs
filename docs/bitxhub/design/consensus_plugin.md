@@ -40,14 +40,14 @@ type Order interface {
 	//集群中可以正常工作的最少节点数量，如在raft中要求正常节点数是N/2+1
 	Quorum() uint64
 
-    //获取账户最新的nonce
-    GetPendingNonceByAccount(account string) uint64
+  //获取账户最新的nonce
+  GetPendingNonceByAccount(account string) uint64
 
-	//根据哈希获取指定的交易
-    GetPendingTxByHash(hash *types.Hash) pb.Transaction
+  //根据哈希获取指定的交易
+  GetPendingTxByHash(hash *types.Hash) pb.Transaction
 
-    //从共识删除指定的节点
-    DelNode(delID uint64) error
+  //从共识删除指定的节点
+  DelNode(delID uint64) error
     
 	//订阅交易事件的通道
 	SubscribeTxEvent(events chan<- pb.Transactions) event.Subscription

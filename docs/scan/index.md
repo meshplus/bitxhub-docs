@@ -44,7 +44,7 @@ https://testnet-1.bitxhub.cn:8881
 
 ### 部署跨链合约
 
-可以参考BitXHub文档站[链接](/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本）
+可以参考BitXHub文档站[链接](/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本）
 
 ### 获取Pier部署包和修改配置
 
@@ -52,7 +52,7 @@ https://testnet-1.bitxhub.cn:8881
 
 **注意：**
 
-1）文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本；
+1）文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本；
 
 2）以上pier配置过程，pier.toml中关于应用链的部分需要特别注意，以fabric为例，[appchain]字段下的配置示例如下，
 

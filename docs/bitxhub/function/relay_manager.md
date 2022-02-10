@@ -22,7 +22,13 @@ COMMANDS:
 
 
 
-## 1. 应用链注册
+## 1. 验证规则部署
+
+参考<a href="/v1.18/bitxhub/dev/cmd/pier_cmd/#ruleAnchor">验证规则部署命令</a>。
+
+
+
+## 2. 应用链注册
 ### pier appchain register 
 对于需要加入跨链网络使用中继链进行跨链的应用链，需要首先由应用链管理员向中继链注册应用链，参数说明如下：
 
@@ -122,6 +128,63 @@ Id                                            ManagedObjectId  Type          Eve
 
 ```
 可以看到该提案所需投票个数为0，即提案已经通过，应用链注册成功。
+
+## 3. 应用链服务注册
+
+### Pier appchain service
+
+`Pier appchain service`命令用于对应用链服务进行注册。
+
+```shell
+NAME:
+   Pier appchain service - Command about appchain service
+
+USAGE:
+   Pier appchain service command [command options] [arguments...]
+
+COMMANDS:
+   register  Register appchain service info to bitxhub
+   update    Update appchain service info to bitxhub
+   activate  Activate appchain service to bitxhub
+   logout    Logout appchain service to bitxhub
+   list      List appchain service from bitxhub belong to pier self
+```
+
+**子命令**
+
+#### pier appchain service register
+
+```
+NAME:
+   Pier appchain service register - Register appchain service info to bitxhub
+
+USAGE:
+   Pier appchain service register [command options] [arguments...]
+
+OPTIONS:
+   --appchain-id value  Specify appchain ID
+   --service-id value   Specify service ID（address of Service Contract）
+   --name value         Specify service name
+   --intro value        Specify service description
+   --type value         Specify service type, one of "CallContract", "DepositCertificate", "DataMigration", current only support CallContract (default: "CallContract")
+   --ordered            Specify if the service should be ordered
+   --permit value       Specify contracts which are not allowed to invoke the service. If there are multiple contract addresses, separate them with ','
+   --details value      Specify service details
+   --reason value       Specify governance reason
+```
+
+**参数解释**
+
+各参数说明参考<a href="/v1.18/bitxhub/design/ibtp#serviceAnchor">应用链服务介绍</a>。
+
+### 示例说明
+
+```
+pier --repo $(pwd) appchain service register --appchain-id fabappchain --service-id "mychannel&transfer" --name "testServer1" --intro "test" --type CallContract --permit "" --details "test" --reason "reason"
+Register appchain service for fabappchain:mychannel&transfer successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-1 to finish.
+```
+
+
 
 ## 2. 更新应用链
 ### pier appchain update
