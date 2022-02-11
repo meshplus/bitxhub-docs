@@ -10,31 +10,16 @@
 
 - 设置好$GOPATH等环境
 
-## 教程章节
-
-1. 重要概念
-
-2. Plugin接口
-
-3. 程序目标
-
-4. 开始编写程序
-
-5. 编译你的Plugin
-
-## 重要概念
+## 1. 重要概念
 
 在解释具体的接口之前，先明确几个概念：
 
-**跨链请求**：如果有两条区块链A和B，A链需要向B链发起任何操作，需要按照IBTP规则向中继链发出一个请求包，我们称之为跨链请求A->B。
+- **跨链请求**：如果有两条区块链A和B，A链需要向B链发起任何操作，需要按照IBTP规则向中继链发出一个请求包，我们称之为跨链请求A->B；
+- **IBTP包**：满足IBTP的一个package，跨链请求都需要通过IBTP包进行；
+- **来源链**：在跨链请求A->B中，A即为来源链服务；
+- **目的链**：在跨链请求A->B中，B即为目的链服务。
 
-**IBTP包**：满足IBTP的一个package，跨链请求都需要通过IBTP包进行。
-
-**来源链**：在跨链请求A->B中，A即为来源链服务。
-
-**目的链**：在跨链请求A->B中，B即为目的链服务。
-
-## Plugin接口
+## 3. Plugin接口
 
 为了更加便捷的开发Plugin接入到Pier中来，我们规定了下面一些必要的接口。
 
@@ -106,11 +91,11 @@ type Client interface {
 }
 ```
 
-## 程序目的
+## 3. 程序目的
 
 本教程以开发一个简单的连接Fabric区块链网络的Plugin为例，最终的程序能够实现从负责的区块链获取`Hello World`信息并返回到跨链平台中。
 
-## 开始编写你的程序
+## 4. 开始编写你的程序
 
 首先选择你的工程目录，按照正常的GO程序的流程建立项目
 
@@ -121,150 +106,7 @@ $ cd ${YOUR_PROJECT}
 $ go mod init exmple/fabric-plugin
 ```
 
-### Client对象
-
-首先创建一个`client.go`文件，这个文件是Plugin的核心和入口。
-
-在该文件中，应该定义你的Plugin如何获取client 实例，以及如何启动和停止Plugin服务。
-
-现在我们需要创建一个自定义的Client 结构，跨链网关最终拿到的应该是这个结构的一个实例，先来看看这个结构中都需要什么。
-
-首先来看看`Client自定义`具体结构
-
-```go
-type ContractMeta struct {
-	EventFilter string `json:"event_filter"`
-	Username    string `json:"username"`
-	CCID        string `json:"ccid"`
-	ChannelID   string `json:"channel_id"`
-	ORG         string `json:"org"`
-}
-
-type Client struct {
-	meta       *ContractMeta
-	consumer   *Consumer
-	eventC     chan *pb.IBTP
-	appchainID string
-	name       string
-	outMeta    map[string]uint64
-	ticker     *time.Ticker
-	done       chan bool
-}
-```
-
-- meta：Plugin直接和跨链合约交互，需要保存你的合约的一些基础信息。由于我们需要连接一个Fabric网络，这些Meta信息包括 **Fabric中跨链事件的名称、Fabric中的用户名称、Chaincode合约的名称、你的组织名称Org以及组织所在的channel。**
-
-- consumer：可以理解为Fabric上跨链事件的“监听器”，这个监听器也是一个自定义的结构，具体的结构在后面会详细介绍。
-
-- eventC：为跨链网关提供读取监听到的跨链事件的通道。
-
-- name：自定的区块链的名称。
-
-- appchainID：跨链网关注册在跨链平台中后产生的唯一ID，作为应用链的标识。
-
-然后应该提供一个Client的实例化的接口（类似于构造函数），具体代码如下：
-
-```go
-func (c *Client) Initialize(configPath, appchainID string, extra []byte) error {
-	eventC := make(chan *pb.IBTP)
-	fabricConfig, err := UnmarshalConfig(configPath)
-	if err != nil {
-		return fmt.Errorf("unmarshal config for plugin :%w", err)
-	}
-
-	contractmeta := &ContractMeta{
-		EventFilter: fabricConfig.EventFilter,
-		Username:    fabricConfig.Username,
-		CCID:        fabricConfig.CCID,
-		ChannelID:   fabricConfig.ChannelId,
-		ORG:         fabricConfig.Org,
-	}
-
-	m := make(map[string]uint64)
-	if err := json.Unmarshal(extra, &m); err != nil {
-		return fmt.Errorf("unmarshal extra for plugin :%w", err)
-	}
-	if m == nil {
-		m = make(map[string]uint64)
-	}
-
-	mgh, err := newFabricHandler(contractmeta.EventFilter, eventC, appchainID)
-	if err != nil {
-		return err
-	}
-
-	done := make(chan bool)
-	csm, err := NewConsumer(configPath, contractmeta, mgh, done)
-	if err != nil {
-		return err
-	}
-
-	c.consumer = csm
-	c.eventC = eventC
-	c.meta = contractmeta
-	c.appchainID = appchainID
-	c.name = fabricConfig.Name
-	c.outMeta = m
-	c.ticker = time.NewTicker(2 * time.Second)
-	c.done = done
-
-	return nil
-}
-```
-
-### consumer
-
-consumer 负责监听区块链上的由跨链合约抛出的跨链事件以及和调用chaincode。
-
-我们新建 `./consumer.go` 文件
-
-```go
-type Consumer struct {
-   eventClient     *event.Client
-   meta            *ContractMeta
-   msgH            MessageHandler
-   channelProvider context.ChannelProvider
-   ChannelClient   *channel.Client
-   registration    fab.Registration
-   ctx             chan bool
-}
-```
-
-- eventClient：fabric gosdk提供的事件Client
-
-- meta Fabric：相关的参数信息
-
-- msgH：事件handler，在监听到指定事件之后负责处理的函数
-
-- channelProvider：fabric gosdk提供的和chaincode交互
-
-- ChannelClient：fabric gosdk 提供的和调用chaincode的对象
-
-- registeration：fabric gosdk 提供的订阅特定事件的对象
-
-- ctx：用来结束consumer的goroutine
-
-### Event
-
-由于在Fabric上抛出的事件内容是可以自定义的，而跨链请求要在跨链平台上传递的话，需要使用IBTP包，所以我们需要一定的代码来执行这种转换。
-
-我们新建 `./event.go` 文件
-
-```go
-type Event struct {
-	Index     uint64   `json:"index"`
-	DstFullID string   `json:"dst_full_id"`
-	SrcFullID string   `json:"src_full_id"`
-	Encrypt   bool     `json:"encrypt"`
-	CallFunc  CallFunc `json:"call_func"`
-	CallBack  CallFunc `json:"callback"`
-	RollBack  CallFunc `json:"rollback"`
-}
-```
-
-Event结构也是自定义的，需要和在你的跨链合约中抛出的事件结构一致。一个跨链交易事件，一般来说需要指定目标应用链的ID `DstFullID`，目标应用链上智能合约服务ID（Fabric上的chaincode没有合约地址）`SrcFullID`，这次跨链交易的发起方服务ID,`Encrypt`是否要求加密，`CallFunc`，跨链调用的函数及参数， 是否有跨链调用之后要执行的回调函数及参数 `CallBack`，是否有跨链调用之后要执行的回滚函数及参数 `RollBack`。
-
-### 读取配置
+### 4.1 读取配置
 
 Plugin的配置文件路径是通过Initialize的方法动态传入的，这意味着你可以方便的修改关于你的区块链的参数信息。我们新建文件 `./config.go` 文件，负责配置读取的所有操作。
 
@@ -327,7 +169,152 @@ func UnmarshalConfig(configPath string) (*Fabric, error) {
 }
 ```
 
-### SubmitIBTP
+### 
+
+### 4.2 Client对象
+
+首先创建一个`client.go`文件，这个文件是Plugin的核心和入口。
+
+在该文件中，应该定义你的Plugin如何获取client 实例，以及如何启动和停止Plugin服务。
+
+现在我们需要创建一个自定义的Client 结构，跨链网关最终拿到的应该是这个结构的一个实例，先来看看这个结构中都需要什么。
+
+首先来看看`Client自定义`具体结构：
+
+```go
+type ContractMeta struct {
+	EventFilter string `json:"event_filter"`
+	Username    string `json:"username"`
+	CCID        string `json:"ccid"`
+	ChannelID   string `json:"channel_id"`
+	ORG         string `json:"org"`
+}
+
+type Client struct {
+	meta       *ContractMeta
+	consumer   *Consumer
+	eventC     chan *pb.IBTP
+	appchainID string
+	name       string
+	outMeta    map[string]uint64
+	ticker     *time.Ticker
+	done       chan bool
+}
+```
+
+- `meta`：Plugin直接和跨链合约交互，需要保存你的合约的一些基础信息。由于我们需要连接一个Fabric网络，这些Meta信息包括 **Fabric中跨链事件的名称、Fabric中的用户名称、Chaincode合约的名称、你的组织名称Org以及组织所在的channel；**
+
+- `consumer`：可以理解为Fabric上跨链事件的“监听器”，这个监听器也是一个自定义的结构，具体的结构在后面会详细介绍；
+
+- `eventC`：为跨链网关提供读取监听到的跨链事件的通道；
+
+- `name`：自定的区块链的名称；
+
+- `appchainID`：跨链网关注册在跨链平台中后产生的唯一ID，作为应用链的标识。
+
+然后应该提供一个Client的实例化的接口（类似于构造函数），具体代码如下：
+
+```go
+func (c *Client) Initialize(configPath, appchainID string, extra []byte) error {
+	eventC := make(chan *pb.IBTP)
+	fabricConfig, err := UnmarshalConfig(configPath)
+	if err != nil {
+		return fmt.Errorf("unmarshal config for plugin :%w", err)
+	}
+
+	contractmeta := &ContractMeta{
+		EventFilter: fabricConfig.EventFilter,
+		Username:    fabricConfig.Username,
+		CCID:        fabricConfig.CCID,
+		ChannelID:   fabricConfig.ChannelId,
+		ORG:         fabricConfig.Org,
+	}
+
+	m := make(map[string]uint64)
+	if err := json.Unmarshal(extra, &m); err != nil {
+		return fmt.Errorf("unmarshal extra for plugin :%w", err)
+	}
+	if m == nil {
+		m = make(map[string]uint64)
+	}
+
+	mgh, err := newFabricHandler(contractmeta.EventFilter, eventC, appchainID)
+	if err != nil {
+		return err
+	}
+
+	done := make(chan bool)
+	csm, err := NewConsumer(configPath, contractmeta, mgh, done)
+	if err != nil {
+		return err
+	}
+
+	c.consumer = csm
+	c.eventC = eventC
+	c.meta = contractmeta
+	c.appchainID = appchainID
+	c.name = fabricConfig.Name
+	c.outMeta = m
+	c.ticker = time.NewTicker(2 * time.Second)
+	c.done = done
+
+	return nil
+}
+```
+
+### 4.3 consumer
+
+consumer 负责监听区块链上的由跨链合约抛出的跨链事件以及和调用chaincode。
+
+我们新建 `./consumer.go` 文件
+
+```go
+type Consumer struct {
+   eventClient     *event.Client
+   meta            *ContractMeta
+   msgH            MessageHandler
+   channelProvider context.ChannelProvider
+   ChannelClient   *channel.Client
+   registration    fab.Registration
+   ctx             chan bool
+}
+```
+
+- `eventClient`：fabric gosdk提供的事件Client；
+
+- `meta Fabric`：相关的参数信息；
+
+- `msgH`：事件handler，在监听到指定事件之后负责处理的函数；
+
+- `channelProvider`：fabric gosdk提供的和chaincode交互；
+
+- `ChannelClient`：fabric gosdk 提供的和调用chaincode的对象；
+
+- `registeration`：fabric gosdk 提供的订阅特定事件的对象；
+
+- `ctx`：用来结束consumer的goroutine。
+
+### 4.4 Event
+
+由于在Fabric上抛出的事件内容是可以自定义的，而跨链请求要在跨链平台上传递的话，需要使用IBTP包，所以我们需要一定的代码来执行这种转换。
+
+我们新建 `./event.go` 文件
+
+```go
+type Event struct {
+	Index     uint64   `json:"index"`
+	DstFullID string   `json:"dst_full_id"`
+	SrcFullID string   `json:"src_full_id"`
+	Encrypt   bool     `json:"encrypt"`
+	CallFunc  CallFunc `json:"call_func"`
+	CallBack  CallFunc `json:"callback"`
+	RollBack  CallFunc `json:"rollback"`
+}
+```
+
+Event结构也是自定义的，需要和在你的跨链合约中抛出的事件结构一致。一个跨链交易事件，一般来说需要指定目标应用链的ID `DstFullID`，目标应用链上智能合约服务ID（Fabric上的chaincode没有合约地址）`SrcFullID`，这次跨链交易的发起方服务ID,`Encrypt`是否要求加密，`CallFunc`，跨链调用的函数及参数， 是否有跨链调用之后要执行的回调函数及参数 `CallBack`，是否有跨链调用之后要执行的回滚函数及参数 `RollBack`。
+
+### 4.5 SubmitIBTP
 
 该接口主要负责将其他链发送过来的IBTP包解析并构造成当前目的链的交易，发送到目的链的跨链合约中。
 如果来源链要求将本链调用合约的结果返回的话，还需要构造相应的IBTP回执发回来源链。
@@ -351,7 +338,7 @@ func (c *Client) SubmitIBTP(from string, index uint64, serviceID string, ibtpTyp
 
 
 
-## 编译你的Plugin
+## 5. 编译你的Plugin
 
 我们采用GO语言提供的插件模式，实现Pier对于你编写的Plugin的动态加载。
 

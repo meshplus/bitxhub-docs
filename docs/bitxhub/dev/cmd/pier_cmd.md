@@ -44,7 +44,7 @@ GLOBAL OPTIONS:
 
 ## 子命令描述
 
-### pier appchain
+### 1. pier appchain
 
 `pier appchain`命令用于中继模式下，跨链网关Pier向中继链bitXHub实现应用链相关信息的注册、更新、变更等操作。
 
@@ -68,9 +68,9 @@ COMMANDS:
 
 **具体描述**
 
-`pier appchain`具体描述与使用示例参考[中继模式管理](/v1.18/bitxhub/function/relay_manager/)。
+`pier appchain`具体描述与使用示例参考[中继模式管理](../../function/relay_manager/)。
 
-### pier id
+### 2. pier id
 
 `pier id`命令用于获取所绑定的应用链地址。
 
@@ -96,7 +96,7 @@ $ pier --repo $(pwd)/.pier1 id
 
 
 
-### pier init
+### 3. pier init
 
 `pier init`命令用于初始化pier相关配置。如生成公私钥、ca证书等。
 
@@ -233,7 +233,7 @@ $ pier --repo .pier1 init union --peers /ip4/127.0.0.1/tcp/3001/p2p/$PID1
 
 
 
-### pier interchain
+### 4. pier interchain
 
 `pier interchain`命令用于查询应用链的跨链交易信息。
 
@@ -288,7 +288,7 @@ tx:<from:<RawAddress:[255 129 153 250 228 140 128 139 69 102 125 160 204 170 238
 
 
 
-### pier network
+### 5. pier network
 
 `pier network`命令用于配置直连模式或者大规模模式下节点的网络信息。
 
@@ -422,11 +422,11 @@ OPTIONS:
 
 **具体描述**
 
-参考<a href="/v1.18/bitxhub/introduction/summary/#relayAnchor">pier network relay</a> 与<a href="/v1.18/bitxhub/introduction/summary/#directAnchor">pier network direct</a> 。
+参考<a href="../../introduction/summary/#relayAnchor">pier network relay</a> 与<a href="../../introduction/summary/#directAnchor">pier network direct</a> 。
 
 
 
-### pier p2p
+### 6. pier p2p
 
 `pier p2p`命令用于直连模式下pier网络通信的pid。
 
@@ -457,7 +457,7 @@ QmNpQvh8Lm7gwt3sDqwJ1pgNn6taJLqdgtRVyZWhsD5bND
 
 
 
-### pier plugin
+### 7. pier plugin
 
 `pier plugin`命令用于配置应用链相关信息。
 
@@ -576,7 +576,7 @@ Finish downloading https://github.com/meshplus/pier-client-ethereum/releases/dow
 
 
 
-### <a name="ruleAnchor">pier rule</a>
+### 8. <a name="ruleAnchor">pier rule</a>
 
 `pier rule`命令用于中继模式下pier向中继链部署应用链验证规则。
 
@@ -778,7 +778,7 @@ fabappchain  0x56feA5a7cd034E35a6ac2f42ffb914026971D0bd  available  true    1643
 
 其中Status标识应用链目前所注册的验证规则的状态，可以发现地址为0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB的验证规则状态已被更改为forbitdden。说明该验证规则注销成功。
 
-### pier start
+### 9. pier start
 
 `pier start`命令用于启动pier。
 
@@ -828,7 +828,7 @@ INFO[2022-01-06T19:50:21.655] listenIBTPFromDestAdaptToServicePairCh direct:appc
 
 
 
-### pier version
+### 10. pier version
 
 `pier version`命令用于查询版本号。
 
@@ -857,7 +857,7 @@ Golang version: go1.16.6
 
 
 
-### pier propsals 
+### 11. pier propsals 
 
 `pier proposals`命令用于撤销指定的提案。
 
@@ -895,7 +895,7 @@ OPTIONS:
 
 **样例**
 
-当想要撤销某个提案时（如注册应用链的提案）使用如下命令。其中，proposal id 为想要撤销的提案号，提案生成参考[中继模式应用链管理](/v1.18/bitxhub/function/relay_manager/)。
+当想要撤销某个提案时（如注册应用链的提案）使用如下命令。其中，proposal id 为想要撤销的提案号，提案生成参考[中继模式应用链管理](../../function/relay_manager/)。
 
 ```shell
 # 应用链所在网关撤销提案
