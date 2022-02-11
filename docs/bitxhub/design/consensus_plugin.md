@@ -135,6 +135,8 @@ func NewNode(opts ...order.Option) (order.Order, error) {
     batchTimeout, memConfig, err := generateSoloConfig(config.RepoRoot)
     mempoolConf := &mempool.Config{
         ID:              config.ID, //节点ID
+        IsTimed:         timedGenBlock.Enable,	// 是否支持定时出块功能
+				BlockTimeout:    timedGenBlock.BlockTimeout,	// 定时出块的时间间隔
         ChainHeight:     config.Applied, //当前区块高度
         Logger:          config.Logger,  //日志组件
         StoragePath:     config.StoragePath, //存储路径
@@ -186,23 +188,28 @@ func NewNode(opts ...order.Option) (order.Order, error) {
 
 ```go
 func (n *Node) Start() error {
-	//交易池打包区块
+	  // 交易池打包区块
     go n.txCache.ListenEvent()
     
-    //solo监听新区块
+    // solo监听新区块
     go n.listenReadyBlock()
     return nil
 }
 
 // Schedule to collect txs to the listenReadyBlock channel
 func (n *Node) listenReadyBlock() {
+	var blockTicker <-chan time.Time
+  // 当开启定时出块功能时，启动定时出块计时器
+	if n.isTimed && blockTicker == nil {
+		blockTicker = time.Tick(n.blockTimeout)
+	}
 	go func() {
 		for {
 			select {
 			case proposal := <-n.proposeC:
 				n.logger.WithFields(logrus.Fields{
 					"proposal_height": proposal.Height,
-					"tx_count":        len(proposal.TxList),
+					"tx_count":        len(proposal.TxList.Transactions),
 				}).Debugf("Receive proposal from mempool")
 
 				if proposal.Height != n.lastExec+1 {
@@ -210,28 +217,31 @@ func (n *Node) listenReadyBlock() {
 					return
 				}
 				n.logger.Infof("======== Call execute, height=%d", proposal.Height)
+        // 创建区块
 				block := &pb.Block{
 					BlockHeader: &pb.BlockHeader{
 						Version:   []byte("1.0.0"),
 						Number:    proposal.Height,
-						Timestamp: time.Now().UnixNano(),
+						Timestamp: proposal.Timestamp,
 					},
 					Transactions: proposal.TxList,
 				}
-				localList := make([]bool, len(proposal.TxList))
-				for i := 0; i < len(proposal.TxList); i++ {
+				localList := make([]bool, len(proposal.TxList.Transactions))
+        // localList记录本地Mempool中的交易集合
+				for i := 0; i < len(proposal.TxList.Transactions); i++ {
 					localList[i] = true
 				}
 				executeEvent := &pb.CommitEvent{
 					Block:     block,
 					LocalList: localList,
 				}
+
 				n.commitC <- executeEvent
 				n.lastExec++
 			}
 		}
 	}()
-
+  
 	for {
 		select {
 		case <-n.ctx.Done():
@@ -243,6 +253,11 @@ func (n *Node) listenReadyBlock() {
 			if !n.batchMgr.IsBatchTimerActive() {
 				n.batchMgr.StartBatchTimer()
 			}
+      /* batch产生的条件：
+      1. 超过定时出块时间间隔（当开启定时出块功能）
+      2. 是主节点，并超过batch出块的容量
+      3. 是主节点，超过batch出块的时间间隔（batch不为空时开始计时，为空时重置计时器）
+      */
 			if batch := n.mempool.ProcessTransactions(txSet.TxList, true, true); batch != nil {
 				n.batchMgr.StopBatchTimer()
 				n.proposeC <- batch
@@ -258,6 +273,7 @@ func (n *Node) listenReadyBlock() {
 			}
 			n.mempool.CommitTransactions(state)
 
+    // 超过batch出块的时间间隔（batch不为空时开始计时，为空时重置计时器）
 		case <-n.batchMgr.BatchTimeoutEvent():
 			n.batchMgr.StopBatchTimer()
 			n.logger.Debug("Batch timer expired, try to create a batch")
@@ -280,6 +296,7 @@ func (n *Node) listenReadyBlock() {
 ```go
 func (n *Node) Stop() {
    n.cancel()
+   n.txCache.StopTxListen()
 }
 ```
 
@@ -291,7 +308,7 @@ func (n *Node) Stop() {
 func (n *Node) Prepare(tx *pb.Transaction) error {
    //判断当前共识是否正常
 	if err := n.Ready(); err != nil {
-		return err
+		return fmt.Errorf("node get ready failed: %w", err)
    }
    //交易进入交易池
 	n.txCache.RecvTxC <- tx
@@ -316,10 +333,9 @@ func (n *Node) Commit() chan *pb.Block {
 
 ### 3.3.5 Step方法
 
-功能：通过该接口接收共识的网络消息。
+功能：通过该接口接收共识的网络消息。在Solo模式中共识网络只有一个节点，故不用实现该方法。
 
 ```go
-//由于示例是Solo的版本，故具体不实现该方法
 func (n *Node) Step(ctx context.Context, msg []byte) error {
    return nil
 }
@@ -354,7 +370,7 @@ func (n *Node) ReportState(height uint64, blockHash *types.Hash, txHashList []*t
 
 ### 3.3.8 Quorum方法
 
-功能：集群中可以正常工作的最少节点数量（比如在raft中要求正常节点数是N/2+1）。
+功能：集群中可以正常工作的最少节点数量（比如在raft中要求正常节点数是N/2+1，PBFT要求正常节点数时N/3+1）。
 
 ```go
 //由于示例是Solo的版本，直接返回1
