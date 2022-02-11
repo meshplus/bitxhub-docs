@@ -57,7 +57,7 @@ BitXHub内置事务管理合约来实现跨链交易的事务管理，跨链事�
 
 ### INIT -> BEGIN_ROLLBACK -> ROLLBACK
 
-当中继链收到来源链交易后，将维护一个超时块高，超过超时块高将触发超时回滚，具体参考<a href="/v1.18/bitxhub/design/interchain_transaction/#timeoutAnchor">超时回滚机制</a>。
+当中继链收到来源链交易后，将维护一个超时块高，超过超时块高将触发超时回滚，具体参考<a href="../../design/interchain_transaction/#timeoutAnchor">超时回滚机制</a>。
 
 ## 一对一跨链
 

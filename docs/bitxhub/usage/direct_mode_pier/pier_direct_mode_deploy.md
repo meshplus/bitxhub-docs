@@ -316,7 +316,7 @@ cp ./config $HOME/.pier2/ether
   - `audit` : Admin管理员审核通过
   ![](../../../assets/direct3.png)
 3. 本链注册对方应用链和服务
-  应用链和服务的注册的流程参照直连模式下[应用链管理](/v1.18/bitxhub/function/direct_manager/)
+  应用链和服务的注册的流程参照直连模式下[应用链管理](../../function/direct_manager/)
 4. 启动跨链网关
 
 ```shell

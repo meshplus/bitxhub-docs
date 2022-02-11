@@ -24,7 +24,7 @@ COMMANDS:
 
 ## 1. 验证规则部署
 
-参考<a href="/v1.18/bitxhub/dev/cmd/pier_cmd/#ruleAnchor">验证规则部署命令</a>。
+参考<a href="../../dev/cmd/pier_cmd/#ruleAnchor">验证规则部署命令</a>。
 
 
 
@@ -175,7 +175,7 @@ OPTIONS:
 
 **参数解释**
 
-各参数说明参考<a href="/v1.18/bitxhub/design/ibtp#serviceAnchor">应用链服务介绍</a>。
+各参数说明参考<a href="../../design/ibtp#serviceAnchor">应用链服务介绍</a>。
 
 ### 示例说明
 

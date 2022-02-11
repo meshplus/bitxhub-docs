@@ -1,6 +1,15 @@
 site_name: Bitxhub Document
 repo_url: https://github.com/meshplus/bitxhub
 repo_name: meshplus/bitxhub
+## 自定义css
+#extra_css:
+#  - 'assets/css/custom.css'
+#  - 'assets/css/simpleLightbox.min.css'
+## 自定义js
+#extra_javascript:
+#  - 'assets/js/jquery-3.2.1.min.js'
+#  - 'assets/js/simpleLightbox.min.js'
+#  - 'assets/js/custom.js'
 extra_css:
   - stylesheets/extra.css
 theme:
@@ -126,6 +135,8 @@ nav:
         - 节点状态检测: bitxhub/operation/node_status_check.md
         - 异常问题处理: bitxhub/operation/exception_problem_handling.md
       - 版本发布记录:
+          - BitXHub v1.18.0: bitxhub/changelog/bitxhub_v1.18.0.md
+          - BitXHub v1.11.0: bitxhub/changelog/bitxhub_v1.11.0.md
           - BitXHub v1.6.0: bitxhub/changelog/bitxhub_v1.6.0.md
           - BitXHub v1.5.0: bitxhub/changelog/bitxhub_v1.5.0.md
           - BitXHub v1.4.0: bitxhub/changelog/bitxhub_v1.4.0.md

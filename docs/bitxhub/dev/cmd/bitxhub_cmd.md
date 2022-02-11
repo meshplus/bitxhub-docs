@@ -34,8 +34,8 @@ GLOBAL OPTIONS:
 ```
 ## 子命令描述
 
-### bitxhub config
-####**功能**
+### 1. bitxhub config
+**功能**
 `bitxhub config`命令用于显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径。
 
 **示例说明**
@@ -147,8 +147,8 @@ $ bitxhub config
 
 
 
-### bitxhub init
-####**功能**
+### 2. bitxhub init
+**功能**
 `bitxhub init`命令用于初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
 
 **示例说明**
@@ -166,8 +166,8 @@ y
 
 
 
-### bitxhub start
-####**功能**
+### 3. bitxhub start
+**功能**
 `bitxhub start`命令用于启动BitXHub的节点。
 
 ```shell
@@ -223,8 +223,8 @@ INFO[2022-01-13T11:04:02.955] Ulimit raised                                 modu
 
 
 
-### bitxhub key
-####**功能**
+### 4. bitxhub key
+**功能**
 `bitxhub key`命令提供针对bitxhub节点的私钥管理。它包含了私钥生成、私钥格式转换、私钥查看、地址查看。子命令信息如下:
 
 ```shell
@@ -240,7 +240,7 @@ COMMANDS:
    address  Show address from Secp256k1 private key
 ```
 
-####**子命令**
+**子命令**
 
 #### bitxhub key gen
 `bitxhub key gen`命令用于生成私钥文件`key.json`
@@ -335,8 +335,8 @@ bitxhub key address --path ./key.json --passwd 123
 
 
 
-### bitxhub version
-####**功能**
+### 5. bitxhub version
+**功能**
 `bitxhub version`命令用于显示BitXHub的版本信息。它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
 
 ```shell
@@ -363,9 +363,9 @@ Golang version: go1.14.15
 
 
 
-### bitxhub cert
+### 6. bitxhub cert
 
-####**功能**
+**功能**
 `bitxhub cert`命令提供一系列x509标准的证书工具，服务于中继链节点的准入机制。它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。说明信息如下:
 
 ```shell
@@ -385,7 +385,7 @@ COMMANDS:
 ```
 
 
-####**子命令**
+**子命令**
 
 #### bitxhub cert ca
 `bitxhub cert ca`命令用于生成根CA证书
@@ -596,8 +596,8 @@ $ bitxhub cert verify --sub <sub_cert> --ca ca.cert
 ```
 
 
-### bitxhub client
-####**功能**
+### 7. bitxhub client
+**功能**
 
 该命令`bitxhub client`提供中继链节点的客户端操作命令。它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
 子命令信息如下:
@@ -635,7 +635,7 @@ OPTIONS:
    --key value      Specific access key file if https is enabled
    --help, -h       show help
 ```
-####**子命令**
+**子命令**
 
 #### bitxhub client account
 `bitxhub client account`命令用于账户信息查询。
