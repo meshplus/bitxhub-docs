@@ -50,7 +50,7 @@ Golang version: go1.14.13
 
 没有现有编译环境的用户，也可以在GitHub开源仓库下载编译好的二进制。
 
-- [Pier二进制安装](https://github.com/meshplus/pier/releases)：, 根据需要的版本进行下载即可。
+- [Pier二进制安装](https://github.com/meshplus/pier/releases)：根据需要的版本进行下载即可。
 - 网关插件安装：[pier-client-fabric](https://github.com/meshplus/pier-client-fabric/releases) 和 [pier-client-ethereum](https://github.com/meshplus/pier-client-ethereum/releases)  的应用链插件的二进制。
 
 注意：网关与网关插件对应大版本号一致即可。如pier v1.18.x对应pier-client-ethereum v1.18.x。
@@ -213,7 +213,7 @@ cp ./config $HOME/.pier1/fabric
   org = "org2"
   ```
 
-- **修改Plugin配置文件fabric.validators**
+-  **修改Plugin配置文件fabric.validators**
 
   fabric.validators 是Fabric验证人的证书，配置示例：
 
@@ -259,7 +259,7 @@ cp ./config $HOME/.pier2/ether
 └── validating.wasm
 ```
 
-**注意：**插件目录下的pier.toml仅作参考，系统使用的配置文件是位于pier的配置文件目录下的pier.toml。
+ **注意：** 插件目录下的pier.toml仅作参考，系统使用的配置文件是位于pier的配置文件目录下的pier.toml。
 
 主要修改账户信息、abi，跨链合约设置。
 
@@ -271,7 +271,7 @@ cp ./config $HOME/.pier2/ether
   cp <eth_datadir>/keystore/<account> $HOME/.pier2/ether/config/account.key
   ```
 
-- **修改Plugin配置文件ethereum.toml**
+- **修改Plugin配置文件ethereum.toml **
 
   配置项和说明：
 
@@ -329,7 +329,7 @@ pier --repo=~/pier2 start
 
 观察日志信息没有报错信息，pier启动成功
 
-**说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
+ **说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
 
 直连模式下，两边的跨链网关对应
 

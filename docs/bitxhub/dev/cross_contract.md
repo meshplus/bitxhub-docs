@@ -9,64 +9,81 @@
 ## Broker 合约接口
 
 ```solidity
-  // 注册本链服务，由本链服务管理员调用，并生成proposal由应用链管理员投票
-  // addr： 本链业务合约地址
-  function register(address addr) public
-  
-  // 直连模式下注册其他链的服务, 由当前应用链管理员调用
-  // serviceID: 对方应用链上要对本链进行跨链调用的服务ID
-  // banList：不允许对方服务调用的本链服务列表
-  function registerRemoteService(string memory chainID, string memory serviceID, address[] memory whiteList) public onlyAdmin
+// 注册本链服务，由本链服务管理员调用，并生成proposal由应用链管理员投票
+// addr： 本链业务合约地址
+function register(address addr) public
 
-  // 管理员对本地服务proposal投票，
-  // status：1 - 同意， 0 - 拒绝，其他 - 不计票
-  function audit(address addr, int64 status) public returns(bool)
+// 直连模式下注册其他链的服务, 由当前应用链管理员调用
+// serviceID: 对方应用链上要对本链进行跨链调用的服务ID
+// banList：不允许对方服务调用的本链服务列表
+function registerRemoteService(string memory chainID, string memory serviceID, address[] memory whiteList) public onlyAdmin
 
-  // getInnerMeta 是获取当前链服务作为目的服务，接收到其他链服务跨链请求的记录。以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-  // 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5。
-  // 返回的map中，key值为来源服务ID和当前服务ID组成的service pair，value为该service pair的跨链请求的记录，如{B-A:3, C-A:5}。
-  function getInnerMeta() public view returns (string[] memory, uint64[] memory)
+// 管理员对本地服务proposal投票，
+// status：1 - 同意， 0 - 拒绝，其他 - 不计票
+function audit(address addr, int64 status) public returns(bool)
 
-  // getOuterMeta 是获取当前链服务作为来源服务，向其他链服务发起跨链请求的记录。以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-  // 如果以Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5。
-  // 返回的map中，key值为当前应用链的服务ID和目标服务ID组成的service pair，value为该service pair的跨链请求记录，如{A-B:3, A-C:5}。
-  function getOuterMeta() public view returns (string[] memory, uint64[] memory)
+// getInnerMeta 是获取当前链服务作为目的服务，接收到其他链服务跨链请求的记录。
+// 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5。
+// 返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
+// value为该service pair的跨链请求的记录，如{B-A:3, C-A:5}。
+function getInnerMeta() public view returns (string[] memory, uint64[] memory)
 
-  // getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-  // 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
-  // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，key值为当前应用链的服务ID和目标服务ID组成的service pair，value为该service pair的跨链回执的记录，
-  // 如{B-A:2, C-A:4}。（注意 callbackMeta序号可能和outMeta是不一致的，这是由于由A发出的跨链请求部分是没有回调的）
-  function getCallbackMeta() public view returns (string[] memory, uint64[] memory)
+// getOuterMeta 是获取当前链服务作为来源服务，向其他链服务发起跨链请求的记录。
+// 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
+// 如果以Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5。
+// 返回的map中，key值为当前应用链的服务ID和目标服务ID组成的service pair，
+// value为该service pair的跨链请求记录，如{A-B:3, A-C:5}。
+function getOuterMeta() public view returns (string[] memory, uint64[] memory)
 
-  // getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-  // 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 同时由于跨链请求中支持超时回滚，需要记录中继链超时块高后未收到目的链跨链回执的场景下，目的链回滚的信息
-  // 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，value为该service pair 在目的链最近一次进行回滚的index值，
-  // 如{B-A:3, C-A:5}。
-  function getDstRollbackMeta() public view returns (string[] memory, uint64[] memory)
+// getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。
+// 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
+// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 
+// 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
+// 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，
+// key值为当前应用链的服务ID和目标服务ID组成的service pair，
+// value为该service pair的跨链回执的记录，
+// 如{B-A:2, C-A:4}。注意 callbackMeta序号可能和outMeta是不一致的，
+// 这是由于由A发出的跨链请求部分是没有回调的.
+function getCallbackMeta() public view returns (string[] memory, uint64[] memory)
 
-  // getReceiptMessage 获取当前应用链执行的某个id对应的跨链交易的回执信息。查询键值中inServicePair为来源链的来源服务ID和当前服务ID组成的service pair，idx指定序号，查询结果为目的服务执行跨链交易后返回的回执信息。
-  function getReceiptMessage(string memory inServicePair, uint64 idx) public view returns (bytes[] memory, uint64, bool)
+// getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。
+// 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 
+// 同时由于跨链请求中支持超时回滚，
+// 需要记录中继链超时块高后未收到目的链跨链回执的场景下目的链回滚的信息.
+// 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
+// value为该service pair 在目的链最近一次进行回滚的index值，
+// 如{B-A:3, C-A:5}。
+function getDstRollbackMeta() public view returns (string[] memory, uint64[] memory)
 
-  // getOutMessage 获取从当前应用链抛出的某个id对应的跨链交易的payload信息。查询键值中outServicePair为当前链的来源服务ID和目的服务ID组成的service pair，idx指定序号，查询结果为该跨链事件的调用/回调/回滚信息。
-  function getOutMessage(string memory outServicePair, uint64 idx) public view returns (string memory, bytes[] memory, bool)
+// getReceiptMessage 获取当前应用链执行的某个id对应的跨链交易的回执信息。
+// 查询键值中inServicePair为来源链的来源服务ID和当前服务ID组成的service pair，idx指定序号，
+// 查询结果为目的服务执行跨链交易后返回的回执信息。
+function getReceiptMessage(string memory inServicePair, uint64 idx) public view returns (bytes[] memory, uint64, bool)
 
-  // getLocalServiceList 获取审核通过的本链服务ID列表
-  function getLocalServiceList() public view returns (string[] memory)
-  
-  // gteRemoteServiceList 获取其他应用链向本链注册的应用链服务ID列表
-  function getRemoteServiceList() public view returns (string[] memory)
+// getOutMessage 获取从当前应用链抛出的某个id对应的跨链交易的payload信息。
+// 查询键值中outServicePair为当前链的来源服务ID和目的服务ID组成的service pair，
+// idx指定序号，查询结果为该跨链事件的调用/回调/回滚信息。
+function getOutMessage(string memory outServicePair, uint64 idx) public view returns (string memory, bytes[] memory, bool)
 
-  // 提供给跨链网关调用的接口，跨链网关收到跨链请求时会调用该接口。
-  function invokeInterchain(string memory srcFullID, address destAddr, uint64 index, uint64 typ, string memory callFunc, bytes[] memory args, uint64 txStatus, bytes[] memory signatures, bool isEncrypt) payable external
-  	
-  // 提供给跨链网关调用的接口，跨链网关收到跨链请求回执时会调用该接口。
-  function invokeReceipt(address srcAddr, string memory dstFullID, uint64 index, uint64 typ, bytes[] memory result, uint64 txStatus, bytes[] memory signatures) payable external
+// getLocalServiceList 获取审核通过的本链服务ID列表
+function getLocalServiceList() public view returns (string[] memory)
 
-  // 提供给业务合约发起通用的跨链交易的接口。
-  function emitInterchainEvent(string memory destFullServiceID, string memory funcCall, bytes[] memory args, string memory funcCb, bytes[] memory argsCb, string memory funcRb, bytes[] memory argsRb, bool isEncrypt) public onlyWhiteList
+// gteRemoteServiceList 获取其他应用链向本链注册的应用链服务ID列表
+function getRemoteServiceList() public view returns (string[] memory)
 
-  // 提供给合约部署初始化使用
-  function initialize() public
+// 提供给跨链网关调用的接口，跨链网关收到跨链请求时会调用该接口。
+function invokeInterchain(string memory srcFullID, address destAddr, uint64 index, uint64 typ, string memory callFunc, bytes[] memory args, uint64 txStatus, bytes[] memory signatures, bool isEncrypt) payable external
+
+// 提供给跨链网关调用的接口，跨链网关收到跨链请求回执时会调用该接口。
+function invokeReceipt(address srcAddr, string memory dstFullID, uint64 index, uint64 typ, bytes[] memory result, uint64 txStatus, bytes[] memory signatures) payable external
+
+// 提供给业务合约发起通用的跨链交易的接口。
+function emitInterchainEvent(string memory destFullServiceID, string memory funcCall, bytes[] memory args, string memory funcCb, bytes[] memory argsCb, string memory funcRb, bytes[] memory argsRb, bool isEncrypt) public onlyWhiteList
+
+// 提供给合约部署初始化使用
+function initialize() public
 ```
 
 ### 重要接口说明
@@ -132,9 +149,9 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
 
 现在我们已经有Solidity版本和chaincode版本编写的跨链合约样例实现，具体说明如下：
 
-- [__Solidity 跨链合约实现__](https://github.com/meshplus/pier-client-ethereum/tree/master/example)
+- [__Solidity 跨链合约实现__](https://github.com/meshplus/pier-client-ethereum/tree/master/example)；
 
-- [__Chaincode 跨链合约实现__](https://github.com/meshplus/pier-client-fabric/tree/master/example)
+- [__Chaincode 跨链合约实现__](https://github.com/meshplus/pier-client-fabric/tree/master/example)；
 
 如果你需要新的语言编写合约，你可以按照我们的设计思路和参考实现进行进一步的开发。
 
@@ -146,7 +163,7 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
 
 当然不同的区块链可能在以太坊的EVM上做了一些二次开发和新增功能，请根据具体区块链的文档相应修改代码。
 
-### 业务合约Demo
+### <a name="contractAnchor">业务合约Demo</a>
 
 假设你已经有了一个简单的KV存储的业务合约，代码如下：
 
@@ -404,7 +421,7 @@ func (s *DataSwapper) interchainSet(stub shim.ChaincodeStubInterface, args []str
 
 **跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
 
-1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](/v1.18/bitxhub/usage/single_bitxhub/deploy_pier/)。
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../usage/single_bitxhub/deploy_pier/)。
 
 2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
 3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。
@@ -498,5 +515,5 @@ INFO[2022-02-12T16:46:34.671] start submit receipt                          ibtp
 
 ## 总结
 
-经过上面的改造，你的业务合约已经具备跨链获取数据的功能了，完整的代码可以参考[__这里__](https://github.com/meshplus/pier-client-fabric/tree/master/example)
+经过上面的改造，你的业务合约已经具备跨链获取数据的功能了，完整的代码可以参考[__这里__](https://github.com/meshplus/pier-client-fabric/tree/master/example)。
 
