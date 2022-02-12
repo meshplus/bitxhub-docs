@@ -20,7 +20,7 @@
 #### 第一步：中继链管理员注册
 - 治理管理员
   中继链管理员注册新的治理管理员的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --address：指定新管理员的地址
 // --type：指定新管理员的类型，默认为治理管理员
@@ -31,7 +31,7 @@ proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
 
 - 审计管理员
   中继链管理员注册新的审计管理员的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --address：指定新管理员的地址
 // --type：指定新管理员的类型
@@ -44,7 +44,7 @@ proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 #### 第二步：中继链管理员投票
 - 治理管理员
   中继链管理员进一步进行投票治理，默认四个管理员的情况下需要三个管理员投赞成票提案可通过，命令如下
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定治理提案的id，0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
 // --info：指定投票内容是approve或是reject
@@ -56,7 +56,7 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance vote --id 
 
 - 审计管理员
   中继链管理员进一步进行投票治理，由于前面新注册成功了一个治理管理员，治理管理员总数为5，此时需要至少4个管理员投票（即刚刚注册的管理员也可以参与治理），命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定治理提案的id，0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 // --info：指定投票内容是approve或是reject
@@ -69,13 +69,13 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/role5 client governance vote --id 
 
 #### 第三步：查看中继链管理员身份信息
 中继链提供查看身份信息的功能，命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --type：指定中继链管理员类型，不填的话默认为治理管理员
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role all --type governanceAdmin
 ```
 治理管理员类型执行结果如下，可以看到新注册的治理管理员已经是可用状态，且其为普通治理管理员，而初始的几个管理员均为超级治理管理员：
-```shell script
+```shell
 RoleId                                      type             Weight  NodePid  Status
 ------                                      ----             ------  -------  ------
 0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  governanceAdmin  2                available
@@ -85,7 +85,7 @@ RoleId                                      type             Weight  NodePid  St
 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  governanceAdmin  2                available
 ```
 审计管理员类型执行结果如下，可以看到新注册的审计管理员已经是可用状态：
-```shell script
+```shell
 RoleId                                      type        Weight  NodePid                                         Status
 ------                                      ----        ------  -------                                         ------
 0x936A953274bcd0d42bf0b95308040Bb469b13BA7  auditAdmin  1       QmPSzhXo2MQxWReUXXPRhytYS7HMh1bjRLupjJ1LEGaLzg  available
@@ -100,7 +100,7 @@ RoleId                                      type        Weight  NodePid         
 ### 3.2 使用方法
 #### 第一步：中继链管理员更新审计管理员
 中继链管理员更新审计管理员绑定节点的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --id：指定待更新审计管理员的地址
 // --type：指定新管理员的类型，默认为治理管理员
@@ -111,7 +111,7 @@ proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-4
 
 #### 第二步：中继链管理员投票
 中继链管理员进一步进行投票治理，五个管理员的情况下需要四个管理员投赞成票提案可通过，命令如下
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定治理提案的id，0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-4
 // --info：指定投票内容是approve或是reject
@@ -124,13 +124,13 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/role5 client governance vote --id 
 
 #### 第三步：查看审计管理员身份信息
 中继链提供查看身份信息的功能，命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --type：指定中继链管理员类型，不填的话默认为治理管理员
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role all --type governanceAdmin
 ```
 执行结果如下，可以看到审计管理员的nodePid已经更新了：
-```shell script
+```shell
 RoleId                                      type        Weight  NodePid                                         Status
 ------                                      ----        ------  -------                                         ------
 0x936A953274bcd0d42bf0b95308040Bb469b13BA7  auditAdmin  1       QmQaBr8oak4F66AcTqZJo2oYZfQN7cJ6o9aV4UeKzmHTpz  available
@@ -143,7 +143,7 @@ RoleId                                      type        Weight  NodePid         
 
 ### 4.2 使用方法
 中继链管理员冻结另一个管理员的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --id：指定待冻结管理员的地址
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role freeze --id 0x936A953274bcd0d42bf0b95308040Bb469b13BA6
@@ -157,7 +157,7 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role freez
 
 ### 5.2 使用方法
 中继链管理员激活另一个被冻结的管理员的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --id：指定待激活管理员的地址
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role activate --id 0x936A953274bcd0d42bf0b95308040Bb469b13BA6
@@ -172,7 +172,7 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role activ
 
 ### 6.2 使用方法
 中继链管理员注销管理员的命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员私钥的路径
 // --id：指定待注销管理员的地址
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role logout --id 0x936A953274bcd0d42bf0b95308040Bb469b13BA6
@@ -181,11 +181,14 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role logou
 
 ## 7 其他功能
 中继链还提供了其他查询身份信息的功能。
+
 - 查询中继链所有指定类型管理员，默认查询治理管理员，命令如下：
-```shell script
+```shell
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role all
 ```
+
 - 查询中继链某个管理员的状态，命令如下：
-```shell script
+
+```shell
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance role status --id 0x936A953274bcd0d42bf0b95308040Bb469b13BA6
 ```

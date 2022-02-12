@@ -50,7 +50,7 @@ Golang version: go1.15.13
 
 没有现有编译环境的用户，也可以在GitHub开源仓库下载编译好的二进制。
 
-- [Pier二进制安装](https://github.com/meshplus/pier/releases)：, 根据需要的版本进行下载即可。
+- [Pier二进制安装](https://github.com/meshplus/pier/releases)：根据需要的版本进行下载即可。
 - 网关插件安装：[pier-client-fabric](https://github.com/meshplus/pier-client-fabric/releases) 和 [pier-client-ethereum](https://github.com/meshplus/pier-client-ethereum/releases)  的应用链插件的二进制。
 
 注意：网关与网关插件对应大版本号一致即可。如pier v1.6.x对应pier-client-ethereum v1.6.x。
@@ -172,7 +172,7 @@ cp ./config $HOME/.pier1/fabric
   cp $HOME/.pier1/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/signcerts/peer1.org2.example.com-cert.pem $HOME/.pier1/fabric/fabric.validators
   ```
 
-- **修改Plugin配置文件 config.yaml**
+-  **修改Plugin配置文件 config.yaml**
 
   `config.yaml`文件记录的Fabric网络配置（如果你是按照你自己的网络拓扑部署的Fabric，用你的网络拓扑配置文件替换这个样例文件），需要使用绝对路径，把所有的路径都修改为 `crypto-config`文件夹所在的绝对路径，$USER指代当前用户名
 
@@ -186,7 +186,7 @@ cp ./config $HOME/.pier1/fabric
   url: grpcs://localhost:7050 => url: grpcs://10.1.16.48:7050
   ```
 
-- **修改Plugin配置文件 fabric.toml**
+-  **修改Plugin配置文件 fabric.toml**
 
   配置项和说明：
 
@@ -210,7 +210,7 @@ cp ./config $HOME/.pier1/fabric
   org = "org2"
   ```
 
-- **修改Plugin配置文件fabric.validators**
+-  **修改Plugin配置文件fabric.validators**
 
   fabric.validators 是Fabric验证人的证书，配置示例：
 
@@ -255,7 +255,7 @@ cp ./config $HOME/.pier2/ether
 └── validating.wasm
 ```
 
-**注意：**插件目录下的pier.toml仅作参考，系统使用的配置文件是位于pier的配置文件目录下的pier.toml。
+ **注意：** 插件目录下的pier.toml仅作参考，系统使用的配置文件是位于pier的配置文件目录下的pier.toml。
 
 主要修改账户信息、abi，跨链合约设置。
 
@@ -325,5 +325,5 @@ pier --repo ~/pier1 client rule --pier_id ${idB} --path ~/pier1/fabric/rule.wasm
 pier --repo ~/pier2 client rule --pier_id ${idA} --path ~/pier2/ethereum/rule.wasm
 ~~~
 
-完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作
+完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作。
 

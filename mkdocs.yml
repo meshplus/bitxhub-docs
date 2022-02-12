@@ -105,6 +105,10 @@ nav:
           - 中继模式管理: bitxhub/function/relay_manager.md
           - 直连模式管理: bitxhub/function/direct_manager.md
         - 证书管理: bitxhub/function/cert_manage.md
+        - 中继链管理:
+            - 节点管理: bitxhub/function/node_manager.md
+            - 统一身份管理: bitxhub/function/role_manager.md
+            - 验证规则管理: bitxhub/function/rule_manager.md
         - 跨链合约调用: bitxhub/function/cross_invoke.md
       - 开发手册:
           - 命令行说明:

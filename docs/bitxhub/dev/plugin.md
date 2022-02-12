@@ -10,31 +10,16 @@
 
 - 设置好$GOPATH等环境
 
-## 教程章节
-
-1. 重要概念
-
-2. Plugin接口
-
-3. 程序目标
-
-4. 开始编写程序
-
-5. 编译你的Plugin
-
-## 重要概念
+## 1. 重要概念
 
 在解释具体的接口之前，先明确几个概念：
 
-**跨链请求**：如果有两条区块链A和B，A链需要向B链发起任何操作，需要按照IBTP规则向中继链发出一个请求包，我们称之为跨链请求A->B。
+- **跨链请求**：如果有两条区块链A和B，A链需要向B链发起任何操作，需要按照IBTP规则向中继链发出一个请求包，我们称之为跨链请求A->B；
+- **IBTP包**：满足IBTP的一个package，跨链请求都需要通过IBTP包进行；
+- **来源链**：在跨链请求A->B中，A即为来源链服务；
+- **目的链**：在跨链请求A->B中，B即为目的链服务。
 
-**IBTP包**：满足IBTP的一个package，跨链请求都需要通过IBTP包进行。
-
-**来源链**：在跨链请求A->B中，A即为来源链。
-
-**目的链**：在跨链请求A->B中，B即为目的链。
-
-## Plugin接口
+## 3. Plugin接口
 
 为了更加便捷的开发Plugin接入到Pier中来，我们规定了下面一些必要的接口。
 
@@ -85,11 +70,11 @@ type Client interface {
 }
 ```
 
-## 程序目的
+## 3. 程序目的
 
 本教程以开发一个简单的连接Fabric区块链网络的Plugin为例，最终的程序能够实现从负责的区块链获取`Hello World`信息并返回到跨链平台中。
 
-## 开始编写你的程序
+## 4. 开始编写你的程序
 
 首先选择你的工程目录，按照正常的GO程序的流程建立项目
 
@@ -100,7 +85,72 @@ $ cd ${YOUR_PROJECT}
 $ go mod init exmple/fabric-plugin
 ```
 
-### Client对象
+### 4.1 读取配置
+
+Plugin的配置文件路径是通过Initialize的方法动态传入的，这意味着你可以方便的修改关于你的区块链的参数信息。我们新建文件 `./config.go` 文件，负责配置读取的所有操作。
+
+这里使用的是 `github.com/spf13/viper`库和TOML文件作为配置，当然你也可以使用任何你熟悉的工具来读取配置。
+
+```go
+package main
+
+import (
+   "path/filepath"
+   "strings"
+
+   "github.com/spf13/viper"
+)
+
+const (
+   ConfigName = "fabric.toml"
+)
+
+type Fabric struct {
+   Addr        string `toml:"addr" json:"addr"`
+   Name        string `toml:"name" json:"name"`
+   EventFilter string `mapstructure:"event_filter" toml:"event_filter" json:"event_filter"`
+   Username    string `toml:"username" json:"username"`
+   CCID        string `toml:"ccid" json:"ccid"`
+   ChannelId   string `mapstructure:"channel_id" toml:"channel_id" json:"channel_id"`
+   Org         string `toml:"org" json:"org"`
+}
+
+func DefaultConfig() *Fabric {
+   return &Fabric{
+      Addr:        "localhost:10053",
+      Name:        "fabric",
+      EventFilter: "CrosschainEventName",
+      Username:    "Admin",
+      CCID:        "Broker-001",
+      ChannelId:   "mychannel",
+      Org:         "org2",
+   }
+}
+
+func UnmarshalConfig(configPath string) (*Fabric, error) {
+   viper.SetConfigFile(filepath.Join(configPath, ConfigName))
+   viper.SetConfigType("toml")
+   viper.AutomaticEnv()
+   viper.SetEnvPrefix("FABRIC")
+   replacer := strings.NewReplacer(".", "_")
+   viper.SetEnvKeyReplacer(replacer)
+   if err := viper.ReadInConfig(); err != nil {
+      return nil, err
+   }
+
+   config := DefaultConfig()
+
+   if err := viper.Unmarshal(config); err != nil {
+      return nil, err
+   }
+
+   return config, nil
+}
+```
+
+### 
+
+### 4.2 Client对象
 
 首先创建一个`client.go`文件，这个文件是Plugin的核心和入口。
 
@@ -182,7 +232,7 @@ func (c *Client) Initialize(configPath, pierId string, extra []byte) error {
 }
 ```
 
-### consumer
+### 4.3 consumer
 
 consumer 负责监听区块链上的由跨链合约抛出的跨链事件以及和调用chaincode。
 
@@ -200,21 +250,21 @@ type Consumer struct {
 }
 ```
 
-- eventClient：fabric gosdk提供的事件Client
+- `eventClient`：fabric gosdk提供的事件Client；
 
-- meta Fabric：相关的参数信息
+- `meta Fabric`：相关的参数信息；
 
-- msgH：事件handler，在监听到指定事件之后负责处理的函数
+- `msgH`：事件handler，在监听到指定事件之后负责处理的函数；
 
-- channelProvider：fabric gosdk提供的和chaincode交互
+- `channelProvider`：fabric gosdk提供的和chaincode交互；
 
-- ChannelClient：fabric gosdk 提供的和调用chaincode的对象
+- `ChannelClient`：fabric gosdk 提供的和调用chaincode的对象；
 
-- registeration：fabric gosdk 提供的订阅特定事件的对象
+- `registeration`：fabric gosdk 提供的订阅特定事件的对象；
 
-- ctx：用来结束consumer的goroutine
+- `ctx`：用来结束consumer的goroutine。
 
-### Event
+### 4.4 Event
 
 由于在Fabric上抛出的事件内容是可以自定义的，而跨链请求要在跨链平台上传递的话，需要使用IBTP包，所以我们需要一定的代码来执行这种转换。
 
@@ -239,70 +289,7 @@ type Event struct {
 
 Event结构也是自定义的，需要和在你的跨链合约中抛出的事件结构一致。一个跨链交易事件，一般来说需要指定目标应用链的ID `DstChainID`，目标应用链上智能合约的地址或者ID（Fabric上的chaincode没有合约地址）`DstContractID`，这次跨链交易的发起者的合约地址`SrcContractID`，跨链调用的函数名 `Func`，该函数的参数 `Args`，是否有跨链调用之后要执行的回调函数 `Callback`，为了该应用链上对于该事件的证明 `Proof`，用户可自定义的部分 `Extra`。
 
-### 读取配置
-
-Plugin的配置文件路径是通过Initialize的方法动态传入的，这意味着你可以方便的修改关于你的区块链的参数信息。我们新建文件 `./config.go` 文件，负责配置读取的所有操作。
-
-这里使用的是 `github.com/spf13/viper`库和TOML文件作为配置，当然你也可以使用任何你熟悉的工具来读取配置。
-
-```go
-package main
-
-import (
-   "path/filepath"
-   "strings"
-
-   "github.com/spf13/viper"
-)
-
-const (
-   ConfigName = "fabric.toml"
-)
-
-type Fabric struct {
-   Addr        string `toml:"addr" json:"addr"`
-   Name        string `toml:"name" json:"name"`
-   EventFilter string `mapstructure:"event_filter" toml:"event_filter" json:"event_filter"`
-   Username    string `toml:"username" json:"username"`
-   CCID        string `toml:"ccid" json:"ccid"`
-   ChannelId   string `mapstructure:"channel_id" toml:"channel_id" json:"channel_id"`
-   Org         string `toml:"org" json:"org"`
-}
-
-func DefaultConfig() *Fabric {
-   return &Fabric{
-      Addr:        "localhost:10053",
-      Name:        "fabric",
-      EventFilter: "CrosschainEventName",
-      Username:    "Admin",
-      CCID:        "Broker-001",
-      ChannelId:   "mychannel",
-      Org:         "org2",
-   }
-}
-
-func UnmarshalConfig(configPath string) (*Fabric, error) {
-   viper.SetConfigFile(filepath.Join(configPath, ConfigName))
-   viper.SetConfigType("toml")
-   viper.AutomaticEnv()
-   viper.SetEnvPrefix("FABRIC")
-   replacer := strings.NewReplacer(".", "_")
-   viper.SetEnvKeyReplacer(replacer)
-   if err := viper.ReadInConfig(); err != nil {
-      return nil, err
-   }
-
-   config := DefaultConfig()
-
-   if err := viper.Unmarshal(config); err != nil {
-      return nil, err
-   }
-
-   return config, nil
-}
-```
-
-### SubmitIBTP
+### 4.5 SubmitIBTP
 
 该接口主要负责将其他链发送过来的IBTP包解析并构造成当前目的链的交易，发送到目的链的跨链合约中。
 如果来源链要求将本链调用合约的结果返回的话，还需要构造相应的IBTP回执发回来源链。

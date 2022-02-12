@@ -5,7 +5,7 @@
 
 验证规则是应用链在中继链上自主部署的智能合约，用于中继链验证应用链跨链请求的真伪。
 
-中继链的验证规则管理主要包含**验证规则注册**、**主验证规则切换**、**验证规则注销**。
+中继链的验证规则管理主要包含 **验证规则注册**、**主验证规则切换**、**验证规则注销**。
 
 ## 2 验证规则注册
 ### 2.1 功能介绍
@@ -20,7 +20,7 @@
 
 #### 第一步：应用链部署验证规则
 应用链可以通过pier向中继链部署验证规则，部署时默认向中继链发起注册,命令如下：
-```shell script
+```shell
 // --repo：指定pier启动路径
 // --path：指定验证规则所在路径
 // --method：指定应用链的method信息
@@ -28,7 +28,7 @@
 $ pier --repo ~/.pier_ethereum rule deploy --path ~/.pier_ethereum/ethereum/validating.wasm --method appchain --admin-key ~/.pier_ethereum/key.json
 ```
 - 情景1：如果是首次部署验证规则（即当前应用链没有主验证规则），注册命令执行后打印信息如下：
-```shell script
+```shell
 INFO[2021-07-23T09:48:44.608] Establish connection with bitxhub localhost:60013 successfully  module=rpcx
 Deploy rule to bitxhub for appchain appchain successfully: 0x0c216b651E435d35d94196573BE7a89eDC883295
 Register rule to bitxhub for appchain did:bitxhub:appchain:. successfully, the bind request was submitted successfully, wait for proposal 0x4DebB0f20B9e639827e273bc8FeDD73Da6193543-1 to finish.
@@ -36,7 +36,7 @@ Register rule to bitxhub for appchain did:bitxhub:appchain:. successfully, the b
 接下来需要中继链管理员投票，进入第二步
 
 - 情景2：如果当前应用链已经有一条主验证规则，再次注册命令执行后打印信息如下：
-```shell script
+```shell
 INFO[2021-07-23T10:11:32.767] Establish connection with bitxhub localhost:60012 successfully  module=rpcx
 Deploy rule to bitxhub for appchain appchain successfully: 0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff
 Register rule to bitxhub for appchain did:bitxhub:appchain:. successfully.
@@ -46,7 +46,7 @@ Register rule to bitxhub for appchain did:bitxhub:appchain:. successfully.
 
 #### 第二步：中继链管理员投票
 上一步情景1需要中继链管理员进一步进行投票治理，默认四个管理员的情况下需要三个管理员投赞成票提案可通过，命令如下
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定治理提案的id，上述验证规则注册的治理提案id从结果1的打印信息中可以看到是0x4DebB0f20B9e639827e273bc8FeDD73Da6193543-1
 // --info：指定投票内容是approve或是reject
@@ -60,19 +60,24 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance vote --id 
 
 #### 第三步：查看应用链验证规则
 中继链提供查看应用链验证规则的功能，命令如下：
-```shell script
+
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定应用链id
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain:.
 ```
+
 - 情景1执行结果如下，可以看到刚刚部署（注册）的验证规则已经成为主验证规则
-```shell script
+
+```shell
 ChainId                 RuleAddress                                 Status     Master
 -------                 -----------                                 ------     ------
 did:bitxhub:appchain:.  0x0c216b651E435d35d94196573BE7a89eDC883295  available  true
 ```
+
 - 情景2执行结果如下，可以看到刚刚部署（注册）的验证规则成为了一条可绑定状态的验证规则，而不是主验证规则。如果想将起设置为主验证规则，可以参考3.3节操作
-```shell script
+
+```shell
 ChainId                 RuleAddress                                 Status     Master
 -------                 -----------                                 ------     ------
 did:bitxhub:appchain:.  0x0c216b651E435d35d94196573BE7a89eDC883295  available  true
@@ -89,7 +94,7 @@ did:bitxhub:appchain:.  0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff  bindable   f
 ### 3.2 使用方法
 #### 第一步：应用链切换主验证规则
 应用链管理员可以通过pier向中继链发起切换主验证规则的请求，命令如下：
-```shell script
+```shell
 // --repo 指定pier的启动路径
 // --addr 指定新的主验证规则的地址
 // --method：指定应用链的method信息
@@ -97,14 +102,14 @@ did:bitxhub:appchain:.  0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff  bindable   f
 $ pier --repo ~/.pier_ethereum rule update --addr 0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff --method appchain --admin-key ~/.pier_ethereum/key.json
 ```
 该命令执行结果打印信息如下：
-```shell script
+```shell
 INFO[2021-07-23T10:26:16.509] Establish connection with bitxhub localhost:60013 successfully  module=rpcx
 Update master rule to bitxhub for appchain did:bitxhub:appchain:. successfully, wait for proposal 0x4DebB0f20B9e639827e273bc8FeDD73Da6193543-2 to finish.
 ```
 
 #### 第二步：中继链管理员投票
 中继链管理员进一步进行投票治理，默认四个管理员的情况下需要三个管理员投赞成票提案可通过，命令如下
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定治理提案的id，上述主验证规则切换的治理提案id从打印信息中可以看到是0x4DebB0f20B9e639827e273bc8FeDD73Da6193543-2
 // --info：指定投票内容是approve或是reject
@@ -118,13 +123,13 @@ $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance vote --id 
 
 #### 第三步：查看应用链验证规则
 中继链提供查看应用链验证规则的功能，命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定应用链id
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain:.
 ```
 执行结果如下，可以看到指定的验证规则已经成为新的主验证规则
-```shell script
+```shell
 ChainId                 RuleAddress                                 Status     Master
 -------                 -----------                                 ------     ------
 did:bitxhub:appchain:.  0x0c216b651E435d35d94196573BE7a89eDC883295  bindable   false
@@ -140,24 +145,24 @@ did:bitxhub:appchain:.  0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff  available  t
 ### 4.2 使用方法
 #### 第一步：应用链注销验证规则
 应用链管理员可以通过pier向中继链发起非主验证规则的注销，命令如下：
-```shell script
+```shell
 $ pier --repo ~/.pier_ethereum rule logout --addr 0x0c216b651E435d35d94196573BE7a89eDC883295 --method appchain --admin-key ~/.goduck/pier/.pier_ethereum/key.json
 ```
 注销成功后打印信息如下：
-```shell script
+```shell
 INFO[2021-07-23T10:37:53.380] Establish connection with bitxhub localhost:60014 successfully  module=rpcx
 The logout request was submitted successfully
 ```
 
 #### 第二步：查看应用链验证规则
 中继链提供查看应用链验证规则的功能，命令如下：
-```shell script
+```shell
 // --repo：指定中继链管理员key的路径
 // --id：指定应用链id
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain:.
 ```
 执行结果如下，可以看到指定的验证规则已经成为新的主验证规则
-```shell script
+```shell
 ChainId                 RuleAddress                                 Status     Master
 -------                 -----------                                 ------     ------
 did:bitxhub:appchain:.  0x0c216b651E435d35d94196573BE7a89eDC883295  forbidden  false
@@ -166,15 +171,21 @@ did:bitxhub:appchain:.  0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff  available  t
 
 ## 5 其他功能
 中继链还提供了其他查询验证规则信息的功能。
+
 - 查询应用链所有验证规则，命令如下：
-```shell script
+
+```shell
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain:.
 ```
+
 - 查询应用链所有可用验证规则，命令如下：
-```shell script
+
+```shell
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule available --id did:bitxhub:appchain:.
 ```
+
 - 查询应用链某条验证规则状态，命令如下：
-```shell script
+
+```shell
 $ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance rule status --id did:bitxhub:appchain:. --addr 0xa7d4E414FDB74fb2Bf8D851933d2bBbeF0B570ff
 ```
