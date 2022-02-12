@@ -12,16 +12,12 @@
 1. 开源社区是群体的自发进化，基于社区成长的技术具有更强的生命力。
 
 
-趣链科技将区块链技术平台开源，希望**打造一个更加开放的架构，所有人都可以参与到跨链技术标准化和革新运动中**，一起继续丰富完善跨链标准，桥接更多类型各异的区块链平台，共同探索跨链的生态系统，真正实现区块链技术的商业闭环，从而推动中国开源运动更好、更快的发展。
+趣链科技将区块链技术平台开源，希望 **打造一个更加开放的架构，所有人都可以参与到跨链技术标准化和革新运动中** ，一起继续丰富完善跨链标准，桥接更多类型各异的区块链平台，共同探索跨链的生态系统，真正实现区块链技术的商业闭环，从而推动中国开源运动更好、更快的发展。
 
 
 
-- **BitXHub官网链接**
-
-[__https://bitxhub.hyperchain.cn/__](https://bitxhub.hyperchain.cn/)
+-  **BitXHub官网链接:**     [ **https://bitxhub.cn/** ](https://bitxhub.cn/)
 
 
 
-- **BitXhub开源社区地址**
-
-[__https://github.com/meshplus/bitxhub__](https://github.com/meshplus/bitxhub)
+- **BitXhub开源社区地址:**     [__https://github.com/meshplus/bitxhub__](https://github.com/meshplus/bitxhub)

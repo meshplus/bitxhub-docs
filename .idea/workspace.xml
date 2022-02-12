@@ -4,7 +4,39 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b99b8a25-7d9a-4045-8b80-7d493adfb182" name="Changes" comment="modify localhost" />
+    <list default="true" id="b99b8a25-7d9a-4045-8b80-7d493adfb182" name="Changes" comment="modify localhost">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2022_1_5,_11_56_上午_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_2022_1_5__11_56___Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/direct-arch.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/direct-arch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/master-arch.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/master-arch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/relay-arch.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/relay-arch.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/assets/tx_flow.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/assets/tx_flow.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/architecture/flexible_arch.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/architecture/flexible_arch.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/architecture/tx_flow.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/architecture/tx_flow.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/community_introduction.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/community_introduction.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/design/pier.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/design/pier.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/design/privacy_protection.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/design/privacy_protection.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/dev/cmd/bitxhub_cmd.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/dev/cmd/bitxhub_cmd.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/dev/cross_contract.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/dev/cross_contract.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/dev/plugin.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/dev/plugin.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/dev/validator.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/dev/validator.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/faq.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/faq.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/function/direct_manager.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/function/direct_manager.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/introduction/advantage.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/introduction/advantage.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/introduction/summary.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/introduction/summary.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/join_us.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/join_us.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/operation/exception_problem_handling.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/operation/exception_problem_handling.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/operation/node_log_view.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/operation/node_log_view.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/operation/node_status_check.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/operation/node_status_check.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/quick_start.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/quick_start.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/usage/overall_description.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/usage/overall_description.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/bitxhub/usage/status_verification.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/bitxhub/usage/status_verification.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/premo/usage.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/premo/usage.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/scan/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/scan/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
+    </list>
     <list id="5aa4e294-cf45-4d40-8292-f933e77b315e" name="add deploy docs" comment="add deploy docs">
       <changelist_data name="jiuhuche120" email="760297795@qq.com" date="1637809633000" />
     </list>
@@ -52,6 +84,7 @@
     <option name="directoryName" value="8azg4eny" />
   </component>
   <component name="ProjectId" id="20JCkuAJrQUez7HZyILqOyiwl8i" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -93,7 +126,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="fix/release-1.11" />
+                        <option value="release-1.18" />
                       </list>
                     </value>
                   </entry>

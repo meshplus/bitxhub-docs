@@ -123,7 +123,7 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
 
 当然不同的区块链可能在以太坊的EVM上做了一些二次开发和新增功能，请根据具体区块链的文档相应修改代码。
 
-### 业务合约Demo
+### <a name="contractAnchor">业务合约Demo</a>
 
 假设你已经有了一个简单的KV存储的业务合约，代码如下：
 
@@ -359,7 +359,7 @@ func (s *KVStore) interchainSet(stub shim.ChaincodeStubInterface, args []string)
 
 **跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
 
-1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](/v1.6/bitxhub/usage/single_bitxhub/deploy_pier/)。
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../usage/single_bitxhub/deploy_pier/)。
 
 2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
 3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。

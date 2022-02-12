@@ -1,6 +1,6 @@
 直连模式下，网关pier支持对应用链的管理，包括注册、更新、审计应用链等功能。
 
-注意：在进行应用链管理之前，请确保直连模式下跨链网关正常启动！！直连模式网关启动教程请参考[跨链网关直连模式部署](/bitxhub/bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy/)
+注意：在进行应用链管理之前，请确保直连模式下跨链网关正常启动！！直连模式网关启动教程请参考[跨链网关直连模式部署](../../usage/direct_mode_pier/pier_direct_mode_deploy/)。
 
 ## 1. 应用链注册
 

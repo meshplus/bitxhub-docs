@@ -6,6 +6,7 @@ extra_css:
 theme:
   logo: assets/logo.png
   name: material
+  language: 'zh'
   features:
     - navigation.tabs
     - navigation.top
@@ -116,7 +117,7 @@ nav:
       - 设计文档:
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
           - 跨链事务方案: bitxhub/design/interchain_transaction.md
-          - 跨链网关设计方案: bitxhub/design/pier_cmd.md
+          - 跨链网关设计方案: bitxhub/design/pier.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
       - 运维:

@@ -44,11 +44,11 @@ https://testnet-1.bitxhub.cn:8881
 
 ### 部署跨链合约
 
-可以参考BitXHub文档站[链接](/v1.6/bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本）
+可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本）
 
 ### 获取Pier部署包和修改配置
 
-可以参考BitXHub文档站[链接](/v1.6/bitxhub/usage/single_bitxhub/deploy_pier/#pier)。
+可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#pier)。
 
 **注意：**
 
@@ -104,21 +104,21 @@ BitXHub测试网络下，新用户首次点击【登陆】，需要完成手机�
 
 注册字段说明：
 
-1. 节点ID：系统根据钱包地址自动生成
+1. 节点ID：系统根据钱包地址自动生成；
 
-2. 应用链名称：自定义应用链的名称
+2. 应用链名称：自定义应用链的名称；
    
-3. 应用链类型：分为fabric1.4.3、fabric1.4.4 、hyperchain和 其他 四类
+3. 应用链类型：分为fabric1.4.3、fabric1.4.4 、hyperchain和其他四类；
    
-4. 版本号：应用链对应的版本号
+4. 版本号：应用链对应的版本号；
    
-5. 共识算法：应用链采用的共识算法
+5. 共识算法：应用链采用的共识算法；
    
-6. 验证者信息：请参考[验证者信息生成](../bitxhub/dev/validator.md)
+6. 验证者信息：请参考[验证者信息生成](../bitxhub/dev/validator)；
 
-7. 验证规则：分为fabric1.4.3、fabric1.4.4 、无验证规则和 其他 四类（用户可选择无验证规则模式进行快速跨链体验），根据对应应用链类型选择合适的验证规则。注意其他类型需要提交自定义的验证规则，并附带源码链接。编写规则请参考[验证规则编写](../bitxhub/dev/rule.md)
+7. 验证规则：分为fabric1.4.3、fabric1.4.4 、无验证规则和 其他 四类（用户可选择无验证规则模式进行快速跨链体验），根据对应应用链类型选择合适的验证规则。注意其他类型需要提交自定义的验证规则，并附带源码链接。编写规则请参考[验证规则编写](../bitxhub/dev/rule)；
    
-7. 申请理由：填写申请接入跨链系统的理由
+7. 申请理由：填写申请接入跨链系统的理由。
 
 应用链接入BitXHub跨链系统需要获得中继链管理员的准入审批，中继链管理员会在24h内完成应用链注册申请审，审核通过即可接入应用链。
 
@@ -138,21 +138,21 @@ pier --repo=~/.pier start
 
 ### 1. Fabric
 
-**应用链DID：** did:bitxhub:appchain0xc11bA472f5955B2a3b0e66a91fFc05f68995eFDf:.
+**应用链DID：** `did:bitxhub:appchain0xc11bA472f5955B2a3b0e66a91fFc05f68995eFDf:.`
 
-**存证合约地址：** mychannel&data_swapper
+**存证合约地址：** `mychannel&data_swapper`
 
 ### 2. Hyperchain
 
-**应用链DID：** did:bitxhub:appchain0xe1E8c72408623Dd1825b704C21ceF7C03ab62aB6
+**应用链DID：** `did:bitxhub:appchain0xe1E8c72408623Dd1825b704C21ceF7C03ab62aB6`
 
-**存证合约地址：** 0xb8dc305352edef315f6a7844948c864717e93c84
+**存证合约地址：** `0xb8dc305352edef315f6a7844948c864717e93c84`
 
 具体调用说明如下：
 
 **跨链存证** 
 
-调用自己应用链上的data_swapper合约向我们内部的测试应用链发起跨链存证交易，调用方法是 set ，其参数有3个，依次是目的链合约的did、要存储的key，要存储的value
+调用自己应用链上的data_swapper合约向我们内部的测试应用链发起跨链存证交易，调用方法是 set ，其参数有3个，依次是目的链合约的did、要存储的key，要存储的value。
 
 **跨链获取**
 
@@ -160,6 +160,6 @@ pier --repo=~/.pier start
 
 **本地查询**
 
-调用自己应用链上的data_swapper合约查询上一步获取的数据，如果自己链是fabric，则调用方法是 get，如果自己链是hyperchain或其它，则调用方法是 getData，参数均只有1个，即要查询的key
+调用自己应用链上的data_swapper合约查询上一步获取的数据，如果自己链是fabric，则调用方法是 get，如果自己链是hyperchain或其它，则调用方法是 getData，参数均只有1个，即要查询的key。
 
 用户如果想验证目的链上是否真正执行了跨链操作，可通过部署两条自己的应用链进行跨链存证的完整体验。

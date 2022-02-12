@@ -11,7 +11,7 @@ ps aux|grep bitxhub
 ps aux|grep pier
 ```
 
-详细过程请参考[节点状态检查](/v1.6/bitxhub/operation/node_status_check/)。
+详细过程请参考[节点状态检查](../../operation/node_status_check/)。
 
 ### 节点日志检查
 

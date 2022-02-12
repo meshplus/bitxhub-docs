@@ -2,7 +2,7 @@
 # bitxhub
 中继链命令描述如下：
 
-```
+```shell
 bitxhub -h
 
 NAME:
@@ -23,17 +23,19 @@ COMMANDS:
             
 ```
 
-## 参数解释
+**参数解释**
+
 - `repo`: 可选参数，指定bitxhub节点配置文件所在目录，如果不指定，默认使用$HOME/.bitxhub目录。
-```
+```shell
 GLOBAL OPTIONS:
    --repo value   BitXHub storage repo path
    --help, -h     show help
    --version, -v  print the version
 ```
-## 子命令描述
+**子命令描述**
 
-### bitxhub config
+## bitxhub config
+
 显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
 
 ```shell
@@ -145,12 +147,14 @@ $ bitxhub config
 
 
 
-### bitxhub init
+## bitxhub init
 
-初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径
+初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径。
+
+**示例说明**
 
 ```shell
-bitxhub init   
+$ bitxhub init   
 
 initializing bitxhub at /Users/xxx/.bitxhub
 bitxhub configuration file already exists
@@ -159,7 +163,7 @@ y
 
 ```
 
-### bitxhub start
+## bitxhub start
 
 该命令`bitxhub start`显示BitXHub的版本信息。
 它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
@@ -184,7 +188,7 @@ time="2021-11-29T18:07:37.723" level=info msg="GRPC service started" module=api 
 time="2021-11-29T18:07:37.723" level=info msg="Gateway service started" module=api port=9091
 ```
 
-#### 参数解释
+**参数解释**
 
 - `passwd`：指定节点私钥密码
 - `config`：指定节点配置路径，一般指bitxhub.toml
@@ -210,9 +214,9 @@ OPTIONS:
 
 
 
-### bitxhub key
+## bitxhub key
 
-#### 功能
+**功能**
 
 该命令`bitxhub key`提供针对bitxhub节点的私钥管理。
 它包含了私钥生成、私钥格式转换、私钥查看、地址查看。
@@ -232,9 +236,9 @@ show     Show BitXHub key from repo
 address  Show address from Secp256k1 private key
 ```
 
-#### 子命令
+**子命令**
 
-##### bitxhub key gen
+### bitxhub key gen
 
 - 生成节点私钥
 - `target`: 指定生成路径
@@ -261,7 +265,7 @@ bitxhub key gen --target ~/.bitxhub
 key.json key is generated under directory /Users/xxx/.bitxhub
 ```
 
-##### bitxhub key convert
+### bitxhub key convert
 
 - 私钥格式转换
 - `save`：是否同时保存目标私钥
@@ -281,7 +285,7 @@ OPTIONS:
    --passwd value  Specify password
 ```
 
-##### bitxhub key show
+### bitxhub key show
 
 样例：
 
@@ -297,7 +301,7 @@ bitxhub key show
 }
 ```
 
-##### bitxhub key address
+### bitxhub key address
 
 样例：
 
@@ -309,7 +313,7 @@ bitxhub key address --path ./key.json --passwd 123
 
 
 
-### bitxhub version
+## bitxhub version
 
 该命令 `bitxhub version` 不含参数.
 
@@ -336,9 +340,9 @@ Golang version: go1.14.15
 
 
 
-### bitxhub cert
+## bitxhub cert
 
-#### 功能
+**功能**
 
 该命令`bitxhub cert`提供一系列x509标准的证书工具，服务于中继链节点的准入机制。
 它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。
@@ -363,9 +367,9 @@ COMMANDS:
                    
 ```
 
-#### 子命令
+**子命令**
 
-##### bitxhub cert ca
+### bitxhub cert ca
 
 生成根CA证书
 
@@ -380,7 +384,7 @@ USAGE:
 
 ```
 
-##### bitxhub cert csr
+### bitxhub cert csr
 
 - `生成CSR描述`
 - `key`: 指定私钥路径
@@ -401,7 +405,7 @@ OPTIONS:
 
 ```
 
-##### bitxhub cert issue
+### bitxhub cert issue
 
 - `证书签发`
 - `csr`: 指定CSR描述文件路径
@@ -426,7 +430,7 @@ OPTIONS:
 
 ```
 
-##### bitxhub cert parse
+### bitxhub cert parse
 
 - `证书解析`
 - `path`: 指定证书路径
@@ -442,7 +446,7 @@ OPTIONS:
    --path value  certification path
 ```
 
-##### bitxhub cert priv
+### bitxhub cert priv
 
 ```shell
 NAME:
@@ -457,7 +461,9 @@ COMMANDS:
 
 ```
 
-###### **私钥生成**
+#### bitxhub cert priv gen
+
+**私钥生成**
 
 ```shell
 NAME:
@@ -471,7 +477,7 @@ OPTIONS:
    --target value  Specific target directory
 ```
 
-样例：
+**样例：**
 
 ```shell
 bitxhub cert priv gen --name server --target ./
@@ -479,13 +485,15 @@ bitxhub cert priv gen --name server --target ./
 server.priv key is generated under directory /Users/xxx/GolandProjectsTest/bitxhub-docs
 ```
 
-###### **获取libp2p节点pid**
+#### bitxhub cert priv pid
+
+**获取libp2p节点pid**
 
 ```shell
 NAME:   BitXHub cert priv pid - Show pid from private keyUSAGE:   BitXHub cert priv pid [command options] [arguments...]OPTIONS:   --path value  Specific private key path
 ```
 
-样例：
+**样例：**
 
 ```shell
 bitxhub cert priv pid --path ./server.priv     QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
@@ -494,8 +502,8 @@ bitxhub cert priv pid --path ./server.priv     QmWw4hPtm51jpxzKjyYMe3E7bNei9wdou
 
 
 
-### bitxhub client
-#### 功能
+## bitxhub client
+**功能**
 
 该命令`bitxhub client`提供中继链节点的客户端操作命令。
 它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
@@ -521,7 +529,8 @@ COMMANDS:
    governance  governance command                      
 ```
 
-#### 参数解释
+**参数解释**
+
 - `gateway`: 指定客户端http服务地址，如果节点开启了TLS功能，则需要传递https地址；
 - `cert`: 指定节点的CA证书，如果节点开始了TLS功能，需要传递；
 ```
@@ -530,8 +539,9 @@ OPTIONS:
 --cert value     Specific ca cert file if https is enabled
 --help, -h       show help
 ```
-#### 子命令
-##### bitxhub client account
+**子命令**
+
+### bitxhub client account
 账户信息查询
 ```shell
 bitxhub   client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
@@ -544,7 +554,7 @@ bitxhub   client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34
 }
 
 ```
-##### bitxhub client chain
+### bitxhub client chain
 中继链信息查询
 ```shell
 NAME:
@@ -568,7 +578,7 @@ bitxhub   client chain meta
 bitxhub   client chain status
 normal
 ```
-##### bitxhub client block
+### bitxhub client block
 区块信息查询
 - 可指定区块号或区块Hash
 ```shell
@@ -576,7 +586,7 @@ bitxhub   client block 1
 {"block_header":{"number":"1","state_root":"0xC3A3B54F593e638D8a9FAbf66b781EFcb14D0f013D7c3E3a02ef698294f6BBF5"},"block_hash":"0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068","signature":"74DK6FeGnAYBJ0pJ4bLwIaT9cp9YwIscenKsRc7myXUBQfvvLKhIpZqPJkf8tAI7V8u89SLOAdz94fo/ajKi+wA="}
 
 ```
-##### bitxhub client network
+### bitxhub client network
 全网节点信息
 ```shell
 bitxhub   client network
@@ -617,7 +627,7 @@ bitxhub   client network
 }
 ```
 
-##### bitxhub client receipt
+### bitxhub client receipt
 交易回执查询
 ```shell
 bitxhub   client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E
@@ -631,7 +641,7 @@ bitxhub   client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6
 
 ```
 
-##### bitxhub client tx
+### bitxhub client tx
 简单交易
 
 **交易发送**
@@ -648,7 +658,7 @@ bitxhub   client tx get 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a
 
 {"tx":{"from":"0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","to":"0x97c8B516D19edBf575D72a172Af7F418BE498C37","timestamp":"1638168425560507000","transaction_hash":"0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E","payload":"EAI=","nonce":"2","signature":"mdOdSzAOTDxfZ0VphvyDyir1lE8w31rUaSTtnj1us9NMhtUPVHz5bLcOBdZrmUfnaVhL3xGQxK3/P7WHmihxIQA="},"tx_meta":{"block_hash":"HoMgbS+NeCRds5Qc/58NfHXA+jVCuhUcsc7p9IvJxMc=","block_height":"3"}}
 ```
-##### bitxhub client validators
+### bitxhub client validators
 全网验证人信息
 ```shell
 bitxhub   client validators
@@ -661,7 +671,7 @@ bitxhub   client validators
 ]
 ```
 
-##### bitxhub client delVPNode
+### bitxhub client delVPNode
 动态删除共识节点
 ```shell
 NAME:
@@ -674,7 +684,7 @@ OPTIONS:
    --pid value  pid of vp node
 ```
 
-##### bitxhub client governance
+### bitxhub client governance
 提案治理命令
 ```shell
 NAME:
@@ -689,7 +699,11 @@ COMMANDS:
    chain      appchain manage command
 
 ```
-###### **提案投票**
+**子命令**
+
+#### bitxhub client governance vote
+
+**提案投票**
 
 -   命令参数
 ```shell
@@ -713,7 +727,9 @@ vote successfully!
 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
 
 ```
-###### **提案查询**
+#### bitxhub client governance proposals
+
+**提案查询**
 
 - id: 提案id
 - type: 提案类型，当前支持应用链管理
@@ -733,7 +749,10 @@ OPTIONS:
    --from value    the address of the account to which the proposal was made
 ```
 
-###### 应用链管理
+#### bitxhub client governance chain
+
+**应用链管理**
+
 - `status`:查询应用链状态
 - `freeze`:应用链冻结
 - `activate`:应用链激活
