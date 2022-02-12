@@ -58,5 +58,8 @@ bitxhub key gen --name=key --target=./
 bitxhub key gen --passwd=bitxhub --target=./
 ~~~
 
-**说明：节点私钥会进行加密，如果密码不正确，中继链无法启动，目前默认的密码是bitxhub，如果采用其他密码，在启动中继链节点的过程中需要指定密码。以密码为hub为例，bitxhub启动命令为：bitxhub --repo ~/node1 start --passwd hub**
+**说明：节点私钥会进行加密，如果密码不正确，中继链无法启动，目前默认的密码是bitxhub，如果采用其他密码，在启动中继链节点的过程中需要指定密码。以密码为hub为例，bitxhub启动命令为：**
 
+```shell
+bitxhub --repo ~/node1 start --passwd hub
+```

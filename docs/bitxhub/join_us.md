@@ -5,7 +5,7 @@
 
 ![](../assets/wechat.png)
 
-- **趣链科技官方公共号    **
+-  **趣链科技官方公共号** 
 
 ![](../assets/public wechat.png)
 

@@ -444,5 +444,5 @@ INFO[21:54:45.569] Handle ibtp receipt success                   id=0xfF8199Fae4
 
 ## 总结
 
-经过上面的改造，你的业务合约已经具备跨链获取数据的功能了，完整的代码可以参考[__这里__](https://github.com/meshplus/pier-client-fabric/tree/master/example)
+经过上面的改造，你的业务合约已经具备跨链获取数据的功能了，完整的代码可以参考[__这里__](https://github.com/meshplus/pier-client-fabric/tree/master/example)。
 

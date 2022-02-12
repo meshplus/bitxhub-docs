@@ -27,7 +27,7 @@ premo init
 
 ## 基本使用
 
-```text
+```shell
 premo [global options] command [command options] [arguments...]
 ```
 
@@ -80,7 +80,7 @@ premo test --help
 
 帮助信息如下：
 
-```text
+```shell
 NAME:
    premo test - test bitxhub function
 
