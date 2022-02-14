@@ -99,7 +99,7 @@ nav:
       - 整体架构:
           - 产品架构: bitxhub/architecture/flexible_arch.md
           - 技术架构: bitxhub/architecture/arch.md
-          - 交易流: bitxhub/architecture/tx_flow.md
+          - 交易流程: bitxhub/architecture/tx_flow.md
       - 快速开始: bitxhub/quick_start.md
       - 部署使用:
           - 环境准备: bitxhub/usage/env.md
