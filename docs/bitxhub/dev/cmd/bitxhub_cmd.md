@@ -32,9 +32,9 @@ GLOBAL OPTIONS:
    --help, -h     show help
    --version, -v  print the version
 ```
-## 子命令描述
+**子命令描述**
 
-### bitxhub config
+## bitxhub config
 显示当前节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径，若路径下存在旧配置，则提示覆盖与否。
 
 **示例说明**
@@ -148,7 +148,7 @@ $ bitxhub config
 
 
 
-### bitxhub init
+## bitxhub init
 
 初始化节点配置：如未指定`repo`则默认使用`~/.bitxhub/`路径。
 
@@ -166,7 +166,7 @@ y
 
 
 
-### bitxhub start
+## bitxhub start
 
 该命令`bitxhub start`显示BitXHub的版本信息。它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
 
@@ -218,8 +218,8 @@ time="2021-11-29T18:07:37.723" level=info msg="Gateway service started" module=a
 
 
 
-### bitxhub key
-####**功能**
+## bitxhub key
+**功能**
 该命令`bitxhub key`提供针对bitxhub节点的私钥管理。它包含了私钥生成、私钥格式转换、私钥查看、地址查看。子命令信息如下:
 
 ```shell
@@ -235,9 +235,9 @@ show     Show BitXHub key from repo
 address  Show address from Secp256k1 private key
 ```
 
-####**子命令**
+**子命令**
 
-#### bitxhub key gen
+### bitxhub key gen
 
 ```shell
 NAME:
@@ -265,7 +265,7 @@ $ bitxhub key gen --target ~/.bitxhub
 key.json key is generated under directory /Users/xxx/.bitxhub
 ```
 
-#### bitxhub key show
+### bitxhub key show
 
 显示`key.json`具体内容。
 
@@ -285,7 +285,7 @@ bitxhub key show
 }
 ```
 
-#### bitxhub key address
+### bitxhub key address
 
 显示`key.json`地址。
 
@@ -299,8 +299,8 @@ bitxhub key address --path ./key.json --passwd 123
 
 
 
-### bitxhub version
-####**功能**
+## bitxhub version
+**功能**
 该命令`bitxhub version`显示BitXHub的版本信息。它会在命令行显示版本、构建日期、操作系统/架构和Go编译器版本。
 
 ```shell
@@ -325,9 +325,9 @@ Golang version: go1.14.15
 
 
 
-### bitxhub cert
+## bitxhub cert
 
-####**功能**
+**功能**
 该命令`bitxhub cert`提供一系列x509标准的证书工具，服务于中继链节点的准入机制。它包含了CA生成、CSR描述生成、证书签发、证书解析、证书私钥生成以及证书校验。说明信息如下:
 
 ```shell
@@ -348,9 +348,9 @@ COMMANDS:
 ```
 
 
-####**子命令**
+**子命令**
 
-#### bitxhub cert ca
+### bitxhub cert ca
 
 生成根CA证书
 
@@ -376,7 +376,7 @@ $ bitxhub --repo=$HOME/cert cert ca
 
 
 
-#### bitxhub cert csr
+### bitxhub cert csr
 
 生成CSR描述信息。
 
@@ -402,7 +402,7 @@ OPTIONS:
 
 
 
-#### bitxhub cert issue
+### bitxhub cert issue
 
 证书签发。
 
@@ -432,7 +432,7 @@ OPTIONS:
 
 
 
-#### bitxhub cert parse
+### bitxhub cert parse
 
 证书解析。
 
@@ -453,7 +453,7 @@ OPTIONS:
 
 
 
-#### bitxhub cert priv
+### bitxhub cert priv
 
 生成或展示用于p2p网络通信的私钥。
 
@@ -474,7 +474,7 @@ COMMANDS:
 
 **私钥生成**
 
-##### bitxhub cert priv gen
+#### bitxhub cert priv gen
 
 ```shell
 NAME:
@@ -500,7 +500,7 @@ server.priv key is generated under directory /Users/xxx/GolandProjectsTest/bitxh
 
 
 
-##### bitxhub cert priv pid
+#### bitxhub cert priv pid
 
 获取libp2p节点pid。
 
@@ -526,8 +526,8 @@ QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
 
 
 
-### bitxhub client
-####**功能**
+## bitxhub client
+**功能**
 
 该命令`bitxhub client`提供中继链节点的客户端操作命令。它包含了账户信息查询、中继链信息、区块查询、节点网络信息、回执查询、交易操作、验证者集查询、删除共识节点、提案治理。
 子命令信息如下:
@@ -562,9 +562,9 @@ OPTIONS:
 --cert value     Specific ca cert file if https is enabled
 --help, -h       show help
 ```
-####**子命令**
+**子命令**
 
-#### bitxhub client account
+### bitxhub client account
 账户信息查询。
 ```shell
 bitxhub client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34                                         
@@ -580,7 +580,7 @@ bitxhub client account 0x79a1215469FaB6f9c63c1816b45183AD3624bE34
 ```
 
 
-#### bitxhub client chain
+### bitxhub client chain
 
 中继链信息查询。
 ```shell
@@ -597,7 +597,7 @@ COMMANDS:
 OPTIONS:
    --help, -h  show help
 ```
-##### bitxhub client chain meta
+#### bitxhub client chain meta
 
 查询中继链信息。
 
@@ -609,7 +609,7 @@ bitxhub client chain meta
 {"height":"1","block_hash":"0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068"}
 ```
 
-##### bitxhub client chain status
+#### bitxhub client chain status
 
 查询中继链状态是否可用。
 
@@ -626,7 +626,7 @@ normal
 
 
 
-#### bitxhub client block
+### bitxhub client block
 区块信息查询，**可指定区块号或区块Hash**。
 
 **示例说明**
@@ -637,7 +637,7 @@ $ bitxhub client block 1
 # 控制台输出
 {"block_header":{"number":"1","state_root":"0xC3A3B54F593e638D8a9FAbf66b781EFcb14D0f013D7c3E3a02ef698294f6BBF5"},"block_hash":"0x0BF41c03bE038e389470dBdC9ed53DF897F178921520AF37877188d1759A7068","signature":"74DK6FeGnAYBJ0pJ4bLwIaT9cp9YwIscenKsRc7myXUBQfvvLKhIpZqPJkf8tAI7V8u89SLOAdz94fo/ajKi+wA="}
 ```
-#### bitxhub client network
+### bitxhub client network
 全网节点信息。
 
 **示例说明**
@@ -682,7 +682,7 @@ $ bitxhub client network
 }
 ```
 
-#### bitxhub client receipt
+### bitxhub client receipt
 交易回执查询。
 
 **示例说明**
@@ -700,7 +700,7 @@ $ bitxhub client receipt 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6
 
 ```
 
-#### bitxhub client tx
+### bitxhub client tx
 交易发送与交易查询。
 
 ```shell
@@ -718,7 +718,7 @@ OPTIONS:
    --help, -h  show help
 ```
 
-##### bitxhub client tx send
+#### bitxhub client tx send
 
 交易发送
 
@@ -730,7 +730,7 @@ $ bitxhub client tx send --key scripts/build/node1/key.json --to 0x97c8B516D19ed
 # 控制台输出
 {"tx_hash":"0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E"}
 ```
-##### bitxhub client tx get
+#### bitxhub client tx get
 
 交易查询
 
@@ -742,7 +742,7 @@ $ bitxhub client tx get 0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a
 # 控制台输出
 {"tx":{"from":"0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","to":"0x97c8B516D19edBf575D72a172Af7F418BE498C37","timestamp":"1638168425560507000","transaction_hash":"0x08ab0E9175ae67Aed7a085D6813C156e4ED3b49cDf902e02280F6a62d7AaD61E","payload":"EAI=","nonce":"2","signature":"mdOdSzAOTDxfZ0VphvyDyir1lE8w31rUaSTtnj1us9NMhtUPVHz5bLcOBdZrmUfnaVhL3xGQxK3/P7WHmihxIQA="},"tx_meta":{"block_hash":"HoMgbS+NeCRds5Qc/58NfHXA+jVCuhUcsc7p9IvJxMc=","block_height":"3"}}
 ```
-#### bitxhub client validators
+### bitxhub client validators
 全网验证人信息。
 
 **示例说明**
@@ -759,7 +759,7 @@ $ bitxhub client validators
 ]
 ```
 
-#### bitxhub client delVPNode
+### bitxhub client delVPNode
 动态删除共识节点
 ```shell
 NAME:
@@ -772,7 +772,7 @@ OPTIONS:
    --pid value  pid of vp node
 ```
 
-#### bitxhub client governance
+### bitxhub client governance
 提案治理命令。
 ```shell
 NAME:
@@ -787,7 +787,7 @@ COMMANDS:
    chain      appchain manage command
 
 ```
-##### bitxhub client governance vote
+#### bitxhub client governance vote
 
 提案投票。
 
@@ -820,7 +820,7 @@ vote successfully!
 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0
 
 ```
-##### bitxhub client governance proposals
+#### bitxhub client governance proposals
 
 提案查询。用于查询中继链提案的内容以及相关的状态。命令说明如下：
 
@@ -858,7 +858,7 @@ Id                                            Type         Status    ApproveNum 
 
 
 
-##### bitxhub client governance chain
+#### bitxhub client governance chain
 
 应用链管理。命令说明如下：
 
