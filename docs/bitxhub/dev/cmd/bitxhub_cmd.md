@@ -200,7 +200,7 @@ OPTIONS:
 $ bitxhub --repo <node_config_path> start                         
 
 # 控制台输出
-BitXHub version: dev-fixx-1.6-2a2f39f                                                                                                           
+BitXHub version: dev-release-1.11-48106fe                                                                                                                                                                                               
 App build date: 2021-11-25T16:43:19                                                                                                                 
 System version: darwin/amd64                                                                                                                              
 Golang version: go1.14.15                                                                                                                                 
@@ -317,7 +317,7 @@ USAGE:
 
 ```shell
 $ bitxhub version
-BitXHub version: dev-fixx-1.6-2a2f39f
+BitXHub version: dev-release-1.11-48106fe                                                                                                          
 App build date: 2021-11-25T15:01:28
 System version: darwin/amd64
 Golang version: go1.14.15

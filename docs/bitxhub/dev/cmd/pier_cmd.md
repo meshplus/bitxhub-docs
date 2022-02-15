@@ -527,8 +527,8 @@ USAGE:
 $ pier --repo $HOME/.pier1 start
 
 # 控制台输出
-Pier version: dev-release-1.6-1b5b79f
-App build date: 2021-12-01T17:50:14
+Pier version: v1.11.2-HEAD-ed2f786
+App build date: 2021-12-01T14:50:14
 System version: darwin/amd64
 Golang version: go1.15.13
 

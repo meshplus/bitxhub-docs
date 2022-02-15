@@ -18,14 +18,14 @@
 
 ## 部署跨链合约
 
-这一章是要在应用链上部署跨链合约，**注意：在此操作之前，您需要确认已经部署有可接入的应用链**。
+这一章是要在应用链上部署跨链合约，**注意：在此操作之前，您需要确认已经部署有可接入的应用链**。快速部署应用链请参考[Goduck关于应用链的操作](../../../../goduck/#24)。
 
 我们提供了针对不同应用链的跨链合约，broker合约是管理合约，transfer合约是业务交易合约，需要说明的是 transfer合约需要经过broker合约审核通过后才能发起或接受跨链交易，具体方法是：调用broker合约的audit方法，其参数依次是业务合约地址和合约状态（数字1表示审核通过，数字2表示审核失败）。
 
 下面以Ethereum和Fabric为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
 
 === "Ethereum"
-    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.6.2/example)的exampe文件夹中获取。
+    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.11.2/example)的exampe文件夹中获取。
 
     **说明：**
     1. 合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约；
@@ -42,7 +42,7 @@
     Step2: 获取需要部署的合约文件并解压
     ```
     git clone https://github.com/meshplus/pier-client-fabric.git 
-    cd pier-client-fabric && git checkout v1.6.2
+    cd pier-client-fabric && git checkout v1.11.2
     # 需要部署的合约文件就在example目录下
     #解压即可
     unzip -q contracts.zip
@@ -73,13 +73,13 @@
     # 编译跨链网关本身
     cd $HOME
     git clone https://github.com/meshplus/pier.git
-    cd pier && git checkout v1.6.2
+    cd pier && git checkout v1.11.2
     make prepare && make build
     
     # 编译Ethereum 插件
     cd $HOME
     git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout v1.6.2
+    cd pier-client-ethereum && git checkout v1.11.2
     make eth
     
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
@@ -88,7 +88,7 @@
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.6.2) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v1.6.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
 === "Fabric"
     **源码下载编译**
@@ -97,13 +97,13 @@
     # 编译跨链网关本身
     cd $HOME
     git clone https://github.com/meshplus/pier.git
-    cd pier && git checkout v1.6.2
+    cd pier && git checkout v1.11.2
     make prepare && make build
     
     # 编译Fabric插件
     cd $HOME
     git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout v1.6.2
+    cd pier-client-fabric && git checkout v1.11.2
     make fabric1.4
     
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
@@ -112,7 +112,7 @@
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.6.2) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v1.6.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
 经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
 
@@ -172,10 +172,9 @@ validators = [
 === "Fabric"
     ```
     [appchain]
-    # fabric插件文件的名称
-    plugin = "fabric-client-1.4"
-    # ethereum配置文件夹在跨链网关配置文件夹下的相对路径
     config = "fabric"
+    did = "did:bitxhub:appchain0x450884c9F7fdFc72E2bC1245306d15dE1750A880:."
+    plugin = "appchain_plugin"
     ```
 
 ### 修改应用链插件的配置
@@ -191,7 +190,7 @@ validators = [
     cd pier-client-ethereum
     cp ./config $HOME/.pier/ether
     ```
-​    其中重要配置如下：
+    其中重要配置如下：
     ```shell
     ├── account.key
     ├── broker.abi
@@ -200,13 +199,13 @@ validators = [
     ├── password
     └── validating.wasm
     ```
-说明**：
-
-- account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
-- broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
-- ether.validators和validating.wasm一般不需要修改。
-- ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
-
+    **说明**：
+    
+    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+    - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
+    - ether.validators和validating.wasm一般不需要修改。
+    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
+    
     ```
     [ether]
     addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
@@ -274,7 +273,7 @@ validators = [
 
 
 ## 注册应用链
-在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.6.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，以下是以Ethereum为例进行说明：
+在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.11.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，以下是以Ethereum为例进行说明：
 
 1. Pier命令行发起应用链注册
    ```
