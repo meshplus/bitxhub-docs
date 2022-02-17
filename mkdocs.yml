@@ -1,6 +1,15 @@
 site_name: Bitxhub Document
 repo_url: https://github.com/meshplus/bitxhub
 repo_name: meshplus/bitxhub
+## 自定义css
+#extra_css:
+#  - 'assets/css/custom.css'
+#  - 'assets/css/simpleLightbox.min.css'
+## 自定义js
+#extra_javascript:
+#  - 'assets/js/jquery-3.2.1.min.js'
+#  - 'assets/js/simpleLightbox.min.js'
+#  - 'assets/js/custom.js'
 extra_css:
   - stylesheets/extra.css
 theme:
