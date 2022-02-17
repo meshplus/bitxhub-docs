@@ -7,7 +7,7 @@
 - `Pier A` / `Pier B`：网关A与网关B，用于转发跨链交易，是应用链与中继链的中转站。
 - `BitXHub`：中继链，用于跨链交易验证。
 
-![Transaction Flow](../../assets/tx_flow.png)
+![!](../../assets/tx_flow.png)
 
 具体的交易执行流程如下：
 

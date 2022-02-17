@@ -4,6 +4,7 @@ repo_name: meshplus/bitxhub
 extra_css:
   - stylesheets/extra.css
 theme:
+  custom_dir: 'docs/theme'
   logo: assets/logo.png
   name: material
   language: 'zh'
@@ -37,6 +38,13 @@ extra:
 
 # Extensions
 markdown_extensions:
+  - lightgallery:
+      show_description_in_lightgallery: true
+      show_description_as_inline_caption: true
+      custom_inline_caption_css_class: 'my-caption-class'
+  - pymdownx.highlight:
+      linenums: false
+      use_pygments: true
   - abbr
   - admonition
   - attr_list
@@ -44,19 +52,17 @@ markdown_extensions:
   - footnotes
   - meta
   - md_in_html
-  - toc:
-      permalink: true
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret
+  - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_generator: !!python/name:materialx.emoji.to_svg
       emoji_index: !!python/name:materialx.emoji.twemoji
-  - pymdownx.highlight:
-      anchor_linenums: true
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink:
@@ -68,10 +74,9 @@ markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
-          class: mermaid
+          class: mermaid-experimental
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed:
-      alternate_style: true
+  - pymdownx.tabbed
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
