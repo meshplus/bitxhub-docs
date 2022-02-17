@@ -1,15 +1,6 @@
 site_name: Bitxhub Document
 repo_url: https://github.com/meshplus/bitxhub
 repo_name: meshplus/bitxhub
-## 自定义css
-#extra_css:
-#  - 'assets/css/custom.css'
-#  - 'assets/css/simpleLightbox.min.css'
-## 自定义js
-#extra_javascript:
-#  - 'assets/js/jquery-3.2.1.min.js'
-#  - 'assets/js/simpleLightbox.min.js'
-#  - 'assets/js/custom.js'
 extra_css:
   - stylesheets/extra.css
 theme:
@@ -45,6 +36,7 @@ extra:
   version:
     provider: mike
 
+# Extensions
 markdown_extensions:
   - lightgallery:
       show_description_in_lightgallery: true
@@ -54,22 +46,25 @@ markdown_extensions:
       linenums: false
       use_pygments: true
   - abbr
+  - admonition
   - attr_list
   - def_list
   - footnotes
   - meta
   - md_in_html
+  - toc:
+      permalink: true
   - pymdownx.arithmatex:
       generic: true
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret
-  - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.highlight
+      emoji_index: !!python/name:materialx.emoji.twemoji
+  - pymdownx.highlight:
+      anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink:
@@ -81,9 +76,10 @@ markdown_extensions:
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
-          class: mermaid-experimental
+          class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
