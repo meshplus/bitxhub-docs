@@ -21,7 +21,7 @@ ERC20资产跨链方案采用中继节点多签的资产交换方案，中继链
 
 通过Oracle可信预言机(跨链网关)，向中继链区块头合约注入应用链的区块头，区块头合约包含验证跨链交易和增加区块的功能。该方案的优点是可以灵活适配各个应用链，缺点是依赖外部的可信数据源。
 
-![](../../../assets/oracle.png)
+![!](../../../assets/oracle.png)
 
 
 
@@ -39,7 +39,7 @@ func VerifyInterchainTxProof(originTx, proof, blockHeight)
 
 跨链平台内置集成同步区块头模块，该方案的优点是去中心化，缺点是耦合性强，每接入新的应用链需要加入新的同步区块头模块；同步区块头是中继链节点主动获取，还需要考虑网络问题。
 
-![](../../../assets/bvm_block_header.png)
+![!](../../../assets/bvm_block_header.png)
 
 区块头模块的主要接口如下：
 
@@ -143,7 +143,7 @@ function unlock(address erc20Token, uint256 amount, address unlocker, string ral
 
 9. 通过跨链交易的（Amount、Addr）增发等额的锚定资产，用户完成跨链充值操作；
 
-![](../../../assets/mint.png)
+![!](../../../assets/mint.png)
 
 
 
@@ -173,4 +173,4 @@ function unlock(address erc20Token, uint256 amount, address unlocker, string ral
 
 11. 中继链验证通过后销毁对应的锚定资产；
 
-![](../../../assets/burn.png)
+![!](../../../assets/burn.png)

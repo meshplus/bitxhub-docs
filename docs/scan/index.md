@@ -86,21 +86,21 @@ address: 0xE7f5E3c3963c6a588AB3de753817B3F735a6Ab58
 
 BitXHub测试网络下，新用户首次点击【登陆】，需要完成手机实名绑定，系统会提示【正在为您跳转，请先完成用户注册】，并跳转到注册页面。
 
-![注册](../assets/redirect.png)
+![!](../assets/redirect.png)
 
 注册页面中，用户需要输入手机号进行验证码校验，完成密码设置后，点击【注册】，即可跳转返回跨链浏览器页面。新用户完成注册后，您的地址1h内将收到BitXHub测试网发送的燃料费用于跨链体验。
 
-![注册](../assets/register.png)
+![!](../assets/register.png)
 
 ### 应用链注册申请
 
 对于新注册的用户，您的地址1h内将收到BitXHub测试网发送的燃料费用于跨链体验。当您的地址中BitXHub测试网燃料费为0时，系统会提示【您的测试网燃料正分发中，请稍后】。
 
-![注册](../assets/notice.png)
+![!](../assets/notice.png)
 
 **应用链注册**
 
-![注册](../assets/appchain-register.png)
+![!](../assets/appchain-register.png)
 
 注册字段说明：
 

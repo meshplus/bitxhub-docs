@@ -29,7 +29,7 @@ Pier跨链网关日志显示连接不到BitXHub节点（可参考查看pier节�
 
 Pier跨链网关启动时日志显示连接不到指定的应用链，或Pier处理跨链交易时日志显示一直重试连接应用链（可参考查看pier节点日志的操作说明）。
 
-![operation-error-02](../../../assets/operation-error-02.png)
+![!](../../../assets/operation-error-02.png)
 #### 问题定位
 
 看看到此现象首先检查该Pier连接的应用链节点状态是否正常，如果应用链状态正常，那再检查Pier到应用链之间的网络是否连通，应具体到对应端口连接。

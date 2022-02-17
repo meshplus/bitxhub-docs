@@ -71,7 +71,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
 
 待节点集群打印出bitxhub的LOGO，表示BitXHub集群开始正常工作
 
-![](../../../assets/bitxhub.png)
+![!](../../../assets/bitxhub.png)
 
 
 

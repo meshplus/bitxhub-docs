@@ -4,6 +4,7 @@ repo_name: meshplus/bitxhub
 extra_css:
   - stylesheets/extra.css
 theme:
+  custom_dir: 'docs/theme'
   logo: assets/logo.png
   name: material
   language: 'zh'
@@ -37,6 +38,13 @@ extra:
 
 # Extensions
 markdown_extensions:
+  - lightgallery:
+      show_description_in_lightgallery: true
+      show_description_as_inline_caption: true
+      custom_inline_caption_css_class: 'my-caption-class'
+  - pymdownx.highlight:
+      linenums: false
+      use_pygments: true
   - abbr
   - admonition
   - attr_list
