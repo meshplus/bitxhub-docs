@@ -81,7 +81,7 @@
 
 同构应用链含义为：作为跨链的来源链与目的链的区块、交易等数据结构相同，如都为fabric。同构应用链所构建的IBTP结构如下图所示。
 
-![same_arch_ibtp](../../assets/same-arch-ibtp.png)
+![!](../../assets/same-arch-ibtp.png)
 
 以108号区块的第一个跨链交易为例，对于应用链B中地址为“0x12345”的合约，该交易调用合约方法“put”，参数为“bitxhub，100”。Proof提供Merkle路径的信息，其中Hash是跨链交易相关内容的哈希，Path是SPV路径哈希，MerkleRoot是最终的根哈希，Signature是对于根哈希的签名。
 
@@ -89,7 +89,7 @@
 
 异构应用链分为两种，一种是及时确认并且交易本身有验证节点作为背书的区块链，比如Hyperchain、Fabric等；另一种是概率确认或者交易本身没有验证节点的区块链，比如比特币、以太坊等。
 
-![diff_arch_ibtp](../../assets/diff-arch-ibtp.png)
+![!](../../assets/diff-arch-ibtp.png)
 
 第一种类型的异构应用链已满足IBTP协议的构造条件，因此跨链网关只需要调用应用链的SDK即可实现IBTP的构建。上图是以Fabric为应用链的IBTP结构，其中Proof字段包含的Hash字段是Fabric中chaincode执行结果的摘要，Signature字段则是背书节点对Hash字段的签名数组，而对应的背书节点的证书信息，即应用链信任根，已经提前存储到中继链中，详见信任树。
 

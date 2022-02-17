@@ -27,7 +27,7 @@ BitXHub内置事务管理合约来实现跨链交易的事务管理，跨链事�
 
 由于事务管理合约只针对于跨链交易，因此中继链BitXHub收到交易后判断是否是IBTP类型交易。检查IBTP是否有效，如交易字段格式检查，来源链与来源链服务、目的链与目的链服务是否注册。例如IBTP的From字段或To字段格式不合法，中继链封装IBTP不合法的相关报错信息，并构建`receipt_failed`类型的回执给跨链网关。网关捕获该错误信息后将丢弃该条不合法的跨链交易。通常事务转换如下图所示，接下来针对该图进行详细阐述。
 
-![interchian_tx_manager](../../assets/interchain_tx_manager.png)
+![!](../../assets/interchain_tx_manager.png)
 
 ### INIT -> BEGIN -> SUCCESS
 
@@ -102,7 +102,7 @@ type txInfo struct {
 
 采用超时回滚机制，使用中继链作为跨链双方区块链的信任中心。应用链和中继链之间通过跨链网关进行跨链事件的捕获、封装和跨链交易的转发。同时，中继链共识算法定时出块，使跨链双方有一个共同的时间标准。其具体实现流程如下：
 
-![timeout_rollback](../../assets/timeoutRollback.png)
+![!](../../assets/timeoutRollback.png)
 
 1. 来源链业务合约抛出跨链事件，该事件中包含一个等待的区块数H；
 

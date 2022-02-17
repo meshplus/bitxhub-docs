@@ -14,7 +14,7 @@
 
 **举例说明：**
 
-![](../../assets/direct4.png)
+![!](../../assets/direct4.png)
 
 ## 2. 服务注册
 同时需要注册对方应用链的服务信息，其具体参数如下：
@@ -25,7 +25,7 @@
 
 **举例说明：**
 
-![](../../assets/direct5.png)
+![!](../../assets/direct5.png)
 
 ## 3. 查询服务列表
 通过`getLocalServiceList()`与`getRemoteServiceList()`可以查询到自己与对方应用链的serviceID。

@@ -1,18 +1,10 @@
 site_name: Bitxhub Document
 repo_url: https://github.com/meshplus/bitxhub
 repo_name: meshplus/bitxhub
-## 自定义css
-#extra_css:
-#  - 'assets/css/custom.css'
-#  - 'assets/css/simpleLightbox.min.css'
-## 自定义js
-#extra_javascript:
-#  - 'assets/js/jquery-3.2.1.min.js'
-#  - 'assets/js/simpleLightbox.min.js'
-#  - 'assets/js/custom.js'
 extra_css:
   - stylesheets/extra.css
 theme:
+  custom_dir: 'docs/theme'
   logo: assets/logo.png
   name: material
   language: 'zh'
@@ -45,6 +37,10 @@ extra:
     provider: mike
 
 markdown_extensions:
+  - lightgallery:
+      show_description_in_lightgallery: true
+      show_description_as_inline_caption: true
+      custom_inline_caption_css_class: 'my-caption-class'
   - pymdownx.highlight:
       linenums: false
       use_pygments: true

@@ -309,12 +309,12 @@ cp ./config $HOME/.pier2/ether
 "","appchain1",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
 "","appchain2",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
 ```
-![](../../../assets/direct1.png)
+![!](../../../assets/direct1.png)
 2. 本链业务合约注册到broker合约并审核通过
   - `register`: 在本链的业务合约注册到本链的broker合约（addr为本连链业务合约地址）
-  ![](../../../assets/direct2.png)
+  ![!](../../../assets/direct2.png)
   - `audit` : Admin管理员审核通过
-  ![](../../../assets/direct3.png)
+  ![!](../../../assets/direct3.png)
 3. 本链注册对方应用链和服务
   应用链和服务的注册的流程参照直连模式下[应用链管理](../../function/direct_manager/)
 4. 启动跨链网关

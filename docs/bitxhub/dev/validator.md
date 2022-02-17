@@ -16,7 +16,7 @@ Fabric对于智能合约的执行是在背书节点上进行的，每一个背�
 
 ProcessedTransaction（位于faric-protos-go->peer->transaction.pb.go）即Fabric存储的已经处理的交易结构。其中包含TransactionEnvelope和ValidationCode两个主要的元素。
 
-![](../../assets/validator1.png)
+![!](../../assets/validator1.png)
 
 | 字段                  | 类型               | 描述              |
 | ------------------- | ---------------- | --------------- |
@@ -25,14 +25,14 @@ ProcessedTransaction（位于faric-protos-go->peer->transaction.pb.go）即Fabri
 
 Envelop(位于faric-protos-go->common->common.pb.go)即存储在区块中一条交易的数据结构。其中Payload（位于faric-protos-go->common->common.pb.go）通过解析可以分解成Header和Data。
 
-![](../../assets/validator2.png)
+![!](../../assets/validator2.png)
 
 | 字段        | 类型     | 描述                          |
 | --------- | ------ | --------------------------- |
 | Payload   | []byte | 交易信息的byte数组，可以解析为下面的Payload |
 | Signature | []byte |  对Payload的签名                |
 
-![](../../assets/validator3.png)
+![!](../../assets/validator3.png)
 
 | 字段     | 类型      | 描述                  |
 | ------ | ------- | ------------------- |
@@ -41,13 +41,13 @@ Envelop(位于faric-protos-go->common->common.pb.go)即存储在区块中一条�
 
 其中Data则是存储的Transaction（位于faric-protos-go->peer->transaction.pb.go）的信息。一个Transaction可以包含一个或者多个Actions。
 
-![](../../assets/validator4.png)
+![!](../../assets/validator4.png)
 
 | 字段      | 类型                   | 描述                                         |
 | ------- | -------------------- | ------------------------------------------ |
 | Actions | []*TransactionAction | TransactionAction的数组，TransactionAction结构如下 |
 
-![](../../assets/validator5.png)
+![!](../../assets/validator5.png)
 
 | 字段      | 类型     | 描述                               |
 | ------- | ------ | -------------------------------- |
@@ -56,7 +56,7 @@ Envelop(位于faric-protos-go->common->common.pb.go)即存储在区块中一条�
 
 TransactionAction中的Payload可以解析成ChaincodeActionPayload（位于faric-protos-go->peer->transaction.pb.go）。
 
-![](../../assets/validator6.png)
+![!](../../assets/validator6.png)
 
 | 字段                       | 类型                       | 描述                      |
 | ------------------------ | ------------------------ | ----------------------- |
@@ -67,7 +67,7 @@ TransactionAction中的Payload可以解析成ChaincodeActionPayload（位于fari
 
 其中Action则是ChaincodeEndorsedAction（位于faric-protos-go->peer->transaction.pb.go）
 
-![](../../assets/validator7.png)
+![!](../../assets/validator7.png)
 
 | 字段                      | 类型             | 描述              |
 | ----------------------- | -------------- | --------------- |
@@ -76,11 +76,11 @@ TransactionAction中的Payload可以解析成ChaincodeActionPayload（位于fari
 
 对于ProposalResponsePayload，则可以解析成为ProposalResponsePayload(位于faric-protos-go->peer->proposal_response.pb.go)
 
-![](../../assets/validator8.png)
+![!](../../assets/validator8.png)
 
 对于Endorsements，则是Endorsement的数组，每一个proposal都会有chaincode规定的背书节点们进行签名，Endorsement的结构如下：
 
-![](../../assets/validator9.png)
+![!](../../assets/validator9.png)
 
 #### 2.1.2 Pier获取验证信息
 
@@ -117,7 +117,7 @@ BitXHub在接受到Pier发来的跨链的请求时，会解析请求的结构，
 
 #### 2.2.1 Fabric的背书流程
 
-![](../../assets/validator10.png)
+![!](../../assets/validator10.png)
 
 Fabric的背书目的主要是：
 
@@ -156,7 +156,7 @@ OR('Org1.admin', AND('Org2.member', 'Org3.member'))
 
 1. 如果数量对等，则进行逐一校验，需要注意的是拿到endorser的id以后，需要通过key值找到事先存储在BitXHub中的跟证书信息，再对pier发过来的endorser的证书进行验证，比对一致以后再进行验签。
 
-![](../../assets/validator11.png)
+![!](../../assets/validator11.png)
 
 #### 2.2.5 智能合约库
 

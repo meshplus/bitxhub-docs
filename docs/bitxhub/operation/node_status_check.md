@@ -12,7 +12,7 @@ ps aux|grep bitxhub
 
 正常情况下可以看到bitxhub节点的进程存活。
 
-![bitxhub-node-status](../../assets/bitxhub-node-status.png)
+![!](../../assets/bitxhub-node-status.png)
 ### Pier
 
 可以通过ps命令查看节点进程的运行状态，示例如下：
@@ -23,4 +23,4 @@ ps aux|grep pier
 
 正常情况下可以看到pier节点的进程存活。
 
-![pier-node-status](../../assets/pier-node-status.png)
+![!](../../assets/pier-node-status.png)
