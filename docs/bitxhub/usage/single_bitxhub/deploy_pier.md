@@ -119,7 +119,7 @@
 ### 修改Pier配置
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 ```shell
-./pier --repo=~/.pier init
+./pier --repo=~/.pier init relay
 ```
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
 ```shell
@@ -273,7 +273,7 @@ validators = [
 
 ## 注册应用链
 在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.11.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，以下是以Ethereum为例进行说明：
-
+！！！需要注意的是v1.11.2及以上版本的网关注册时会将提供的验证规则地址注册为主验证规则
 1. Pier命令行发起应用链注册
    ```shell
    # 以用户目录下的pier为例
@@ -291,21 +291,25 @@ validators = [
 
 **当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
 ```shell
-./bitxhub --repo ../node1 client governance proposals --type AppchainMgr 
+./bitxhub --repo ../node1 client governance proposal query --type AppchainMgr
 ```
 
 ## 部署验证规则
-应用链只有在可用状态下可以部署验证规则，即需要应用链注册成功且中继链投票通过后才可以进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。
+应用链除了在注册应用链时，绑定主验证规则，在可用状态下也可以注册其他验证规则，即可以在应用链注册成功且中继链投票通过后进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。
 
 === "Ethereum"
     ```shell
-    #以用户目录下的pier为例
-    pier --repo ~/.pier rule deploy --path=~/.pier/ether/validating.wasm
+    # 规则部署
+    pier --repo ~/.pier rule deploy --path validating.wasm --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json --rule-url http://github.com
+    # 更新主验证规则
+    pier --repo ~/.pier rule update --addr 0x0A67c28f506733176A4cB11623Bc44fAb236f8da --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json  --reason reason
     ```
 === "Fabric"
     ```shell
-    #以用户目录下的pier为例
-    pier --repo ~/.pier rule deploy --path=~/.pier/fabric/validating.wasm
+    # 规则部署
+    pier --repo ~/.pier rule deploy --path validating.wasm --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json --rule-url http://github.com
+    # 更新主验证规则
+    pier --repo ~/.pier rule update --addr 0x0A67c28f506733176A4cB11623Bc44fAb236f8da --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json  --reason reason
     ```
 
 ## 启动跨链网关节点

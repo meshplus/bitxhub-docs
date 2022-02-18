@@ -120,7 +120,7 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 
 ```toml
 [order]
-  plugin = "raft" 
+  type = "raft" 
 ```
 
 
