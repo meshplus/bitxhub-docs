@@ -24,7 +24,7 @@
 
 UPier和常规部署的pier配置大体一致，只是其启动的模式应选择为union，具体配置项如下：
 
-```shell
+```toml
 #打开pier.toml进行配置修改
 [mode]
 type = "union" # relay, direct or union
@@ -45,27 +45,27 @@ connectors = [
 
 ### 互相注册中继链并启动
 
-编写互相注册中继链的脚本，然后启动Upier（下面以Upier1为例）
+编写互相注册中继链的脚本，然后启动upier
 
-```
+```shell
 ##互相注册中继链:
-##1 通过UPier1向Relay1注册Relay1:
-pier --repo=UPier1 appchain register --name Relay1 --type relaychain  --desc Relay1 --version 1 --validators UPier1/genesis.json --addr localhost:60011
+##1 upier1向relay2注册:
+pier --repo upier1 appchain method register --admin-key upier1/key.json --method appchain0x7389D285A2e374aF10b69F0059b46988FeFc44e5 --doc-addr /ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name bitxhub1 --type bitxhub --desc desc --version v1.0.0 --validators pier1/fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://github.com --reason reason
 ##回显： appchain register successfully, id is 0x454e2569dD093D09E5E8B4aB764692780D795C9a
-##2 通过UPier1向Relay2注册Relay1:
-pier --repo=UPier1 appchain register --name Relay1 --type relaychain  --desc Relay1 --version 1 --validators UPier1/genesis.json --addr localhost:50011
+##2 upier2向relay1注册:
+pier --repo upier2 appchain method register --admin-key upier2/key.json --method appchain0xD04116abed8c8dd0F42e4C7029F88d0acfacfE94 --doc-addr /ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name bitxhub2 --type bitxhub --desc desc --version v1.0.0 --validators pier1/fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://github.com --reason reason
 ##回显： appchain register successfully, id is 0x454e2569dD093D09E5E8B4aB764692780D795C9a
 
-##3 启动UPier:
+##3 启动upier1:
 ## 清除下Pier下的store目录
-rm -rf UPier1/store
-## 启动UPier1
-pier --repo=UPier1 start
+rm -rf upier1/store
+## 启动upier1
+./pier --repo upier1 start
 ```
 
 **说明：1. 以上两个注册的步骤，--addr后面的参数分别是两套中继链节点的地址，需要根据实际情况进行更改；2. 另一个Upier2的脚本跟上面的内容基本一致，相互注册的bitxhub地址调换即可，这里不再赘述**
 
-运行`pier --repo=UPier start`分别启动两个UPier，其日志显示两个UPier连接成功，两方的bitxhub节点日志上均显示 “appchain register successfully”即正常启动。
+运行`pier --repo upier1 start`分别启动两个UPier，其日志显示两个连接成功，两方的bitxhub节点日志上均显示 “appchain register successfully”即正常启动。
 
 
 
