@@ -8,16 +8,16 @@
 
 MetaMask插件安装完成后，点击浏览器【登陆】按钮，系统会弹出测试网自动配置添加页面，用户点击【Approve】，即可成功添加BitXHub测试网。
 
-<img src='../assets/add-network.png' alt="Metamask Network" />
+![!](../assets/add-network.png)
 
 BitXHub测试网络添加成功后，系统会提示您进行网络切换，用户点击【Switch network】，即可成功切换至BitXHub测试网络并进行后续操作。
 
-<img src='../assets/switch-network.png' alt="Metamask Network" />
+![!](../assets/switch-network.png)
 
 ### 测试网RPC手动配置
 选择顶部网络功能，然后选择【自定义RPC】进入网络配置页面。
 
-<img src='../assets/metamask-network.png' width="300" alt="Metamask Network" />
+![!](../assets/metamask-network.png)
 
 
 ### BitXHub测试网配置信息详情
@@ -36,7 +36,7 @@ https://testnet-1.bitxhub.cn:8881
 
 **配置如下图所示**
 
-<img src='../assets/metamask-add-network.png' width="300" alt="Network" />
+![!](../assets/metamask-add-network.png)
 
 ## 二、应用链环境准备
 
