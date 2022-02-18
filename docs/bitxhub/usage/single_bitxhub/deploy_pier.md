@@ -35,21 +35,21 @@
     在Fabric上部署跨链合约工具一般是fabric-cli（可以参考[官方项目的使用说明](https://github.com/hyperledger/fabric-cli)）， 在Fabric上部署跨链合约的过程和部署其它合约没有区别，只是合约名称和代码文件需要替换，以下操作的命令可供参考，默认应用链是使用的fabric-sample项目的v1.4.3版本部署。
     
     Step1: 安装部署合约的工具fabric-cli
-    ```
+    ```shell
     go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
     ```
     
     Step2: 获取需要部署的合约文件并解压
-    ```
+    ```shell
     git clone https://github.com/meshplus/pier-client-fabric.git 
     cd pier-client-fabric && git checkout v1.11.2
     # 需要部署的合约文件就在example目录下
-    #解压即可
+    # 解压即可
     unzip -q contracts.zip
     ```
     
     Step3: 部署broker、transfer合约
-    ```
+    ```shell
     #安装和示例化broker合约
     fabric-cli chaincode install --gopath ./contracts --ccp broker --ccid broker --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     fabric-cli chaincode instantiate --ccp broker --ccid broker --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
@@ -69,7 +69,7 @@
 ### 获取部署包
 === "Ethereum"
     **源码下载编译**
-    ```
+    ```shell
     # 编译跨链网关本身
     cd $HOME
     git clone https://github.com/meshplus/pier.git
@@ -93,7 +93,7 @@
 === "Fabric"
     **源码下载编译**
     
-    ```
+    ```shell
     # 编译跨链网关本身
     cd $HOME
     git clone https://github.com/meshplus/pier.git
@@ -118,11 +118,11 @@
 
 ### 修改Pier配置
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
-```
+```shell
 ./pier --repo=~/.pier init
 ```
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
-```text
+```shell
 tree -L 1 ~/.pier
 ├── api
 ├── certs
@@ -136,7 +136,7 @@ pier.toml是描述链跨链网关启动的主要配置，一般需要修改的�
 
 - 修改端口信息
 
-```none
+```toml
 [port]
 # 如果不冲突的话，可以不用修改
 http  = 44544
@@ -145,7 +145,7 @@ pprof = 44555
 
 - 修改中继链信息（一般只修改addrs字段，指定bitxhub的节点地址）
 
-```none
+```toml
 [mode]
 type = "relay" # relay or direct
 [mode.relay]
@@ -162,15 +162,14 @@ validators = [
 - 修改应用链信息（针对不同应用链类型进行配置）
 
 === "Ethereum"
-    ```
+    ```toml
     [appchain]
-    # ethereum插件文件的名称
-    plugin = "eth-client"
-    # ethereum配置文件夹在跨链网关配置文件夹下的相对路径
-    config = "ether"
+    config = "ethereum"
+    did = "did:bitxhub:appchain0x450884c9F7fdFc72E2bC1245306d15dE1750A880:."
+    plugin = "appchain_plugin"
     ```
 === "Fabric"
-    ```
+    ```toml
     [appchain]
     config = "fabric"
     did = "did:bitxhub:appchain0x450884c9F7fdFc72E2bC1245306d15dE1750A880:."
@@ -204,9 +203,9 @@ validators = [
     - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
     - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
     - ether.validators和validating.wasm一般不需要修改。
-    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
+    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
     
-    ```
+    ```toml
     [ether]
     addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
     name = "ether-kovan"
@@ -242,7 +241,7 @@ validators = [
     1. **fabric证书配置**
     
     启动Fabric网络时，会生成所有节点（包括Order、peer等）的证书信息，并保存在 crypto-config文件夹中，Fabric插件和Fabric交互时需要用到这些证书。
-    ```
+    ```shell
     # 复制您所部署的Fabric所产生的crypto-config文件夹
     cp -r /path/to/crypto-config $HOME/.pier/fabric/
     
@@ -252,15 +251,15 @@ validators = [
     2. **修改Plugin配置文件config.yaml**
     
     `config.yaml`文件记录的Fabric网络配置（用您的网络拓扑配置文件替换这个样例文件），需要使用绝对路径，把所有的路径都修改为 `crypto-config`文件夹所在的绝对路径。
-    ```
-    {CONFIG_PATH}/fabric/crypto-config =>～/.pier/fabric/crypto-config
+    ```shell
+    {CONFIG_PATH}/fabric/crypto-config =>~/.pier/fabric/crypto-config
     # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric 的IP地址，如：
     url: grpcs://localhost:7050 => url: grpcs://10.1.16.48:7050
     ```
     3. **修改Plugin配置文件 fabric.toml**
     
     示例是以官方部署脚本进行配置：
-    ```
+    ```toml
     addr = "localhost:7053" // 若Fabric部署在服务器上，该为服务器地址
     event_filter = "interchain-event-name"
     username = "Admin"
@@ -276,22 +275,22 @@ validators = [
 在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.11.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，以下是以Ethereum为例进行说明：
 
 1. Pier命令行发起应用链注册
-   ```
+   ```shell
    # 以用户目录下的pier为例
-   ./pier --repo ~/.pier appchain register --name=ethereum --type=ether --consensusType POS --validators=~/.pier1/ether/ether.validators --desc="ethereum appchain for test" --version=1.0.0
+   ./pier --repo ~/.pier appchain method register --admin-key ~/.pier/key.json --method appchain0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9 --doc-addr /ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fab --type fabric --desc="test for fabric" --version v1.4.3 --validators ./pier-master/fabric/fabric.validators --consensus rbft --rule 0x00000000000000000000000000000000000000a0 --rule-url http://github.com --reason reason
    # 发起注册后会打印出应用链id和提案id
-   appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31, proposal id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0
+   appchain register successfully, chain id is 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9, proposal id is 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9-0
    ```
 2. 中继链节点依次投票
-   ```
+   ```shell
    # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
-   ./bitxhub --repo ../node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 --info approve --reason approve
+   ./bitxhub --repo ../node1 client governance vote --id 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9-0 --info approve --reason approve
    # 投票完后会打印：vote successfully!
    # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
    ```
 
 **当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
-```
+```shell
 ./bitxhub --repo ../node1 client governance proposals --type AppchainMgr 
 ```
 
@@ -299,12 +298,12 @@ validators = [
 应用链只有在可用状态下可以部署验证规则，即需要应用链注册成功且中继链投票通过后才可以进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。
 
 === "Ethereum"
-    ```
+    ```shell
     #以用户目录下的pier为例
     pier --repo ~/.pier rule deploy --path=~/.pier/ether/validating.wasm
     ```
 === "Fabric"
-    ```
+    ```shell
     #以用户目录下的pier为例
     pier --repo ~/.pier rule deploy --path=~/.pier/fabric/validating.wasm
     ```

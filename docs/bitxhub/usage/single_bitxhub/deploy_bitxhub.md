@@ -39,7 +39,7 @@ cd bitxhub && git checkout v1.11.2 && make build
 
 接下来只需将上一步下载的BitXHub二进制及对应插件拷贝到配置目录即可，具体操作如下：
 
-```
+```shell
 # 1. 解压二进制压缩包
 mkdir bitxhub && cd bitxhub
 cp ~/Downloads/bitxhub_darwin_x86_64_v1.11.2.tar.gz .
@@ -56,7 +56,7 @@ cp libwasmer.dylib raft-nodes/node1/
 
 拷贝完成后，可以进入各个节点的配置目录，依次启动BitXHub节点即可，启动操作如下：
 
-```
+```shell
 cd bitxhub/raft-nodes/node1
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
 ./bitxhub --repo ./ start
@@ -107,17 +107,18 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 
 1. 根据您机器实际分配的端口进行变更：
 
-```javascript
+```toml
 [port]
-  gateway = 9091
+  jsonrpc = 8881
   grpc = 60011
+  gateway = 9091
   pprof = 53121
   monitor = 40011
 ```
 
 2. 共识算法类型选择（开源版本目前支持raft和solo）：
 
-```shell
+```toml
 [order]
   plugin = "raft" 
 ```
@@ -143,7 +144,7 @@ network.toml文件是BitXHub节点网络配置文件，各配置项说明如下�
 
 1. 配置当前节点集群的数量以及自身的id:
 
-```
+```toml
 id = 1 # self id
 n = 4 # the number of vp nodes
 new = false # track whether the node is a new node
@@ -151,7 +152,7 @@ new = false # track whether the node is a new node
 
 2. 配置集群中各个节点的信息
 
-```shell
+```toml
 [[nodes]]
 account = "0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013"
 hosts = ["/ip4/127.0.0.1/tcp/4001/p2p/"]
@@ -161,7 +162,7 @@ pid = "QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL"
 
 **说明：上面 account就是上一节中bitxhub节点的address地址，hosts中一般就改变ip地址即可，节点的pid信息可以通过如下命令获取：**
 
-```javascript
+```shell
 ./bitxhub cert priv pid --path certs/node.priv
 # 示例输出：QmWAaFDQ3p2Hj383WsBGU2nLMtsJk1aT9obXXXxL5UyUuA
 ```
@@ -178,7 +179,7 @@ order.toml文件是bitxhub共识配置文件。各配置项说明如下：
 
 配置示例如下（无特殊情况不要修改此配置）：
 
-```javascript
+```toml
 [raft]
 batch_timeout               = "0.3s"  # Block packaging time period.
 tick_timeout                = "0.1s" # TickTimeout is the internal logical clock for the Node by a single tick, Election timeouts and heartbeat timeouts are in units of ticks.

@@ -39,11 +39,11 @@ pier version
 
 如果正常安装会打印出类似下面的说明
 
-```text
-Pier version: dev-release-1.6-1b5b79f
-App build date: 2021-12-01T17:50:14
-System version: darwin/amd64
-Golang version: go1.15.13
+```shell
+Pier version: dev-release-1.11-c560eab
+App build date: 2022-02-18T09:39:24
+System version: linux/amd64
+Golang version: go1.15.6
 ```
 
 ### **二进制安装**
@@ -100,23 +100,23 @@ pier.toml 文件描述链跨链网关启动的必要配置，具体的配置项�
 
 - 修改端口信息
 
-```none
+```toml
 [port]
-// 如果不冲突的话，可以不用修改
+# 如果不冲突的话，可以不用修改
 http  = 44544
 pprof = 44555
 ```
 
 - 修改pier配置文件下的api文件信息
 
-```
+```toml
 # 修改为上一步配置的http的端口号
 http://localhost:<http port>/v1/
 ```
 
 - 修改跨链网关信息
 
-```none
+```toml
 [mode]
 type = "direct" # relay or direct
 ...
@@ -129,11 +129,11 @@ peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJ
 
 - 修改应用链信息
 
-```none
+```toml
 [appchain]
-// 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
+# 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
 plugin = "fabric-client-1.4"
-// 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
+# 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
 config = "fabric"
 ```
 
@@ -201,11 +201,11 @@ cp ./config $HOME/.pier1/fabric
 
   示例配置
 
-  ```
-  addr = "localhost:7053" // 若Fabric部署在服务器上，该为服务器地址
+  ```toml
+  addr = "localhost:7053" # 若Fabric部署在服务器上，该为服务器地址
   event_filter = "interchain-event-name"
   username = "Admin"
-  ccid = "broker" // 若部署跨链broker合约名字不是broker需要修改
+  ccid = "broker" # 若部署跨链broker合约名字不是broker需要修改
   channel_id = "mychannel"
   org = "org2"
   ```
@@ -214,7 +214,7 @@ cp ./config $HOME/.pier1/fabric
 
   fabric.validators 是Fabric验证人的证书，配置示例：
 
-  ```
+  ```text
   -----BEGIN CERTIFICATE-----
   MIICKTCCAc+gAwIBAgIRAIBO31aZaSZoEYSy2AJuhJcwCgYIKoZIzj0EAwIwczEL
   MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
@@ -263,11 +263,11 @@ cp ./config $HOME/.pier2/ether
 
   启动以太坊网络时，在指定的`datadir`目录下，将`keystore`的账户信息拷贝到account.key中。
 
-  ```
+  ```shell
   cp <eth_datadir>/keystore/<account> $HOME/.pier2/ether/config/account.key
   ```
 
-- **修改Plugin配置文件ethereum.toml **
+- **修改Plugin配置文件ethereum.toml**
 
   配置项和说明：
 
@@ -283,17 +283,21 @@ cp ./config $HOME/.pier2/ether
 
   示例配置
 
-  ```
+  ```toml
   [ether]
-  addr = "ws://127.0.0.1:8546" // 若部署在服务器上，该为服务器地址
+  addr = "ws://127.0.0.1:8546"
+  # 若部署在服务器上，该为服务器地址
   name = "appchain2"
-  contract_address = "0xC8C086200f92c9226b42079eCB3137eFc8752801"	// 该链部署的broker合约地址
-  key_path = "account.key"	// 确保提前更改了account.key
+  contract_address = "0xC8C086200f92c9226b42079eCB3137eFc8752801"
+  # 该链部署的broker合约地址
+  key_path = "account.key"
+  # 确保提前更改了account.key
   password = "password"
   min_confirm = 1
   
   [contract_abi]
-  0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f="transfer.abi"	// 替换为该链部署的业务合约地址
+  0xA5dD12E27Ee5E79cE0B50adb376414351C8eea5f="transfer.abi"
+  # 替换为该链部署的业务合约地址
   ```
 
 - **修改Plugin配置文件abi信息**
@@ -302,7 +306,7 @@ cp ./config $HOME/.pier2/ether
 
 ## 启动程序
 
-```
+```shell
 #以用户目录下的pier1为例
 pier --repo=~/pier1 start
 
@@ -316,14 +320,14 @@ pier --repo=~/pier2 start
 
 直连模式下，两边的跨链网关需要相互注册同时部署验证规则
 
-~~~shell
+```shell
 idA=$(pier --repo ~/pier1 id)
 idB=$(pier --repo ~/pier2 id)
-pier --repo ~/pier1 client register --pier_id ${idB} --name fab --type fabric --desc simple --version 1 --validators ~/pier1/fabric/fabric.validators --consensusType raft
-pier --repo ~/pier2 client register --pier_id ${idA} --name eth --type ethereum --desc simple --version 1 --validators ~/pier2/ethereum/ether.validators --consensusType raft
+pier --repo ~/pier1 client register --pier_id ${idB} --name fab --type fabric --desc simple --version 1 --validators ~/pier1/fabric/fabric.validators --consensus-type raft
+pier --repo ~/pier2 client register --pier_id ${idA} --name eth --type ethereum --desc simple --version 1 --validators ~/pier2/ethereum/ether.validators --consensus-type raft
 pier --repo ~/pier1 client rule --pier_id ${idB} --path ~/pier1/fabric/rule.wasm
 pier --repo ~/pier2 client rule --pier_id ${idA} --path ~/pier2/ethereum/rule.wasm
-~~~
+```
 
 完成上述布置后，跨链网关直连模式下部署就已经完成，两边的应用链可以进行跨链操作。
 
