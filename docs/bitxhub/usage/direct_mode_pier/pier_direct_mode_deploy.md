@@ -63,7 +63,7 @@ Golang version: go1.15.6
 
 ```shell
 #以用户目录下的pier为例
-pier --repo=~/pier1 init
+pier --repo=~/pier1 init relay
 ```
 
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
@@ -131,10 +131,9 @@ peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJ
 
 ```toml
 [appchain]
-# 所连接的应用链对应的Plugin文件在跨链网关配置文件夹下的相对路径
-plugin = "fabric-client-1.4"
-# 所连接的应用链的配置文件夹在跨链网关配置文件夹下的相对路径
-config = "fabric"
+  config = "fabric"
+  did = "did:bitxhub:appchain0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9:."
+  plugin = "appchain_plugin"
 ```
 
 网关pier适配以太坊插件的配置仿照上述步骤即可。
