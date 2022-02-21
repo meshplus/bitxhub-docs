@@ -785,6 +785,10 @@ COMMANDS:
    vote       vote to a proposal
    proposals  query proposals based on the condition
    chain      appchain manage command
+   rule       rule manage command
+   node       node manage command
+   role       role manage command
+   dapp       dapp manage command
 
 ```
 #### bitxhub client governance vote
@@ -821,21 +825,24 @@ vote successfully!
 
 ```
 #### bitxhub client governance proposals
+提案管理。
 
+##### bitxhub client governance proposals query
 提案查询。用于查询中继链提案的内容以及相关的状态。命令说明如下：
 
 ```shell
 NAME:
-   BitXHub client governance proposals - query proposals based on the condition
+   BitXHub client governance proposals query - query proposals based on the condition
 
 USAGE:
-   BitXHub client governance proposals [command options] [arguments...]
-
+   BitXHub client governance proposal query [command options] [arguments...]
+   
 OPTIONS:
    --id value      proposal id
-   --type value    proposal type, currently only AppchainMgr is supported
-   --status value  proposal status, one of proposed, approve or reject
+   --type value    proposal type, currently only AppchainMgr, RuleMgr, NodeMgr, RoleMgr are supported
+   --status value  proposal status, one of proposed, paused, approve or reject
    --from value    the address of the account to which the proposal was made
+   --objId value   the ID of the managed object
 ```
 
 **参数解释**
@@ -843,12 +850,13 @@ OPTIONS:
 - `id`: 提案id；
 - `type`: 提案类型，当前支持应用链管理；
 - `status`: 提案状态，是否通过；
-- `from`: 提案者地址。
+- `from`: 提案者地址；
+- `objId`: 管理对象id，如应用链id。
 
 **示例说明**
 
 ```shell
-$ bitxhub client governance proposals --id  0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da-0 --type AppchainMgr --status proposed --from 0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da
+$ bitxhub client governance proposals --id  0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da-0 --type AppchainMgr --status proposed --from 0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da --objId 10000000
 
 # 控制台输出
 Id                                            Type         Status    ApproveNum  RejectNum  ElectorateNum  ThresholdNum  Des
@@ -856,6 +864,26 @@ Id                                            Type         Status    ApproveNum 
 0x9A601dbebf20f3E3362241810C2229F7f97329d6-0  AppchainMgr  proposed  1           0          4              3             register
 ```
 
+
+##### bitxhub client governance proposals withdraw
+提案撤销。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance proposal withdraw - withdraw a proposal
+
+USAGE:
+   BitXHub client governance proposal withdraw [command options] [arguments...]
+
+OPTIONS:
+   --id value      proposal id
+   --reason value  withdraw reason
+```
+
+**参数解释**
+
+- `id`: 提案id；
+- `reason`: 提案撤销理由；
 
 
 #### bitxhub client governance chain
@@ -871,21 +899,23 @@ USAGE:
 
 COMMANDS:
    status    query chain status by chain id
+   register  register appchain
    freeze    freeze appchain by chain id
    activate  activate chain by chain id
 
 ```
 
-**参数解释**
+**子命令**
 
 - `status`:查询应用链状态；
+- `register`:注册应用链；
 - `freeze`:应用链冻结；
 - `activate`:应用链激活。
 
 **示例说明**
 
 ```shell
-# 管理员治理投票通过后，应用链状态从registing转换为available
+# 管理员治理投票通过后，应用链状态从registing转为available
 $ bitxhub client governance chain status --id 0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da
 
 # 控制台输出
