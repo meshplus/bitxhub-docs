@@ -4,32 +4,32 @@
 
 ## 安装包获取
 
-#### <span id="jump">源码编译</span>
+=== "源码编译"
 
-您可以自行拉取BitXHub项目的源码，然后在本地编译BitXHub及插件的二进制文件，具体操作步骤可参考如下：
+    您可以自行拉取BitXHub项目的源码，然后在本地编译BitXHub及插件的二进制文件，具体操作步骤可参考如下：
+    
+    ```shell
+    # 1. 首先拉取bitxhub项目源代码
+    mkdir ~/bitxhub-v1.6 && git clone https://github.com/meshplus/bitxhub.git
+    
+    # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
+    cd bitxhub && git checkout v1.6.4 && make install
+    
+    # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
+    # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.6.4
+    bitxhub version
+    
+    # 3. 接下来需要编译共识插件，进入到 internal/plugins 目录进行编译
+    cd internal/plugins && make plugins
+    
+    # 编译完成后可以在项目的internal/plugins/build目录下看到刚刚生成的共识插件文件，raft.so和solo.so
+    ```
+    
+    经过以上的步骤，相信您已经编译出了部署中继链节点所需的二进制文件，中继链节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，方便之后的操作。
 
-```shell
-# 1. 首先拉取bitxhub项目源代码
-git clone https://github.com/meshplus/bitxhub.git
+=== "二进制下载"
 
-# 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
-cd bitxhub && git checkout v1.6.4 && make build
-
-# 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
-# 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.6.4
-./bin/bitxhub version
-
-# 3. 接下来需要编译共识插件，进入到 internal/plugins 目录进行编译
-cd internal/plugins && make plugins
-
-# 编译完成后可以在项目的internal/plugins/build目录下看到刚刚生成的共识插件文件，raft.so和solo.so
-```
-
-经过以上的步骤，相信您已经编译出了部署中继链节点所需的二进制文件，中继链节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，方便之后的操作。
-
-#### 二进制直接下载
-
-除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v1.6.4)，链接中已经包含了所需的二进制和依赖库，您也可以根据实际情况选择所需要的版本和系统下载，建议使用 BitXHub v1.6.4稳定版本。
+    除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v1.6.4)，链接中已经包含了所需的二进制和依赖库，您也可以根据实际情况选择所需要的版本和系统下载，建议使用 BitXHub v1.6.4稳定版本。
 
 
 
@@ -37,93 +37,73 @@ cd internal/plugins && make plugins
 
 获取到安装包后，接下来要根据您的实际情况修改配置文件。
 
-- 如果您是在本地编译的二进制包，您也可以在项目根目录执行`make cluster`一键启动四节点raft共识的BitXHub集群，或者执行`make solo`一键启动单节点solo共识的BitXHub节点。
+=== "源码编译"
 
-  ```shell
-  # 启动四节点raft共识的BitXHub
-  make cluster
-  ```
+    如果您是在本地编译的二进制包，您也可以在项目根目录执行`make cluster`一键启动四节点raft共识的BitXHub集群，或者执行`make solo`一键启动单节点solo共识的BitXHub节点。
+    `make cluster`将通过[tmux](https://github.com/tmux/tmux/wiki/Getting-Started)创建会话对4节点进程进行分屏显示，一键关闭bitxhub集群命令为`tmux kill-session -t bitxhub`。
 
-  正常启动后，命令行将打印以下信息：
+=== "二进制下载"
 
-  ```shell
-  cd internal/repo && packr
-  rm -f imports/imports.go
-  GO111MODULE=on go install -ldflags '-X "github.com/meshplus/bitxhub.BuildDate=2021-11-02T09:57:43" -X "github.com/meshplus/bitxhub.CurrentCommit=f3d0f0d" -X "github.com/meshplus/bitxhub.CurrentBranch=HEAD" -X "github.com/meshplus/bitxhub.CurrentVersion=v1.6.2"' ./cmd/bitxhub
-  Install bitxhub successfully!
-  ===> Generating 4 nodes configuration
-  ===> Building plugin
-  GO111MODULE=on go build --buildmode=plugin -o build/raft.so order/etcdraft/*.go
-  ===> Staring cluster
-  ```
+    如果您是直接下载的二进制安装包，为了简化操作，我们也提供了可以直接启动raft/solo共识的节点配置文件示例，其下载地址与二进制包一样，文件名以example开头。需要注意的是，raft共识的示例配置文件是四节点集群，solo共识的示例配置文件是单个节点。
+    接下来只需将上一步下载的BitXHub二进制及对应插件拷贝到配置目录即可，具体操作如下：
 
-  我们使用tmux工具进行4节点窗口管理，tmux 是一个终端复用器（terminal multiplexer），可以实现终端分屏的功能，在之前的`make prepare`命令将自动下载此工具。如需关闭tmux会话，使用以下命令即可：
-
-  ```shell
-  tmux kill-session -t bitxhub
-  ```
-
-- 如果您是直接下载的二进制安装包，为了简化操作，我们也提供了可以直接启动raft/solo共识的节点配置文件示例，其下载地址与二进制包一样，文件名以example开头。需要注意的是，raft共识的示例配置文件是四节点集群，solo共识的示例配置文件是单个节点。
-
-  接下来只需将上一步下载的BitXHub二进制及对应插件拷贝到配置目录即可，具体操作如下：
-
-  ```shell
-  # 1. 解压二进制压缩包，本示例中二进制文件的下载位置为~/Downloads
-  # 如下载到自定义下载目录，将该目录下的BitXHub与example二进制文件复制到当前的bitxhub目录下即可
-  mkdir bitxhub && cd bitxhub
-  mv {~/Downloads/bitxhub_v1.6.4_Darwin_x86_64.tar.gz, ~/Downloads/example_bitxhub_v1.6.4.tar.gz} .
-  tar -zxvf bitxhub_v1.6.4_Darwin_x86_64.tar.gz
+    ```shell
+    # 1. 解压二进制压缩包，本示例中二进制文件的下载位置为~/Downloads
+    # 如下载到自定义下载目录，将该目录下的BitXHub与example二进制文件复制到当前的bitxhub目录下即可
+    mkdir bitxhub && cd bitxhub
+    mv {~/Downloads/bitxhub_v1.6.4_Darwin_x86_64.tar.gz, ~/Downloads/example_bitxhub_v1.6.4.tar.gz} .
+    tar -zxvf bitxhub_v1.6.4_Darwin_x86_64.tar.gz
+    
+    # 2. 解压配置文件压缩包(以raft共识为例)
+    mkdir -p raft-nodes/node{1,2,3,4}/plugins
+    tar -zxvf example_bitxhub_v1.6.4.tar.gz -C raft-nodes/ --strip-components=1
+    
+    # 3. 将bitxhub、共识插件二进制和依赖库文件分别拷贝到4个节点的配置目录,共识插件放在配置文件的plugins目录底下
+    echo raft-nodes/node{1,2,3,4} | xargs -n 1 cp -v {bitxhub,libwasmer.dylib}
+    echo raft-nodes/node{1,2,3,4}/plugins | xargs -n 1 cp -v {raft.so,solo.so}
+    
+    # 注意⚠️：所有操作均在新建的bitxhub目录下完成。
+    # 对于Linux系统依赖库文件是libwasmer.so
+    # 以上操作均是示例，执行时二进制和配置文件压缩包的名称可能存在差异，需要根据实际情况进行调整
+    ```
   
-  # 2. 解压配置文件压缩包(以raft共识为例)
-  mkdir -p raft-nodes/node{1,2,3,4}/plugins
-  tar -zxvf example_bitxhub_v1.6.4.tar.gz -C raft-nodes/ --strip-components=1
+    解压后的bitxhub目录结构如下所示:
   
-  # 3. 将bitxhub、共识插件二进制和依赖库文件分别拷贝到4个节点的配置目录,共识插件放在配置文件的plugins目录底下
-  echo raft-nodes/node{1,2,3,4} | xargs -n 1 cp -v {bitxhub,libwasmer.dylib}
-  echo raft-nodes/node{1,2,3,4}/plugins | xargs -n 1 cp -v {raft.so,solo.so}
+    ```shell
+    .
+    ├── bitxhub
+    ├── bitxhub_v1.6.4_Darwin_x86_64.tar.gz
+    ├── example_bitxhub_v1.6.4.tar.gz
+    ├── libwasmer.dylib
+    ├── raft-nodes
+    │   ├── node1
+    │   ├── node2
+    │   ├── node3
+    │   └── node4
+    ├── raft.so
+    └── solo.so
+    
+    5 directories, 6 files
+    ```
   
-  # 注意⚠️：所有操作均在新建的bitxhub目录下完成。
-  # 对于Linux系统依赖库文件是libwasmer.so
-  # 以上操作均是示例，执行时二进制和配置文件压缩包的名称可能存在差异，需要根据实际情况进行调整
-  ```
-
-  解压后的bitxhub目录结构如下所示:
-
-  ```shell
-  .
-  ├── bitxhub
-  ├── bitxhub_v1.6.4_Darwin_x86_64.tar.gz
-  ├── example_bitxhub_v1.6.4.tar.gz
-  ├── libwasmer.dylib
-  ├── raft-nodes
-  │   ├── node1
-  │   ├── node2
-  │   ├── node3
-  │   └── node4
-  ├── raft.so
-  └── solo.so
+    
   
-  5 directories, 6 files
-  ```
-
+    拷贝完成后，可以进入各个节点的配置目录，依次启动BitXHub节点即可，启动操作如下：
   
-
-  拷贝完成后，可以进入各个节点的配置目录，依次启动BitXHub节点即可，启动操作如下：
-
-  ```sh
-  cd raft-nodes/node1
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
-  ./bitxhub --repo ./ start
+    ```sh
+    cd raft-nodes/node1
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
+    ./bitxhub --repo ./ start
+    
+    ...
+    ...
+    
+    cd raft-nodes/node4
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
+    ./bitxhub --repo ./ start
+    ```
   
-  ...
-  ...
-  
-  cd raft-nodes/node4
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
-  ./bitxhub --repo ./ start
-  ```
-
-  **注意⚠️**：在启动节点时，macOS系统可能会拒绝打开该应用程序，如遇到此状况参考[打开来自身份不明开发者的 Mac App](https://support.apple.com/zh-cn/guide/mac-help/mh40616/mac)，该操作将重复几次。
+    **注意⚠️**：在启动节点时，macOS系统可能会拒绝打开该应用程序，如遇到此状况参考[打开来自身份不明开发者的 Mac App](https://support.apple.com/zh-cn/guide/mac-help/mh40616/mac)，该操作将重复几次。
 
 待节点集群打印出bitxhub的LOGO，表示BitXHub集群开始正常工作。
 
