@@ -9,15 +9,15 @@
 ## 整体架构
 区块链浏览器后台主要包括区块数据同步服务和浏览器接口服务，区块链数据同步模块定时向中继链获取区块数据并存储到ES中，浏览器接口服务主要用于构建接口以供区块链浏览器查询特定数据。  
 
-### 区块数据同步服务
+## 区块数据同步服务
 区块数据同步模块用于将中继链的所有区块数据同步到ES上。
-```go
+```java
 public void execute()
 ```
 execute方法定时执行，每 **500** 毫秒执行一次，每次同步 **100** 个(可配置)区块。
 
 针对内置合约BVM交易，比如应用链管理合约或者验证规则管理合约，是有具体的数据结构，因此需要分别进行同步。
-```go
+```java
 public void flushAopchains()
 
 public void flushRules()
@@ -33,12 +33,12 @@ public void flushNodes()
 public void flushProposalStrategies()
 ```
 
-### 浏览器接口服务
+## 浏览器接口服务
 
-#### 1. 应用链服务接口
+### 1. 应用链服务接口
 应用链服务接口只提供根据状态查询应用链相关信息，对应用链的治理统一通过交易服务接口。
 
-##### 1.1 查询所有应用链信息
+#### 1.1 查询所有应用链信息
 
 基本信息
 
@@ -59,10 +59,10 @@ public void flushProposalStrategies()
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
-|:----------:|:-------:|:----:|:----:|
-| pageNumber | Integer | 分页号  |  否   |
-|  pageSize  | Integer | 分页大小 |  否   |
+|   参数名   |  类型   |   描述   | 必输参数 |
+| :--------: | :-----: | :------: | :------: |
+| pageNumber | Integer |  分页号  |    否    |
+|  pageSize  | Integer | 分页大小 |    否    |
 
 返回参数
 
@@ -72,7 +72,7 @@ public void flushProposalStrategies()
 |  data   | String  | Application |  是   |
 | message | String  |    错误信息     |  否   |
 
-##### 1.2 查询特定应用链信息
+#### 1.2 查询特定应用链信息
 
 基本信息
 
@@ -93,7 +93,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|   参数名    |   类型    |  描述   | 是否必输 |
+|   参数名    |   类型    |  描述   | 必输参数 |
 |:--------:|:-------:|:-----:|:----:|
 |    id    | String  | 应用链ID |  是   |
 
@@ -105,7 +105,7 @@ public void flushProposalStrategies()
 |  data   | String  | Application |  是   |
 | message | String  |    错误信息     |  否   |
 
-##### 1.3 查询不同状态应用链信息
+#### 1.3 查询不同状态应用链信息
 
 基本信息
 
@@ -126,7 +126,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|    参数名     |   类型    |                                                 描述                                                  | 是否必输 |
+|    参数名     |   类型    |                                                 描述                                                  | 必输参数 |
 |:----------:|:-------:|:---------------------------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                                 分页号                                                 |  否   |
 |  pageSize  | Integer |                                                分页大小                                                 |  否   |
@@ -140,8 +140,8 @@ public void flushProposalStrategies()
 |  data   | String  | Application |  是   |
 | message | String  |    错误信息     |  否   |
 
-#### 2. 交易服务接口
-##### 2.1 查询特定交易信息
+### 2. 交易服务接口
+#### 2.1 查询特定交易信息
 
 基本信息
 
@@ -162,7 +162,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-| 参数名  |   类型    | 描述  | 是否必输 |
+| 参数名  |   类型    | 描述  | 必输参数 |
 |:----:|:-------:|:---:|:----:|
 | hash | String  | 哈希  |  是   |
 
@@ -174,7 +174,7 @@ public void flushProposalStrategies()
 |  data   | String  | Transaction |  是   |
 | message | String  |    错误信息     |  否   |
 
-##### 2.3 查询IBTP列表信息
+#### 2.3 查询IBTP列表信息
 
 基本信息
 
@@ -195,7 +195,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|    参数名     |   类型    |  描述   | 是否必输 |
+|    参数名     |   类型    |  描述   | 必输参数 |
 |:----------:|:-------:|:-----:|:----:|
 |    from    | String  | 来源链ID |  是   |
 |     to     | String  | 目的链ID |  是   |
@@ -210,7 +210,7 @@ public void flushProposalStrategies()
 |  data   | String  |   IBTP   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 2.4 查询特定地址nonce
+#### 2.4 查询特定地址nonce
 
 基本信息
 
@@ -231,7 +231,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|    参数名     |   类型    |  描述   | 是否必输 |
+|    参数名     |   类型    |  描述   | 必输参数 |
 |:----------:|:-------:|:-----:|:----:|
 |  account   | String  |  地址   |  是   |
 
@@ -243,7 +243,7 @@ public void flushProposalStrategies()
 |  data   | String  |  nonce   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 2.5 发送只读交易
+#### 2.5 发送只读交易
 
 基本信息
 
@@ -264,7 +264,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-| 参数名 |   类型   |           描述            | 是否必输 |
+| 参数名 |   类型   |           描述            | 必输参数 |
 |:---:|:------:|:-----------------------:|:----:|
 | raw | String | Base64编码后的protobuf的交易结构 |  是   |
 
@@ -276,7 +276,7 @@ public void flushProposalStrategies()
 |  data   | String  | Receipt  |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 2.6 发送交易
+#### 2.6 发送交易
 
 基本信息
 
@@ -297,7 +297,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-| 参数名 |   类型   |           描述            | 是否必输 |
+| 参数名 |   类型   |           描述            | 必输参数 |
 |:---:|:------:|:-----------------------:|:----:|
 | raw | String | Base64编码后的protobuf的交易结构 |  是   |
 
@@ -309,8 +309,8 @@ public void flushProposalStrategies()
 |  data   | String  | Receipt  |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 3. 区块服务接口
-##### 3.1 查询区块链当前信息
+### 3. 区块服务接口
+#### 3.1 查询区块链当前信息
 
 基本信息
 
@@ -337,7 +337,7 @@ public void flushProposalStrategies()
 |  data   | String  | ChainMeta |  是   |
 | message | String  |   错误信息    |  否   |
 
-##### 3.2 查询特定区块信息
+#### 3.2 查询特定区块信息
 
 基本信息
 
@@ -358,7 +358,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|  参数名  |   类型    |       描述        | 是否必输 |
+|  参数名  |   类型    |       描述        | 必输参数 |
 |:-----:|:-------:|:---------------:|:----:|
 | type  | Integer | 0: 高度<br/>1: 哈希 |  否   |
 | value | String  |     哈希或者高度      |  是   |
@@ -371,7 +371,7 @@ public void flushProposalStrategies()
 |  data   | String  |  Block   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 3.3 查询特定范围区块信息
+#### 3.3 查询特定范围区块信息
 
 基本信息
 
@@ -392,7 +392,7 @@ public void flushProposalStrategies()
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -405,7 +405,7 @@ public void flushProposalStrategies()
 |  data   | String  |  Block   |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 4. WebSocket接口
+### 4. WebSocket接口
 
 ```go 
 // 订阅跨链事件
@@ -418,8 +418,8 @@ simpMessagingTemplate.convertAndSend("/topic/blockHeader", blockHeader);
 simpMessagingTemplate.convertAndSend("/topic/block", block);
 ```
 
-#### 5. Dapp管理服务接口
-##### 5.1 查询所有Dapp信息
+### 5. Dapp管理服务接口
+#### 5.1 查询所有Dapp信息
 
 基本信息
 
@@ -440,7 +440,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -453,7 +453,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Dapp   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 5.2 查询特定Dapp信息
+#### 5.2 查询特定Dapp信息
 
 基本信息
 
@@ -474,7 +474,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|   参数名    |   类型    |   描述    | 是否必输 |
+|   参数名    |   类型    |   描述    | 必输参数 |
 |:--------:|:-------:|:-------:|:----:|
 |    id    | String  | Dapp ID |  是   |
 
@@ -486,7 +486,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Dapp   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 5.3 查询不同状态Dapp信息
+#### 5.3 查询不同状态Dapp信息
 
 基本信息
 
@@ -507,7 +507,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |                                                                                 描述                                                                                  | 是否必输 |
+|    参数名     |   类型    |                                                                                 描述                                                                                  | 必输参数 |
 |:----------:|:-------:|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                                                                 分页号                                                                                 |  否   |
 |  pageSize  | Integer |                                                                                分页大小                                                                                 |  否   |
@@ -521,8 +521,8 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Dapp   |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 6. Service管理服务接口
-##### 6.1 查询所有Service信息
+### 6. Service管理服务接口
+#### 6.1 查询所有Service信息
 
 基本信息
 
@@ -543,7 +543,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -556,7 +556,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  | Service  |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 6.2 查询特定Service信息
+#### 6.2 查询特定Service信息
 
 基本信息
 
@@ -577,7 +577,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|   参数名    |   类型    |     描述     | 是否必输 |
+|   参数名    |   类型    |     描述     | 必输参数 |
 |:--------:|:-------:|:----------:|:----:|
 |    id    | String  | Service ID |  是   |
 
@@ -589,7 +589,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  | Service  |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 6.3 查询不同状态Service信息
+#### 6.3 查询不同状态Service信息
 
 基本信息
 
@@ -610,7 +610,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |                                                                描述                                                                 | 是否必输 |
+|    参数名     |   类型    |                                                                描述                                                                 | 必输参数 |
 |:----------:|:-------:|:---------------------------------------------------------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                                                分页号                                                                |  否   |
 |  pageSize  | Integer |                                                               分页大小                                                                |  否   |
@@ -624,8 +624,8 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  | Service  |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 7. 验证规则管理服务接口
-##### 7.1 查询所有验证规则信息
+### 7. 验证规则管理服务接口
+#### 7.1 查询所有验证规则信息
 
 基本信息
 
@@ -646,7 +646,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -659,7 +659,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Rule   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 7.2 查询特定验证规则信息
+#### 7.2 查询特定验证规则信息
 
 基本信息
 
@@ -680,7 +680,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|   参数名    |   类型    |   描述    | 是否必输 |
+|   参数名    |   类型    |   描述    | 必输参数 |
 |:--------:|:-------:|:-------:|:----:|
 |    id    | String  | Rule ID |  是   |
 
@@ -692,7 +692,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Rule   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 7.3 查询不同状态验证规则信息
+#### 7.3 查询不同状态验证规则信息
 
 基本信息
 
@@ -713,7 +713,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |                                         描述                                         | 是否必输 |
+|    参数名     |   类型    |                                         描述                                         | 必输参数 |
 |:----------:|:-------:|:----------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                        分页号                                         |  否   |
 |  pageSize  | Integer |                                        分页大小                                        |  否   |
@@ -727,8 +727,8 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Rule   |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 8.角色管理服务接口
-##### 8.1 查询所有身份信息
+### 8.角色管理服务接口
+#### 8.1 查询所有身份信息
 
 基本信息
 
@@ -749,7 +749,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -762,7 +762,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Role   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 8.2 查询特定身份信息
+#### 8.2 查询特定身份信息
 
 基本信息
 
@@ -783,7 +783,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|   参数名    |   类型    |   描述    | 是否必输 |
+|   参数名    |   类型    |   描述    | 必输参数 |
 |:--------:|:-------:|:-------:|:----:|
 |    id    | String  | Role ID |  是   |
 
@@ -795,7 +795,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Role   |  是   |
 | message | String  |   错误信息   |  否   |
 
-###### 8.3 查询不同状态身份信息
+#### 8.3 查询不同状态身份信息
 
 基本信息
 
@@ -816,7 +816,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |                                                                     描述                                                                      | 是否必输 |
+|    参数名     |   类型    |                                                                     描述                                                                      | 必输参数 |
 |:----------:|:-------:|:-------------------------------------------------------------------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                                                     分页号                                                                     |  否   |
 |  pageSize  | Integer |                                                                    分页大小                                                                     |  否   |
@@ -831,8 +831,8 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 | message | String  |   错误信息   |  否   |
 
 
-#### 9. 节点管理服务接口
-##### 9.1 查询所有节点信息
+### 9. 节点管理服务接口
+#### 9.1 查询所有节点信息
 
 基本信息
 
@@ -853,7 +853,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |  描述  | 是否必输 |
+|    参数名     |   类型    |  描述  | 必输参数 |
 |:----------:|:-------:|:----:|:----:|
 | pageNumber | Integer | 分页号  |  否   |
 |  pageSize  | Integer | 分页大小 |  否   |
@@ -866,7 +866,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Node   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 9.2 查询特定节点信息
+#### 9.2 查询特定节点信息
 
 基本信息
 
@@ -887,7 +887,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |   描述    | 是否必输 |
+|    参数名     |   类型    |   描述    | 必输参数 |
 |:----------:|:-------:|:-------:|:----:|
 | pageNumber | Integer |   分页号   |  否   |
 |  pageSize  | Integer |  分页大小   |  否   |
@@ -901,7 +901,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Node   |  是   |
 | message | String  |   错误信息   |  否   |
 
-##### 9.3 查询不同状态节点信息
+#### 9.3 查询不同状态节点信息
 
 基本信息
 
@@ -922,7 +922,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 
 请求参数
 
-|    参数名     |   类型    |                                             描述                                             | 是否必输 |
+|    参数名     |   类型    |                                             描述                                             | 必输参数 |
 |:----------:|:-------:|:------------------------------------------------------------------------------------------:|:----:|
 | pageNumber | Integer |                                            分页号                                             |  否   |
 |  pageSize  | Integer |                                            分页大小                                            |  否   |
@@ -936,7 +936,7 @@ simpMessagingTemplate.convertAndSend("/topic/block", block);
 |  data   | String  |   Node   |  是   |
 | message | String  |   错误信息   |  否   |
 
-#### 10. 投票策略管理服务接口
+### 10. 投票策略管理服务接口
 ##### 10.1 查询所有模块投票策略
 
 基本信息
