@@ -135,6 +135,7 @@ nav:
           - 跨链网关设计方案: bitxhub/design/pier_design.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
+          - 区块链浏览器后台设计: bitxhub/design/luka.md
       - 运维:
         - 查看日志: bitxhub/operation/node_log_view.md
         - 节点状态检测: bitxhub/operation/node_status_check.md
