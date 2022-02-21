@@ -1,4 +1,6 @@
-# Goduck运维小工具
+# GoDuck运维小工具
+
+GoDuck是一个跨链运维小工具，可以辅助一键启动跨链组件、一键生成组件配置和一键启动跨链服务等功能。
 
 ## 1 安装
 
@@ -271,7 +273,6 @@ You can use the "goduck status list" command to check the status of the startup 
 
 [pier]
   pier_host = host1 # pier所在机器，机器配置信息在pier上方，默认情况下host1是本地机器，pier start本地启动命令中该配置无效
-  method = appchain # 应用链did的method
   # whether to overwrite the configuration files if them already exist
   rewrite = true # 启动pier的目标路径下如果已经有pier配置文件，是否重写
   # 以下为pier各端口配置信息
@@ -297,9 +298,9 @@ You can use the "goduck status list" command to check the status of the startup 
   [appchain.fabric]
     # path of crypto-config
     cryptoPath = $repo/fabric/crypto-config # fabric链的crypto-config地址，这里指定的是goduck启动fabric后该文件的默认地址
-    # binary local: 0.0.0.0
+    # binary local: localhost
     # docker local: host.docker.internal
-    fabricIP = 0.0.0.0 # fabric链ip地址，如果pier以docker模式启动需要改为host.docker.internal
+    fabricIP = localhost # fabric链ip地址，如果pier以docker模式启动需要改为host.docker.internal
     # 以下为fabric的各端口信息
     ordererP = 7050
     urlSubstitutionExpP1 = 7051
@@ -340,180 +341,3 @@ goduck pier clean
 ```
 goduck pier config --version "v1.11.2"
 ``` 
-
-### 2.4 关于应用链的操作
-
-#### 2.2.1 以太坊
-
-```shell
-GoDuck ether command [command options] [arguments...]
-```
-
-关于以太坊应用链，我们对应不同bitxhub版本提供了已经部署好跨链合约的以太坊私链镜像，直接启动即可使用
-
-（1）启动以太坊
-注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
-```shell
-goduck ether start --bxh-version v1.11.2
-
-# 启动成功后打印示例如下：
-exec:  /bin/bash ethereum.sh docker 1.3.0
-start a new ethereum-node container
-fc6b26e2507fb7da3ca04abea6d014968297383986596377cd42e8852b2b83e6
-start ethereum private chain with data directory in /Users/fangbaozhu/.goduck/ethereum/datadir.
-```
-
-该命令会以docker模式启动一条以太坊私链，切该链上已经部署好适配v1.11.2版本bitxhub的跨链合约，合约地址分别如下：
-- broker: 0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4
-- transfer: 0x668a209Dc6562707469374B8235e37b8eC25db08
-- data_swapper: 0x6db07a8b0f23367dc65c7DAD91da4F6bfD97D674
-
-这些合约的abi文件分别在$repo/pier/ethereum/1.3.0/目录下，例如：
-```shell
-/Users/fangbaozhu/.goduck/pier/ethereum/1.3.0/
-├── account.key
-├── broker.abi
-├── data_swapper.abi
-├── ether.validators
-├── ethereum.toml
-├── password
-├── transfer.abi
-└── validating.wasm
-
-0 directories, 8 files
-```
-
-如果想以二进制模式启动也可以通过指定参数实现，命令如下：
-```shell
-goduck ether start --bxh-version v1.11.2 --type binary
-```
-
-（2）关闭以太坊
-关闭以太坊有stop和clean两个命令，推荐使用clean命令，在停止以太坊运行的同时会清除容器（如果是二进制模式启动会清除相关配置文件）
-```shell
-goduck ether stop
-
-# 暂停成功后打印示例如下：
-exec:  /bin/bash ethereum.sh down
-===> stop ethereum in binary...
-===> stop ethereum in docker...
-ethereum-node
-ethereum docker container stopped
-
-goduck ether clean
-
-# 清除成功后打印示例如下：
-exec:  /bin/bash ethereum.sh clean
-===> stop ethereum in binary...
-===> stop ethereum in docker...
-ethereum-node
-ethereum docker container stopped
-===> clean ethereum in binary...
-===> clean ethereum in docker...
-ethereum-node
-ethereum docker container cleaned
-```
-
-#### 2.2.2 fabric
-
-```shell
-GoDuck fabric command [command options] [arguments...]
-```
-
-关于fabric应用链，链启动和合约部署是分开的操作
-
-（1）启动fabric
-
-```shell
-goduck fabric start
-
-# 启动成功后最后会打印出fabric的logo如下：
-========= All GOOD, BYFN execution completed ===========
-
-
- _____   _   _   ____
-| ____| | \ | | |  _ \
-|  _|   |  \| | | | | |
-| |___  | |\  | | |_| |
-|_____| |_| \_| |____/
-
-```
-
-注意启动过程中可能需要科学上网。 如果出现报错或fabric-samples下载失败，建议删除fabric-samples文件，重新执行fabric启动命令。
-
-（2）部署fabric合约
-我们会提供已经准备好的fabric跨链合约contract文件，但部署时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
-
-执行以下命令可以直接下载相应版本合约并部署：
-```shell
-goduck fabric contract chaincode --bxh-version v1.11.2
-
-# 部署成功后会依次打印出几个步骤的日志，日志中有部分报错不影响，只要没有红色报错，且能大致打印出以下日志即可：
-install default interchain chaincode
-===> Install chaincode
-===> 1. Deploying broker, transfer and data_swapper chaincode
-Installing chaincode broker on org[org2] peers:
--- grpcs://localhost:9051
--- grpcs://localhost:10051
-...successfuly installed chaincode broker.v0 on peer localhost:9051.
-...successfuly installed chaincode broker.v0 on peer localhost:10051.
-...successfuly instantiated chaincode broker on channel mychannel.
-Installing chaincode transfer on org[org2] peers:
--- grpcs://localhost:9051
--- grpcs://localhost:10051
-...successfuly installed chaincode transfer.v0 on peer localhost:9051.
-...successfuly installed chaincode transfer.v0 on peer localhost:10051.
-...successfuly instantiated chaincode transfer on channel mychannel.
-Installing chaincode data_swapper on org[org2] peers:
--- grpcs://localhost:9051
--- grpcs://localhost:10051
-...successfuly installed chaincode data_swapper.v0 on peer localhost:10051.
-...successfuly installed chaincode data_swapper.v0 on peer localhost:9051.
-...successfuly instantiated chaincode data_swapper on channel mychannel.
-===> 2. Set Alice 10000 amout in transfer chaincode
-****************************************************************************************************
-***** |  Response[0]:
-***** |  |  Payload:
-***** |  Response[1]:
-***** |  |  Payload:
-****************************************************************************************************
-===> 3. Set (key: path, value: /Users/fangbaozhu/.goduck) in data_swapper chaincode
-****************************************************************************************************
-***** |  Response[0]:
-***** |  |  Payload:
-***** |  Response[1]:
-***** |  |  Payload:
-****************************************************************************************************
-===> 4. Register transfer and data_swapper chaincode to broker chaincode
-****************************************************************************************************
-***** |  Response[0]:
-***** |  |  Payload: mychannel&data_swapper
-***** |  Response[1]:
-***** |  |  Payload: mychannel&data_swapper
-****************************************************************************************************
-===> 6. Audit transfer and data_swapper chaincode
-****************************************************************************************************
-***** |  Response[0]:
-***** |  |  Payload: set status of chaincode mychannel&transfer to 1
-***** |  Response[1]:
-***** |  |  Payload: set status of chaincode mychannel&transfer to 1
-****************************************************************************************************
-****************************************************************************************************
-***** |  Response[0]:
-***** |  |  Payload: set status of chaincode mychannel&data_swapper to 1
-***** |  Response[1]:
-***** |  |  Payload: set status of chaincode mychannel&data_swapper to 1
-****************************************************************************************************
-```
-
-
-（3）关闭fabric
-关闭fabric有stop和clean两个命令，推荐使用clean命令，在停止fabric容器的同时会清除所有相关镜像
-```shell
-# 关闭并清除应用链容器
-goduck fabric stop
-
-# 关闭并清除应用链容器，同时清除应用链及合约相关镜像
-goduck fabric clean
-```
-
