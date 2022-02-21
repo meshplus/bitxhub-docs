@@ -60,7 +60,7 @@ pier --repo upier2 appchain method register --admin-key upier2/key.json --method
 ## 清除下Pier下的store目录
 rm -rf upier1/store
 ## 启动upier1
-./pier --repo upier1 start
+pier --repo upier1 start
 ```
 
 **说明：1. 以上两个注册的步骤，--addr后面的参数分别是两套中继链节点的地址，需要根据实际情况进行更改；2. 另一个Upier2的脚本跟上面的内容基本一致，相互注册的bitxhub地址调换即可，这里不再赘述**

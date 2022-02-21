@@ -72,7 +72,7 @@ config = "fabric"
 ```bash
 # 1.进入到pier的配置主目录，即pier.toml所在的目录
 # 执行pier show命令
-./pier show --path ~/.pier/key.json
+pier show --path ~/.pier/key.json
 # 返回结果示例：
 private key: 0x88b434530176d3faf4dbf10ede1c25c4f7af673392152d71a18758a1ba677ddc
 public key: 0x041b311209c6feb1587aaf16d7a1bac9f96c1fecb539d4cde416f97ff5048139beeac307d14d0e7196c7e15ad657530dedcc33bbe821276dadf3989bfff470747a

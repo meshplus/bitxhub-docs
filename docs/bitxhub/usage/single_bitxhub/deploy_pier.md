@@ -67,61 +67,25 @@
 ## 获取部署包和修改Pier配置
 这一章是要获取部署包和修改Pier的配置，为启动pier节点作准备，主要分为pier本身和应用链插件的配置修改。可以通过源码编译和二进制下载的方式获取部署包。
 ### 获取部署包
-=== "Ethereum"
-    **源码下载编译**
-    ```shell
-    # 编译跨链网关本身
-    cd $HOME
-    git clone https://github.com/meshplus/pier.git
-    cd pier && git checkout v1.11.2
-    make prepare && make build
-    
-    # 编译Ethereum 插件
-    cd $HOME
-    git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout v1.11.2
-    make eth
-    
-    # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
-    2.pier编译之后会在跨链网关项目bin目录生成同名的二进制文件，需要将它拷贝到配置主目录方便后续执行。
-    ```
-    
-    **二进制下载**
-    
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
-=== "Fabric"
-    **源码下载编译**
-    
-    ```shell
-    # 编译跨链网关本身
-    cd $HOME
-    git clone https://github.com/meshplus/pier.git
-    cd pier && git checkout v1.11.2
-    make prepare && make build
-    
-    # 编译Fabric插件
-    cd $HOME
-    git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout v1.11.2
-    make fabric1.4
-    
-    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
-    2.pier编译之后会在跨链网关项目bin目录生成同名的二进制文件，需要将它拷贝到配置主目录方便后续执行。
-    ```
-    
-    **二进制下载**
-    
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
-
-经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
-
-### 修改Pier配置
-在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 ```shell
-./pier --repo=~/.pier init relay
+# 编译跨链网关本身
+cd $HOME
+git clone https://github.com/meshplus/pier.git
+cd pier && git checkout v1.11.2
+make prepare && make install
 ```
+
+### 初始化pier配置
+
+在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
+
+```shell
+./bin/pier --repo ~/.pier init relay
+```
+
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
+
 ```shell
 tree -L 1 ~/.pier
 ├── api
@@ -132,7 +96,59 @@ tree -L 1 ~/.pier
 1 directory, 4 files
 ```
 
+### 获取应用链插件部署包
+
+=== "Ethereum"
+
+    **源码下载编译**
+    
+    ```shell
+    # 编译Ethereum 插件
+    cd $HOME
+    git clone https://github.com/meshplus/pier-client-ethereum.git
+    cd pier-client-ethereum && git checkout v1.11.2
+    make eth
+    
+    # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
+    # 2.需要将生成好的二进制插件存放到pier的配置目录下的plugins文件夹底下；
+    # 3.插件名称应与下一步的修改应用链插件的配置的plugin名称一致（为了方便起见，统一重命名为appchain_plugin）
+    mkdir ~/.pier/plugins && cp build/eth-client ~/.pier/plugins/appchain_plugin
+    ```
+    
+    **二进制下载**
+    
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需根据操作系统的实际情况进行选择和下载即可。
+
+=== "Fabric"
+
+    **源码下载编译**
+    
+    ```shell
+    # 编译Fabric插件
+    cd $HOME
+    git clone https://github.com/meshplus/pier-client-fabric.git
+    cd pier-client-fabric && git checkout v1.11.2
+    make fabric1.4
+    
+    # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
+    # 2.需要将生成好的二进制插件存放到pier的配置目录下的plugins文件夹底下；
+    # 3.插件名称应与下一步的修改应用链插件的配置的plugin名称一致（为了方便起见，统一重命名为appchain_plugin）
+    mkdir ~/.pier/plugins && cp build/fabric-client-1.4 ~/.pier/plugins/appchain_plugin
+    ```
+    
+    **二进制下载**
+    
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.11.2) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v1.11.2)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+
+经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
+
+### 修改Pier配置
+
 pier.toml是描述链跨链网关启动的主要配置，一般需要修改的是端口信息、中继链的信息、应用链的信息。
+
+```shell
+cd $HOME/.pier && vim pier.toml
+```
 
 - 修改端口信息
 
@@ -160,15 +176,19 @@ validators = [
 ```
 
 - 修改应用链信息（针对不同应用链类型进行配置）
+    - 其中did的格式应为`did:bitxhub:appchain{pier_id}:.`，pier_id通过`pier --repo=~/.pier id`获得；
+    - `plugin`为插件名称，**注意**：插件名称应该与pier的repo地址下plugin目录的插件名称相同。
 
 === "Ethereum"
+
     ```toml
     [appchain]
-    config = "ethereum"
+    config = "ethereum" #标识当前应用链类型，用户可自定义
     did = "did:bitxhub:appchain0x450884c9F7fdFc72E2bC1245306d15dE1750A880:."
     plugin = "appchain_plugin"
     ```
 === "Fabric"
+
     ```toml
     [appchain]
     config = "fabric"
@@ -183,41 +203,57 @@ validators = [
 === "Ethereum"
 
     ```shell
-    # 将ethereum插件拷贝到plugins目录下
-    cp ether-client ~/.pier/plugins/
-    # 切换到pier-client-ethereum项目路径下
-    cd pier-client-ethereum
-    cp ./config $HOME/.pier/ether
+    cd $HOME/.pier && mkdir ether
+    
+    # 将pier-client-ethereum的config目录下的文件拷贝到pier的配置路径
+    cp $HOME/pier-client-ethereum/config ~/.pier/ether
     ```
     其中重要配置如下：
     ```shell
+    tree -L 1 ~/.pier/ether
     ├── account.key
     ├── broker.abi
+    ├── data_swapper.abi
     ├── ether.validators
     ├── ethereum.toml
     ├── password
+    ├── pier.toml
+    ├── transfer.abi
     └── validating.wasm
     ```
+    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/#221)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到${pier_repo}/ehter目录下：**
+    ```shell
+    cp ~/.goduck/pier/ethereum/1.3.0/* ~/.pier/ether
+    ```
+    
     **说明**：
     
-    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）;
     - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
-    - ether.validators和validating.wasm一般不需要修改。
+    - ether.validators和validating.wasm一般不需要修改,pier.toml为pier配置模板，暂未使用，可不做更改；
     - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
-    
+        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/#221)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
+        - `nanme`：应用链名称，用户可自定义；
+        - `contract_address`：broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
+        - `abi_path`:`broker.abi`文件路径；
+        - `key_path`：以太坊账户私钥，如果为本地启动的以太坊私链，地址为`${datadir}/data/keystore`；
+        - `password`：以太坊账户密码；
+        - `min_confirm`：最小区块确认数；
+        - `[contract_abi]`:填写业务合约地址，如：`0x668a209Dc6562707469374B8235e37b8eC25db08="transfer.abi"`
+        
     ```toml
     [ether]
-    addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
-    name = "ether-kovan"
+    addr = "ws://localhost:8546"
+    name = "ether"
     ## 此处合约地址需要替换成变量代表的实际字符串
-    contract_address = "$brokerAddr"
+    contract_address = "0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4"
     abi_path = "broker.abi"
     key_path = "account.key"
     password = "password"
     min_confirm = 1
     
     [contract_abi]
-    "($transfer) Addr"="transfer.abi"
+    "0x668a209Dc6562707469374B8235e37b8eC25db08"="transfer.abi"
     ```
 
 === "Fabric"
@@ -272,52 +308,26 @@ validators = [
 
 
 ## 注册应用链
-在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.11.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，以下是以Ethereum为例进行说明：
-！！！需要注意的是v1.11.2及以上版本的网关注册时会将提供的验证规则地址注册为主验证规则
-1. Pier命令行发起应用链注册
-   ```shell
-   # 以用户目录下的pier为例
-   ./pier --repo ~/.pier appchain method register --admin-key ~/.pier/key.json --method appchain0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9 --doc-addr /ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fab --type fabric --desc="test for fabric" --version v1.4.3 --validators ./pier-master/fabric/fabric.validators --consensus rbft --rule 0x00000000000000000000000000000000000000a0 --rule-url http://github.com --reason reason
-   # 发起注册后会打印出应用链id和提案id
-   appchain register successfully, chain id is 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9, proposal id is 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9-0
-   ```
-2. 中继链节点依次投票
-   ```shell
-   # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
-   ./bitxhub --repo ../node1 client governance vote --id 0x2fF31a5c978207a877fF7Fe71039a2308B36b5C9-0 --info approve --reason approve
-   # 投票完后会打印：vote successfully!
-   # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
-   ```
+在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。中继模式应用链注册参考[中继模式管理](../../../function/relay_manager)需要注意的是，在v1.11.2及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同。
+**需要注意的是v1.11.2及以上版本的网关注册时会将提供的验证规则地址注册为主验证规则。**
 
-**当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
-```shell
-./bitxhub --repo ../node1 client governance proposal query --type AppchainMgr
-```
+1. [Pier命令行发起应用链注册](../../../function/relay_manager/#11);
+
+2. [中继链节点依次投票](../../../function/relay_manager/#12)。
 
 ## 部署验证规则
 应用链除了在注册应用链时，绑定主验证规则，在可用状态下也可以注册其他验证规则，即可以在应用链注册成功且中继链投票通过后进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。
+中继模式验证规则部署流程请参考[部署验证规则](../../../function/relay_manager/#3)。 其部署流程为：
 
-=== "Ethereum"
-    ```shell
-    # 规则部署
-    pier --repo ~/.pier rule deploy --path validating.wasm --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json --rule-url http://github.com
-    # 更新主验证规则
-    pier --repo ~/.pier rule update --addr 0x0A67c28f506733176A4cB11623Bc44fAb236f8da --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json  --reason reason
-    ```
-=== "Fabric"
-    ```shell
-    # 规则部署
-    pier --repo ~/.pier rule deploy --path validating.wasm --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json --rule-url http://github.com
-    # 更新主验证规则
-    pier --repo ~/.pier rule update --addr 0x0A67c28f506733176A4cB11623Bc44fAb236f8da --method appchain0xe0D7a460a201a0A584Bfc5A05F9b598a5e8708FA --admin-key ~/.pier/key.json  --reason reason
-    ```
+1. [部署并注册验证规则](../../../function/relay_manager/#31)；
+2. [更新验证规则](../../../function/relay_manager/#32)。
 
 ## 启动跨链网关节点
-在完成以上步骤之后，可以启动跨链网关节点了
+在完成以上步骤之后，可以启动跨链网关节点了！
 
 ```
 #以用户目录下的pier为例
-./pier --repo=~/.pier start
+pier --repo=~/.pier start
 ```
 
 **观察日志信息没有报错信息，可以正常同步到中继链上的区块信息，即说明pier启动成功。**
