@@ -18,7 +18,7 @@
 
 ## 部署跨链合约
 
-这一章是要在应用链上部署跨链合约，**注意：在此操作之前，您需要确认已经部署有可接入的应用链**。快速部署应用链请参考[Goduck关于应用链的操作](../../../../goduck/#24)。
+这一章是要在应用链上部署跨链合约，**注意：在此操作之前，您需要确认已经部署有可接入的应用链**。快速部署应用链请参考[Goduck关于应用链的操作](../../../../goduck/appchain)。
 
 我们提供了针对不同应用链的跨链合约，broker合约是管理合约，transfer合约是业务交易合约，需要说明的是 transfer合约需要经过broker合约审核通过后才能发起或接受跨链交易，具体方法是：调用broker合约的audit方法，其参数依次是业务合约地址和合约状态（数字1表示审核通过，数字2表示审核失败）。
 
@@ -224,7 +224,7 @@ validators = [
     ├── transfer.abi
     └── validating.wasm
     ```
-    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/#221)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到${pier_repo}/ehter目录下：**
+    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到${pier_repo}/ehter目录下：**
     ```shell
     cp $CONFIG_PATH/.goduck/pier/ethereum/1.3.0/* $CONFIG_PATH/.pier/ether
     ```
@@ -235,7 +235,7 @@ validators = [
     - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
     - ether.validators和validating.wasm一般不需要修改,pier.toml为pier配置模板，暂未使用，可不做更改；
     - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
-        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/#221)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
+        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
         - `nanme`：应用链名称，用户可自定义；
         - `contract_address`：broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
         - `abi_path`:`broker.abi`文件路径；

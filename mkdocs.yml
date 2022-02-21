@@ -149,6 +149,8 @@ nav:
       - FAQ: bitxhub/faq.md
   - Goduck:
     - Getting started: goduck/index.md
+    - 基本跨链操作: goduck/interchain.md
+    - 应用链相关操作: goduck/appchain.md
   - Premo:
     - 使用文档: premo/usage.md
   - SDK文档:
