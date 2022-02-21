@@ -25,6 +25,7 @@
 下面以Ethereum和Fabric为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
 
 === "Ethereum"
+
     在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.11.2/example)的exampe文件夹中获取。
 
     **说明：**
@@ -32,11 +33,12 @@
     2. 首先部署broker合约，然后将返回的合约地址填入transfer合约中的`BrokerAddr`字段，这样业务合约才能正确跨链调用。
 
 === "Fabric"
+
     在Fabric上部署跨链合约工具一般是fabric-cli（可以参考[官方项目的使用说明](https://github.com/hyperledger/fabric-cli)）， 在Fabric上部署跨链合约的过程和部署其它合约没有区别，只是合约名称和代码文件需要替换，以下操作的命令可供参考，默认应用链是使用的fabric-sample项目的v1.4.3版本部署。
     
     Step1: 安装部署合约的工具fabric-cli
     ```shell
-    go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    cd ~/bitxhub-v1.11 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
     ```
     
     Step2: 获取需要部署的合约文件并解压
@@ -70,7 +72,7 @@
 
 ```shell
 # 编译跨链网关本身
-cd $HOME
+cd ~/bitxhub-v1.11
 git clone https://github.com/meshplus/pier.git
 cd pier && git checkout v1.11.2
 make prepare && make install
@@ -81,13 +83,14 @@ make prepare && make install
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 
 ```shell
-./bin/pier --repo ~/.pier init relay
+CONFIG_PATH=$(HOME)/bitxhub-v1.11
+pier --repo $CONFIG_PATH/.pier init relay
 ```
 
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
 
 ```shell
-tree -L 1 ~/.pier
+tree -L 1 $CONFIG_PATH/.pier
 ├── api
 ├── certs
 ├── key.json
@@ -104,7 +107,7 @@ tree -L 1 ~/.pier
     
     ```shell
     # 编译Ethereum 插件
-    cd $HOME
+    cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-ethereum.git
     cd pier-client-ethereum && git checkout v1.11.2
     make eth
@@ -112,7 +115,7 @@ tree -L 1 ~/.pier
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
     # 2.需要将生成好的二进制插件存放到pier的配置目录下的plugins文件夹底下；
     # 3.插件名称应与下一步的修改应用链插件的配置的plugin名称一致（为了方便起见，统一重命名为appchain_plugin）
-    mkdir ~/.pier/plugins && cp build/eth-client ~/.pier/plugins/appchain_plugin
+    mkdir $CONFIG_PATH/.pier/plugins && cp build/eth-client $CONFIG_PATH/.pier/plugins/appchain_plugin
     ```
     
     **二进制下载**
@@ -125,7 +128,7 @@ tree -L 1 ~/.pier
     
     ```shell
     # 编译Fabric插件
-    cd $HOME
+    cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-fabric.git
     cd pier-client-fabric && git checkout v1.11.2
     make fabric1.4
@@ -133,7 +136,7 @@ tree -L 1 ~/.pier
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
     # 2.需要将生成好的二进制插件存放到pier的配置目录下的plugins文件夹底下；
     # 3.插件名称应与下一步的修改应用链插件的配置的plugin名称一致（为了方便起见，统一重命名为appchain_plugin）
-    mkdir ~/.pier/plugins && cp build/fabric-client-1.4 ~/.pier/plugins/appchain_plugin
+    mkdir $CONFIG_PATH/.pier/plugins && cp build/fabric-client-1.4 $CONFIG_PATH/.pier/plugins/appchain_plugin
     ```
     
     **二进制下载**
@@ -147,7 +150,7 @@ tree -L 1 ~/.pier
 pier.toml是描述链跨链网关启动的主要配置，一般需要修改的是端口信息、中继链的信息、应用链的信息。
 
 ```shell
-cd $HOME/.pier && vim pier.toml
+cd $CONFIG_PATH/.pier && vim pier.toml
 ```
 
 - 修改端口信息
@@ -176,7 +179,7 @@ validators = [
 ```
 
 - 修改应用链信息（针对不同应用链类型进行配置）
-    - 其中did的格式应为`did:bitxhub:appchain{pier_id}:.`，pier_id通过`pier --repo=~/.pier id`获得；
+    - 其中did的格式应为`did:bitxhub:appchain{pier_id}:.`，pier_id通过`pier --repo=$CONFIG_PATH/.pier id`获得；
     - `plugin`为插件名称，**注意**：插件名称应该与pier的repo地址下plugin目录的插件名称相同。
 
 === "Ethereum"
@@ -203,14 +206,14 @@ validators = [
 === "Ethereum"
 
     ```shell
-    cd $HOME/.pier && mkdir ether
+    cd $CONFIG_PATH/.pier && mkdir ether
     
     # 将pier-client-ethereum的config目录下的文件拷贝到pier的配置路径
-    cp $HOME/pier-client-ethereum/config ~/.pier/ether
+    cp $CONFIG_PATH/pier-client-ethereum/config $CONFIG_PATH/.pier/ether
     ```
     其中重要配置如下：
     ```shell
-    tree -L 1 ~/.pier/ether
+    tree -L 1 $CONFIG_PATH/.pier/ether
     ├── account.key
     ├── broker.abi
     ├── data_swapper.abi
@@ -223,7 +226,7 @@ validators = [
     ```
     **注意：如果使用[goduck关于应用链的操作](../../../../goduck/#221)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到${pier_repo}/ehter目录下：**
     ```shell
-    cp ~/.goduck/pier/ethereum/1.3.0/* ~/.pier/ether
+    cp $CONFIG_PATH/.goduck/pier/ethereum/1.3.0/* $CONFIG_PATH/.pier/ether
     ```
     
     **说明**：
@@ -259,10 +262,10 @@ validators = [
 === "Fabric"
     ```shell
     # 将fabric插件拷贝到plugins目录下
-    cp fabric-client-1.4 ~/.pier/plugins/
+    cp fabric-client-1.4 $CONFIG_PATH/.pier/plugins/
     # 切换到pier-client-fabric项目路径下
     cd pier-client-fabric
-    cp ./config $HOME/.pier/fabric
+    cp ./config $CONFIG_PATH/.pier/fabric
     ```
     其中重要配置如下：
     ```shell
@@ -279,16 +282,16 @@ validators = [
     启动Fabric网络时，会生成所有节点（包括Order、peer等）的证书信息，并保存在 crypto-config文件夹中，Fabric插件和Fabric交互时需要用到这些证书。
     ```shell
     # 复制您所部署的Fabric所产生的crypto-config文件夹
-    cp -r /path/to/crypto-config $HOME/.pier/fabric/
+    cp -r /path/to/crypto-config $CONFIG_PATH/.pier/fabric/
     
     # 复制Fabric上验证人证书
-    cp $HOME/.pier/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/signcerts/peer1.org2.example.com-cert.pem $HOME/.pier/fabric/fabric.validators
+    cp $CONFIG_PATH/.pier/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/signcerts/peer1.org2.example.com-cert.pem $CONFIG_PATH/.pier/fabric/fabric.validators
     ```
     2. **修改Plugin配置文件config.yaml**
     
     `config.yaml`文件记录的Fabric网络配置（用您的网络拓扑配置文件替换这个样例文件），需要使用绝对路径，把所有的路径都修改为 `crypto-config`文件夹所在的绝对路径。
     ```shell
-    {CONFIG_PATH}/fabric/crypto-config =>~/.pier/fabric/crypto-config
+    {CONFIG_PATH}/fabric/crypto-config =>$CONFIG_PATH/.pier/fabric/crypto-config
     # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric 的IP地址，如：
     url: grpcs://localhost:7050 => url: grpcs://10.1.16.48:7050
     ```
@@ -327,7 +330,7 @@ validators = [
 
 ```
 #以用户目录下的pier为例
-pier --repo=~/.pier start
+pier --repo=$CONFIG_PATH/.pier start
 ```
 
 **观察日志信息没有报错信息，可以正常同步到中继链上的区块信息，即说明pier启动成功。**

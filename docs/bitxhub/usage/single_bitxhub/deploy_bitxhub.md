@@ -12,12 +12,12 @@
     
     ```shell
     # 1. 首先拉取bitxhub项目源代码
-    git clone https://github.com/meshplus/bitxhub.git
+    mkdir ~/bitxhub-v1.11 && git clone https://github.com/meshplus/bitxhub.git
     # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
     cd bitxhub && git checkout v1.11.2 && make install
     # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
     # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.11.2
-    ./bin/bitxhub version
+    bitxhub version
     # 注意⚠️：v1.11.2版本的bitxhub共识通过模块化的方式提供
     ```
     
@@ -47,7 +47,7 @@
     
     ```
     # 1. 解压二进制压缩包
-    mkdir bitxhub && cd bitxhub
+    mkdir -r ~/bitxhub-v1.11/bitxhub && cd bitxhub
     
     # 注意更改为二进制文件所在路径
     cp ~/Downloads/bitxhub_darwin_x86_64_v1.11.2.tar.gz .

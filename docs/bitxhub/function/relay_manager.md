@@ -63,15 +63,15 @@ bitxhub [--repo <repository>] client governance vote --id <proposal id> --info <
 
 ```shell
 # 具体样例
-
-$ cd <bitxhub_project> && make install
+$ CONFIG_PATH=$HOME/bitxhub-v1.11
+$ cd $CONFIG_PATH/bitxhub && make install
 
 # 1.启动四节点bitxhub集群
 $ make cluster
 
 # 2. bitxhub管理员向pier管理员转账。注意更改为bitxhub项目地址，to地址通过pier --repo /.pier id 获得,切换到pier配置所在地址
-$ cd {PIER_REPO} && PIER_ID=$(pier --repo $(pwd) id)
-$ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/key.json --to $PIER_ID --amount 100000000000000000000000000
+$ PIER_ID=$(pier --repo $CONFIG_PATH/.pier id)
+$ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client tx send --key $CONFIG_PATH/bitxhub/scripts/build/node1/key.json --to $PIER_ID --amount 100000000000000000000000000
 ```
 
 
@@ -80,13 +80,13 @@ $ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/
 === "Ethereum"
 
     ```shell
-    $ pier --repo $(pwd) init relay
+    $ pier --repo $CONFIG_PATH/.pier init relay
     # 3. 初始化pier，修改相关配置信息，参考但终极模式跨链网关部署使用教程
     $ cp ~/goproject/meshplus/pier-client-ethereum/config/ether.validators ./ether/
     ………
     
     
-    $ pier --repo $(pwd) appchain method register --admin-key ./key.json --method appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74 --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name ethTest --type ether --desc="test for ether" --version v1.0.0 --validators ./ether/ether.validators --consensus pow --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
+    $ pier --repo $CONFIG_PATH/.pier appchain method register --admin-key $CONFIG_PATH/.pier/key.json --method appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74 --doc-addr $CONFIG_PATH/.pier/ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name ethTest --type ether --desc="test for ether" --version v1.0.0 --validators $CONFIG_PATH/.pier/ether/ether.validators --consensus pow --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
     Register appchain method info for did:bitxhub:ethappchain:. successfully, wait for proposal 0xC32db5F3A0573b4634C6c106485e31C84ff95f74-0 to finish.
     ```
     
@@ -95,13 +95,13 @@ $ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/
 === "Fabric"
 
     ```shell
-    $ pier --repo $(pwd) init relay
+    $ pier --repo $CONFIG_PATH/.pier init relay
     # 3. 初始化pier，修改相关配置信息，参考但终极模式跨链网关部署使用教程
-    $ cp ~/goproject/meshplus/pier-client-fabric/config/fabric.validators ./fabric/
+    $ cp $CONFIG_PATH/pier-client-fabric/config/fabric.validators $CONFIG_PATH/.pier/fabric/
     ………
     
     
-    $ pier --repo $(pwd) appchain method register --admin-key ./key.json --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.0.3 --validators ./fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
+    $ pier --repo $CONFIG_PATH/.pier appchain method register --admin-key $CONFIG_PATH/.pier/key.json --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --doc-addr $CONFIG_PATH/.pier/ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.0.3 --validators $CONFIG_PATH/.pier/fabric/fabric.validators --consensus raft --rule 0x00000000000000000000000000000000000000a2 --rule-url http://localHost
     
     Register appchain method info for did:bitxhub:fabricappchain:. successfully, wait for proposal 0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc-0 to finish.
     ```
@@ -116,17 +116,17 @@ $ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/
     $ PROPOSAL_ID=上面得到的ID
     
     # 注意切换到bitxhub项目目录下
-    $ bitxhub --repo ./scripts/build/node1 client governance vote --id $PROPOSAL_ID --info approve --reason "eth appchain register"
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id $PROPOSAL_ID --info approve --reason "eth appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node2 client governance vote --id $PROPOSAL_ID --info approve --reason "eth
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node2 client governance vote --id $PROPOSAL_ID --info approve --reason "eth
     appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node3 client governance vote --id $PROPOSAL_ID --info approve --reason "eth appchain register"
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node3 client governance vote --id $PROPOSAL_ID --info approve --reason "eth appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
     
     ========================================================================================
     Id                                            ManagedObjectId                                                   Type         EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
@@ -145,17 +145,17 @@ $ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/
     $ PROPOSAL_ID=上面得到的ID
     
     # 注意切换到bitxhub项目目录下
-    $ bitxhub --repo ./scripts/build/node1 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node2 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node12 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric
     appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node3 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node13 client governance vote --id $PROPOSAL_ID --info approve --reason "fabric appchain register"
     vote successfully!
     
-    $ bitxhub --repo ./scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
     
     ========================================================================================
     Id                                            ManagedObjectId                                                   Type         EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Description  EndReason
@@ -187,18 +187,18 @@ pier --repo <repository> appchain get --admin-key <admin_key_json> --id <appchia
 
     ```shell
     # 具体样例
-    $ pier --repo $(pwd) appchain get --admin-key ./key.json --id did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:.
+    $ pier --repo $CONFIG_PATH/.pier appchain get --admin-key $CONFIG_PATH/.pier/key.json --id did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:.
     
-    {"id":"did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:.","name":"ethTest","validators":"0x000f1a7a08ccc48e5d30f80850cf1cf283aa3abd,0xe93b92f1da08f925bdee44e91e7768380ae83307,0xb18c8575e3284e79b92100025a31378feb8100d6,0x856E2B9A5FA82FD1B031D1FF6863864DBAC7995D","consensus_type":"pow","status":"available","chain_type":"ether","desc":"test for ether","version":"v1.1.0","public_key":"0x424654476176323867484f355a67357338624e794e6178736b707965434d4764744a6d615464735a4c545861386630326f51787934415475644f53334c7a2f43666a726b79445957304841566e6a6558586d32554c34553d","owner_did":"did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:0xC32db5F3A0573b4634C6c106485e31C84ff95f74","did_doc_addr":"./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","did_doc_hash":"QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","rule":"0x00000000000000000000000000000000000000a2","rule_url":"http://localHost","fsm":{}}
+    {"id":"did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:.","name":"ethTest","validators":"0x000f1a7a08ccc48e5d30f80850cf1cf283aa3abd,0xe93b92f1da08f925bdee44e91e7768380ae83307,0xb18c8575e3284e79b92100025a31378feb8100d6,0x856E2B9A5FA82FD1B031D1FF6863864DBAC7995D","consensus_type":"pow","status":"available","chain_type":"ether","desc":"test for ether","version":"v1.1.0","public_key":"0x424654476176323867484f355a67357338624e794e6178736b707965434d4764744a6d615464735a4c545861386630326f51787934415475644f53334c7a2f43666a726b79445957304841566e6a6558586d32554c34553d","owner_did":"did:bitxhub:appchain0xC32db5F3A0573b4634C6c106485e31C84ff95f74:0xC32db5F3A0573b4634C6c106485e31C84ff95f74","did_doc_addr":"$CONFIG_PATH/.pier/ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","did_doc_hash":"QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","rule":"0x00000000000000000000000000000000000000a2","rule_url":"http://localHost","fsm":{}}
     ```
 
 === "fabric"
 
     ```shell
     # 具体样例
-    $ pier --repo $(pwd) appchain get --admin-key ./key.json --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
+    $ pier --repo $CONFIG_PATH/.pier appchain get --admin-key $CONFIG_PATH/.pier/key.json --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
 
-    {"id":"did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.","name":"fabricTest","validators":"-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIRAIBO31aZaSZoEYSy2AJuhJcwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzIuZXhhbXBsZS5jb20wHhcNMjAwMjA1MDgyMjAwWhcNMzAwMjAyMDgyMjAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjEub3Jn\nMi5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG3jszFPTbGm\ndAYg2BxmHMTDKfQReNw3p9ttMK130qF5lQo5zLBG8Sa3viOCLnvjjg6A/P+yKnwv\nisI/jEVE8T2jTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIMVL+daK7nMGr2/AQIXTSPFkdd3UiPVDkWtkh5ujnalEMAoGCCqGSM49\nBAMCA0gAMEUCIQDMYOQiYeMiQZTxlRkj/3/jjYvwwdCcX5AWuFmraiHkugIgFkX/\n6uiTSD0lz8P+wwlLf24cIABq2aZyi8q4gj0YfwA=\n-----END CERTIFICATE-----\n","consensus_type":"raft","status":"available","chain_type":"fabric","desc":"test for fabric","version":"v1.0.3","public_key":"0x42466555443339355037652b30307877664d4d39586252315543544f597337424568396579564a4f6e75762f446c474d45423936532b2b367a2f335669534846715458547236766648446179747a484933644469714d633d","owner_did":"did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc","did_doc_addr":"./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","did_doc_hash":"QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","rule":"0x00000000000000000000000000000000000000a2","rule_url":"http://localHost","fsm":{}}
+    {"id":"did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.","name":"fabricTest","validators":"-----BEGIN CERTIFICATE-----\nMIICKTCCAc+gAwIBAgIRAIBO31aZaSZoEYSy2AJuhJcwCgYIKoZIzj0EAwIwczEL\nMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG\ncmFuY2lzY28xGTAXBgNVBAoTEG9yZzIuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh\nLm9yZzIuZXhhbXBsZS5jb20wHhcNMjAwMjA1MDgyMjAwWhcNMzAwMjAyMDgyMjAw\nWjBqMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN\nU2FuIEZyYW5jaXNjbzENMAsGA1UECxMEcGVlcjEfMB0GA1UEAxMWcGVlcjEub3Jn\nMi5leGFtcGxlLmNvbTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABG3jszFPTbGm\ndAYg2BxmHMTDKfQReNw3p9ttMK130qF5lQo5zLBG8Sa3viOCLnvjjg6A/P+yKnwv\nisI/jEVE8T2jTTBLMA4GA1UdDwEB/wQEAwIHgDAMBgNVHRMBAf8EAjAAMCsGA1Ud\nIwQkMCKAIMVL+daK7nMGr2/AQIXTSPFkdd3UiPVDkWtkh5ujnalEMAoGCCqGSM49\nBAMCA0gAMEUCIQDMYOQiYeMiQZTxlRkj/3/jjYvwwdCcX5AWuFmraiHkugIgFkX/\n6uiTSD0lz8P+wwlLf24cIABq2aZyi8q4gj0YfwA=\n-----END CERTIFICATE-----\n","consensus_type":"raft","status":"available","chain_type":"fabric","desc":"test for fabric","version":"v1.0.3","public_key":"0x42466555443339355037652b30307877664d4d39586252315543544f597337424568396579564a4f6e75762f446c474d45423936532b2b367a2f335669534846715458547236766648446179747a484933644469714d633d","owner_did":"did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc","did_doc_addr":"$CONFIG_PATH/.pier/ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","did_doc_hash":"QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi","rule":"0x00000000000000000000000000000000000000a2","rule_url":"http://localHost","fsm":{}}
     ```
 
 ## 3. 部署验证规则
@@ -217,14 +217,14 @@ pier --repo <repository> client rule deploy --path <validating_wasm_path> --meth
 
     ```shell
     # 部署并注册验证规则
-    $ pier --repo $(pwd) rule deploy --path ./fabric/validating.wasm --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --admin-key ./key.json --rule-url http://github.com
+    $ pier --repo $CONFIG_PATH/.pier rule deploy --path $CONFIG_PATH/.pier/fabric/validating.wasm --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --admin-key $CONFIG_PATH/.pier/key.json --rule-url http://github.com
     
     # 其中0x508D8FB42b5Dc35C96a010681ABEC977B87ab8Ba为验证规则地址 
     Deploy rule to bitxhub for appchain appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc successfully: 0x508D8FB42b5Dc35C96a010681ABEC977B87ab8Ba
     Register rule to bitxhub for appchain did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:. successfully.
     
     # 在中继链查询应用链的验证规则列表，显示该验证规则已部署，但并未正式使用该验证规则
-    $ bitxhub --repo ./scripts/build/node1 client governance rule all --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
 
     ChainId                                                           RuleAddress                                 Status     Master
     -------                                                           -----------                                 ------     ------
@@ -237,12 +237,12 @@ pier --repo <repository> client rule deploy --path <validating_wasm_path> --meth
     
     ```shell
     # 更新为当前部署的验证规则，addr为验证规则的地址，通过部署验证规则输出的结果得到该地址
-    $pier --repo $(pwd) rule update --addr 0x508D8FB42b5Dc35C96a010681ABEC977B87ab8Ba --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --admin-key ./key.json  --reason reason
+    $pier --repo $CONFIG_PATH/.pier rule update --addr 0x508D8FB42b5Dc35C96a010681ABEC977B87ab8Ba --method appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc --admin-key $CONFIG_PATH/.pier/key.json  --reason reason
     
     Update master rule to bitxhub for appchain did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:. successfully, wait for proposal 0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc-1 to finish
     
     # 在中继链查询应用链的验证规则列表，显示验证规则master已从内置验证规则更新为当前验证规则
-    $ bitxhub --repo ./scripts/build/node1 client governance rule all --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
+    $ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance rule all --id did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.
     ChainId                                                           RuleAddress                                 Status     Master
     -------                                                           -----------                                 ------     ------
     did:bitxhub:appchain0xa9189942f259988B5Bb0156E95b5717f3eA18Ccc:.  0x00000000000000000000000000000000000000a2  bindable   false
@@ -293,7 +293,7 @@ OPTIONS:
 比如进行fabric应用链的验证人信息发生变化，需要更新应用链，命令执行如下：
 ```shell
 # 具体样例
-$ pier --repo $(pwd) appchain update --admin-key ./key.json --id did:bitxhub:fabricappchain:. --doc-addr ./ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.1.0 --validators./fabric/fabric.validators --consensus-type raft
+$ pier --repo $CONFIG_PATH/.pier appchain update --admin-key $CONFIG_PATH/.pier/key.json --id did:bitxhub:fabricappchain:. --doc-addr $CONFIG_PATH/.pier/ipfs/QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --doc-hash QmQVxzUqN2Yv2UHUQXYwH8dSNkM8ReJ9qPqwJsf8zzoNUi --name fabricTest --type fabric --desc="test for fabric" --version v1.1.0 --validators$CONFIG_PATH/.pier/fabric/fabric.validators --consensus-type raft
 
 the update request was submitted successfully，, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-1
 ```
@@ -313,7 +313,7 @@ $ pier --repo <repository> appchain activate --admin-key <admin_key_json> --id <
 **示例说明**
 比如对之前已经冻结的应用链进行激活，命令执行如下：
 ```shell
-$ pier --repo $(pwd) appchain activate --admin-key ./key.json --id did:bitxhub:fabricappchain:.
+$ pier --repo $CONFIG_PATH/.pier appchain activate --admin-key $CONFIG_PATH/.pier/key.json --id did:bitxhub:fabricappchain:.
 INFO[11:01:25.884] Establish connection with bitxhub localhost:60011 successfully  module=rpcx
 the activate request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-2
 ```
@@ -333,7 +333,7 @@ pier --repo <repository> appchain logout --admin-key <admin_key_json> --id <appc
 **示例说明**
 比如对之前激活的应用链进行注销，命令执行如下：
 ```shell
-$ pier appchain logout --admin-key ./key.json --id did:bitxhub:fabricappchain:.
+$ pier --repo $CONFIG_PATH/.pier appchain logout --admin-key $CONFIG_PATH/.pier/key.json --id did:bitxhub:fabricappchain:.
 the logout request was submitted successfully, proposal id is 0xCc9b389cEA6b1E2845a895829126B0a15a1cdA6F-3
 ```
 
