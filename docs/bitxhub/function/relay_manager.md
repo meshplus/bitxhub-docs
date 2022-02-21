@@ -90,21 +90,21 @@ bitxhub [--repo <repository>] client governance vote --id <proposal id> --info <
 比如进行fabric应用链的注册,现在 --doc-addr 和 --doc-hash 、--rule-url没有真正用到，使用下面示例的即可，验证规则需要提前注册（也可使用示例中内置验证规则地址）。验证者信息需要提前拷贝到repo目录下。注意在注册应用链时，确保已经正常启动中继链：
 ```shell
 # 具体样例
-
-$ cd <bitxhub_project> && make install
+$ CONFIG_PATH=$(HOME)/bitxhub-v1.18
+$ cd $CONFIG_PATH/bitxhub && make install
 
 # 启动bitxhub
 $ make cluster
 
-$ pier --repo $(pwd) init relay
+$ pier --repo $CONFIG_PATH/.pier init relay
 # 可以使用对应插件项目下的验证者信息，注意更改项目路径
-$ cp ~/goproject/meshplus/pier-client-fabric/config/fabric.validators ./fabric/
+$ cp ~/goproject/meshplus/pier-client-fabric/config/fabric.validators $CONFIG_PATH/.pierfabric/
 
-$ id=$(pier --repo $(pwd) id)
+$ id=$(pier --repo $CONFIG_PATH/.pier id)
 # bitxhub管理员向pier管理员转账。注意更改为bitxhub项目地址
-$ bitxhub client tx send --key ~/goproject/meshplus/bitxhub/scripts/build/node1/key.json --to $id --amount 100000000000000000000000000
+$ bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client tx send --key $CONFIG_PATH/bitxhub/scripts/build/node1/key.json --to $id --amount 100000000000000000000000000
 
-$ pier --repo $(pwd) appchain register --appchain-id "fabappchain" --name "fabric1" --type "Fabric V1.4.3" --trustroot "fabric/fabric.validators" --broker-cid "mychannel" --broker-ccid "broker" --broker-v 1 --desc "test fabric" --master-rule "0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB" --rule-url "https://bitxhub.cn/" --admin $id --reason "reason"
+$ pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "fabappchain" --name "fabric1" --type "Fabric V1.4.3" --trustroot "fabric/fabric.validators" --broker-cid "mychannel" --broker-ccid "broker" --broker-v 1 --desc "test fabric" --master-rule "0x173b4f47fd11d3f0EC48027C1F166D4Ae6b54BaB" --rule-url "https://bitxhub.cn/" --admin $id --reason "reason"
 
 Register appchain successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0 to finish.
 ```
@@ -116,7 +116,7 @@ Register appchain successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB1
 $ PROPOSAL_ID=上面得到的ID，如 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-0
 
 # 查询中继链上提案状态
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node1 client governance proposal query --id $PROPOSAL_ID
 ========================================================================================
 Id                                            ManagedObjectId  Type          EventType  Status   A/R  IE/AE/TE  Special/Super  CreateTime           Reason  EndReason               extra
 --                                            ---------------  ----          ---------  ------   ---  --------  -------------  ----------           ------  ---------               -----
@@ -180,7 +180,7 @@ OPTIONS:
 ### 示例说明
 
 ```
-pier --repo $(pwd) appchain service register --appchain-id fabappchain --service-id "mychannel&transfer" --name "testServer1" --intro "test" --type CallContract --permit "" --details "test" --reason "reason"
+pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id fabappchain --service-id "mychannel&transfer" --name "testServer1" --intro "test" --type CallContract --permit "" --details "test" --reason "reason"
 Register appchain service for fabappchain:mychannel&transfer successfully, wait for proposal 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-1 to finish.
 ```
 
@@ -211,16 +211,16 @@ OPTIONS:
 比如进行fabric应用链的应用链名称，需要更新应用链，命令执行如下：
 ```shell
 # 具体样例
-$ pier --repo $(pwd) appchain update --appchain-id "fabappchain" --name "fabric2" --trustroot "fabric/fabric.validators" --desc "test update fabric appchain"  --admin $id --reason "reason"
+$ pier --repo $CONFIG_PATH/.pier appchain update --appchain-id "fabappchain" --name "fabric2" --trustroot "fabric/fabric.validators" --desc "test update fabric appchain"  --admin $id --reason "reason"
 the update request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-2
 
 # 查询更新前的应用链name
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric1
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain info --name fabric1
 # 控制台输出报错，说明appchain的name已更新
 invoke BVM contract failed when get appchain by name fabric1: call error: 1020014:the appchain(fabric1) does not exist: not found chain fabric1
 
 # 通过更新后的name在bitxhub进行应用链查询
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain info --name fabric2
 # 控制台输出更新后的应用链注册信息
 Id           Name     Type           Broker                                                                   Status     Desc                         Version
 --           ----     ----           ------                                                                   ------     ----                         -------
@@ -243,21 +243,21 @@ $ pier --repo <repository> appchain activate --admin-key <admin_key_json> --id <
 比如对之前已经冻结的应用链进行激活，命令执行如下：
 ```shell
 # 中继链管理员冻结应用链
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain freeze --id fabappchain --reason "test freeze appchain"
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain freeze --id fabappchain --reason "test freeze appchain"
 proposal id is 0x79a1215469FaB6f9c63c1816b45183AD3624bE34-0
 
 # 查询应用链状态，发现已经变为frozen
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain info --name fabric2
 Id           Name     Type           Broker                                                                   Status  Desc                         Version
 --           ----     ----           ------                                                                   ------  ----                         -------
 fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  frozen  test update fabric appchain  1
 
 # 激活应用链
-$ pier --repo $(pwd) appchain activate --appchain-id "fabappchain" --reason "activate appchain"
+$ pier --repo $CONFIG_PATH/.pier appchain activate --appchain-id "fabappchain" --reason "activate appchain"
 the activate request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-3
 
 # 查询应用链状态，发现从frozen变为available
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain info --name fabric2
 Id           Name     Type           Broker                                                                   Status     Desc                         Version
 --           ----     ----           ------                                                                   ------     ----                         -------
 fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  available  test update fabric appchain  1
@@ -284,11 +284,11 @@ OPTIONS:
 比如对之前激活的应用链进行注销，命令执行如下：
 ```shell
 # 注销应用链
-$ pier --repo $(pwd) appchain logout --appchain-id "fabappchain" --reason "activate appchain"
+$ pier --repo $CONFIG_PATH/.pier appchain logout --appchain-id "fabappchain" --reason "activate appchain"
 the logout request was submitted successfully, proposal id is 0x0df6746854682fc8ce5A7729BBB14c7652ae4516-4
 
 # 在中继链查询应用链状态，发现已经变为forbidden
-$ bitxhub --repo=/Users/liruoxin/goproject/meshplus/bitxhub/scripts/build/node2 client governance chain info --name fabric2
+$ bitxhub --repo=$CONFIG_PATH/bitxhub/scripts/build/node2 client governance chain info --name fabric2
 Id           Name     Type           Broker                                                                   Status     Desc                         Version
 --           ----     ----           ------                                                                   ------     ----                         -------
 fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"broker","broker_version":"1"}  forbidden  test update fabric appchain  1
@@ -310,7 +310,7 @@ pier --repo <repository> appchain get --admin-key <admin_key_json> --id <appchia
 
 ```shell
 # 具体样例
-$ pier --repo $(pwd) appchain get --appchain-id "fabappchain"
+$ pier --repo $CONFIG_PATH/.pier appchain get --admin-key $CONFIG_PATH/.pier/key.json --appchain-id "fabappchain"
 
 {"id":"fabappchain","chain_name":"fabric2","chain_type":"Fabric V1.4.3","trust_root":"TFMwdExTMUNSVWRKVGlCRFJWSlVTVVpKUTBGVVJTMHRMUzB0Q2sxSlNVTkxWRU5EUVdNclowRjNTVUpCWjBsU1FVbENUek14WVZwaFUxcHZSVmxUZVRKQlNuVm9TbU4zUTJkWlNVdHZXa2w2YWpCRlFYZEpkMk42UlV3S1RVRnJSMEV4VlVWQ2FFMURWbFpOZUVWNlFWSkNaMDVXUWtGblZFTnJUbWhpUjJ4dFlqTktkV0ZYUlhoR2FrRlZRbWRPVmtKQlkxUkVWazVvWW1sQ1J3cGpiVVoxV1RKc2Vsa3lPSGhIVkVGWVFtZE9Wa0pCYjFSRlJ6bDVXbnBKZFZwWWFHaGlXRUp6V2xNMWFtSXlNSGhJUkVGaFFtZE9Wa0pCVFZSRk1rNW9Da3h0T1hsYWVrbDFXbGhvYUdKWVFuTmFVelZxWWpJd2QwaG9ZMDVOYWtGM1RXcEJNVTFFWjNsTmFrRjNWMmhqVGsxNlFYZE5ha0Y1VFVSbmVVMXFRWGNLVjJwQ2NVMVJjM2REVVZsRVZsRlJSMFYzU2xaVmVrVlVUVUpGUjBFeFZVVkRRazFMVVRKR2MyRlhXblpqYlRWd1dWUkZWMDFDVVVkQk1WVkZRbmhOVGdwVk1rWjFTVVZhZVZsWE5XcGhXRTVxWW5wRlRrMUJjMGRCTVZWRlEzaE5SV05IVm14amFrVm1UVUl3UjBFeFZVVkJlRTFYWTBkV2JHTnFSWFZpTTBwdUNrMXBOV3hsUjBaMFkwZDRiRXh0VG5aaVZFSmFUVUpOUjBKNWNVZFRUVFE1UVdkRlIwTkRjVWRUVFRRNVFYZEZTRUV3U1VGQ1J6TnFjM3BHVUZSaVIyMEtaRUZaWnpKQ2VHMUlUVlJFUzJaUlVtVk9kek53T1hSMFRVc3hNekJ4UmpWc1VXODFla3hDUnpoVFlUTjJhVTlEVEc1MmFtcG5Oa0V2VUN0NVMyNTNkZ3BwYzBrdmFrVldSVGhVTW1wVVZFSk1UVUUwUjBFeFZXUkVkMFZDTDNkUlJVRjNTVWhuUkVGTlFtZE9Wa2hTVFVKQlpqaEZRV3BCUVUxRGMwZEJNVlZrQ2tsM1VXdE5RMHRCU1UxV1RDdGtZVXMzYmsxSGNqSXZRVkZKV0ZSVFVFWnJaR1F6VldsUVZrUnJWM1JyYURWMWFtNWhiRVZOUVc5SFEwTnhSMU5OTkRrS1FrRk5RMEV3WjBGTlJWVkRTVkZFVFZsUFVXbFpaVTFwVVZwVWVHeFNhMm92TXk5cWFsbDJkM2RrUTJOWU5VRlhkVVp0Y21GcFNHdDFaMGxuUm10WUx3bzJkV2xVVTBRd2JIbzRVQ3QzZDJ4TVpqSTBZMGxCUW5FeVlWcDVhVGh4TkdkcU1GbG1kMEU5Q2kwdExTMHRSVTVFSUVORlVsUkpSa2xEUVZSRkxTMHRMUzBL","broker":"eyJjaGFubmVsX2lkIjoibXljaGFubmVsIiwiY2hhaW5jb2RlX2lkIjoiYnJva2VyIiwiYnJva2VyX3ZlcnNpb24iOiIxIn0=","desc":"test update fabric appchain","version":1,"status":"forbidden","fsm":{}}
 ```

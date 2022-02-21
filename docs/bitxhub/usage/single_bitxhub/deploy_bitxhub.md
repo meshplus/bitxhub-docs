@@ -10,7 +10,7 @@
     
     ```shell
     # 1. 首先拉取bitxhub项目源代码
-    git clone https://github.com/meshplus/bitxhub.git
+    mkdir ~/bitxhub-v1.18 && git clone https://github.com/meshplus/bitxhub.git
     # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
     cd bitxhub && git checkout v1.18.0 && make build
     # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
@@ -45,8 +45,8 @@
 
     ```
     # 1. 解压二进制压缩包
-    mkdir bitxhub && cd bitxhub
-
+    mkdir -r ~/bitxhub-v1.18/bitxhub && cd bitxhub
+    
     # 注意更改为二进制文件所在路径
     cp ~/Downloads/bitxhub_darwin_x86_64_v1.18.0.tar.gz .
     # 2. 解压配置文件压缩包(以raft共识为例)
