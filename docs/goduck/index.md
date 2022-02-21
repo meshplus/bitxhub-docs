@@ -352,7 +352,8 @@ GoDuck ether command [command options] [arguments...]
 关于以太坊应用链，我们对应不同bitxhub版本提供了已经部署好跨链合约的以太坊私链镜像，直接启动即可使用
 
 （1）启动以太坊
-注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
+注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
+
 ```shell
 goduck ether start --bxh-version v1.18.0
 
@@ -360,17 +361,18 @@ goduck ether start --bxh-version v1.18.0
 exec:  /bin/bash ethereum.sh docker 1.3.0
 start a new ethereum-node container
 fc6b26e2507fb7da3ca04abea6d014968297383986596377cd42e8852b2b83e6
-start ethereum private chain with data directory in /Users/fangbaozhu/.goduck/ethereum/datadir.
+start ethereum private chain with data directory in /Users/xxx/.goduck/ethereum/datadir.
 ```
 
-该命令会以docker模式启动一条以太坊私链，切该链上已经部署好适配v1.11.2版本bitxhub的跨链合约，合约地址分别如下：
-- broker: 0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4
-- transfer: 0x668a209Dc6562707469374B8235e37b8eC25db08
-- data_swapper: 0x6db07a8b0f23367dc65c7DAD91da4F6bfD97D674
+该命令会以docker模式启动一条以太坊私链，且该链上已经部署好适配v1.11.2版本bitxhub的跨链合约，合约地址分别如下：
+
+- broker: `0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`
+- transfer: `0x668a209Dc6562707469374B8235e37b8eC25db08`
+- data_swapper: `0x6db07a8b0f23367dc65c7DAD91da4F6bfD97D674`
 
 这些合约的abi文件分别在$repo/pier/ethereum/1.3.0/目录下，例如：
 ```shell
-/Users/fangbaozhu/.goduck/pier/ethereum/1.3.0/
+/Users/xxx/.goduck/pier/ethereum/1.3.0/
 ├── account.key
 ├── broker.abi
 ├── data_swapper.abi
@@ -477,7 +479,7 @@ Installing chaincode data_swapper on org[org2] peers:
 ***** |  Response[1]:
 ***** |  |  Payload:
 ****************************************************************************************************
-===> 3. Set (key: path, value: /Users/fangbaozhu/.goduck) in data_swapper chaincode
+===> 3. Set (key: path, value: /Users/xxx/.goduck) in data_swapper chaincode
 ****************************************************************************************************
 ***** |  Response[0]:
 ***** |  |  Payload:
