@@ -35,12 +35,12 @@ OPTIONS:
 * `--method`：必选参数，did方法名。
 * `--doc-addr`：必选参数，指定did文件地址。
 * `--doc-hash`：必选参数，指定did文件的哈希值。
-* `--name`：必选参数，指定的应用了名称。
+* `--name`：必选参数，指定的应用链名称。
 * `--type`：指定的应用链类型。如fabric、flato。
 * `--desc`：必选参数，对应用链的描述信息。
 * `--version`：必选参数，指定应用链版本信息。
 * `--validators`：必选参数，指定应用链的验证人信息所在的文件路径。
-* `--consensus`：必选参数，指定p应用链的共识类型，如rbft、raft等。
+* `--consensus`：必选参数，指定应用链的共识类型，如rbft、raft等。
 * `--rule`：必选参数，指定验证规则地址。
 * `--rule_url`：指定验证规则url。
 * `--addr`：可选参数，指定要连接的中继链节点地址，如果不指定，默认使用$repo目录下pier.toml中指定的BitXHub节点地址。

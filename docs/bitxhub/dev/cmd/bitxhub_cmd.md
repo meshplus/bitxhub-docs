@@ -848,10 +848,12 @@ OPTIONS:
 **参数解释**
 
 - `id`: 提案id；
-- `type`: 提案类型，当前支持应用链管理；
+- `type`: 提案类型，当前支持应用链管理、验证规则管理、节点管理、身份管理；
 - `status`: 提案状态，是否通过；
 - `from`: 提案者地址；
 - `objId`: 管理对象id，如应用链id。
+
+以上五个参数可任意指定至少一个作为查询条件
 
 **示例说明**
 
@@ -907,19 +909,832 @@ COMMANDS:
 
 **子命令**
 
-- `status`:查询应用链状态；
-- `register`:注册应用链；
-- `freeze`:应用链冻结；
-- `activate`:应用链激活。
+##### bitxhub client governance chain status
+查询应用链状态。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance chain status - query chain status by chain id
+
+USAGE:
+   BitXHub client governance chain status [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify chain id
+```
+
+**参数解释**
+
+- `id`：必选参数，应用链id。
 
 **示例说明**
 
 ```shell
 # 管理员治理投票通过后，应用链状态从registing转为available
-$ bitxhub client governance chain status --id 0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance chain status --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
 
 # 控制台输出
-appchain 0x0FDDC68A2300cF9CB0a217123D5f656e0943C1Da is available
+appchain did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:. is available
 
 ```
 
+##### bitxhub client governance chain register
+注册应用链。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance chain register - register appchain
+
+USAGE:
+   BitXHub client governance chain register [command options] [arguments...]
+
+OPTIONS:
+   --method value      Specific did sub method name(like appchain)
+   --doc-addr value    Specify the addr of did document
+   --doc-hash value    Specify the hash of did document
+   --name value        Specify appchain name
+   --type value        Specify appchain type
+   --desc value        Specify appchain description
+   --version value     Specify appchain version
+   --validators value  Specify appchain validators path
+   --consensus value   Specify appchain consensus type
+   --pubkey value      Specify appchain pubkey
+   --reason value      Specify register reason
+   --rule value        Specify master rule addr
+   --ruleUrl value     Specify master rule url
+```
+
+**参数解释**
+
+- `method`：必选参数，应用链did中method名称，1.11.2版本要求method格式为`appchain`拼接应用链管理员地址，如`appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F`；
+- `doc-addr`：必选参数，did文件地址；
+- `doc-hash`：必选参数，did文件的哈希值；
+- `name`：必选参数，应用链名称；
+- `type`：必选参数，应用链类型，如fabric、flato；
+- `desc`：必选参数，应用链的描述信息；
+- `version`：必选参数，应用链版本信息；
+- `validators`：必选参数，应用链的验证人信息所在的文件路径；
+- `consensus`：必选参数，应用链的共识类型，如rbft、raft等；
+- `pubkey`：必选参数，应用链管理员公钥信息；
+- `reason`：注册理由；
+- `rule`：必选参数，应用链主验证规则地址；
+- `ruleUrl`：必选参数，应用链主厌女症规则url。
+
+**示例说明**
+
+```shell
+# 注册应用链
+$ bitxhub --repo $bitxhub_node_repo client governance chain register --method appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F --doc-addr "doc-addr" --doc-hash "doc-hash" --name 应用链1 --type farbric --desc "desc" --version 1 --validators ./fabric.validators --consensus rbft --pubkey 04a35e958549f19c474090403f0f8742a490da71c73f98d667881818d5e8754aa33ea8d97c50964795d7c3f8676abb6f1004722f60fc2fe3433d9682c73ea20357 --rule 0x00000000000000000000000000000000000000a1 --ruleUrl "ruleUrl"
+
+# 控制台输出
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0, chain id is did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+```
+
+##### bitxhub client governance chain freeze
+冻结应用链。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance chain freeze - freeze appchain by chain id
+
+USAGE:
+   BitXHub client governance chain freeze [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify chain id
+   --reason value  Specify freeze reason
+```
+
+**参数解释**
+- `id`：必选参数，应用链id；
+- `reason`：冻结理由。
+
+**示例说明**
+```shell
+# 冻结前应用链状态为可用
+$ bitxhub --repo $bitxhub_node_repo client governance chain status --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+appchain did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:. is available
+
+# 冻结应用链，发起提案
+$ bitxhub --repo $bitxhub_node_repo client governance chain freeze --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
+
+# 冻结提案发起后应用链状态为冻结中
+$ bitxhub --repo $bitxhub_node_repo client governance chain status --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+appchain did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:. is freezing
+```
+
+##### bitxhub client governance chain activate
+冻结应用链。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance chain activate - activate chain by chain id
+
+USAGE:
+   BitXHub client governance chain activate [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify chain id
+   --reason value  Specify activate reason
+```
+
+**参数解释**
+- `id`：必选参数，应用链id；
+- `reason`：激活理由。
+
+**示例说明**
+```shell
+# 冻结提案通过后，应用链为已冻结状态
+$ bitxhub --repo $bitxhub_node_repo client governance chain status --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+appchain did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:. is frozen
+
+# 激活应用链，发起提案
+$  bitxhub --repo $bitxhub_node_repo client governance chain activate --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-3
+
+# 激活提案发起后应用链状态为激活中
+$ bitxhub --repo $bitxhub_node_repo client governance chain status --id did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:.
+appchain did:bitxhub:appchain0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F:. is activating
+```
+
+#### bitxhub client governance node
+
+节点管理。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance node - node manage command
+
+USAGE:
+   BitXHub client governance node command [command options] [arguments...]
+
+COMMANDS:
+   status    query node status by node pid
+   register  register node
+   logout    logout node by node pid
+   all       query all nodes info
+```
+
+**子命令**
+
+##### bitxhub client governance node status
+查询节点状态。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance node status - query node status by node pid
+
+USAGE:
+   BitXHub client governance node status [command options] [arguments...]
+
+OPTIONS:
+   --pid value  Specify node pid
+```
+
+**参数解释**
+
+- `pid`：必选参数，节点id。
+
+**示例说明**
+
+```shell
+# 指定节点为bitxhub初始启动的共识节点，状态为可用
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance node status --pid QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy
+
+# 控制台输出
+node QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy is available
+```
+
+##### bitxhub client governance node register
+注册节点。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance node register - register node
+
+USAGE:
+   BitXHub client governance node register [command options] [arguments...]
+
+OPTIONS:
+   --pid value      Specify node pid
+   --id value       Specify vp node id, only useful for VPnode (default: 0)
+   --account value  Specify node account
+   --type value     Specify node type (vpNode or nvpNode), currently only VPNode is supported (default: "vpNode")
+   --reason value   Specify register reason
+```
+
+**参数解释**
+
+- `pid`：必选参数，节点网络连接pid；
+- `id`：必选参数，共识节点id序号；
+- `account`：必选参数，节点账户地址；
+- `type`：必选参数，节点类型，vpNode为共识节点， nvpNode为审计节点，目前只支持共识节点；
+- `reason`：注册理由。
+
+**示例说明**
+
+```shell
+# 注册共识节点
+$ bitxhub --repo $bitxhub_node_repo client governance node register --pid QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8 --account 0xaE6934E4071082CA2a83F7FEf29ede10C1bc743C --type vpNode --id 5
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+
+# 发起注册提案后，节点状态为注册中
+$ bitxhub --repo $bitxhub_node_repo client governance node status --pid QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8
+node QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8 is registering
+```
+
+##### bitxhub client governance node logout
+注销节点。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance node logout - logout node by node pid
+
+USAGE:
+   BitXHub client governance node logout [command options] [arguments...]
+
+OPTIONS:
+   --pid value     Specify node pid
+   --reason value  Specify logout reason
+```
+
+**参数解释**
+- `pid`：必选参数，节点pid；
+- `reason`：注销理由。
+
+**示例说明**
+```shell
+# 节点注册提案投票功后状态为可用
+$ bitxhub --repo $bitxhub_node_repo client governance node status --pid QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8
+node QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8 is available
+
+# 注销节点，发起提案
+$ bitxhub --repo $bitxhub_node_repo client governance node logout --pid QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
+
+# 注销提案发起后节点状态为注销中
+$ bitxhub --repo $bitxhub_node_repo client governance node status --pid QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8
+node QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8 is logouting
+```
+
+##### bitxhub client governance node all
+查询所有节点。
+
+**示例说明**
+```shell
+# 查询所有节点状态
+$ bitxhub --repo $bitxhub_node_repo client governance node all
+
+# 控制台打印：bitxhub启动初始的四个共识节点始终为可用状态，一个logouting状态的共识节点为后续注册的新节点
+NodePid                                         type    VpNodeId  Account                                     Status
+-------                                         ----    --------  -------                                     ------
+QmcFyjWf8w5o3N175RneZYzp4VmCb1Usi68K2A4EEtr5g8  vpNode  5         0xaE6934E4071082CA2a83F7FEf29ede10C1bc743C  logouting
+QmQW3bFn8XX1t4W14Pmn37bPJUpUVBrBjnPuBZwPog3Qdy  vpNode  4         0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  available
+QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4  vpNode  2         0x79a1215469FaB6f9c63c1816b45183AD3624bE34  available
+QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  vpNode  1         0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  available
+QmQUcDYCtqbpn5Nhaw4FAGxQaSSNvdWfAFcpQT9SPiezbS  vpNode  3         0x97c8B516D19edBf575D72a172Af7F418BE498C37  available
+```
+
+
+
+
+#### bitxhub client governance role
+
+身份管理。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role - role manage command
+
+USAGE:
+   BitXHub client governance role command [command options] [arguments...]
+
+COMMANDS:
+   status    query role status by role id
+   register  register role
+   update    update node for auditAdmin
+   freeze    freeze role by role id
+   activate  activate role by role id
+   logout    logout role by role id
+   all       query all roles info
+```
+
+**子命令**
+
+##### bitxhub client governance role status
+查询身份状态。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role status - query role status by role id
+
+USAGE:
+   BitXHub client governance role status [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify role id(address)
+```
+
+**参数解释**
+
+- `id`：必选参数，身份id，即身份账户地址。
+
+**示例说明**
+
+```shell
+# 指定节点为bitxhub初始的超级管理员，状态为可用
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8
+role 0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8 is available
+```
+
+##### bitxhub client governance role register
+注册身份。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role register - register role
+
+USAGE:
+   BitXHub client governance role register [command options] [arguments...]
+
+OPTIONS:
+   --address value  Specify role address(id)
+   --type value     Specify role type, one of governanceAdmin or auditAdmin (default: "governanceAdmin")
+   --nodePid value  Specify node pid for auditAdmin, only useful for auditAdmin
+   --reason value   Specify register reason
+```
+
+**参数解释**
+
+- `address`：必选参数，身份账户地址，即身份id；
+- `id`：必选参数，共识节点id序号；
+- `type`：必选参数，身份类型，governanceAdmin为治理管理员， auditAdmin为审计管理员，默认为治理管理员，审计管理员目前可以注册但实际未实现；
+- `nodePid`：审计管理员绑定的审计节点pid，仅对审计管理员有效；
+- `reason`：注册理由。
+
+**示例说明**
+
+```shell
+# 注册治理管理员
+$ bitxhub --repo $bitxhub_node_repo client governance role register --address 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F --type governanceAdmin
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-2
+
+# 发起注册提案后，身份状态为注册中
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is registering
+```
+
+##### bitxhub client governance role update
+更新审计管理员绑定的节点信息。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role update - update node for auditAdmin
+
+USAGE:
+   BitXHub client governance role update [command options] [arguments...]
+
+OPTIONS:
+   --id value       Specify auditAdmin id
+   --nodePid value  Specify node pid
+   --reason value   Specify update reason
+```
+
+**参数解释**
+- `id`：必选参数，身份id；
+- `nodePid`：必须参数，新的审计节点pid，节点需要为已经注册的审计节点；
+- `reason`：更新理由。
+
+_此命令仅对审计管理员有效，但审计节点与审计管理员功能在当前版本尚未完全实现，故不推荐使用此命令且不给出示例，后续版本将会继续完善。_
+
+##### bitxhub client governance role freeze
+冻结身份。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role freeze - freeze role by role id
+
+USAGE:
+   BitXHub client governance role freeze [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify role id
+   --reason value  Specify freeze reason
+```
+
+**参数解释**
+- `id`：必选参数，身份id；
+- `reason`：冻结理由。
+
+**示例说明**
+```shell
+# 身份注册提案投票功后状态为可用
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is available
+
+# 冻结身份，发起提案
+$ bitxhub --repo $bitxhub_node_repo client governance role freeze --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-3
+
+# 冻结提案发起后身份状态为冻结中
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is freezing
+```
+
+##### bitxhub client governance role activate
+激活身份。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role activate - activate role by role id
+
+USAGE:
+   BitXHub client governance role activate [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify role id
+   --reason value  Specify activate reason
+```
+
+**参数解释**
+- `id`：必选参数，身份id；
+- `reason`：激活理由。
+
+**示例说明**
+```shell
+# 身份冻结提案投票功后状态为已冻结
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is frozen
+
+# 激活身份，发起提案
+$ bitxhub --repo $bitxhub_node_repo client governance role activate --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-4
+
+# 激活提案发起后身份状态为激活中
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is activating
+```
+
+##### bitxhub client governance role logout
+注销身份。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance role logout - logout role by role id
+
+USAGE:
+   BitXHub client governance role logout [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify role pid
+   --reason value  Specify logout reason
+```
+
+**参数解释**
+- `pid`：必选参数，节点pid；
+- `reason`：注销理由。
+
+**示例说明**
+```shell
+# 身份当前状态为激活中
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is activating
+
+# 注销身份，发起提案
+$ bitxhub --repo $bitxhub_node_repo client governance role logout --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-5
+
+# 注销提案发起后身份状态为注销中
+$ bitxhub --repo $bitxhub_node_repo client governance role status --id 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F
+role 0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F is logouting
+```
+
+##### bitxhub client governance role all
+查询所有身份。
+
+**示例说明**
+```shell
+# 查询所有身份信息
+$ bitxhub --repo $bitxhub_node_repo client governance role all
+
+# 控制台打印：bitxhub启动初始的四个超级治理管理员始终为可用状态，一个logouting状态的治理管理员为后续注册的普通治理管理员
+RoleId                                      type             Weight  NodePid  Status
+------                                      ----             ------  -------  ------
+0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8  governanceAdmin  2                available
+0x97c8B516D19edBf575D72a172Af7F418BE498C37  governanceAdmin  2                available
+0x9E1D8be61dee418B83A47BE54a1777ca70e10E0F  governanceAdmin  1                logouting
+0x79a1215469FaB6f9c63c1816b45183AD3624bE34  governanceAdmin  2                available
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  governanceAdmin  2                available
+```
+
+
+
+
+
+
+
+#### bitxhub client governance dapp
+
+dapp管理。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp - dapp manage command
+
+USAGE:
+   BitXHub client governance dapp command [command options] [arguments...]
+
+COMMANDS:
+   status    query dapp status by dapp id
+   myDapps   query dapps by owner addr
+   register  register dapp
+   update    update dapp
+   freeze    freeze dapp by dapp id
+   activate  activate dapp by dapp id
+   transfer  transfer dapp to other user
+   confirm   confirm dapp transfer
+   evaluate  evaluate dapp
+```
+
+**子命令**
+
+##### bitxhub client governance dapp status
+查询dapp状态。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp status - query dapp status by dapp id
+
+USAGE:
+   BitXHub client governance dapp status [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify dapp id
+```
+
+**参数解释**
+
+- `id`：必选参数，dapp id，dapp注册成功后后打印出id。
+
+
+##### bitxhub client governance dapp myDapps
+查询当前用户拥有dapp列表。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp myDapps - query dapps by owner addr
+
+USAGE:
+   BitXHub client governance dapp myDapps [command options] [arguments...]
+
+OPTIONS:
+   --addr value  Specify user addr
+```
+
+**参数解释**
+
+- `addr`：必选参数，当前用户账户地址。
+
+##### bitxhub client governance dapp register
+注册dapp。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp register - register dapp
+
+USAGE:
+   BitXHub client governance dapp register [command options] [arguments...]
+
+OPTIONS:
+   --name value           Specify dapp name
+   --type value           Specify dapp type, one of tool, application, game and others
+   --desc value           Specify dapp description
+   --url value            Specify dapp url
+   --contractAddrs value  Specify dapp contract addr. If there are multiple contract addresses, separate them with ','
+   --permission value     Specify the addr of users which are not allowed to see the dapp. If there are multiple contract addresses, separate them with ','
+   --reason value         Specify register reason
+```
+
+**参数解释**
+
+- `name`：必选参数，dapp名称；
+- `type`：必选参数，dapp类型，目前支持`tool`,`application`,`game`和`others`四种类型；
+- `desc`：必选参数，dapp描述信息；
+- `url`：必选参数，dapp url；
+- `contractAddrs`：必选参数，dapp合约地址列表，如果有多个用逗号隔开，合约地址需要为bitxhub上部署过的合约；
+- `permission`：必选参数，dapp使用账户黑名单，如果有多个用逗号隔开；
+- `reason`：注册理由。
+
+
+##### bitxhub client governance dapp update
+更新dapp信息。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp update - update dapp
+
+USAGE:
+   BitXHub client governance dapp update [command options] [arguments...]
+
+OPTIONS:
+   --id value             Specify dapp id
+   --name value           Specify dapp name
+   --type value           Specify dapp type, one of tool, application, game and others
+   --desc value           Specify dapp description
+   --url value            Specify dapp url
+   --contractAddrs value  Specify dapp contract addr. If there are multiple contract addresses, separate them with ','
+   --permission value     Specify the addr of users which are not allowed to see the dapp. If there are multiple contract addresses, separate them with ','
+   --reason value         Specify register reason
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+- `name`：必选参数，dapp名称；
+- `type`：必选参数，dapp类型，目前支持`tool`,`application`,`game`和`others`四种类型；
+- `desc`：必选参数，dapp描述信息；
+- `url`：必选参数，dapp url；
+- `contractAddrs`：必选参数，dapp合约地址列表，如果有多个用逗号隔开，合约地址需要为bitxhub上部署过的合约；
+- `permission`：必选参数，dapp使用账户黑名单，如果有多个用逗号隔开；
+- `reason`：更新理由。
+
+##### bitxhub client governance dapp freeze
+冻结dapp。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp freeze - freeze dapp by dapp id
+
+USAGE:
+   BitXHub client governance dapp freeze [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify dapp id
+   --reason value  Specify freeze reason
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+- `reason`：冻结理由。
+
+
+##### bitxhub client governance dapp activate
+激活dapp。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp activate - activate dapp by dapp id
+
+USAGE:
+   BitXHub client governance dapp activate [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify dapp id
+   --reason value  Specify activate reason
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+- `reason`：激活理由。
+
+##### bitxhub client governance dapp transfer
+转让dapp。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp transfer - transfer dapp to other user
+
+USAGE:
+   BitXHub client governance dapp transfer [command options] [arguments...]
+
+OPTIONS:
+   --id value      Specify dapp id
+   --addr value    Specify new owner addr
+   --reason value  Specify activate reason
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+- `addr`：必选参数，dapp接收账户地址；
+- `reason`：转让理由。
+
+
+##### bitxhub client governance dapp confirm
+dapp接收确认。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp confirm - confirm dapp transfer
+
+USAGE:
+   BitXHub client governance dapp confirm [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify dapp id
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+
+##### bitxhub client governance dapp evaluate
+dapp评分。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance dapp evaluate - evaluate dapp
+
+USAGE:
+   BitXHub client governance dapp evaluate [command options] [arguments...]
+
+OPTIONS:
+   --id value     Specify dapp id
+   --desc value   Specify evaluate desc
+   --score value  Specify evaluate score (default: 0)
+```
+
+**参数解释**
+- `id`：必选参数，dapp id；
+- `desc`：必选参数，dapp评价信息；
+- `score`：dapp评价分数，评分应在[0,5]区间内，默认为0；
+
+
+**示例说明**
+
+```shell
+# 注册dapp
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp register --name dapp1 --desc "desc"  --contractAddrs 0x615bAa02f2751f3378c8c57F9eB084daD6A55a92 --url "url" --type tool
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-6, dapp id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+
+# 发起注册提案后，dapp状态为注册中
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp status --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+dapp 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 is registering
+
+# 治理投票省略，注册提案已通过
+
+# 冻结dapp
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp freeze --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-7
+
+# 治理投票省略，冻结提案已通过
+
+# 激活dapp
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp activate --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-8
+
+# 治理投票省略，激活提案已通过
+
+# 转让dapp
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp transfer --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 --addr 0x97c8B516D19edBf575D72a172Af7F418BE498C37
+proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-9
+
+# 治理投票省略，转让提案已通过
+
+# 查询dapp接收账户所有dapp
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node1 client governance dapp myDapps --addr 0x97c8B516D19edBf575D72a172Af7F418BE498C37
+========================================================================================
+Id                                            Name  Type  Owner                                       Createtime           Score  Status
+--                                            ----  ----  -----                                       ----------           -----  ------
+0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0  1     tool  0x97c8B516D19edBf575D72a172Af7F418BE498C37  1645499462680860000  0      available
+
+# 接收账户确认接收dapp（此步骤意义不大，不做也可）
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node3 client governance dapp confirm --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
+confirm dapp transfer success
+
+# dapp所有者对其进行评价
+$ bitxhub --repo ~/work/bitxhub/scripts/build/node3 client governance dapp evaluate --id 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0 --desc "good dapp" --score 5
+evaluate dapp success
+```
+
+
+#### bitxhub client governance strategy
+
+投票策略管理。命令说明如下：
+
+```shell
+NAME:
+   BitXHub client governance strategy - proposal strategy command
+
+USAGE:
+   BitXHub client governance strategy command [command options] [arguments...]
+
+COMMANDS:
+   all  query all proposal strategy
+```
+
+**子命令**
+##### bitxhub client governance strategy all
+查询所有管理模块投票策略。
+
+**示例说明**
+```shell
+$ bitxhub --repo $bitxhub_node_repo client governance strategy all
+
+#控制台输出，所有模块的投票策略都为默认简单多数投票策略，即赞成票数大于半数时提案通过
+module        strategy        Extra
+------        --------        -----
+appchain_mgr  SimpleMajority  a > 0.5 * t
+node_mgr      SimpleMajority  a > 0.5 * t
+dapp_mgr      SimpleMajority  a > 0.5 * t
+role_mgr      SimpleMajority  a > 0.5 * t
+rule_mgr      SimpleMajority  a > 0.5 * t
+```
