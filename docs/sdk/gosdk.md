@@ -257,30 +257,67 @@ func New(opts ...Option) (*ChainClient, error)
 func Stop() error
 ```
 
-### 3.2 交易接口
+#### 3.1.3 设置Client私钥
 
-#### 3.2.1 发送交易
-
-用途：调用该接口向中继链发送交易，交易类型包括普通交易、跨链交易和智能合约。
+用途：调用该接口将重新设置与中继链交互的Client的私钥。  
 
 参数：
 
-- `tx`交易实例。
-- `opts`跨链交易nonce。
+- `key` Client私钥实例。
+
+```go 
+func SetPrivateKey(key crypto.PrivateKey)
+```
+
+
+
+### 3.2 交易接口
+
+#### 3.2.1 发送只读交易
+
+用途：调用该接口向中继链发送只读交易，并返回交易回执。若交易是可写的，则该交易不会被执行并返回错误。
+
+参数：
+
+-`tx` 只读交易实例。
+
+```go 
+func SendView(tx *pb.BxhTransaction) (*pb.Receipt, error)
+```
+
+#### 3.2.2 发送交易
+
+用途：调用该接口向中继链发送签名后的交易，交易类型包括普通交易、跨链交易和智能合约。若签名非法，仍会返回交易哈希，但是交易回执非法。
+
+参数：
+
+- `tx` 交易实例。
+- `opts` 跨链交易nonce。
 
 ```go
 func SendTransaction(tx *pb.Transaction, opts *TransactOpts) (string, error)
 ```
 
+#### 3.2.3 发送交易并返回回执
 
-
-#### 3.2.2 查询交易回执
-
-用途：调用该接口向BitXHub查询交易回执。
+用途：调用该接口向中继链发送交易并返回交易执行后的回执。
 
 参数：
 
-- `hash`交易哈希。
+- `tx` 交易实例。
+- `opts` 跨链交易nonce。
+
+```go 
+func SendTransactionWithReceipt(tx *pb.BxhTransaction, opts *TransactOpts) (*pb.Receipt, error)
+```
+
+#### 3.2.4 查询交易回执
+
+用途：调用该接口向BitXHub查询交易回执。交易回执中的status字段标识交易是否成功。
+
+参数：
+
+- `hash` 交易哈希。
 
 ```go
 func GetReceipt(hash string) (*pb.Receipt, error)
@@ -335,16 +372,40 @@ func TestChainClient_SendTransactionWithReceipt(t *testing.T) {
 }
 ```
 
-#### 3.2.3 查询交易
+#### 3.2.5 查询交易
 
 用途：调用该接口向BitXHub查询交易。
 
 参数：
 
-- `hash`交易哈希。
+- `hash` 交易哈希。
 
 ```go
 func GetTransaction(hash string) (*proto.GetTransactionResponse, error)
+```
+
+#### 3.2.6 查询待处理交易
+
+用途：调用该接口向中继链查询交易池待处理交易。
+
+参数：
+
+- `hash` 交易哈希。
+
+```go 
+func GetPendingTransaction(hash string) (*pb.GetTransactionResponse, error)
+```
+
+#### 3.2.7 生成跨链交易
+
+用途：根据IBTP生成跨链交易。
+
+参数：
+
+- `IBTP` 跨链交易统一数据结构
+
+```go 
+func GenerateIBTPTx(ibtp *pb.IBTP) (*pb.BxhTransaction, error)
 ```
 
 
@@ -354,7 +415,6 @@ func GetTransaction(hash string) (*proto.GetTransactionResponse, error)
 合约类型：
 
 - BVM：BitXHub内置合约。
-
 - XVM：WebAssembly合约。
 
 #### 3.3.1 部署合约
@@ -376,14 +436,10 @@ func DeployContract(contract []byte, opts *TransactOpts) (contractAddr *types.Ad
 
 参数：
 
-- `vmType`合约类型：BVM和XVM；
-
-- `address`合约地址；
-
-- `method`合约方法；
-
-- `opts`跨链交易nonce；
-
+- `vmType`合约类型：BVM和XVM。
+- `address`合约地址。
+- `method`合约方法。
+- `opts`跨链交易nonce。
 - `args`合约方法参数。
 
 ```go
@@ -442,20 +498,30 @@ func TestChainClient_InvokeBVMContract(t *testing.T) {
 }
 ```
 
-### 3.4 区块接口
+#### 3.3.3 生成合约调用交易
 
-#### 3.4.1 查询区块
+用途：生成签名后的调用合约的交易。
 
 参数：
 
-- `value`区块高度或者区块哈希。
-- `blockType` 查询类型。
+- `vmType` 调用合约类型。
+- `address` 调用合约地址。
+- `method` 调用合约方法。
+- `args` 调用合约方法的参数。
 
-```go
-GetBlock(value string, blockType pb.GetBlockRequest_Type) (*pb.Block, error)
+```go 
+func GenerateContractTx(vmType pb.TransactionData_VMType, address *types.Address, method string, args ...*pb.Arg) (*pb.BxhTransaction, error)
 ```
 
+### 3.4 区块接口
 
+##### 3.4.1 查询当前区块链信息
+
+用途：获取当前链信息，返回的chainMeta中包含当前区块高度、当前区块哈希以及当前区块跨链交易数。
+
+```go 
+func GetChainMeta() (*pb.ChainMeta, error)
+```
 
 #### 3.4.2 批量查询区块
 
@@ -463,24 +529,25 @@ GetBlock(value string, blockType pb.GetBlockRequest_Type) (*pb.Block, error)
 
 参数：
 
-- `start`指定范围的起始区块高度。
-- `end`指定范围的结束区块高度。
+- `start` 指定范围的起始区块高度。
+- `end` 指定范围的结束区块高度。
 
 ```go
 func GetBlocks(start uint64, end uint64) (*pb.GetBlocksResponse, error)
 ```
 
+#### 3.4.3 查询区块
 
+用途：从中继链获取指定区块高度或区块哈希对应的区块信息。
 
-#### 3.4.3 查询区块Meta
+参数：
 
-用途：返回当前链的高度和区块哈希。
+- `value` 区块高度或者区块哈希。
+- `blockType` 查询类型。
 
 ```go
-func GetChainMeta() (*pb.ChainMeta, error)
+GetBlock(value string, blockType pb.GetBlockRequest_Type) (*pb.Block, error)
 ```
-
-
 
 #### 3.4.4 查询区块链状态
 
@@ -496,11 +563,14 @@ func GetChainStatus() (*pb.Response, error)
 
 #### 3.5.1 订阅事件
 
-用途：调用该接口向中继链发起订阅事件的。
+用途：调用该接口向中继链发起订阅事件。
 
 参数：
 
+- `ctx` 上下文信息。
 - `type` 事件类型，包含区块事件，区块头事件，跨链交易事件。
+- `extra` 额外信息。
+
 
 ```go
 func Subscribe(ctx context.Context, typ pb.SubscriptionRequest_Type, extra []byte) (<-chan interface{}, error)
@@ -564,25 +634,65 @@ func TestChainClient_Subscribe(t *testing.T) {
 }
 ```
 
+#### 3.5.2 订阅审计事件
 
-#### 3.5.2 获取MerkleWrapper
-
-用途：获取指定区块高度范围的MerkleWrapper
+用途：调用该接口向中继链订阅审计事件。
 
 参数：
 
+- `ctx` 上下文信息。
+- `typ` 事件类型，AuditSubscriptionRequest_AUDIT_NODE。
+- `blockHeight` 订阅事件开始区块高度。
+- `extra` 额外信息（nil）。
+
+```go 
+func SubscribeAudit(ctx context.Context, typ pb.AuditSubscriptionRequest_Type, blockHeight uint64, extra []byte) (<-chan interface{}, error)
+```
+
+#### 3.5.3 获取InterchainTxWrapper
+
+用途：获取指定区块高度范围的InterchainTxWrapper
+
+参数：
+
+- `ctx` 上下文信息。
 - `pid` 应用链ID。
 - `begin` 起始区块高度。
 - `end` 结束区块高度。
-- `ch` Merkle Wrapper的通道。
+- `ch` InterchainTxWrapper的通道。
 
 ```go
 func GetInterchainTxWrappers(ctx context.Context, pid string, begin, end uint64, ch chan<- *pb.InterchainTxWrapper) error
 ```
 
+#### 3.5.4 获取区块头
+
+用途：获取指定块高度范围（start到end）的区块信息。
+
+参数：
+
+- `ctx` 上下文信息。
+- `start` 指定范围的起始区块高度。
+- `end` 指定范围的结束区块高度。
+- `ch` 区块头通道。
+
+```go 
+func GetBlockHeader(ctx context.Context, begin, end uint64, ch *chan<- *pb.BlockHeader) error 
+```
+
+
+
 ### 3.6 其它接口
 
-#### 3.6.1 查询节点网络信息
+#### 3.6.1 查询中继链验证者
+
+用途：返回中继链创世管理员地址。
+
+```go 
+func GetValidators() (*pb.Response, error)
+```
+
+#### 3.6.2 查询节点网络信息
 
 用途：返回当前区块链网络的节点信息。
 
@@ -590,24 +700,95 @@ func GetInterchainTxWrappers(ctx context.Context, pid string, begin, end uint64,
 func GetNetworkMeta() (*pb.Response, error)
 ```
 
-#### 3.6.2 查询账户余额
+#### 3.6.3 查询账户余额
 
 参数：
 
-- `address`地址。
+- `address` 地址。
 
 ```go
 func GetAccountBalance(address string) (*pb.Response, error)
 ```
 
-#### 3.6.3 删除节点
+#### 3.6.4 查询TPS
 
-用途：删除区块链网络中的节点（须往f+1个节点发送请求才可以删除）
+用途：获取指定块高度范围内的TPS。
 
 参数：
 
-- `pid`节点的pid
+- `start` 指定范围的起始区块高度。
+- `end` 指定范围的结束区块高度。
 
-```go
-func DelVPNode(pid string) (*pb.Response, error)
+```go 
+func GetTPS(begin, end uint64) (uint64, error)
+```
+
+#### 3.6.5 查询nonce
+
+用途：获取指定账户下一笔交易的nonce。
+
+参数：
+
+- `account` 账户地址。
+
+```go 
+func GetPendingNonceByAccount(account string) (uint64, error)
+```
+
+#### 3.6.6 查询BitXHub链ID
+
+用途：获取中继链的链ID。
+
+```go 
+func GetChainID() (uint64, error)
+```
+
+#### 3.6.7 上传文件
+
+用途：上传本地文件到IPFS网络。
+
+参数：
+
+- `localPath` 本地文件路径。
+
+```go 
+func IPFSPutFromLocal(localPath string) (*pb.Response, error)
+```
+
+#### 3.6.8 获取文件
+
+用途：从IPFS网络获取指定文件。
+
+参数：
+
+- `path` IPFS网络中文件路径。
+
+```go 
+func IPFSGet(path string) (*pb.Response, error)
+```
+
+#### 3.6.9 下载文件
+
+用途：从IPFS网络下载指定文件到本地。
+
+参数：
+
+- `path` IPFS网络中文件路径。
+- `localPath` 本地文件存储路径。
+
+```go 
+func IPFSGetToLocal(path string, localPath string) (*pb.Response, error)
+```
+
+#### 3.6.10 查询多签
+
+用途：调用该接口向中继链获取指定多签结果。
+
+参数：
+
+- `id` 指定id。
+- `type` 指定类型，区块头、IBTP等。
+
+```go 
+func GetMultiSigns(id string, typ pb.GetMultiSignsRequest_Type) (*pb.SignResponse, error)
 ```
