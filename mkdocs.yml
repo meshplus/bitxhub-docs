@@ -121,6 +121,7 @@ nav:
             - 验证规则管理: bitxhub/function/rule_manager.md
         - 跨链合约调用: bitxhub/function/cross_invoke.md
       - 开发手册:
+          - 中继链接口列表: bitxhub/dev/api.md
           - 命令行说明:
             - 中继链BitXHub: bitxhub/dev/cmd/bitxhub_cmd.md
             - 跨链网关Pier: bitxhub/dev/cmd/pier_cmd.md
