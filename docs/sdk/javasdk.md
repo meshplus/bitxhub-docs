@@ -246,55 +246,93 @@ GrpcClient client = new GrpcClientImpl(Config.defaultConfig());
 public void stop() throws InterruptedException
 ```
 
+#### 3.1.3 设置私钥
+
+用途：调用该接口重新设置client私钥。
+
+```java 
+public void setECKey(ECKeyS256 ecKey)
+```
+
+入参：`key`是ECDSA类型的私钥实例。
+
 ### 3.2 交易接口
 
 #### 3.2.1 发送交易
 
-用途：调用该接口向BitXHub发送交易，交易类型包括普通交易、跨链交易和智能合约交易。
+用途：调用该接口向中继链发送签名后的交易，交易类型包括普通交易、跨链交易和智能合约。若签名非法，仍会返回交易哈希，但是交易回执非法。
 
 参数：
 
-- `transaction`交易。
-- `opts`跨链交易nonce。
+- `transaction` 交易。
+- `opts` 跨链交易nonce。
 
 ```java
-public String sendTransaction(TransactionOuterClass.Transaction transaction, TransactOpts opts);
+public String sendTransaction(Transaction.BxhTransaction transaction, TransactOpts opts)
 ```
 
 用例：
 
 ```java
 public void sendTransaction() {
-    TransactionOuterClass.Transaction unsignedTx = TransactionOuterClass.Transaction.newBuilder()
+        Transaction.BxhTransaction unsignedTx = Transaction.BxhTransaction.newBuilder()
                 .setFrom(ByteString.copyFrom(from))
                 .setTo(ByteString.copyFrom(to))
                 .setTimestamp(Utils.genTimestamp())
-                .setPayload(TransactionOuterClass.TransactionData.newBuilder().setAmount(100000L).build().toByteString())
+                .setPayload(Transaction.TransactionData.newBuilder().setAmount("100000").build().toByteString())
                 .build();
-
-    TransactionOuterClass.Transaction signedTx = SignUtils.sign(unsignedTx, config.getEcKey());
-    String txHash = client.sendTransaction(signedTx, null);
-}
+        Transaction.BxhTransaction signedTx = SignUtils.sign(unsignedTx, config.getEcKey());
+        String txHash = client.sendTransaction(signedTx, null);
+    }
 ```
 
-#### 3.2.2 查询交易回执
+#### 3.2.2 发送交易并返回回执
+
+用途：调用该接口向中继链发送签名后的交易，并返回交易回执。
+
+参数：
+
+- `transaction` 交易。
+- `opts` 跨链交易nonce。
+
+```java 
+public ReceiptOuterClass.Receipt sendTransactionWithReceipt(Transaction.BxhTransaction transaction, TransactOpts opts)
+```
+
+#### 3.2.3 发送只读交易
+
+用途：调用该接口向中继链发送只读交易并返回交易回执。
+
+参数：
+
+- `transaction` 交易。
+
+```java 
+public ReceiptOuterClass.Receipt sendView(Transaction.BxhTransaction transaction)
+```
+
+#### 3.2.4 查询交易回执
+
+用途：调用该接口向BitXHub查询交易回执，交易回执的状态标识了交易是否成功。
+
+参数：
+
+- `hash` 交易哈希。
+
+```java
+public ReceiptOuterClass.Receipt getReceipt(String hash)
+```
+
+#### 3.2.5 查询交易
+
+用途：调用该接口向BitXHub查询交易。
 
 参数：
 
 - `hash`交易哈希。
 
 ```java
-ReceiptOuterClass.Receipt getReceipt(String hash);
-```
-
-#### 3.2.3 查询交易
-
-参数：
-
-- `hash`交易哈希。
-
-```java
-Broker.GetTransactionResponse getTransaction(String hash);
+public Broker.GetTransactionResponse getTransaction(String hash)
 ```
 
 ### 3.3 合约接口
@@ -311,50 +349,96 @@ Broker.GetTransactionResponse getTransaction(String hash);
 
 参数：
 
-- `contract`合约数据。
+- `contract` 合约数据。
 
 ```java
-String deployContract(byte[] contract);
+public String deployContract(byte[] contract)
 ```
 
 #### 3.3.2 调用合约
 
-用途：调用该接口向BitXHub调用BVM或者XVM合约。
+用途：调用该接口向BitXHub调用BVM或者XVM合约并返回调用结果。
 
 参数：
 
-- `vmType`合约类型：BVM和XVM。
-- `contractAddress`合约地址。
-- `method `合约方法；
-- `args`合约方法参数。
+- `vmType` 合约类型：BVM和XVM。
+- `contractAddress` 合约地址。
+- `method ` 合约方法。
+- `args` 合约方法参数。
+
 ```java
-ReceiptOuterClass.Receipt invokeContract(TransactionOuterClass.TransactionData.VMType vmType, String contractAddress, String method, ArgOuterClass.Arg... args);
+public ReceiptOuterClass.Receipt invokeContract(Transaction.TransactionData.VMType vmType, String contractAddress, String method, ArgOuterClass.Arg... args)
 ```
 
 用例：
 
 ```java
-public void invokeContract() throws IOException {
-    byte[] contractBytes = IOUtils.toByteArray(
-            new FileInputStream("./example.wasm"));
-    String contractAddress = client.deployContract(contractBytes);
+public void invokeBVMContract() {
+        String result = "10";
+        ReceiptOuterClass.Receipt receipt = client.invokeContract(Transaction.TransactionData.VMType.BVM
+                , BVMAddr.STORE_CONTRACT_ADDR, "Set", Types.string("a"), Types.string(result));
 
-    ReceiptOuterClass.Receipt receipt = client.invokeContract(TransactionOuterClass.TransactionData.VMType.XVM
-            , contractAddress, "a", Types.i32(1), Types.i32(1));
-}
+        ReceiptOuterClass.Receipt receipt1 = client.sendView(client.generateContractTx(Transaction.TransactionData.VMType.BVM
+                , BVMAddr.STORE_CONTRACT_ADDR, "Get", Types.string("a")));
+    }
+```
+
+#### 3.3.3 调用BVM合约
+
+用途：调用该接口向BitXHub调用BVN合约并返回调用结果。
+
+参数：
+
+- `contractAddress` 合约地址。
+- `method ` 合约方法。
+- `args` 合约方法参数。
+
+```java 
+public ReceiptOuterClass.Receipt invokeBVMContract(String contractAddress, String method, ArgOuterClass.Arg... args)
+```
+
+#### 3.3.4 调用XVM合约
+
+用途：调用该接口向BitXHub调用XVN合约并返回调用结果。
+
+参数：
+
+- `contractAddress` 合约地址。
+- `method ` 合约方法。
+- `args` 合约方法参数。
+
+```java 
+public ReceiptOuterClass.Receipt invokeXVMContract(String contractAddress, String method, ArgOuterClass.Arg... args)
+```
+
+#### 3.3.5 生成调用合约交易
+
+用途：调用该接口生成合约调用交易。
+
+参数：
+
+- `vmType` 合约类型：BVM和XVM。
+- `contractAddress` 合约地址。
+- `method ` 合约方法。
+- `args` 合约方法参数。
+
+```java 
+public Transaction.BxhTransaction generateContractTx(Transaction.TransactionData.VMType vmType, String contractAddress, String method, ArgOuterClass.Arg... args)
 ```
 
 ### 3.4 区块接口
 
 #### 3.4.1 查询区块
 
+用途：调用该接口向BitXHub查询区块，其中区块头包含区块基本信息，区块体包含所有打包的交易。
+
 参数：
 
 - `value`区块高度或者区块哈希。
-- `type` 查询类型。`type类型`。
+- `type` 查询类型。
 
 ```java
-BlockOuterClass.Block getBlock(String value, Broker.GetBlockRequest.Type type);
+public BlockOuterClass.Block getBlock(String value, Broker.GetBlockRequest.Type type)
 ```
 
 
@@ -369,30 +453,51 @@ BlockOuterClass.Block getBlock(String value, Broker.GetBlockRequest.Type type);
 - `end`指定范围的结束区块高度。
 
 ```java
-Broker.GetBlocksResponse getBlocks(Long start, Long end);
+public Broker.GetBlocksResponse getBlocks(Long start, Long end)
 ```
 
+#### 3.4.3 批量查询HapplyBlock
 
+用途：批量查询HappyBlock，返回指定块高度范围（start到end）的区块信息。HappyBlock中将BitXHub交易和以太坊交易分别存储。
 
-#### 3.4.3 查询区块Meta
+参数：
 
-用途：返回当前链的高度和区块哈希。
+- `start`指定范围的起始区块高度。
+- `end`指定范围的结束区块高度。
+
+```java 
+public Broker.GetHappyBlocksResponse getHappyBlocks(Long start, Long end)
+```
+
+#### 3.4.4 查询区块Meta
+
+用途：返回当前链的高度、区块哈希以及跨链交易数。
 
 ```java
-Chain.ChainMeta getChainMeta();
+public Chain.ChainMeta getChainMeta()
 ```
 
-
-
-#### 3.4.4 查询区块链状态
+#### 3.4.5 查询区块链状态
 
 用途：返回当前区块链共识的状态（正常或者不正常）。
 
 ```java
-Broker.Response getChainStatus();
+public Broker.Response getChainStatus()
 ```
 
 
+#### 3.4.6 批量查询区块头
+
+用途：调用该接口向BitXHub查询指定块高度范围内的区块头。
+
+参数：
+
+- `begin`指定范围的起始区块高度。
+- `end`指定范围的结束区块高度
+
+```java 
+public Broker.GetBlockHeadersResponse getBlockHeaders(Long start, Long end)
+```
 
 ### 3.5 订阅接口
 
@@ -407,7 +512,7 @@ Broker.Response getChainStatus();
 
 用例：
 ```java
-void subscribe(Broker.SubscriptionRequest.Type type, StreamObserver<Broker.Response> observer);
+public void subscribe(Broker.SubscriptionRequest.Type type, StreamObserver<Broker.Response> observer)
 ```
 
 ```java
@@ -442,6 +547,186 @@ public void subscribe() throws InterruptedException {
 }
 ```
 
+#### 3.5.2 订阅审计事件
+
+用途：调用该接口向BitXHub订阅审计信息。
+
+参数：
+
+- `type` 事件类型，AUDIT_NODE。
+- `blockHeight` 订阅事件开始块高度。
+- `observer` 事件通道。
+
+```java 
+public void subscribeAuditInfo(AuditInfo.AuditSubscriptionRequest.Type type, Long blockHeight, StreamObserver<Broker.Response> observer);
+```
+
+用例：
+```java 
+public void subscribeAudit() throws InterruptedException {
+        CountDownLatch asyncLatch = new CountDownLatch(1);
+        StreamObserver<Broker.Response> observer = new StreamObserver<Broker.Response>() {
+            @Override
+            public void onNext(Broker.Response response) {
+                ByteString data = response.getData();
+                AuditInfo.AuditTxInfo info = null;
+                Transaction.TransactionData txData = null;
+                Transaction.InvokePayload payload = null;
+                try {
+                    info = AuditInfo.AuditTxInfo.parseFrom(data);
+                    if (!info.getTx().hasIBTP()){
+                        txData = Transaction.TransactionData.parseFrom(info.getTx().getPayload());
+                        payload = Transaction.InvokePayload.parseFrom(txData.getPayload());
+                        System.out.printf("from: %s, to: %s\n",
+                                Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(info.getTx().getFrom().toByteArray())),
+                                Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(info.getTx().getTo().toByteArray()))
+                        );
+                        System.out.printf("method: %s\n", payload.getMethod());
+                    }
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                }
+                Assert.assertNotNull(info);
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                asyncLatch.countDown();
+            }
+        };
+
+        System.out.printf("adminAddr: %s\n", Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(adminAddr1)));
+        System.out.printf("appchainAddr: %s\n", Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(appchainAdmin)));
+        System.out.printf("nodeAccount: %s\n", Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(nodeAccount)));
+
+        try {
+            registerAppchain("appchain1", "应用链1", Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(appchainAdmin)));
+            registerNode(Keys.toChecksumAddress(ByteUtil.toHexStringWithOx(nodeAccount)), "审计节点", "appchain1");
+            Thread.sleep(5000);
+        } catch (InterruptedException | StatusRuntimeException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Chain.ChainMeta chainMeta = nodeCli.getChainMeta();
+        } catch (StatusRuntimeException e) {
+            Assert.assertNotNull(e);
+            e.printStackTrace();
+        }
+
+        try {
+            Broker.GetBlocksResponse response = nodeCli.getBlocks(1L, 10L);
+        } catch (StatusRuntimeException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            nodeCli.subscribeAuditInfo(AuditInfo.AuditSubscriptionRequest.Type.AUDIT_NODE, 1L, observer);
+        } catch (StatusRuntimeException e) {
+            e.printStackTrace();
+        }
+
+        asyncLatch.await();
+    }
+```
+
+#### 3.5.3 订阅查询InterchainTxWrapper
+
+用途：调用该接口向BitXHub获取指定块高度范围内的InterchainTxWrapper。通过InterchainTxWrapper可以获取区块中的跨链交易。
+
+参数：
+
+- `pid` 应用链ID。
+- `begin`指定范围的起始区块高度。
+- `end`指定范围的结束区块高度。
+- `streamObserver` InterchainTxWrapper通道。
+
+```java 
+public void getInterchainTxWrappers(String pid, Long begin, Long end, StreamObserver<Broker.InterchainTxWrappers> streamObserver)
+```
+
+用例：
+
+```java 
+public void getInterchainTxWrapper() throws InterruptedException {
+        CountDownLatch asyncLatch = new CountDownLatch(1);
+        StreamObserver<Broker.InterchainTxWrappers> observer = new StreamObserver<Broker.InterchainTxWrappers>() {
+            @Override
+            public void onNext(Broker.InterchainTxWrappers interchainTxWrapper) {
+
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                asyncLatch.countDown();
+            }
+        };
+
+        Chain.ChainMeta chainMeta = client.getChainMeta();
+
+        client.getInterchainTxWrappers("node1", chainMeta.getHeight(), chainMeta.getHeight() + 100, observer);
+        sendInterchaintx();
+        asyncLatch.await();
+    }
+```
+
+#### 3.5.4 订阅查询区块头
+
+用途：调用该接口向BitXHub获取指定块高度范围内的区块头。
+
+参数：
+
+- `begin`指定范围的起始区块高度。
+- `end`指定范围的结束区块高度。
+- `streamObserver` 区块头通道。
+
+```java 
+public void getBlockHeaders(Long begin, Long end, StreamObserver<BlockOuterClass.BlockHeader> streamObserver)
+```
+
+用例：
+
+```java 
+public void getBlockHeaders() throws InterruptedException {
+        CountDownLatch asyncLatch = new CountDownLatch(1);
+        StreamObserver<BlockOuterClass.BlockHeader> observer = new StreamObserver<BlockOuterClass.BlockHeader>() {
+            @Override
+            public void onNext(BlockOuterClass.BlockHeader blockHeader) {
+            
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                throwable.printStackTrace();
+                asyncLatch.countDown();
+            }
+
+            @Override
+            public void onCompleted() {
+                asyncLatch.countDown();
+            }
+        };
+
+        client.getBlockHeaders(1L, 2L, observer);
+        sendTransaction();
+        asyncLatch.await();
+    }
+```
 
 
 ### 3.6 其它接口
@@ -451,7 +736,7 @@ public void subscribe() throws InterruptedException {
 用途：返回当前区块链网络的节点信息。
 
 ```java
-Broker.Response getNetworkMeta();
+public Broker.Response getNetworkMeta()
 ```
 
 #### 3.6.2 查询账户余额
@@ -461,5 +746,59 @@ Broker.Response getNetworkMeta();
 - `address`地址。
 
 ```java
-Broker.Response getAccountBalance(String address);
+public Broker.Response getAccountBalance(String address)
+```
+
+#### 3.6.3 查询账户nonce
+
+用途：调用该接口获取账户地址下一笔跨链交易nonce。
+
+参数：
+
+- `account` 账户地址。
+
+```java 
+public long getPendingNonceByAccount(String account)
+```
+
+#### 3.6.4 查询中继链验证者
+
+用途：返回中继链创世管理员地址。
+
+```java
+public Broker.Response getValidators()
+```
+
+#### 3.6.5 查询TPS
+
+用途：获取指定块高度范围内的TPS。
+
+参数：
+
+- `begin` 指定范围的起始区块高度。
+- `end` 指定范围的结束区块高度。
+
+```java 
+public String getTPS(long begin, long end)
+```
+
+#### 3.6.6 查询BitXHub链ID
+
+用途：获取中继链的链ID。
+
+```java 
+public String getChainID()
+```
+
+#### 3.6.7 查询多签
+
+用途：调用该接口向中继链获取指定多签结果。
+
+参数：
+
+- `type` 指定类型，区块头、IBTP等。
+- `content` 查询内容。
+
+```java 
+public Map<String, String> getMultiSigns(Broker.GetMultiSignsRequest.Type type, String content)
 ```

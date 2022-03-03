@@ -3,11 +3,19 @@
 
 ## 1 环境准备
 
-> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好docker环境。
+> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](../usage/env/)。
 
 ## 2 下载 Goduck
 
-> **！！！注意：** 执行上述命令的路径下应该没有goduck同名目录
+> **！！！注意：** 
+>
+> 1. 执行上述命令的路径下应该没有goduck同名目录
+>
+> 2. 在启动跨链网络过程中，如果遇到网络等问题，请运行以下命令：
+>
+>    ```shell
+>    goduck playground clean
+>    ```
 
 下载Goduck可执行二进制文件：
 
@@ -15,7 +23,17 @@
 curl https://raw.githubusercontent.com/meshplus/goduck/release-1.0/scripts/goduck.sh -L -o - | bash
 ```
 
+查询goduck命令的路径：
+
+```
+$ which goduck
+/usr/local/bin/goduck
+```
+
+
+
 ## 3 初始化
+
 初始化goduck配置文件，命令如下：
 ```shell
 goduck init
@@ -27,30 +45,34 @@ goduck init
 ```shell
 goduck playground start
 ```
-该命令执行的具体操作包括以下步骤：
+**该命令执行的具体操作包括以下步骤**：
 
-### 获取相关镜像
-镜像拉取成功后将会打印日志如下：
+- 获取相关镜像：
 
-```shell
-Creating network "quick_start_default" with the default driver
-Creating ethereum-1      ... done
-Creating bitxhub_solo ... done
-Creating ethereum-2   ... done
-Creating pier-ethereum-2 ... done
-Creating pier-ethereum-1 ... done
-Attaching to bitxhub_solo, ethereum-2, ethereum-1, pier-ethereum-1, pier-ethereum-2
-```
+  镜像拉取成功后将会打印日志如下：
 
-### 启动两条以太坊私有链
-以太坊私有链ethereum-1和ethereum-2启动成功后，最终会打印出日志如下：
+  ```shell
+  Creating network "quick_start_default" with the default driver
+  Creating ethereum-1      ... done
+  Creating bitxhub_solo ... done
+  Creating ethereum-2   ... done
+  Creating pier-ethereum-2 ... done
+  Creating pier-ethereum-1 ... done
+  Attaching to bitxhub_solo, ethereum-2, ethereum-1, pier-ethereum-1, pier-ethereum-2
+  ```
+
+- 启动两条以太坊私有链ethereum-1和ethereum-2：
+
+  以太坊私有链ethereum-1和ethereum-2启动成功后，最终会打印出日志如下：
+
 ```shell
 ethereum-2         | INFO [04-02|02:41:57.348] Sealing paused, waiting for transactions
 ethereum-1         | INFO [04-02|02:41:57.349] Sealing paused, waiting for transactions
 ```
 
-### 启动中继链
-启动一条solo模式的中继链，启动成功后将会打印出BitXHub的logo如下：
+- 启动中继链bitxhub_solo：
+
+  启动一条solo模式的中继链，启动成功后将会打印出BitXHub的logo如下：
 
 ```shell
 bitxhub_solo       | =======================================================
@@ -63,8 +85,9 @@ bitxhub_solo       |
 bitxhub_solo       | =======================================================
 ```
 
-### 注册应用链
-创建两个与应用链对应的跨链网关，通过跨链网关向中继链注册应用链信息，注册成功后会打印出应用链id如下：
+- 注册应用链：
+
+  创建两个与应用链对应的跨链网关，通过跨链网关向中继链注册应用链信息，注册成功后会打印出应用链id如下：
 
 ```shell
 pier-ethereum-1    | appchain register successfully, id is 0xb132702a7500507411f3bd61ab33d9d350d41a37
@@ -94,11 +117,6 @@ bitxhub_solo       | time="02:42:02.353" level=info msg="Add pier" id=0x9f5cf4b9
 ```
 
 
-**！！！注意：** 如遇网络问题，运行下面命令：
-
-```shell
-goduck playground clean
-```
 
 
 ## 5 跨链交易

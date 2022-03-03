@@ -8,23 +8,23 @@
 
 MetaMask插件安装完成后，点击浏览器【登陆】按钮，系统会弹出测试网自动配置添加页面，用户点击【Approve】，即可成功添加BitXHub测试网。
 
-<img src='../assets/add-network.png' alt="Metamask Network" />
+![!](../assets/add-network.png)
 
 BitXHub测试网络添加成功后，系统会提示您进行网络切换，用户点击【Switch network】，即可成功切换至BitXHub测试网络并进行后续操作。
 
-<img src='../assets/switch-network.png' alt="Metamask Network" />
+![!](../assets/switch-network.png)
 
 ### 测试网RPC手动配置
 选择顶部网络功能，然后选择【自定义RPC】进入网络配置页面。
 
-<img src='../assets/metamask-network.png' width="300" alt="Metamask Network" />
+![!](../assets/metamask-network.png)
 
 
 ### BitXHub测试网配置信息详情
 
 **Chain ID**
 
-```js
+```html
 1356
 ```
 
@@ -36,7 +36,7 @@ https://testnet-1.bitxhub.cn:8881
 
 **配置如下图所示**
 
-<img src='../assets/metamask-add-network.png' width="300" alt="Network" />
+![!](../assets/metamask-add-network.png)
 
 ## 二、应用链环境准备
 
@@ -44,15 +44,15 @@ https://testnet-1.bitxhub.cn:8881
 
 ### 部署跨链合约
 
-可以参考BitXHub文档站[链接](https://meshplus.github.io/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本）
+可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本）
 
 ### 获取Pier部署包和修改配置
 
-可以参考BitXHub文档站[链接](https://meshplus.github.io/bitxhub/bitxhub/usage/single_bitxhub/deploy_pier/#pier)。
+可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#pier)。
 
 **注意：**
 
-1）文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本；
+1）文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本；
 
 2）以上pier配置过程，pier.toml中关于应用链的部分需要特别注意，以fabric为例，[appchain]字段下的配置示例如下，
 
@@ -82,43 +82,49 @@ address: 0xE7f5E3c3963c6a588AB3de753817B3F735a6Ab58
 
 ## 三、浏览器可视化操作
 
+**Browser URL**
+
+```html
+https://scan.bitxhub.cn/
+```
+
 ### 用户实名绑定
 
 BitXHub测试网络下，新用户首次点击【登陆】，需要完成手机实名绑定，系统会提示【正在为您跳转，请先完成用户注册】，并跳转到注册页面。
 
-![注册](../assets/redirect.png)
+![!](../assets/redirect.png)
 
 注册页面中，用户需要输入手机号进行验证码校验，完成密码设置后，点击【注册】，即可跳转返回跨链浏览器页面。新用户完成注册后，您的地址1h内将收到BitXHub测试网发送的燃料费用于跨链体验。
 
-![注册](../assets/register.png)
+![!](../assets/register.png)
 
 ### 应用链注册申请
 
 对于新注册的用户，您的地址1h内将收到BitXHub测试网发送的燃料费用于跨链体验。当您的地址中BitXHub测试网燃料费为0时，系统会提示【您的测试网燃料正分发中，请稍后】。
 
-![注册](../assets/notice.png)
+![!](../assets/notice.png)
 
 **应用链注册**
 
-![注册](../assets/appchain-register.png)
+![!](../assets/appchain-register.png)
 
 注册字段说明：
 
-1. 节点ID：系统根据钱包地址自动生成
+1. 节点ID：系统根据钱包地址自动生成；
 
-2. 应用链名称：自定义应用链的名称
+2. 应用链名称：自定义应用链的名称；
    
-3. 应用链类型：分为fabric1.4.3、fabric1.4.4 、hyperchain和 其他 四类
+3. 应用链类型：分为fabric1.4.3、fabric1.4.4 、hyperchain和其他四类；
    
-4. 版本号：应用链对应的版本号
+4. 版本号：应用链对应的版本号；
    
-5. 共识算法：应用链采用的共识算法
+5. 共识算法：应用链采用的共识算法；
    
-6. 验证者信息：请参考[验证者信息生成](../bitxhub/dev/validator.md)
+6. 验证者信息：请参考[验证者信息生成](../bitxhub/dev/validator)；
 
-7. 验证规则：分为fabric1.4.3、fabric1.4.4 、无验证规则和 其他 四类（用户可选择无验证规则模式进行快速跨链体验），根据对应应用链类型选择合适的验证规则。注意其他类型需要提交自定义的验证规则，并附带源码链接。编写规则请参考[验证规则编写](../bitxhub/dev/rule.md)
+7. 验证规则：分为fabric1.4.3、fabric1.4.4 、无验证规则和 其他 四类（用户可选择无验证规则模式进行快速跨链体验），根据对应应用链类型选择合适的验证规则。注意其他类型需要提交自定义的验证规则，并附带源码链接。编写规则请参考[验证规则编写](../bitxhub/dev/rule)；
    
-7. 申请理由：填写申请接入跨链系统的理由
+7. 申请理由：填写申请接入跨链系统的理由。
 
 应用链接入BitXHub跨链系统需要获得中继链管理员的准入审批，中继链管理员会在24h内完成应用链注册申请审，审核通过即可接入应用链。
 
@@ -138,21 +144,21 @@ pier --repo=~/.pier start
 
 ### 1. Fabric
 
-**应用链DID：** did:bitxhub:appchain0xc11bA472f5955B2a3b0e66a91fFc05f68995eFDf:.
+**应用链DID：** `did:bitxhub:appchain0xc11bA472f5955B2a3b0e66a91fFc05f68995eFDf:.`
 
-**存证合约地址：** mychannel&data_swapper
+**存证合约地址：** `mychannel&data_swapper`
 
 ### 2. Hyperchain
 
-**应用链DID：** did:bitxhub:appchain0xe1E8c72408623Dd1825b704C21ceF7C03ab62aB6
+**应用链DID：** `did:bitxhub:appchain0xe1E8c72408623Dd1825b704C21ceF7C03ab62aB6`
 
-**存证合约地址：** 0xb8dc305352edef315f6a7844948c864717e93c84
+**存证合约地址：** `0xb8dc305352edef315f6a7844948c864717e93c84`
 
 具体调用说明如下：
 
 **跨链存证** 
 
-调用自己应用链上的data_swapper合约向我们内部的测试应用链发起跨链存证交易，调用方法是 set ，其参数有3个，依次是目的链合约的did、要存储的key，要存储的value
+调用自己应用链上的data_swapper合约向我们内部的测试应用链发起跨链存证交易，调用方法是 set ，其参数有3个，依次是目的链合约的did、要存储的key，要存储的value。
 
 **跨链获取**
 
@@ -160,6 +166,6 @@ pier --repo=~/.pier start
 
 **本地查询**
 
-调用自己应用链上的data_swapper合约查询上一步获取的数据，如果自己链是fabric，则调用方法是 get，如果自己链是hyperchain或其它，则调用方法是 getData，参数均只有1个，即要查询的key
+调用自己应用链上的data_swapper合约查询上一步获取的数据，如果自己链是fabric，则调用方法是 get，如果自己链是hyperchain或其它，则调用方法是 getData，参数均只有1个，即要查询的key。
 
 用户如果想验证目的链上是否真正执行了跨链操作，可通过部署两条自己的应用链进行跨链存证的完整体验。

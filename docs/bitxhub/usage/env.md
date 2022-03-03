@@ -33,13 +33,13 @@ BitXHub作为golang项目，需要安装和配置Go环境，您可以在这里�
 
 下载完成后您需要安装Go，可以参考官方文档：[安装Go](https://golang.org/doc/install#install) ，推荐使用默认配置安装即可，
 
-- 对于Mac OS X 和 Linux操作系统，默认情况下Go会被安装到/usr/local/go/，并且将环境变量GOROOT设置为该路径/usr/local/go.
+- 对于Mac OS X 和 Linux操作系统，默认情况下Go会被安装到`/usr/local/go/`，并且将环境变量GOROOT设置为该路径`/usr/local/go`.
 ```shell
 export GOROOT=/usr/local/go
 ```
 
 
-- 同时，由于我们可能将在Go中进行一系列编译操作，还需要设置GOPATH等，您可以将以下内容添加到您的~/.bashrc文件中：
+- 同时，由于我们可能将在Go中进行一系列编译操作，还需要设置GOPATH等，您可以将以下内容添加到您的`~/.bashrc`文件中：
 ```shell
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go

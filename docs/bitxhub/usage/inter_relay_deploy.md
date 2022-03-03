@@ -10,7 +10,7 @@
 
 这部分内容也可参照单独部署中继链的文档进行部署，待节点集群均打印出bitxhub的LOGO，表示bitxhub集群开始正常工作
 
-![](../assets/bitxhub.png)
+![!](../../assets/bitxhub.png)
 
 
 

@@ -40,11 +40,17 @@ type Order interface {
 	//集群中可以正常工作的最少节点数量，如在raft中要求正常节点数是N/2+1
 	Quorum() uint64
 
-    //获取账户最新的nonce
-    GetPendingNonceByAccount(account string) uint64
+  //获取账户最新的nonce
+  GetPendingNonceByAccount(account string) uint64
 
-    //从共识删除指定的节点
-    DelNode(delID uint64) error
+  //根据哈希获取指定的交易
+  GetPendingTxByHash(hash *types.Hash) pb.Transaction
+
+  //从共识删除指定的节点
+  DelNode(delID uint64) error
+    
+	//订阅交易事件的通道
+	SubscribeTxEvent(events chan<- pb.Transactions) event.Subscription
 }
 ```
 
@@ -55,9 +61,10 @@ type Order interface {
 ```go
 type Config struct {
    Id                 uint64 //节点ID
+   IsNew              bool //是否是新加入的节点
    RepoRoot           string //根路径
    StoragePath        string //存储文件路径
-   PluginPath         string //插件文件路径
+   OrderType          string // 共识类型
    PeerMgr            peermgr.PeerManager //网络模块组件
    PrivKey            crypto.PrivateKey //节点私钥
    Logger             logrus.FieldLogger //日志组件
@@ -128,6 +135,8 @@ func NewNode(opts ...order.Option) (order.Order, error) {
     batchTimeout, memConfig, err := generateSoloConfig(config.RepoRoot)
     mempoolConf := &mempool.Config{
         ID:              config.ID, //节点ID
+        IsTimed:         timedGenBlock.Enable,	// 是否支持定时出块功能
+				BlockTimeout:    timedGenBlock.BlockTimeout,	// 定时出块的时间间隔
         ChainHeight:     config.Applied, //当前区块高度
         Logger:          config.Logger,  //日志组件
         StoragePath:     config.StoragePath, //存储路径
@@ -179,23 +188,28 @@ func NewNode(opts ...order.Option) (order.Order, error) {
 
 ```go
 func (n *Node) Start() error {
-	//交易池打包区块
+	  // 交易池打包区块
     go n.txCache.ListenEvent()
     
-    //solo监听新区块
+    // solo监听新区块
     go n.listenReadyBlock()
     return nil
 }
 
 // Schedule to collect txs to the listenReadyBlock channel
 func (n *Node) listenReadyBlock() {
+	var blockTicker <-chan time.Time
+  // 当开启定时出块功能时，启动定时出块计时器
+	if n.isTimed && blockTicker == nil {
+		blockTicker = time.Tick(n.blockTimeout)
+	}
 	go func() {
 		for {
 			select {
 			case proposal := <-n.proposeC:
 				n.logger.WithFields(logrus.Fields{
 					"proposal_height": proposal.Height,
-					"tx_count":        len(proposal.TxList),
+					"tx_count":        len(proposal.TxList.Transactions),
 				}).Debugf("Receive proposal from mempool")
 
 				if proposal.Height != n.lastExec+1 {
@@ -203,28 +217,31 @@ func (n *Node) listenReadyBlock() {
 					return
 				}
 				n.logger.Infof("======== Call execute, height=%d", proposal.Height)
+        // 创建区块
 				block := &pb.Block{
 					BlockHeader: &pb.BlockHeader{
 						Version:   []byte("1.0.0"),
 						Number:    proposal.Height,
-						Timestamp: time.Now().UnixNano(),
+						Timestamp: proposal.Timestamp,
 					},
 					Transactions: proposal.TxList,
 				}
-				localList := make([]bool, len(proposal.TxList))
-				for i := 0; i < len(proposal.TxList); i++ {
+				localList := make([]bool, len(proposal.TxList.Transactions))
+        // localList记录本地Mempool中的交易集合
+				for i := 0; i < len(proposal.TxList.Transactions); i++ {
 					localList[i] = true
 				}
 				executeEvent := &pb.CommitEvent{
 					Block:     block,
 					LocalList: localList,
 				}
+
 				n.commitC <- executeEvent
 				n.lastExec++
 			}
 		}
 	}()
-
+  
 	for {
 		select {
 		case <-n.ctx.Done():
@@ -236,6 +253,11 @@ func (n *Node) listenReadyBlock() {
 			if !n.batchMgr.IsBatchTimerActive() {
 				n.batchMgr.StartBatchTimer()
 			}
+      /* batch产生的条件：
+      1. 超过定时出块时间间隔（当开启定时出块功能）
+      2. 是主节点，并超过batch出块的容量
+      3. 是主节点，超过batch出块的时间间隔（batch不为空时开始计时，为空时重置计时器）
+      */
 			if batch := n.mempool.ProcessTransactions(txSet.TxList, true, true); batch != nil {
 				n.batchMgr.StopBatchTimer()
 				n.proposeC <- batch
@@ -251,6 +273,7 @@ func (n *Node) listenReadyBlock() {
 			}
 			n.mempool.CommitTransactions(state)
 
+    // 超过batch出块的时间间隔（batch不为空时开始计时，为空时重置计时器）
 		case <-n.batchMgr.BatchTimeoutEvent():
 			n.batchMgr.StopBatchTimer()
 			n.logger.Debug("Batch timer expired, try to create a batch")
@@ -273,6 +296,7 @@ func (n *Node) listenReadyBlock() {
 ```go
 func (n *Node) Stop() {
    n.cancel()
+   n.txCache.StopTxListen()
 }
 ```
 
@@ -284,7 +308,7 @@ func (n *Node) Stop() {
 func (n *Node) Prepare(tx *pb.Transaction) error {
    //判断当前共识是否正常
 	if err := n.Ready(); err != nil {
-		return err
+		return fmt.Errorf("node get ready failed: %w", err)
    }
    //交易进入交易池
 	n.txCache.RecvTxC <- tx
@@ -309,10 +333,9 @@ func (n *Node) Commit() chan *pb.Block {
 
 ### 3.3.5 Step方法
 
-功能：通过该接口接收共识的网络消息。
+功能：通过该接口接收共识的网络消息。在Solo模式中共识网络只有一个节点，故不用实现该方法。
 
 ```go
-//由于示例是Solo的版本，故具体不实现该方法
 func (n *Node) Step(ctx context.Context, msg []byte) error {
    return nil
 }
@@ -347,7 +370,7 @@ func (n *Node) ReportState(height uint64, blockHash *types.Hash, txHashList []*t
 
 ### 3.3.8 Quorum方法
 
-功能：集群中可以正常工作的最少节点数量（比如在raft中要求正常节点数是N/2+1）。
+功能：集群中可以正常工作的最少节点数量（比如在raft中要求正常节点数是N/2+1，PBFT要求正常节点数时N/3+1）。
 
 ```go
 //由于示例是Solo的版本，直接返回1
@@ -401,76 +424,38 @@ batch_timeout = "0.3s"  # Block packaging time period.
 
 ### 4.2 项目结构
 
-该项目为BitXHub提供共识算法的插件化，具体项目结构如下：
+在`bitxhub/pkg/order`目录下开发对应的共识算法，目录结构与solo、raft模式类似
 
 ```text
 ./
-├── Makefile //编译文件
-├── README.md
-├── build
-│ └── rbft.so //编译后的共识算法二进制插件
-├── go.mod
-├── go.sum
-├── order.toml //共识配置文件
-└── rbft //共识算法代码
-    ├── config.go
-    ├── node.go
-    └── stack.go
+├── config.go
+├── node.go
+├── node_test.go
+
 ```
 
-其中注意在`go.mod`中需要引用BitXHub项目源码，需要让该插件项目与BitXHub在同一目录下（建议在$GOPATH路径下）。
+### 4.3 新增共识算法
+`bitxhub-core`项目下定义了共识类型的注册方法。
 
-```none
-replace github.com/meshplus/bitxhub => ../bitxhub/
+```go
+// 注册对应的共识算法，在共识算法init中指定
+func RegisterRegistryConstructor(typ string, f RegistryConstructor) {
+    RegisterConstructorM[typ] = f
+}
+
+// 根据bitxhub.toml文件的共识类型，加载对应的共识算法
+func GetRegistryConstructor(typ string) (RegistryConstructor, error) {
+    registry, ok := RegisterConstructorM[typ]
+    if !ok {
+        return nil, fmt.Errorf("type %s registry is unsupported", typ)
+    }
+    return registry, nil
+}
 ```
 
-### 4.3 编译Plugin
-
-我们采用GO语言提供的插件模式，实现`BitXHub`对于Plugin的动态加载。
-
-编写`Makefile`编译文件：
-
-```shell
-SHELL := /bin/bash
-CURRENT_PATH = $(shell pwd)
-GO  = GO111MODULE=on go
-plugin:
-   @mkdir -p build
-   $(GO) build --buildmode=plugin -o build/rbft.so rbft/*.go
+在构造节点共识算法时，只需要在init方法中指定家在的具体newNode构造器即可，如solo模式下：
+```go
+func init() {
+    agency.RegisterOrderConstructor("solo", NewNode)
+}
 ```
-
-运行下面的命令，能够得到 `rbft.so`文件。
-
-```shell
-$ make plugin
-```
-
-修改节点的`bitxhub.toml`
-
-```none
-[order]
-  plugin = "plugins/rbft.so"
-```
-
-将你编写的动态链接文件和`order.toml`文件，分别放到节点的plugins文件夹和配置文件下。
-
-```text
-./
-├── api
-├── bitxhub.toml
-├── certs
-│ ├── agency.cert
-│ ├── ca.cert
-│ ├── node.cert
-│ └── node.priv
-├── key.json
-├── logs
-├── network.toml
-├── order.toml //共识算法配置文件
-├── plugins
-│ ├── rbft.so //共识算法插件
-├── start.sh
-└── storage
-```
-
-结合我们提供的`BitXHub`中继链，就能接入到跨链平台来。
