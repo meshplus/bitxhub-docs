@@ -216,19 +216,41 @@ pub fn verify(proof: &[u8], validator: &[u8]) -> bool {
 
 #### 3.1.1 发送交易
 
-用途：调用该接口向中继链发送交易，交易类型包括普通交易、跨链交易和智能合约。
+用途：调用该接口向中继链发送签名后的交易，交易类型包括普通交易、跨链交易和智能合约。若签名非法，仍会返回交易哈希，但是交易回执非法。
 
 参数：
 
-- `tx`交易实例。
+- `transaction` 交易实例。
 
 ```javascript
 function SendTransaction(transaction)
 ```
 
+#### 3.1.2 发送交易并返回回执
 
+用途：调用该接口向中继链发送签名后的交易，并返回交易回执。
 
-#### 3.1.2 查询交易回执
+参数：
+
+- `transaction` 交易实例 
+
+```javascript
+SendTransactionWithReceipt(transaction)
+```
+
+#### 3.1.3 发送只读交易
+
+用途：调用该接口向中继链发送只读交易并返回交易回执。
+
+参数：
+
+- `transaction` 交易实例
+
+```javascript
+SendViewWithReceipt(transaction)
+```
+
+#### 3.1.4 查询交易回执
 
 用途：调用该接口向BitXHub查询交易回执。
 
@@ -240,7 +262,7 @@ function SendTransaction(transaction)
 function GetReceipt(hash)
 ```
 
-#### 3.1.3 查询交易
+#### 3.1.5 查询交易
 
 用途：调用该接口向BitXHub查询交易。
 
@@ -268,7 +290,7 @@ function GetTransaction(hash)
 
 参数：
 
-- `ctx`wasm合约编译后的字节数据。
+- `ctx` wasm合约编译后的字节数据。
 
 
 ```javascript
@@ -277,7 +299,7 @@ function DeployContract(ctx)
 
 #### 3.2.2 调用合约
 
-用途：该接口向中继链调用合约获取交易回执。
+用途：调用该接口向中继链调用合约获取交易回执。
 
 参数：
 
@@ -292,6 +314,24 @@ function DeployContract(ctx)
 
 ```javascript
 function InvokeContract(vmType, address, method, ...args)
+```
+
+#### 3.2.3 只读调用合约
+
+用途：调用该接口向中继链只读调用合约获取交易回执。
+
+参数：
+
+- `vmType`合约类型：BVM和XVM；
+
+- `address`合约地址；
+
+- `method`合约方法；
+
+- `args`合约方法参数。
+
+```javascript
+InvokeContract(vmType, address, method, ...args)
 ```
 
 ### 3.3 区块接口
@@ -320,4 +360,25 @@ function GetBlock(type, value)
 
 ```javascript
 function GetBlocks(start, end)
+```
+
+#### 3.3.3 查询区块Meta
+
+用途：返回当前链的高度、区块哈希以及跨链交易数。
+
+```javascript
+GetChainMeta()
+```
+
+
+### 3.4 其他接口
+
+#### 3.4.1 查询账户nonce
+
+用途：调用该接口获取当前账户地址下一笔跨链交易nonce。
+
+```javascript
+GetPendingNonce()
+
+GetMetaPendingNonce() // 地址checksum
 ```
