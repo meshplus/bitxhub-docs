@@ -1207,285 +1207,307 @@ $ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction/0xa56b0b7fcDBCea002D871173
 
 ## 数据结构
 
-#### EventEventType
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| EventEventType | string |  |  |
-
-#### pbAuditSubscriptionRequestType
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbAuditSubscriptionRequestType | string |  |  |
-
-#### pbBlock
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| block_header | [pbBlockHeader](#pbblockheader) |  | No |
-| transactions | byte |  | No |
-| block_hash | byte |  | No |
-| signature | byte |  | No |
-| extra | byte |  | No |
-
-#### pbBlockHeader
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| number | string (uint64) |  | No |
-| state_root | byte |  | No |
-| tx_root | byte |  | No |
-| receipt_root | byte |  | No |
-| timeout_root | byte |  | No |
-| parent_hash | byte |  | No |
-| timestamp | string (int64) |  | No |
-| version | byte |  | No |
-| Bloom | byte |  | No |
-
-#### pbBxhTransaction
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| version | byte |  | No |
-| from | byte |  | No |
-| to | byte |  | No |
-| timestamp | string (int64) |  | No |
-| transaction_hash | byte |  | No |
-| payload | byte |  | No |
-| IBTP | [pbIBTP](#pbibtp) |  | No |
-| nonce | string (uint64) |  | No |
-| amount | string |  | No |
-| typ | long |  | No |
-| signature | byte |  | No |
-| extra | byte |  | No |
-
-#### pbChainMeta
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| height | string (uint64) |  | No |
-| block_hash | byte |  | No |
-| interchain_tx_count | string (uint64) |  | No |
-
-#### pbEmpty
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbEmpty | object |  |  |
-
-#### pbEvent
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| tx_hash | byte |  | No |
-| data | byte |  | No |
-| event_type | [EventEventType](#eventeventtype) |  | No |
-
-#### pbEvmLog
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| address | byte |  | No |
-| topics | [ byte ] |  | No |
-| data | byte |  | No |
-| block_number | string (uint64) |  | No |
-| tx_hash | byte |  | No |
-| tx_index | string (uint64) |  | No |
-| block_hash | byte |  | No |
-| index | string (uint64) |  | No |
-| removed | boolean |  | No |
-
-#### pbGetBlockHeadersResponse
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| blockHeaders | [ [pbBlockHeader](#pbblockheader) ] |  | No |
-
-#### pbGetBlockRequestType
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbGetBlockRequestType | string |  |  |
-
-#### pbGetBlocksResponse
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| blocks | [ [pbBlock](#pbblock) ] |  | No |
-
-#### pbGetHappyBlocksResponse
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| blocks | [ [pbHappyBlock](#pbhappyblock) ] |  | No |
+### Event_EventType
+
+| **Name**               | **Type** | **Description**                      |
+| ---------------------- | -------- | ------------------------------------ |
+| Event_OTHER            | int32    | 其他类型的事件                       |
+| Event_INTERCHAIN       | int32    | 处理INTERCHAIN counter抛出的事件类型 |
+| Event_NODEMGR          | int32    | 增删节点抛出的事件类型               |
+| Event_WASM             | int32    | WASM抛出的事件类型                   |
+| Event_AUDIT_PROPOSAL   | int32    | 审计提案管理抛出的事件类型           |
+| Event_AUDIT_APPCHAIN   | int32    | 审计应用链管理抛出的事件类型         |
+| Event_AUDIT_RULE       | int32    | 审计验证规则管理抛出的事件类型       |
+| Event_AUDIT_SERVICE    | int32    | 审计服务管理抛出的事件类型           |
+| Event_AUDIT_NODE       | int32    | 审计节点管理抛出的事件类型           |
+| Event_AUDIT_ROLE       | int32    | 审计身份管理抛出的事件类型           |
+| Event_AUDIT_INTERCHAIN | int32    | 审计中继链管理抛出的事件类型         |
+| Event_AUDIT_DAPP       | int32    | 审计DAPP管理抛出的事件类型           |
+
+### pbAuditSubscriptionRequestType
+
+| **Name**                       | **Type** | **Description**  |
+| ------------------------------ | -------- | ---------------- |
+| pbAuditSubscriptionRequestType | string   | 默认为AUDIT_NODE |
+
+### pbBlock
+
+| **Name**     | **Type**                        | **Description** |
+| ------------ |---------------------------------| --------------- |
+| block_header | [pbBlockHeader](#pbblockheader) | 区块头          |
+| transactions | byte                            | 交易列表        |
+| block_hash   | byte                            | 交易哈希        |
+| signature    | byte                            | 签名            |
+| extra        | byte                            | 扩展字段        |
+
+### pbBlockHeader
+
+| **Name**     | **Type**        | **Description** |
+| ------------ | --------------- | --------------- |
+| number       | string (uint64) | 区块高度        |
+| state_root   | byte            | 状态根          |
+| tx_root      | byte            | 交易根          |
+| receipt_root | byte            | 回执根          |
+| timeout_root | byte            | 超时交易根      |
+| parent_hash  | byte            | 父区块哈希      |
+| timestamp    | string (int64)  | 时间戳          |
+| version      | byte            | 版本号          |
+| Bloom        | byte            | 过滤器          |
+
+### pbBxhTransaction
+
+| **Name**         | **Type**          | **Description**             |
+| ---------------- |-------------------| --------------------------- |
+| version          | byte              | 版本号                      |
+| from             | byte              | 来源账户地址                |
+| to               | byte              | 目的账户地址                |
+| timestamp        | string (int64)    | 时间戳                      |
+| transaction_hash | byte              | 交易哈希                    |
+| payload          | byte              | 交易内容                    |
+| IBTP             | [pbIBTP](#pbibtp) | IBTP内容                    |
+| nonce            | string (uint64)   | 交易nonce                   |
+| amount           | string            | Transfer交易的数值          |
+| typ              | TxType            | 区分eth交易还是普通跨链交易 |
+| signature        | byte              | 签名                        |
+| extra            | byte              | 扩展字段                    |
+
+### pbChainMeta
+
+| **Name**            | **Type**        | **Description**    |
+| ------------------- | --------------- | ------------------ |
+| height              | string (uint64) | 当前最新区块高度   |
+| block_hash          | byte            | 最新区块哈希       |
+| interchain_tx_count | string (uint64) | interchain交易数目 |
+
+### pbEmpty
+
+| **Name** | **Type** | **Description** |
+| -------- | -------- | --------------- |
+| pbEmpty  | object   | 空              |
+
+### pbEvent
+
+| **Name**   | **Type**                            | **Description** |
+| ---------- |-------------------------------------| --------------- |
+| tx_hash    | byte                                | 交易哈希        |
+| data       | byte                                | 事件内容        |
+| event_type | [Event_EventType](#event_eventtype) | 事件类型        |
+
+### pbEvmLog
+
+| **Name**     | **Type**        | **Description**    |
+| ------------ | --------------- | ------------------ |
+| address      | byte            | 被调用的合约地址   |
+| topics       | []byte          | 事件规则           |
+| data         | byte            | 合约的返回值       |
+| block_number | string (uint64) | 事件所在区块高度   |
+| tx_hash      | byte            | 交易哈希           |
+| tx_index     | string (uint64) | 交易在区块中的索引 |
+| block_hash   | byte            | 区块哈希           |
+| index        | string (uint64) | Log的索引          |
+| removed      | boolean         | 是否被最长链替代   |
+
+### pbGetBlockHeadersResponse
+
+| **Name**     | **Type**                            | **Description** |
+| ------------ |-------------------------------------| --------------- |
+| blockHeaders | [ [pbBlockHeader](#pbblockheader) ] | 区块头集合      |
+
+### pbGetBlockRequestType
+
+| **Name**              | **Type** | **Description**                                |
+| --------------------- | -------- | ---------------------------------------------- |
+| pbGetBlockRequestType | string   | 获取区块的方式  0:通过区块高度  1:通过区块哈希 |
+
+### pbGetBlocksResponse
+
+| **Name** | **Type**                | **Description** |
+| -------- |-------------------------| --------------- |
+| blocks   | [ [pbBlock](#pbblock) ] | 区块集合        |
+
+###  pbGetHappyBlocksResponse
+
+| **Name** | **Type**                          | **Description**        |
+| -------- |-----------------------------------| ---------------------- |
+| blocks   | [ [pbHappyBlock](#pbhappyblock) ] | 交易分类输出的区块集合 |
+
+### pbGetMultiSignsRequestType
+
+| **Name**                   | **Type** | **Description**                                              |
+| -------------------------- | -------- | ------------------------------------------------------------ |
+| pbGetMultiSignsRequestType | string   | 0:"ASSET_EXCHANGE",  1:"IBTP_REQUEST",  2:"IBTP_RESPONSE",  3:"BLOCK_HEADER",  4:"BURN" |
+
+### pbGetTransactionResponse
 
-#### pbGetMultiSignsRequestType
-
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbGetMultiSignsRequestType | string |  |  |
+| **Name** | **Type**                                | **Description** |
+| -------- |-----------------------------------------| --------------- |
+| tx       | [pbBxhTransaction](#pbbxhtransaction)   | 跨链交易        |
+| tx_meta  | [pbTransactionMeta](#pbtransactionMeta) | 交易的元数据    |
 
-#### pbGetTransactionResponse
+### pbHappyBlock
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| tx | [pbBxhTransaction](#pbbxhtransaction) |  | No |
-| tx_meta | [pbTransactionMeta](#pbtransactionmeta) |  | No |
+| **Name**     | **Type**                                  | **Description**                    |
+| ------------ |-------------------------------------------| ---------------------------------- |
+| block_header | [pbBlockHeader](#pbblockheader)           | 区块头                             |
+| bxh_txs      | [ [pbBxhTransaction](#pbbxhtransaction) ] | 跨链交易集合                       |
+| eth_txs      | [ byte ]                                  | Eth交易集合                        |
+| block_hash   | byte                                      | 区块哈希                           |
+| signature    | byte                                      | 签名                               |
+| extra        | byte                                      | 扩展字段                           |
+| index        | [ string (uint64) ]                       | 交易在区块索引  0:bxh_tx  1:eth_tx |
 
-#### pbHappyBlock
+### pbIBTP
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| block_header | [pbBlockHeader](#pbblockheader) |  | No |
-| bxh_txs | [ [pbBxhTransaction](#pbbxhtransaction) ] |  | No |
-| eth_txs | [ byte ] |  | No |
-| block_hash | byte |  | No |
-| signature | byte |  | No |
-| extra | byte |  | No |
-| index | [ string (uint64) ] |  | No |
+| **Name**      | **Type**                                | **Description**                               |
+| ------------- |-----------------------------------------| --------------------------------------------- |
+| from          | string                                  | 来源地址,数据结构：bxhId:appchainId:serviceId |
+| to            | string                                  | 目的地址，数据结构同上                        |
+| index         | string (uint64)                         | 该账户的交易索引                              |
+| type          | [pbIBTPType](#pbibtptype)               | IBTP类型                                      |
+| timeoutHeight | string (int64)                          | 超时高度                                      |
+| proof         | byte                                    | 交易存在性与有效性证明                        |
+| payload       | byte                                    | 交易具体内容                                  |
+| group         | [pbStringUint64Map](#pbstringuint64map) | 一堆多跨链的目的地址集合                      |
+| version       | string                                  | 版本号                                        |
+| extra         | byte                                    | 扩展字段                                      |
 
-#### pbIBTP
+### pbIBTPType
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| from | string |  | No |
-| to | string |  | No |
-| index | string (uint64) |  | No |
-| type | [pbIBTPType](#pbibtptype) |  | No |
-| timeoutHeight | string (int64) |  | No |
-| proof | byte |  | No |
-| payload | byte |  | No |
-| group | [pbStringUint64Map](#pbstringuint64map) |  | No |
-| version | string |  | No |
-| extra | byte |  | No |
+| **Name**   | **Type** | **Description**                                              |
+| ---------- | -------- | ------------------------------------------------------------ |
+| pbIBTPType | string   | 0: "INTERCHAIN",    1:  "RECEIPT_SUCCESS",    2:  "RECEIPT_FAILURE",    3:  "RECEIPT_ROLLBACK",    4:  "RECEIPT_ROLLBACK_END", |
 
-#### pbIBTPType
+### pbInterchainTxWrapper
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbIBTPType | string |  |  |
+| **Name**        | **Type**                          | **Description**    |
+| --------------- |-----------------------------------| ------------------ |
+| l2Roots         | [ byte ]                          | 默克尔根           |
+| transactions    | [ [pbVerifiedTx](#pbverifiedtx) ] | 已验证的交易集合   |
+| height          | string (uint64)                   | 所在区块高度       |
+| timeout_l2Roots | [ byte ]                          | 超时交易的默克尔根 |
+| timeout_ibtps   | [ string ]                        | 超时交易集合       |
+| multi_tx_ibtps  | [ string ]                        | 一对多交易集合     |
 
-#### pbInterchainTxWrapper
+### pbInterchainTxWrappers
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| l2Roots | [ byte ] |  | No |
-| transactions | [ [pbVerifiedTx](#pbverifiedtx) ] |  | No |
-| height | string (uint64) |  | No |
-| timeout_l2Roots | [ byte ] |  | No |
-| timeout_ibtps | [ string ] |  | No |
-| multi_tx_ibtps | [ string ] |  | No |
+| **Name**             | **Type**                                            | **Description**    |
+| -------------------- |-----------------------------------------------------| ------------------ |
+| interchainTxWrappers | [ [pbInterchainTxWrapper](#pbinterchaintxwrapper) ] | 已封装的交易家集合 |
 
-#### pbInterchainTxWrappers
+### pbPierInfo
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| interchainTxWrappers | [ [pbInterchainTxWrapper](#pbinterchaintxwrapper) ] |  | No |
+| **Name** | **Type**       | **Description**    |
+| -------- | -------------- | ------------------ |
+| address  | string         | 网关地址           |
+| index    | string         | 主备网关编号       |
+| timeout  | string (int64) | 发送心跳的时间间隔 |
 
-#### pbPierInfo
+### pbReceipt
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| address | string |  | No |
-| index | string |  | No |
-| timeout | string (int64) |  | No |
+| **Name**         | **Type**                            | **Description**           |
+| ---------------- |-------------------------------------| ------------------------- |
+| version          | byte                                | 版本号                    |
+| tx_hash          | byte                                | 交易哈希                  |
+| ret              | byte                                | 回执内容                  |
+| status           | [pbReceiptStatus](#pbreceiptstatus) | 回执状态                  |
+| events           | [ [pbEvent](#pbevent) ]             | 交易事件                  |
+| gas_used         | string (uint64)                     | 花费的gas费               |
+| evm_logs         | [ [pbEvmLog](#pbevmlog) ]           | Evm合约通过事件产生的日志 |
+| bloom            | byte                                | 布隆过滤器                |
+| contract_address | byte                                | 合约地址                  |
+| tx_status        | pbTransactionStatus                 | 事务状态                  |
 
-#### pbReceipt
+### pbTransactionStatus
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| version | byte |  | No |
-| tx_hash | byte |  | No |
-| ret | byte |  | No |
-| status | [pbReceiptStatus](#pbreceiptstatus) |  | No |
-| events | [ [pbEvent](#pbevent) ] |  | No |
-| gas_used | string (uint64) |  | No |
-| evm_logs | [ [pbEvmLog](#pbevmlog) ] |  | No |
-| bloom | byte |  | No |
-| contract_address | byte |  | No |
+| **Name**            | **Type** | **Description**                                              |
+| ------------------- | -------- | ------------------------------------------------------------ |
+| pbTransactionStatus | string   | BEGIN = 0;      BEGIN_FAILURE = 1;      BEGIN_ROLLBACK = 2;      SUCCESS = 3;      FAILURE = 4;      ROLLBACK = 5; |
 
-#### pbReceiptStatus
+ 
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbReceiptStatus | string |  |  |
+### pbReceiptStatus
 
-#### pbRequestType
+| **Name**        | **Type** | **Description**                   |
+| --------------- | -------- | --------------------------------- |
+| pbReceiptStatus | string   | 回执状态；  0：SUCCESS  1：FAILED |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbRequestType | string |  |  |
+### pbRequestType
 
-#### pbResponse
+| **Name**      | **Type** | **Description**                                     |
+| ------------- | -------- | --------------------------------------------------- |
+| pbRequestType | string   | 查询参数：  0:CHAIN_STATUS  1:NETWORK  2:VALIDATORS |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| data | byte |  | No |
+### pbResponse
 
-#### pbSignResponse
+| **Name** | **Type** | **Description** |
+| -------- | -------- | --------------- |
+| data     | byte     | 返回值          |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| sign | object |  | No |
+### pbSignResponse
 
-#### pbStringUint64Map
+| **Name** | **Type** | **Description** |
+| -------- | -------- | --------------- |
+| sign     | object   | 签名            |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| keys | [ string ] |  | No |
-| vals | [ string (uint64) ] |  | No |
+### pbStringUint64Map
 
-#### pbSubscriptionRequestType
+| **Name** | **Type**            | **Description**                        |
+| -------- | ------------------- | -------------------------------------- |
+| keys     | [ string ]          | 用于记录中继链的Counter，key为地址集合 |
+| vals     | [ string (uint64) ] | Val为地址对应的counter                 |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| pbSubscriptionRequestType | string |  |  |
+### pbSubscriptionRequestType
 
-#### pbTransactionHashMsg
+| **Name**                  | **Type** | **Description**                                              |
+| ------------------------- | -------- | ------------------------------------------------------------ |
+| pbSubscriptionRequestType | string   | 订阅的数据结构：  0:  "BLOCK",  1:  "EVENT",  2:  "INTERCHAIN_TX",  3:  "BLOCK_HEADER",  4:  "INTERCHAIN_TX_WRAPPER",  5:  "UNION_INTERCHAIN_TX_WRAPPER",  6:  "EVM_LOG", |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| tx_hash | string |  | No |
+### pbTransactionHashMsg
 
-#### pbTransactionMeta
+| **Name** | **Type** | **Description** |
+| -------- | -------- | --------------- |
+| tx_hash  | string   | 交易哈希        |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| block_hash | byte |  | No |
-| block_height | string (uint64) |  | No |
-| index | string (uint64) |  | No |
+### pbTransactionMeta
 
-#### pbVerifiedTx
+| **Name**     | **Type**        | **Description**  |
+| ------------ | --------------- | ---------------- |
+| block_hash   | byte            | 交易所在区块哈希 |
+| block_height | string (uint64) | 区块高度         |
+| index        | string (uint64) | 交易索引         |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| tx | [pbBxhTransaction](#pbbxhtransaction) |  | No |
-| valid | boolean |  | No |
+### pbVerifiedTx
 
-#### protobufAny
+| **Name** | **Type**                              | **Description**   |
+| -------- |---------------------------------------| ----------------- |
+| tx       | [pbBxhTransaction](#pbbxhtransaction) | 交易体            |
+| valid    | boolean                               | proof是否验证通过 |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| type_url | string |  | No |
-| value | byte |  | No |
+### protobufAny
 
-#### runtimeError
+| **Name** | **Type** | **Description** |
+| -------- | -------- | --------------- |
+| type_url | string   | 类型描述        |
+| value    | byte     | 具体内容        |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| error | string |  | No |
-| code | integer |  | No |
-| message | string |  | No |
-| details | [ [protobufAny](#protobufany) ] |  | No |
+### runtimeError
 
-#### runtimeStreamError
+| **Name** | **Type**                        | **Description** |
+| -------- |---------------------------------| --------------- |
+| error    | string                          | 报错信息        |
+| code     | integer                         | 错误码          |
+| message  | string                          | 错误描述信息    |
+| details  | [ [protobufAny](#protobufany) ] | 具体内容        |
 
-| Name | Type | Description | Required |
-| ---- | ---- | ----------- | -------- |
-| grpc_code | integer |  | No |
-| http_code | integer |  | No |
-| message | string |  | No |
-| http_status | string |  | No |
-| details | [ [protobufAny](#protobufany) ] |  | No |
+### runtimeStreamError
+
+| **Name**    | **Type**                        | **Description** |
+| ----------- |---------------------------------| --------------- |
+| grpc_code   | integer                         | Grpc错误码      |
+| http_code   | integer                         | http错误码      |
+| message     | string                          | 错误信息        |
+| http_status | string                          | http错误信息    |
+| details     | [ [protobufAny ](#protobufany)] | 具体内容        |
+
+ 
 
