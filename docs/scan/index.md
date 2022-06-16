@@ -52,7 +52,7 @@ https://testnet-1.bitxhub.cn:8881
 
 **注意：**
 
-1）文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本；
+1）文档中提到的二进制或开源项目，均是要对应 v1.11.0的版本；
 
 2）以上pier配置过程，pier.toml中关于应用链的部分需要特别注意，以fabric为例，[appchain]字段下的配置示例如下，
 
@@ -72,7 +72,7 @@ config = "fabric"
 ```bash
 # 1.进入到pier的配置主目录，即pier.toml所在的目录
 # 执行pier show命令
-./pier show --path ~/.pier/key.json
+pier show --path ~/.pier/key.json
 # 返回结果示例：
 private key: 0x88b434530176d3faf4dbf10ede1c25c4f7af673392152d71a18758a1ba677ddc
 public key: 0x041b311209c6feb1587aaf16d7a1bac9f96c1fecb539d4cde416f97ff5048139beeac307d14d0e7196c7e15ad657530dedcc33bbe821276dadf3989bfff470747a

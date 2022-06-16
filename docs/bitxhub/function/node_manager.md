@@ -31,21 +31,23 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 2.2 使用方法
 
-bitxhub client governance node register
+#### bitxhub client governance node register
 
 注册共识节点相关参数解释 *（未列出参数与共识节点无关可忽略）*：
-- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
-- `--account`：指定新节点account信息，共识节点通常为节点配置目录下key.json对应的地址
-- `--type`：指定新节点类型，默认为共识节点`vpNode`
-- `--pid`：指定新共识节点的pid信息，通常为节点配置目录下certs/node.priv对应的pid
-- `--id`：指定新共识节点的id信息，通常为共识节点的递增序号，但不要求一定递增，新赠共识节点的id需要比现有所有可用共识节点的id大即可，即，4个创世共识节点的id分别为1/2/3/4，那么新增的第一个共识节点id>=5即可
-- `--reason`：可选参数，说明注册理由
+
+- `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录；
+- `--account`：指定新节点account信息，共识节点通常为节点配置目录下key.json对应的地址；
+- `--type`：指定新节点类型，默认为共识节点`vpNode`；
+- `--pid`：指定新共识节点的pid信息，通常为节点配置目录下certs/node.priv对应的pid；
+- `--id`：指定新共识节点的id信息，通常为共识节点的递增序号，但不要求一定递增，新赠共识节点的id需要比现有所有可用共识节点的id大即可，即，4个创世共识节点的id分别为1/2/3/4，那么新增的第一个共识节点id>=5即可；
+- `--reason`：可选参数，说明注册理由。
 
 _（注意，注册共识节点需要投票治理流程，如果使用`ZeroPermission`投票策略，投票过程可省略）_
 
 ### 2.3 示例说明
 
 前提条件：
+
 - 商业版本bitxhub已经启动，使用rbft共识，使用默认`ZeroPermission`投票策略，且相应二进制文件已编译
 
 ```shell
@@ -210,9 +212,10 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 3.2 使用方法
 
-bitxhub client governance node logout
+#### bitxhub client governance node logout
 
 参数解释：
+
 - `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
 - `--account`：指定待删除节点account信息，共识节点通常为节点配置目录下key.json对应的地址
 - `--reason`：可选参数，说明注销理由
@@ -222,6 +225,7 @@ _（注意，注销共识节点需要投票治理流程，如果使用`ZeroPermi
 ### 3.3 示例说明
 
 前提条件：
+
 - 接2.3示例
 ```shell
 # 查询所有节点：五个可用的共识节点
@@ -280,9 +284,10 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 4.2 使用方法
 
-bitxhub client governance node register
+#### bitxhub client governance node register
 
 注册审计节点相关参数解释 *（未列出参数与审计节点无关可忽略）*：
+
 - `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
 - `--account`：指定新节点account信息，审计节点通常为审计节点私钥key.json对应的地址
 - `--type`：指定新节点类型，默认为共识节点`vpNode`，注册审计节点时需要明确指定为`nvpNode`
@@ -295,6 +300,7 @@ _（注意，注册审计节点需要投票治理流程，如果使用`ZeroPermi
 ### 4.3 示例说明
 
 前提条件：
+
 - bitxhub已经启动，使用默认raft共识，使用默认`ZeroPermission`投票策略，且相应二进制文件已编译
 - pier配置文件已准备好，对应一个`Fabric V1.4.3`类型应用链
 - pier配置文件下的key.json对应中继链上一个有足够交易费余额的账户
@@ -347,9 +353,10 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 5.2 使用方法
 
-bitxhub client governance node update
+#### bitxhub client governance node update
 
 参数解释：
+
 - `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
 - `--account`：指定待更新节点account信息，通常为审计节点私钥key.json对应的地址
 - `--name`：指定待更新节点的name，可随意自定义，但不可以和其他审计节点重名
@@ -361,6 +368,7 @@ _（注意，更新审计节点需要投票治理流程，如果使用`ZeroPermi
 ### 5.3 示例说明
 
 前提条件：
+
 - 接4.3示例
 ```shell
 # 查询所有节点：4个初始的共识节点，1个名称为node1权限为appchain1的审计节点
@@ -401,9 +409,10 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 6.2 使用方法
 
-bitxhub client governance node logout
+#### bitxhub client governance node logout
 
 参数解释：
+
 - `--repo`：指定中继链管理员私钥的路径，通常为bitxhub任意节点配置文件所在目录
 - `--account`：指定待删除节点account信息，审计节点通常为私钥key.json对应的地址
 - `--reason`：可选参数，说明注销理由
