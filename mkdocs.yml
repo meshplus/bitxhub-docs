@@ -118,6 +118,8 @@ nav:
         - 节点管理: bitxhub/function/node_manager.md
         - 统一身份管理: bitxhub/function/role_manager.md
         - 验证规则管理: bitxhub/function/rule_manager.md
+        - 服务管理: bitxhub/function/service_manager.md
+        - DApp管理: bitxhub/function/dapp_manager.md
         - 跨链合约调用: bitxhub/function/cross_invoke.md
       - 开发手册:
           - 中继链接口错误码: bitxhub/dev/error_code.md
