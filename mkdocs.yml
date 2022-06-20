@@ -154,6 +154,7 @@ nav:
       - 加入我们: bitxhub/join_us.md
       - FAQ: bitxhub/faq.md
   - Goduck:
+    - Quick started: goduck/quick_start.md
     - Getting started: goduck/index.md
   - Premo:
     - 使用文档: premo/usage.md
