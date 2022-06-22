@@ -3,11 +3,11 @@
 ## 1 安装
 
 ### 1.1 获取源码
-下载源码并切到稳定版本release-1.1
+下载源码并切到稳定版本release-1.23
 ```
 git clone git@github.com:meshplus/goduck.git
 cd goduck
-git checkout release-1.1
+git checkout release-1.23
 ```
 
 ### 1.2 编译安装
@@ -69,7 +69,7 @@ goduck bitxhub command [command options] [arguments...]
 #### 2.2.1 启动BitXHub节点
 
 ```
-goduck bitxhub start --version v1.18.0
+goduck bitxhub start --version v1.23.0
 ```
 
 该命令会初始化并启动1.11.2版本的BitXHub节点，如果有已启动的BitXHub节点会执行失败。执行成功后提示如下：
@@ -92,7 +92,7 @@ You can use the "goduck status list" command to check the status of the startup 
 - `--version value, -v value`  BitXHub版本
 - `--help, -h`
 
-如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.18.0/bxh_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.23.0/bxh_modify_config.toml配置文件相关参数进行调整。
 该文件中部分参数配置如下：
 
 ```shell
@@ -123,7 +123,7 @@ You can use the "goduck status list" command to check the status of the startup 
 #### 2.2.2 为BitXHub节点生成配置文件
 
 ```
-goduck bitxhub config --version v1.18.0
+goduck bitxhub config --version v1.23.0
 
 # 成功最后的日志打印如下：
 ...
@@ -174,7 +174,7 @@ goduck bitxhub config --version v1.18.0
 - `--version value, -v value`  BitXHub版本
 - `--help, -h`
 
-如果想以更具体的自定义方式生成配置，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.18.0/bxh_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式生成配置，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.23.0/bxh_modify_config.toml配置文件相关参数进行调整。
 该文件中参数配置同2.2.1节中的介绍
 
 #### 2.2.3 关闭BitXHub节点
@@ -239,7 +239,7 @@ GoDuck pier command [command options] [arguments...]
 #### 2.3.1 启动pier
 
 ```shell
-goduck pier start --version v1.18.0
+goduck pier start --version v1.23.0
 
 # 启动成功后打印日志大致如下：
 ======> Generate configuration files for pier_ethereum
@@ -263,7 +263,7 @@ You can use the "goduck status list" command to check the status of the startup 
 - `--version value, -v value`  Pier版本
 - `--help, -h`
 
-如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/pier_config/v1.18.0/pier_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/pier_config/v1.23.0/pier_modify_config.toml配置文件相关参数进行调整。
 该文件中部分参数配置如下：
 
 ```shell
@@ -338,7 +338,7 @@ goduck pier clean
 #### 2.3.4 生成Pier的配置文件
 
 ```
-goduck pier config --version "v1.18.0"
+goduck pier config --version "v1.23.0"
 ``` 
 
 ### 2.4 关于应用链的操作
@@ -355,39 +355,18 @@ GoDuck ether command [command options] [arguments...]
 注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
 
 ```shell
-goduck ether start --bxh-version v1.18.0
+goduck ether start --bxh-version v1.23.0
 
 # 启动成功后打印示例如下：
-exec:  /bin/bash ethereum.sh docker 1.3.0
+exec:  /bin/bash ethereum.sh docker 1.2.0
 start a new ethereum-node container
 fc6b26e2507fb7da3ca04abea6d014968297383986596377cd42e8852b2b83e6
 start ethereum private chain with data directory in /Users/xxx/.goduck/ethereum/datadir.
 ```
 
-该命令会以docker模式启动一条以太坊私链，且该链上已经部署好适配v1.11.2版本bitxhub的跨链合约，合约地址分别如下：
-
-- broker: `0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`
-- transfer: `0x668a209Dc6562707469374B8235e37b8eC25db08`
-- data_swapper: `0x6db07a8b0f23367dc65c7DAD91da4F6bfD97D674`
-
-这些合约的abi文件分别在$repo/pier/ethereum/1.3.0/目录下，例如：
+该命令会以docker模式启动一条以太坊私链，如果想以二进制模式启动也可以通过指定参数实现，命令如下：
 ```shell
-/Users/xxx/.goduck/pier/ethereum/1.3.0/
-├── account.key
-├── broker.abi
-├── data_swapper.abi
-├── ether.validators
-├── ethereum.toml
-├── password
-├── transfer.abi
-└── validating.wasm
-
-0 directories, 8 files
-```
-
-如果想以二进制模式启动也可以通过指定参数实现，命令如下：
-```shell
-goduck ether start --bxh-version v1.18.0 --type binary
+goduck ether start --bxh-version v1.23.0 --type binary
 ```
 
 （2）关闭以太坊
@@ -415,6 +394,50 @@ ethereum docker container stopped
 ethereum-node
 ethereum docker container cleaned
 ```
+
+（3）部署智能合约
+
+goduck ether contract deploy
+
+参数解释
+
+- --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
+
+- --key-path：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
+
+- --psd-path：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
+
+- --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
+
+目前最新版本智能合约可在goduck/scripts/example下找到，部署示例如下
+
+```shell
+goduck ether contract deploy --code-path "#HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
+
+======= /goduck/scripts/example/broker.sol:Broker =======
+Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
+Contract JSON ABI
+[{"inputs":[{"internalType":"string","name":"_bitxhubID","type":"string"},{"internalType":"string","name":"_appchainID","type":"string"},{"internalType":"address[]","name":"_validators","type":"address[]"},{"internalType":"uint64","name":"_valThreshold","type":"uint64"},{"internalType":"address[]","name":"_admins","type":"address[]"},{"internalType":"uint64","name":"_adminThreshold","type":"uint64"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint64","name":"index","type":"uint64"},{"indexed":false,"internalType":"string","name":"dstFullID","type":"string"},{"indexed":false,"internalType":"string","name":"srcFullID","type":"string"},{"indexed":false,"internalType":"string","name":"func","type":"string"},{"indexed":false,"internalType":"bytes[]","name":"args","type":"bytes[]"},{"indexed":false,"internalType":"bytes32","name":"hash","type":"bytes32"}],"name":"throwInterchainEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint64","name":"index","type":"uint64"},{"indexed":false,"internalType":"string","name":"dstFullID","type":"string"},{"indexed":false,"internalType":"string","name":"srcFullID","type":"string"},{"indexed":false,"internalType":"uint64","name":"typ","type":"uint64"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"},{"indexed":false,"internalType":"bytes[]","name":"result","type":"bytes[]"},{"indexed":false,"internalType":"bytes32","name":"hash","type":"bytes32"}],"name":"throwReceiptEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"","type":"bool"}],"name":"throwReceiptStatus","type":"event"},{"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"int64","name":"status","type":"int64"}],"name":"audit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"destFullServiceID","type":"string"},{"internalType":"string","name":"funcCall","type":"string"},{"internalType":"bytes[]","name":"args","type":"bytes[]"},{"internalType":"string","name":"funcCb","type":"string"},{"internalType":"bytes[]","name":"argsCb","type":"bytes[]"},{"internalType":"string","name":"funcRb","type":"string"},{"internalType":"bytes[]","name":"argsRb","type":"bytes[]"},{"internalType":"bool","name":"isEncrypt","type":"bool"}],"name":"emitInterchainEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"}],"name":"getAppchainInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"bytes","name":"","type":"bytes"},{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCallbackMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getChainID","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"id","type":"string"}],"name":"getDirectTransactionMeta","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDstRollbackMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getInnerMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLocalServiceList","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getLocalWhiteList","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"outServicePair","type":"string"},{"internalType":"uint64","name":"idx","type":"uint64"}],"name":"getOutMessage","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"bytes[]","name":"","type":"bytes[]"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getOuterMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"remoteAddr","type":"string"}],"name":"getRSWhiteList","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"inServicePair","type":"string"},{"internalType":"uint64","name":"idx","type":"uint64"}],"name":"getReceiptMessage","outputs":[{"internalType":"bytes[]","name":"","type":"bytes[]"},{"internalType":"uint64","name":"","type":"uint64"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemoteServiceList","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"srcFullID","type":"string"},{"internalType":"string","name":"destAddr","type":"string"},{"internalType":"uint64","name":"index","type":"uint64"},{"internalType":"uint64","name":"typ","type":"uint64"},{"internalType":"string","name":"callFunc","type":"string"},{"internalType":"bytes[]","name":"args","type":"bytes[]"},{"internalType":"uint64","name":"txStatus","type":"uint64"},{"internalType":"bytes[]","name":"signatures","type":"bytes[]"},{"internalType":"bool","name":"isEncrypt","type":"bool"}],"name":"invokeInterchain","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"string","name":"srcAddr","type":"string"},{"internalType":"string","name":"dstFullID","type":"string"},{"internalType":"uint64","name":"index","type":"uint64"},{"internalType":"uint64","name":"typ","type":"uint64"},{"internalType":"bytes[]","name":"result","type":"bytes[]"},{"internalType":"uint64","name":"txStatus","type":"uint64"},{"internalType":"bytes[]","name":"signatures","type":"bytes[]"}],"name":"invokeReceipt","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"register","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"},{"internalType":"string","name":"broker","type":"string"},{"internalType":"address","name":"ruleAddr","type":"address"},{"internalType":"bytes","name":"trustRoot","type":"bytes"}],"name":"registerAppchain","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"registerDirectTransaction","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"},{"internalType":"string","name":"serviceID","type":"string"},{"internalType":"address[]","name":"whiteList","type":"address[]"}],"name":"registerRemoteService","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+```
+上述示例中，合约部署地址为0x857133c5C69e6Ce66F7AD46F200B9B3573e77582，同时也打印出了合约部署生成的abi详情，目前需要部署的智能合约对应abi已经存储在goduck/scripts/example目录下。
+
+（4）以太坊合约调用
+
+goduck ether contract invoke
+
+- --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
+
+- --key-path：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
+
+- --psd-path：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
+
+- --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
+
+调用示例如下
+```shell
+goduck ether contract invoke  --abi-path "#HOME/goduck/scripts/example/broker.abi  0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
+```
+
 
 #### 2.2.2 fabric
 
@@ -448,7 +471,7 @@ goduck fabric start
 
 执行以下命令可以直接下载相应版本合约并部署：
 ```shell
-goduck fabric contract chaincode --bxh-version v1.18.0
+goduck fabric contract chaincode --bxh-version v1.23.0
 
 # 部署成功后会依次打印出几个步骤的日志，日志中有部分报错不影响，只要没有红色报错，且能大致打印出以下日志即可：
 install default interchain chaincode
@@ -457,14 +480,14 @@ install default interchain chaincode
 Installing chaincode broker on org[org2] peers:
 -- grpcs://localhost:9051
 -- grpcs://localhost:10051
-...successfuly installed chaincode broker.v0 on peer localhost:9051.
 ...successfuly installed chaincode broker.v0 on peer localhost:10051.
+...successfuly installed chaincode broker.v0 on peer localhost:9051.
 ...successfuly instantiated chaincode broker on channel mychannel.
 Installing chaincode transfer on org[org2] peers:
 -- grpcs://localhost:9051
 -- grpcs://localhost:10051
-...successfuly installed chaincode transfer.v0 on peer localhost:9051.
 ...successfuly installed chaincode transfer.v0 on peer localhost:10051.
+...successfuly installed chaincode transfer.v0 on peer localhost:9051.
 ...successfuly instantiated chaincode transfer on channel mychannel.
 Installing chaincode data_swapper on org[org2] peers:
 -- grpcs://localhost:9051
@@ -475,18 +498,24 @@ Installing chaincode data_swapper on org[org2] peers:
 ===> 2. Set Alice 10000 amout in transfer chaincode
 ****************************************************************************************************
 ***** |  Response[0]:
-***** |  |  Payload:
+***** |  |  Payload: 
 ***** |  Response[1]:
-***** |  |  Payload:
+***** |  |  Payload: 
 ****************************************************************************************************
-===> 3. Set (key: path, value: /Users/xxx/.goduck) in data_swapper chaincode
+===> 3. Set (key: path, value: /Users/weiyijie/.goduck) in data_swapper chaincode
 ****************************************************************************************************
 ***** |  Response[0]:
-***** |  |  Payload:
+***** |  |  Payload: 
 ***** |  Response[1]:
-***** |  |  Payload:
+***** |  |  Payload: 
 ****************************************************************************************************
 ===> 4. Register transfer and data_swapper chaincode to broker chaincode
+****************************************************************************************************
+***** |  Response[0]:
+***** |  |  Payload: mychannel&transfer
+***** |  Response[1]:
+***** |  |  Payload: mychannel&transfer
+****************************************************************************************************
 ****************************************************************************************************
 ***** |  Response[0]:
 ***** |  |  Payload: mychannel&data_swapper
@@ -508,8 +537,23 @@ Installing chaincode data_swapper on org[org2] peers:
 ****************************************************************************************************
 ```
 
+（3）fabric合约调用
 
-（3）关闭fabric
+goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
+
+参数解释
+- --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
+
+示例如下：
+
+```shell
+#调用transfer合约的getbalance函数查询Alice的余额
+goduck fabric contract invoke transfer getBalance Alice
+
+[fabric] invoke function "getBalance", receipt is 10000
+```
+
+（4）关闭fabric
 关闭fabric有stop和clean两个命令，推荐使用clean命令，在停止fabric容器的同时会清除所有相关镜像
 ```shell
 # 关闭并清除应用链容器
@@ -518,4 +562,6 @@ goduck fabric stop
 # 关闭并清除应用链容器，同时清除应用链及合约相关镜像
 goduck fabric clean
 ```
+
+
 
