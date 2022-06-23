@@ -4,7 +4,7 @@
 
 在进行跨链操作前，需要先安装好goduck比完成初始化
 ```shell
-$ git checkout release-1.1
+$ git checkout release-1.23.0
 $ git pull
 $ make install && goduck init
 ```
@@ -27,7 +27,7 @@ start ethereum private chain with data directory in $goduck_repo/ethereum/datadi
 在以太坊镜像中部署broker和transfer智能合约，示例如下
 ```shell
 #部署broker合约
-goduck ether contract deploy --code-path ~/goduck/scripts/example/broker.sol "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1"
+goduck ether contract deploy --code-path $HOME/goduck/scripts/example/broker.sol "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1"
 
 ======= #HOME/goduck/scripts/example/broker.sol:Broker =======
 Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
@@ -36,7 +36,7 @@ Contract JSON ABI
 #记录broker合约地址，后续部署transfer合约以及调用合约时需要使用
 
 #部署transfer合约
-goduck ether contract deploy --code-path ~/goduck/scripts/example/transfer.sol 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
+goduck ether contract deploy --code-path $HOME/goduck/scripts/example/transfer.sol 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
 
 ======= #HOME/goduck/scripts/example/transfer.sol:Transfer =======
 Deployed contract address is 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11
@@ -50,7 +50,7 @@ Contract JSON ABI
 目前transfer部署完成后需要在broker合约中对其进行审核，示例如下
 ```shell
 #审核transfer合约
-goduck ether contract invoke --key-path ~/goduck/scripts/docker/quick_start/account.key --abi-path ~/goduck/scripts/example/broker.abi --address http://localhost:8545 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
+goduck ether contract invoke --key-path $HOME/goduck/scripts/docker/quick_start/account.key --abi-path $HOME/goduck/scripts/example/broker.abi --address http://localhost:8545 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
 
 ======= invoke function audit =======
 invoke contract success, tx hash is: 0xf9d58b285c394ea91d4b34d0d4f9c6c61931160c7b280fc375bb2100e0f75333
@@ -187,7 +187,7 @@ You can use the "goduck status list" command to check the status of the startup 
 这一部分不属于goduck功能，可以使用bitxhub命令行实现，示例如下：
 ```shell
 #查看网关id
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub key show --path ~/.goduck/pier/.pier_ethereum/key.json
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub key show --path $HOME/.goduck/pier/.pier_ethereum/key.json
 
 private key: 2dbac8637045b71c1f03462a919cf8ccd84828974e4dc3fa5bf5d2583ca4f677
 public key: 04c63aea5849852aa406515bf8a88893a2c8e9eda2b1d8d952b50816a7367061c952e3f74d4639205e699bc9a8b977377d89640f3a4a70d7fd5d48deb431a1b0f8
@@ -195,12 +195,12 @@ address: 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed
 #记录下网关账户地址以便后续使用
 
 #中继链转账
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client transfer --key ~/.goduck/bitxhub/.bitxhub/node1/key.json --to 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed --amount 100000000000000000
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client transfer --key $HOME/.goduck/bitxhub/.bitxhub/node1/key.json --to 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed --amount 100000000000000000
 
 {"tx_hash":"0xB86a421169Fa30AC19Dad443E34E91Cd4bcBF80D21DF35CA4c5d5239AC57fA0B"}
 
 #余额查询
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client account --address 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client account --address 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed
 
 {
   "type": "normal",
@@ -216,11 +216,11 @@ address: 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed
 
 ```shell
 #将编译后的1.23.0版本pier二进制文件拷贝到pier生成目录 并切换到对应位置
-cp ~/.goduck/bin/pier_darwin_v1.23.0/pier ~/.goduck/pier/.pier_ethereum/ 
-cd ~/.goduck/pier/.pier_ethereum/ 
+cp $HOME/.goduck/bin/pier_darwin_v1.23.0/pier $HOME/.goduck/pier/.pier_ethereum/ 
+cd $HOME/.goduck/pier/.pier_ethereum/ 
 
 #网关执行应用链注册操作
-pier --repo ./ appchain register --appchain-id "ethappchain1" --name "eth1" --type "ETH" --trustroot ~/.goduck/pier/.pier_ethereum/ethereum/ether.validators --broker 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" --admin 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed --reason "reason" 
+pier --repo ./ appchain register --appchain-id "ethappchain1" --name "eth1" --type "ETH" --trustroot $HOME/.goduck/pier/.pier_ethereum/ethereum/ether.validators --broker 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" --admin 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed --reason "reason" 
 
 #应用链注册成功，等待投票提案通过
 Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 to finish.
@@ -228,25 +228,25 @@ Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddb
 第三步：提案投票通过  
 注册提案提交后需要进行投票，投票部分不属于goduck的功能，可以使用bitxhub命令行实现，示例如下：
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 --info approve --reason reason
 vote successfully!
 ```
 
 完成投票提案后查看应用链状态
 ```shell
 #根据应用链名称查询状态
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance appchain info --name "eth1"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance appchain info --name "eth1"
 
 Id            Name  Type  Broker                                      Status     Desc  Version
 --            ----  ----  ------                                      ------     ----  -------
 ethappchain1  eth1  ETH   0x857133c5C69e6Ce66F7AD46F200B9B3573e77582  available  desc  0
 
 #根据应用链Id查询状态
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance appchain status --id "ethappchain1"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance appchain status --id "ethappchain1"
 
 appchain ethappchain1 is available
 ```
@@ -262,27 +262,28 @@ Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb
 第五步：服务提案投票通过 
 投票过程同第三步，示例如下
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-1 --info approve --reason reason
 vote successfully!
 ```
 
 完成投票提案后查看服务状态
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance service status --id "ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance service status --id "ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11"
 
 service ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 is available
 ```
 
 #### 3.1.3 注册应用链以及服务
 成功启动pier并成功注册应用链后pier启动即准备完成。  
-我们可以通过查看pier日志的方式确定连接以太坊链的pier准备完成：
+我们可以在对应路径下启动pier
 ```shell
-# 注意需要指定pier的启动目录，默认是~/.goduck/pier/.pier_ethereum
-goduck log pier --pier-repo ~/.goduck/pier/.pier_ethereum
+# 注意需要指定pier的启动目录，默认是$HOME/.goduck/pier/.pier_ethereum
+cd $HOME/.goduck/pier/.pier_ethereum
+pier --repo ./ start
 
 ```
 
@@ -291,16 +292,16 @@ goduck log pier --pier-repo ~/.goduck/pier/.pier_ethereum
 #### 3.2.1 启动pier
 ```shell
 #复制出一份新的pier配置文件
-cp ~/.goduck/pier_config/v1.23.0/pier_modify_config.toml ~/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
+cp $HOME/.goduck/pier_config/v1.23.0/pier_modify_config.toml $HOME/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
 #修改网关端口配置
-vim ~/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
+vim $HOME/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
 httpPort = 44564
 pprofPort = 44560
 apiPort = 8081
 ```
 然后启动指定fabric应用链类型及修改后的可修改配置文件启动pier：
 ```shell
-goduck pier start --version v1.23.0 --appchain fabric --configPath ~/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
+goduck pier start --version v1.23.0 --appchain fabric --configPath $HOME/.goduck/pier_config/v1.23.0//pier_modify_config1.toml
 ======> Generate configuration files for pier_fabric
 【1】generate configuration files
 【2】copy pier plugin and appchain config
@@ -317,19 +318,19 @@ You can use the "goduck status list" command to check the status of the startup 
 这一部分不属于goduck功能，可以使用bitxhub命令行实现，示例如下：
 ```shell
 #查看网关id
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub key show --path ~/.goduck/pier/.pier_fabric/key.json
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub key show --path $HOME/.goduck/pier/.pier_fabric/key.json
 
 private key: 1909b0c48cc00d55ef0ffd9fa33198222f6157122cfcda7b45831881240ca560
 public key: 040837c7382070c09027fc467344c0386066f25f318d044aae65c9bd6f8254eda5b9e4e2b092d89f16d0e94a805900665473cf3a5759263a9b73dac47f61891d96
 address: 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D
 
 #中继链转账
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client transfer --key ~/.goduck/bitxhub/.bitxhub/node1/key.json --to 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D --amount 100000000000000000
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client transfer --key $HOME/.goduck/bitxhub/.bitxhub/node1/key.json --to 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D --amount 100000000000000000
 
 {"tx_hash":"0xa80A372D7eAEF1985d6ef5c9F4D93dbfedf92136aDa5568202B02Fd6200ac6B0"}
 
 #余额查询
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client account --address 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub client account --address 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D
 
 {
   "type": "normal",
@@ -343,11 +344,11 @@ address: 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D
 
 ```shell
 #将编译后的1.23.0版本pier二进制文件拷贝到pier生成目录 并切换到对应位置
-cp ~/.goduck/bin/pier_darwin_v1.23.0/pier ~/.goduck/pier/.pier_fabric/ 
-cd ~/.goduck/pier/.pier_fabric/ 
+cp $HOME/.goduck/bin/pier_darwin_v1.23.0/pier $HOME/.goduck/pier/.pier_fabric/ 
+cd $HOME/.goduck/pier/.pier_fabric/ 
 
 #网关执行应用链注册操作
-pier --repo ./ appchain register --appchain-id "appchain1" --name "fabric1" --type "Fabric V1.4.3" --trustroot ~/.goduck/pier/.pier_fabric/fabric/fabric.validators --broker-cid mychanncel --broker-ccid broker --broker-v 1 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" --admin 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D --reason "reason" 
+pier --repo ./ appchain register --appchain-id "appchain1" --name "fabric1" --type "Fabric V1.4.3" --trustroot $HOME/.goduck/pier/.pier_fabric/fabric/fabric.validators --broker-cid mychanncel --broker-ccid broker --broker-v 1 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" --admin 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D --reason "reason" 
 
 #应用链注册成功，等待投票提案通过
 Register appchain successfully, wait for proposal 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 to finish.
@@ -355,24 +356,24 @@ Register appchain successfully, wait for proposal 0x02E2De5aF4E06fC74D2EB34B8753
 
 第三步：提案投票通过 
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-0 --info approve --reason reason
 vote successfully!
 ```
 
 完成投票提案后查看应用链状态
 ```shell
 #根据应用链名称查询状态
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance appchain info --name "fabric1"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance appchain info --name "fabric1"
 
 Id               Name     Type           Broker                                                                    Status     Desc  Version
 --               ----     ----           ------                                                                    ------     ----  -------
 fabricappchain1  fabric1  Fabric V1.4.3  {"channel_id":"mychanncel","chaincode_id":"broker","broker_version":"1"}  available  desc  0
 #根据应用链Id查询状态
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance appchain status --id "fabricappchain1"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance appchain status --id "fabricappchain1"
 
 appchain fabricappchain1 is available
 ```
@@ -390,39 +391,40 @@ Register appchain service for fabricappchain1:mychannel&transfer successfully, w
 第五步：服务提案投票通过
 投票过程同第三步，示例如下
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node1 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node2 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
 vote successfully!
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo ~/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo $HOME/.goduck/bitxhub/.bitxhub/node3 client governance vote --id 0x02E2De5aF4E06fC74D2EB34B87539F6fD57d777D-1 --info approve --reason reason
 vote successfully!
 ```
 
 完成投票提案后查看服务状态
 ```shell
-~/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  ~/.goduck/bitxhub/.bitxhub/node1 client governance service status --id "appchain1:mychannel&transfer"
+$HOME/.goduck/bin/bitxhub_darwin_v1.23.0/bitxhub --repo  $HOME/.goduck/bitxhub/.bitxhub/node1 client governance service status --id "appchain1:mychannel&transfer"
 
 service fabricappchain1:mychannel&transfer is available
 ```
 
-#### 3.2.3 检查pier是否准备完成
+#### 3.2.3 启动pier
 成功启动pier并成功注册应用链后pier启动即准备完成。  
-我们可以通过查看pier日志的方式确定连接Fabric链的pier准备完成：
+我们可以在对应路径下启动pier
 ```shell
-# 注意需要指定pier的启动目录，默认是~/.goduck/pier/.pier_fabric
-goduck log pier --pier-repo ~/.goduck/pier/.pier_fabric
+# 注意需要指定pier的启动目录，默认是$HOME/.goduck/pier/.pier_fabric
+cd $HOME/.goduck/pier/.pier_fabric
+pier --repo ./ start
 ```
 
 ## 4 跨链交易
 ```shell
 #以太坊上Alice余额设置为10000
-goduck ether contract invoke --key-path ~/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path ~/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 setBalance Alice^10000
+goduck ether contract invoke --key-path $HOME/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path $HOME/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 setBalance Alice^10000
 
 ======= invoke function setBalance =======
 invoke contract success, tx hash is: 0x332eac16be794d0c7ffdddc30ae304f1ebf56409e4fb766f3f8c2718f0f9e850
 
 # 查询以太坊上Alice账户余额
-goduck ether contract invoke --key-path ~/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path ~/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 getBalance Alice
+goduck ether contract invoke --key-path $HOME/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path $HOME/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 getBalance Alice
 
 ======= invoke function getBalance =======
 call result: 10000
@@ -433,13 +435,13 @@ goduck fabric contract invoke transfer getBalance Alice
 [fabric] invoke function "getBalance", receipt is 10000
 
 # 以太坊向Fabric转账
-goduck ether contract invoke --key-path ~/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path ~/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 transfer "1356:appchain1:mychannel&transfer"^Alice^Alice^1000  
+goduck ether contract invoke --key-path $HOME/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path $HOME/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 transfer "1356:appchain1:mychannel&transfer"^Alice^Alice^1000  
               
 ======= invoke function transfer =======
 invoke contract success, tx hash is: 0x460cb0b8955b4bbb0b05e0e2c824324f9c79953c2dcd0d38995183c1ad85dd95
 
 # 查询以太坊上Alice账户余额
-goduck ether contract invoke --key-path ~/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path ~/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 getBalance Alice
+goduck ether contract invoke --key-path $HOME/goduck/scripts/docker/quick_start/account.key --address http://localhost:8545 --abi-path $HOME/goduck/scripts/example/transfer.abi 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 getBalance Alice
 
 ======= invoke function getBalance =======
 call result: 9000
@@ -447,6 +449,6 @@ call result: 9000
 # 查询fabric上Alice账户余额
 goduck fabric contract invoke transfer getBalance Alice
 
-[fabric] invoke function "getBalance", receipt is 10000
+[fabric] invoke function "getBalance", receipt is 11000
 
 ```
