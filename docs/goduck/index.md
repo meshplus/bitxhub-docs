@@ -397,7 +397,7 @@ ethereum docker container cleaned
 
 （3）部署智能合约
 
-goduck ether contract deploy
+#### goduck ether contract deploy
 
 参数解释
 
@@ -423,7 +423,7 @@ Contract JSON ABI
 
 （4）以太坊合约调用
 
-goduck ether contract invoke
+#### goduck ether contract invoke
 
 - --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
 
@@ -539,7 +539,7 @@ Installing chaincode data_swapper on org[org2] peers:
 
 （3）fabric合约调用
 
-goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
+#### goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
 
 参数解释
 - --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml

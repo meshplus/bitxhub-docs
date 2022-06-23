@@ -156,6 +156,7 @@ nav:
   - Goduck:
     - Quick started: goduck/quick_start.md
     - Getting started: goduck/index.md
+    - CrossChain started: goduck/cross_chain.md
   - Premo:
     - 使用文档: premo/usage.md
   - SDK文档:
