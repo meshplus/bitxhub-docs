@@ -108,6 +108,7 @@ nav:
           - 单中继架构部署:
             - 中继链部署: bitxhub/usage/single_bitxhub/deploy_bitxhub.md
             - 跨链网关部署: bitxhub/usage/single_bitxhub/deploy_pier.md
+            - 合约部署: bitxhub/usage/single_bitxhub/deploy_contract.md
           - 跨链网关直连模式部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
           - 系统验证与交易流程体验: bitxhub/usage/status_verification.md
       - 产品功能:

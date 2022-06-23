@@ -26,7 +26,7 @@
 
 === "Ethereum"
 
-    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.23.0/example)的exampe文件夹中获取。
+    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v2.0.0/example)的exampe文件夹中获取。
 
     **说明：**
     1. 合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约；
@@ -38,13 +38,13 @@
     
     Step1: 安装部署合约的工具fabric-cli
     ```shell
-    cd ~/bitxhub-v1.18 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    cd ~/bitxhub-v2.0.0 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
     ```
     
     Step2: 获取需要部署的合约文件并解压
     ```shell
     git clone https://github.com/meshplus/pier-client-fabric.git 
-    cd pier-client-fabric && git checkout v1.18.0
+    cd pier-client-fabric && git checkout v2.0.0
     # 需要部署的合约文件就在example目录下
     # 解压即可
     unzip -q contracts.zip
@@ -52,26 +52,26 @@
     
     Step3: 部署broker、transfer合约
     ```shell
-    #安装和示例化broker合约
+    # 安装和示例化broker合约
     fabric-cli chaincode install --gopath ./contracts --ccp broker --ccid broker --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     fabric-cli chaincode instantiate --ccp broker --ccid broker \ 
     --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     
-    #初始化合约参数(以中继链id=1356和应用链id=fabappchain为例)
+    # 初始化合约参数(以中继链id=1356和应用链id=fabappchain为例)
     fabric-cli chaincode invoke --cid mychannel --ccid=broker \
     --args='{"Func":"initialize", "Args":["1356", "fabappchain"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}" 
     
-    #安装和示例化transfer合约
+    # 安装和示例化transfer合约
     fabric-cli chaincode install --gopath ./contracts --ccp transfer --ccid transfer --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     fabric-cli chaincode instantiate --ccp transfer --ccid transfer --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     
-    #业务合约需要向broker发起注册请求
+    # 业务合约需要向broker发起注册请求
     fabric-cli chaincode invoke --cid mychannel --ccid=transfer \
     --args='{"Func":"register"}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
     
-    #业务合约需要broker管理合约审计后，才能进行跨链交易
+    # 业务合约需要broker管理合约审计后，才能进行跨链交易
     fabric-cli chaincode invoke --cid mychannel --ccid=broker \
     --args='{"Func":"audit", "Args":["mychannel", "transfer", "1"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
@@ -83,9 +83,9 @@
 
 ```shell
 # 编译跨链网关本身
-cd ~/bitxhub-v1.18
+cd ~/bitxhub-v2.0.0
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout v1.18.0
+cd pier && git checkout v2.0.0
 make prepare && make build
 ```
 
@@ -94,7 +94,7 @@ make prepare && make build
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 
 ```shell
-CONFIG_PATH=$(HOME)/bitxhub-v1.18
+CONFIG_PATH=$HOME/bitxhub-v2.0.0
 pier --repo $CONFIG_PATH/.pier init relay
 ```
 
@@ -120,7 +120,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Ethereum 插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout v1.18.0
+    cd pier-client-ethereum && git checkout v2.0.0
     make eth
 
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
@@ -131,7 +131,7 @@ tree -L 1 $CONFIG_PATH/.pier
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.8.0) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v1.18.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.0.0) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v2.0.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
 === "Fabric"
 
@@ -141,7 +141,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Fabric插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout v1.18.0
+    cd pier-client-fabric && git checkout v2.0.0
     make fabric1.4
     
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
@@ -152,7 +152,7 @@ tree -L 1 $CONFIG_PATH/.pier
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v1.18.0) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v1.18.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.0.0) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
 经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
 
@@ -177,16 +177,15 @@ pprof = 44555
 
 ```toml
 [mode]
-type = "relay" # relay or direct
+type = "relay" # relay, direct or union
 [mode.relay]
 addrs = ["localhost:60011", "localhost:60012", "localhost:60013", "localhost:60014"]
+timeout_limit = "1s"
 quorum = 2
-validators = [
-    "0x000f1a7a08ccc48e5d30f80850cf1cf283aa3abd",
-    "0xe93b92f1da08f925bdee44e91e7768380ae83307",
-    "0xb18c8575e3284e79b92100025a31378feb8100d6",
-    "0x856E2B9A5FA82FD1B031D1FF6863864DBAC7995D",
-]
+bitxhub_id = "1356"
+enable_offchain_transmission = false
+[mode.direct]
+gas_limit = 0x5f5e100
 ```
 
 - 修改应用链信息（针对不同应用链类型进行配置）
@@ -195,6 +194,8 @@ validators = [
 
     ```toml
     [appchain]
+    # 应用链id
+    id = "ethappchain"
     # ethereum插件文件的名称
     plugin = "appchain_plugin"
     # ethereum配置文件夹在跨链网关配置文件夹下的相对路径
@@ -204,6 +205,8 @@ validators = [
 
     ```toml
     [appchain]
+    # 应用链id
+    id = "fabappchain"
     # fabric插件文件的名称
     plugin = "appchain_plugin"
     # ethereum配置文件夹在跨链网关配置文件夹下的相对路径
@@ -216,40 +219,43 @@ validators = [
 
 === "Ethereum"
 
-```shell
-#切换到pier-client-ethereum/bulid路径下，将ethereum插件拷贝到plugins目录下
-cp eth-client $CONFIG_PATH/.pier/plugins/
-# 切换到pier-client-ethereum项目路径下
-cd  pier-client-ethereum
-cp -r ./config $CONFIG_PATH/.pier/ether
-```
-其中重要配置如下：
-```text
-├── account.key
-├── broker.abi
-├── ether.validators
-├── ethereum.toml
-├── password
-└── validating.wasm
-```
-**说明**：
+    ```shell
+    # 切换到pier-client-ethereum/bulid路径下，将ethereum插件拷贝到plugins目录下
+    cp eth-client $CONFIG_PATH/.pier/plugins/
+    # 切换到pier-client-ethereum项目路径下
+    cd  pier-client-ethereum
+    cp -r ./config $CONFIG_PATH/.pier/ether
+    ```
+    其中重要配置如下：
+    ```text
+    ├── account.key
+    ├── broker.abi
+    ├── ether.validators
+    ├── ethereum.toml
+    ├── password
+    └── validating.wasm
+    ```
+    **说明**：
 
-- account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
-- broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
-- ether.validators和validating.wasm一般不需要修改。
-- ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
+    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+    - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
+    - ether.validators和validating.wasm一般不需要修改。
+    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
 
-```toml
-[ether]
-addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
-name = "ether-kovan"
-## 此处合约地址需要替换成变量代表的实际字符串
-contract_address = "$brokerAddr"
-abi_path = "broker.abi"
-key_path = "account.key"
-password = "password"
-min_confirm = 1
-```
+    ```toml
+    [ether]
+    addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
+    name = "ether-kovan"
+    ## 此处合约地址需要替换成变量代表的实际字符串
+    contract_address = "$brokerAddr"
+    key_path = "account.key"
+    password = "password"
+    min_confirm = 1
+    timeout_height = 100
+    timeout_period = 60
+    offchain_addr = ""
+    offchain_path = ""
+    ```
 
 === "Fabric"
 
@@ -285,26 +291,36 @@ min_confirm = 1
     `config.yaml`文件记录的Fabric网络配置（用您的网络拓扑配置文件替换这个样例文件），需要使用绝对路径，把所有的路径都修改为 `crypto-config`文件夹所在的绝对路径。
     ```shell
     {CONFIG_PATH}/fabric/crypto-config =>$CONFIG_PATH/.pier/fabric/crypto-config
-    # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric 的IP地址，如：
+    # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric的IP地址，如：
     url: grpcs://localhost:7050 => url: grpcs://10.1.16.48:7050
     ```
     3. **修改Plugin配置文件 fabric.toml**
     
     示例是以官方部署脚本进行配置：
     ```toml
-    addr = "localhost:7053" // 若Fabric部署在服务器上，该为服务器地址
-    event_filter = "interchain-event-name"
+    [fabric]
     username = "Admin"
-    ccid = "broker" // 若部署跨链broker合约名字不是broker需要修改
+    ccid = "broker"
     channel_id = "mychannel"
     org = "org2"
+    timeout_height = 30
+    chain_id = "3"
+
+    [[services]]
+    id = "mychannel&transfer"
+    name = "transfer"
+
+    [[services]]
+    id = "mychannel&data_swapper"
+    name = "data_swapper"
     ```
 
 **至此，对接ethereum和fabric应用链的pier及其插件的配置已经完成，接下来需要进行应用链注册和验证规则部署后，再启动pier节点。**
 
 
 ## 注册应用链
-在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.6.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，需要注意的一点是v1.18.0版本内置有一些验证，使用这些验证规则不需要进行额外的部署验证规则
+在启动跨链网关Pier之前，需要先注册应用链并部署验证规则，这些操作均是Pier命令行发起。需要注意的是，在v1.6.0及以上的版本，注册应用链需要中继链BitXHub节点管理员进行投票，投票通过之后才能接入。这一步Ethereum和Fabric（包括其它类型应用链）的流程一样，只是注册信息有所不同，需要注意的一点是v1.18.0以上版本内置了一些验证，使用这些验证规则不需要进行额外的部署
+
 以下是以Ethereum为例进行说明：
 
 1. Pier命令行发起应用链注册
@@ -319,7 +335,7 @@ min_confirm = 1
 # 发起注册后会打印出应用链id和提案id
 appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31, proposal id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0
 ```
-！！！需要注意的是v1.18.0版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
+！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
 
 2. 中继链节点依次投票
 ```shell
@@ -339,15 +355,15 @@ appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957
 
 1. Pier命令行进行服务注册
 ```shell
-./pier --repo ./ appchain service register --appchain-id ethappchain1 --service-id "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11" --name "ethServer1" --intro "" --type CallContract --permit "" --details "test" --reason "reason" 
-#发起注册服务后会打印应用链服务id与提案id
-Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 successfully, wait for proposal 0x0a677f55cdC47cfBB1a7A1393AB6842CEA770d2b-1 to finish.
+./pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id ethappchain1 --service-id "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11" --name "ethServer1" --intro "" --type CallContract --permit "" --details "test" --reason "reason"
+# 发起注册服务后会打印应用链服务id与提案id
+Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 to finish.
 ```
 2. 中继链节点依次为应用链服务提案投票
 ```shell
 # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
-./bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0x0a677f55cdC47cfBB1a7A1393AB6842CEA770d2b-1--info approve --reason approve
-#当超过半数bitxhub集群节点投票后，该应用链服务注册成功。
+./bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 --info approve --reason approve
+# 当超过半数bitxhub集群节点投票后，该应用链服务注册成功。
 ```
 
 
@@ -358,7 +374,7 @@ Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb
 === "Ethereum"
 
     ```shell
-    #以用户目录下的pier为例
+    # 以用户目录下的pier为例
     $ pier --repo $CONFIG_PATH/.pier rule deploy --path=$CONFIG_PATH/.pier/ether/validating.wasm
     # 部署验证规则后会打印：Deploy rule successfully: 0xed97cBf32C16551604f0017f9aA776bF96809b87
     
@@ -369,7 +385,7 @@ Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb
 === "Fabric"
 
     ```shell
-    #以用户目录下的pier为例
+    # 以用户目录下的pier为例
     $ pier --repo $CONFIG_PATH/.pier rule deploy --path=$CONFIG_PATH/.pier/fabric/validating.wasm
     # 部署验证规则后会打印：Deploy rule successfully: 0xed97cBf32C16551604f0017f9aA776bF96809b87
 
@@ -382,8 +398,8 @@ Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb
 在完成以上步骤之后，可以启动跨链网关节点了
 
 ```shell
-#以用户目录下的pier为例
-./pier --repo=$CONFIG_PATH/.pier start
+# 以用户目录下的pier为例
+./pier --repo $CONFIG_PATH/.pier start
 ```
 
 **观察日志信息没有报错信息，可以正常同步到中继链上的区块信息，即说明pier启动成功。**
