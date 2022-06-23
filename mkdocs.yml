@@ -135,6 +135,7 @@ nav:
           - 验证者信息生成: bitxhub/dev/validator.md
       - 设计文档:
           - 通用跨链协议IBTP: bitxhub/design/ibtp.md
+          - 跨链管理合约设计: bitxhub/design/broker.md
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
           - 跨链事务方案: bitxhub/design/interchain_transaction.md
           - 跨链网关设计方案: bitxhub/design/pier_design.md
