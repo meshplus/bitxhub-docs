@@ -72,7 +72,7 @@ goduck bitxhub command [command options] [arguments...]
 goduck bitxhub start --version v1.23.0
 ```
 
-该命令会初始化并启动1.11.2版本的BitXHub节点，如果有已启动的BitXHub节点会执行失败。执行成功后提示如下：
+该命令会初始化并启动1.23.0版本的BitXHub节点，如果有已启动的BitXHub节点会执行失败。执行成功后提示如下：
 
 ```
 ======> Start bitxhub cluster
@@ -409,7 +409,7 @@ ethereum docker container cleaned
 
 - --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
 
-目前最新版本智能合约可在goduck/scripts/example下找到，部署示例如下
+目前最新版本智能合约可在#HOME/goduck/scripts/example下找到，部署示例如下
 
 ```shell
 goduck ether contract deploy --code-path "#HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 

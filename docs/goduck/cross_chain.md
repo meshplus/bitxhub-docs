@@ -278,7 +278,7 @@ service ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 is available
 ```
 
 #### 3.1.3 注册应用链以及服务
-成功启动pier并成功注册应用链后pier启动即准备完成。  
+成功注册应用链后pier启动即准备完成。  
 我们可以在对应路径下启动pier
 ```shell
 # 注意需要指定pier的启动目录，默认是$HOME/.goduck/pier/.pier_ethereum
@@ -407,7 +407,7 @@ service fabricappchain1:mychannel&transfer is available
 ```
 
 #### 3.2.3 启动pier
-成功启动pier并成功注册应用链后pier启动即准备完成。  
+成功注册应用链后pier启动即准备完成。  
 我们可以在对应路径下启动pier
 ```shell
 # 注意需要指定pier的启动目录，默认是$HOME/.goduck/pier/.pier_fabric

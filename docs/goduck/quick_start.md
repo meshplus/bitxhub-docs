@@ -3,7 +3,7 @@
 
 ## 1 环境准备
 > Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](../../bitxhub/usage/env/)。 <br />
-> Goduck快速开始通过两条以太坊私链的智能合约交互来示例，需要提前安装solc0.7.6来编译以太坊solidity合约
+> Goduck快速开始通过两条以太坊私链的智能合约交互来示例，需要提前安装solc来编译以太坊solidity合约，建议安装solc0.7.6版本
 
 
 ## 2 获取源码
