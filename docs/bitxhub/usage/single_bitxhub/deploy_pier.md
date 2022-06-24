@@ -26,7 +26,7 @@
 
 === "Ethereum"
 
-    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.18.0/example)的exampe文件夹中获取。
+    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v1.23.0/example)的exampe文件夹中获取。
 
     **说明：**
     1. 合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约；
@@ -217,11 +217,11 @@ validators = [
 === "Ethereum"
 
 ```shell
-# 将ethereum插件拷贝到plugins目录下
-cp ether-client $CONFIG_PATH/.pier/plugins/
+#切换到pier-client-ethereum/bulid路径下，将ethereum插件拷贝到plugins目录下
+cp eth-client $CONFIG_PATH/.pier/plugins/
 # 切换到pier-client-ethereum项目路径下
-cd pier-client-ethereum
-cp ./config $CONFIG_PATH/.pier/ether
+cd  pier-client-ethereum
+cp -r ./config $CONFIG_PATH/.pier/ether
 ```
 其中重要配置如下：
 ```text
@@ -308,7 +308,6 @@ min_confirm = 1
 以下是以Ethereum为例进行说明：
 
 1. Pier命令行发起应用链注册
-
 ```shell
 # 以用户目录下的pier为例
 ./pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "ethappchain" --name "ethereum" \
@@ -334,6 +333,24 @@ appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957
 ```shell
 ./bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance proposals --type AppchainMgr 
 ```
+
+## 应用链服务注册
+在应用链注册成功后，还需要为应用链注册相应的服务:
+
+1. Pier命令行进行服务注册
+```shell
+./pier --repo ./ appchain service register --appchain-id ethappchain1 --service-id "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11" --name "ethServer1" --intro "" --type CallContract --permit "" --details "test" --reason "reason" 
+#发起注册服务后会打印应用链服务id与提案id
+Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 successfully, wait for proposal 0x0a677f55cdC47cfBB1a7A1393AB6842CEA770d2b-1 to finish.
+```
+2. 中继链节点依次为应用链服务提案投票
+```shell
+# 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
+./bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0x0a677f55cdC47cfBB1a7A1393AB6842CEA770d2b-1--info approve --reason approve
+#当超过半数bitxhub集群节点投票后，该应用链服务注册成功。
+```
+
+
 
 ## 注册验证规则
 应用链除了在注册应用链时，绑定主验证规则，在可用状态下也可以注册其他验证规则，即可以在应用链注册成功且中继链投票通过后进行规则部署。之前已经准备好了验证规则文件，接下来在Pier端发起部署验证规则的命令。
