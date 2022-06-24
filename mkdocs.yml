@@ -139,6 +139,7 @@ nav:
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
           - 跨链事务方案: bitxhub/design/interchain_transaction.md
           - 跨链网关设计方案: bitxhub/design/pier_design.md
+          - 直连架构跨链事务方案: bitxhub/design/direct_transaction.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
           - 区块链浏览器后台设计: bitxhub/design/luka.md

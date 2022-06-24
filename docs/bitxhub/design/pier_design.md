@@ -295,7 +295,7 @@ Message_ROUTE_UPDATED_META      Message_Type = 36
 
 
 
-### DirectAdapt 模块
+### <a name="directMode">DirectAdapt 模块</a>
 
 **概述**
 

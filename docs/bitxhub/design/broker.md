@@ -207,7 +207,7 @@ function registerAppchain(string memory chainID, string memory broker, address r
 function getAppchainInfo(string memory chainID) public view returns (string memory, bytes memory, address)
 ```
 
-### 跨链信息管理
+### 3. 跨链信息管理
 #### index管理
 为了维护跨链服务的有序性，防止重复调用或者遗漏；也为了pier可以在重启时恢复每个跨链服务的跨链状态，如发送的未发送IBTP和接收未接收的IBTP回执，broker合约中需要记录跨链请求和回执的index以及跨链事件的具体信息。
 
@@ -322,7 +322,7 @@ function getReceiptMessage(string memory inServicePair, uint64 idx) public view 
 function getOutMessage(string memory outServicePair, uint64 idx) public view returns (string memory, bytes[] memory, bool)
 ```
 
-### 来源链抛出跨链事件
+### 4. 来源链抛出跨链事件
 broker作为应用链上向其他应用链进行跨链的出口，需要提供接口供业务合约调用，使业务合约可以简单的进行跨链调用。
 
 一个chain0的service A到chain1的service B的跨链交易涉及到三种方法，分别如下：
@@ -370,7 +370,7 @@ event throwInterchainEvent(uint64 index, string dstFullID, string srcFullID, str
 
 其中，当业务合约调用emitInterchainEvent时，isEncrypt为true，则throw event时func和args都为空，跨链网关接收到跨链事件以后，需要主动调用getOutMessage获取对应IBTP ID的func和args，加密以后组装成IBTP进行传输。
 
-### 目的链接收跨链请求
+### 5. 目的链接收跨链请求
 目的链broker接收跨链请求的方法定义如下：
 
 ```solidity
@@ -421,7 +421,7 @@ function invokeInterchain(
 1. 正常情况下目的链接收跨链请求，此时typ为IBTP_INTERCHAIN
 2. 来源链网关与目的链网关由于超时而引起来源链回滚，该场景下来源链会发出一个新的typ为IBTP_ROLLBACK的跨链交易，对目的链的index进行递增
 
-### 来源链接收跨链回执
+### 6. 来源链接收跨链回执
 来源链broker接收跨链交易回执的方法定义如下：
 
 ```solidity
