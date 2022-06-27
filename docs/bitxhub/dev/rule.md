@@ -103,3 +103,107 @@ wasm-gcxxx.wasm small-xxx.wasm
 ```
 
 获取的small-xxx.wasm就是可以部署到中继链的验证规则。
+
+## AssemblyScript编写验证规则
+
+### 什么是AssemblyScript？
+
+BitXHub v1.18增加了对AssemblyScript编写合约的支持。
+
+AssemblyScript 是一个把 TypeScript 转换到 WebAssembly 的编译器。
+
+Typescript是微软开发的编程语言，通过在JavaScript的基础上添加类型定义构建而成，现在TypeScript已经变得相当受欢迎。由于AssemblyScript只允许TypeScript的有限功能子集，对新人十分友好，开发者不需要花太多时间就可以上手。
+
+AssemblyScript具有以下特点：
+
+- AssemblyScript是专门针对WebAssembly而集成的功能集，使开发人员可以通过代码进行底层控制；
+
+- AssemblyScript作为TypeScript的变体，可以轻松地将其编译为WebAssembly，而无需学习新的语言；
+
+- 集成在现有的Web生态中，无需安装环境和工具链，只需npm install它即可；
+
+### 如何配置AssemblyScript环境？
+
+【预置条件】
+
+首先我们需要下载最新的稳定的Node.js以及npm包管理工具。
+
+【新建项目】
+
+我们首先创建一个新的目录并且像往常一样初始化Node.js的模块：
+
+```bash
+npm init
+```
+然后我们需要安装AssemblyScript的编译器：
+
+```bash
+npm install --save-dev assemblyscript
+```
+当安装完成以后，编译器提供了非常便捷的方法来新建AssemblyScript项目：
+
+```bash
+npx asinit
+```
+【目录结构解析】
+
+在上述完成项目的构建以后，我们可以看到项目下会自动生成一些文件和文件夹，下面会对这些生成的目录结构进行一个解析：
+```bash
+./assembly
+  所有需要被编码成wasm的相关代码都需要放在该文件夹下。
+
+  ./assembly/tsconfig.json
+  TypeScript的配置文件，其中集成了一些推荐的AssemblyScript的配置。
+
+  ./assembly/index.ts
+  将被编译成wasm的入口文件
+
+  ./build
+  所有最终生成的wasm以及相关文件都会被存放在该目录下
+
+  ./build/.gitignore
+  Git配置文件
+
+  ./asconfig.json
+  配置文件，定义了release版本和Debug版本的相关配置
+
+  ./package.json
+  相关的包信息，同时提供了能够编译WebAssembly的命令
+
+  ./tests/index.js
+  项目测试的入口文件
+
+  ./index.html
+  能够加载模块的网页文件.
+```
+【编译项目】
+
+从上面的项目目录我们可以看到我们需要在assembly/index.ts中编写自己的wasm模块，在编写完模块之后，我们就可以将整个项目编译成wasm文件了：
+```bash
+npm run asbuild
+```
+生成的编译好的二进制文件将会被存放在build目录下，如果想要对整个模块进行测试，可以运行命令：
+```bash
+npm test
+```
+
+### 如何编写合约？
+前文我们介绍了「如何用AssemblyScript编写代码和编译生成wasm文件」，那么，如何利用wasm虚拟机将AssemblyScript结合到区块链体系里呢？
+
+首先要处理的是合约方法的生成，在AssemblyScript中，如果我们想要一个加法的合约方法，可以在AssemblyScript中添加如下代码：
+
+```javascript
+export function add(a: i32, b: i32): i32 {
+  return a + b;
+}
+```
+这样编译出的wasm文件就会直接提供add的方法让合约调用者调用来做加法。
+
+AssemblyScript也提供了wasi的接口，利用这个接口来给方法提供字符串或者字节数组的输入和输出。例如：我们可以直接通过操作虚拟机的内存给合约传递参数：
+
+```javascript
+export function allocate(size: usize): usize {
+  return heap.alloc(size);
+}
+```
+这段代码中我们就是向虚拟机堆上申请特定大小的内存空间，返回的是申请的内存的地址，可以在虚拟机外向这块内存输入上下文，从而达到输入输出字符串的目的。
