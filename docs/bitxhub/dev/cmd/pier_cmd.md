@@ -41,7 +41,7 @@ GLOBAL OPTIONS:
 
 **子命令**：
 
-## 1. pier appchain
+## 1. 应用链管理
 
 `pier appchain`命令用于中继模式下，跨链网关Pier向中继链bitXHub实现应用链相关信息的注册、更新、变更等操作。
 
@@ -71,7 +71,7 @@ OPTIONS:
 
 `pier appchain`具体描述与使用示例参考[中继模式管理](../../../function/relay_manager/)。
 
-## 2. pier id
+## 2. 网关ID
 
 `pier id`命令用于获取所绑定的应用链地址。
 
@@ -94,7 +94,7 @@ $ pier --repo xxx/.pier id
 0xfF8199Fae48C808b45667DA0CcaAEe839B1a10Cb
 ```
 
-## 3. pier init
+## 3. 初始化
 
 `pier init`命令用于初始化pier相关配置，若不指定`--repo`，则默认会在`~/.pier`目录下生成公私钥、ca证书等配置文件。
 
@@ -135,7 +135,7 @@ OPTIONS:
 
 **子命令**：
 
-### pier init relay
+### 3.1. 中继模式
 
 初始化中继模式下pier节点的配置。
 
@@ -165,7 +165,7 @@ OPTIONS:
 $ pier --repo xxx/.pier init relay
 ```
 
-### pier init direct
+### 3.2. 直连模式
 
 初始化直连模式pier节点的配置。
 
@@ -193,7 +193,7 @@ OPTIONS:
 $ pier --repo xxx/.pier init direct
 ```
 
-### pier init union
+### 3.3. 大规模模式
 
 初始化大规模模式下pier节点的配置。
 
@@ -223,7 +223,7 @@ OPTIONS:
 $ pier --repo xxx/.pier init union
 ```
 
-## 4. pier network
+## 4. 网络配置
 
 `pier network`命令用于配置直连模式或者大规模模式下节点的网络信息。
 
@@ -247,7 +247,7 @@ OPTIONS:
 
 **子命令**：
 
-### pier network relay
+### 4.1. 中继模式
 
 用于修改中继模式下pier节点的network.toml配置。
 
@@ -288,7 +288,7 @@ $ cat $PIER_CONFIG_PATH/pier.toml
 
 可以看到配置文件pier.toml下的addr在原有的4个节点基础上新增了localhost:60015。
 
-### pier network direct
+### 4.2. 直连模式
 
 用于直连模式下pier节点的network.toml配置。
 
@@ -341,7 +341,7 @@ $ cat $PIER2_CONFIG_PATH/network.toml
   pid = "Qmd5VnC2j5Mix28eqVPEm5gWKKSp8nQWkxq2DE1DecEzXX"
 ```
 
-### pier network union
+### 4.3. 大规模模式
 
 用于大规模模式的bitxhub节点修改与network.toml配置，命令描述如下：
 
@@ -365,7 +365,7 @@ OPTIONS:
 
 参考 pier network rela 与 pier network direct 的示例。
 
-## 5. pier p2p
+## 5. 显示p2p模式下的pid
 
 `pier p2p`命令用于直连模式下pier网络通信的pid。
 
@@ -393,7 +393,7 @@ $ pier --repo xxx/.pier p2p id
 QmNpQvh8Lm7gwt3sDqwJ1pgNn6taJLqdgtRVyZWhsD5bND
 ```
 
-## 6. pier plugin
+## 6. 插件配置
 
 `pier plugin`命令用于配置应用链插件相关信息。
 
@@ -421,7 +421,7 @@ OPTIONS:
 
 **子命令**：
 
-### pier plugin fabric
+### 6.1. fabric插件
 
 配置fabric插件相关配置信息，并下载`pier-client-fabric`二进制文件。
 
@@ -465,7 +465,7 @@ Start downloading https://github.com/meshplus/pier-client-fabric/releases/downlo
 Finish downloading https://github.com/meshplus/pier-client-fabric/releases/download/v1.18.1/fabric-client-v1.18.1-darwin
 ```
 
-### pier plugin ethereum
+### 6.2. ethereum插件
 
 配置ethereum插件相关配置信息，并下载`pier-client-ethereum`二进制文件，命令描述如下：
 
@@ -510,7 +510,7 @@ Start downloading https://github.com/meshplus/pier-client-ethereum/releases/down
 Finish downloading https://github.com/meshplus/pier-client-ethereum/releases/download/v1.18.0/eth-client-v1.18.0-darwin
 ```
 
-## 7. pier start
+## 7. 启动
 
 `pier start`命令用于启动pier。
 
@@ -556,7 +556,7 @@ INFO[2022-01-06T19:50:21.655] listenIBTPFromDestAdaptToServicePairCh direct:appc
 …………
 ```
 
-## 8. pier version
+## 8. 查看版本
 
 `pier version`命令用于查询版本号。
 

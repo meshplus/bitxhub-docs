@@ -38,7 +38,7 @@ GLOBAL OPTIONS:
 
 **子命令**：
 
-## 1. bitxhub config
+## 1. 显示配置
 
 `bitxhub config`命令用于显示当前节点配置，若未指定`--repo`则默认使用`~/.bitxhub/`路径。
 
@@ -147,7 +147,7 @@ $ bitxhub config
 }
 ```
 
-## 2. bitxhub init
+## 2. 初始化
 
 `bitxhub init`命令用于初始化节点配置：**若未指定`--repo`则默认使用`~/.bitxhub/`路径**，若路径下存在旧配置，则会提示覆盖与否。
 
@@ -164,7 +164,7 @@ y
 
 注：初始化后，会在目录下生成节点的配置文件，可参考[部署使用-单中继架构部署-中继链部署](../../usage/single_bitxhub/deploy_bitxhub)修改相关配置。其中，bitxhub.toml文件定义了管理员节点。
 
-## 3. bitxhub start
+## 3. 启动
 
 `bitxhub start`命令用于启动BitXHub的节点。
 
@@ -220,7 +220,7 @@ INFO[2022-01-13T11:04:02.954] JSON-RPC service started                      modu
 INFO[2022-01-13T11:04:02.955] Ulimit raised                                 module=app ulimit=2048
 ```
 
-## 4. bitxhub key
+## 4. 私钥管理
 
 `bitxhub key`命令提供针对bitxhub节点的私钥管理。它包含了私钥生成、私钥格式转换、私钥查看、地址查看。
 
@@ -244,7 +244,7 @@ OPTIONS:
 
 **子命令**：
 
-### bitxhub key gen
+### 4.1. 生成私钥
 
 `bitxhub key gen`命令用于生成私钥文件`key.json`。
 
@@ -277,7 +277,7 @@ $ bitxhub key gen --target ~/.bitxhub
 key.json key is generated under directory /Users/xxx/.bitxhub
 ```
 
-### bitxhub key show
+### 4.2. 显示私钥内容
 
 `bitxhub key show`命令用于显示`key.json`具体内容。
 
@@ -310,7 +310,7 @@ public key: 0476832ada8f6cfef41ef226fb5ed1812a4d5f8dd66ad133dd9459ff014a2de108eb
 address: 0x17f8e065ca9e743Cb23557d1eb4561Bd0eF52f64
 ```
 
-### bitxhub key address
+### 4.3. 显示私钥地址
 
 `bitxhub key address`命令用于显示key.json对应地址。
 
@@ -341,7 +341,7 @@ $ bitxhub key address --path ~/.bitxhub/key.json
 0x3Db84D019fCd3A845e2fB3A21B56812Ffd933f19
 ```
 
-## 5. bitxhub version
+## 5. 显示版本
 
 **功能**：
 
@@ -368,7 +368,7 @@ System version: darwin/amd64
 Golang version: go1.15
 ```
 
-## 6. bitxhub cert
+## 6. 证书管理
 
 **功能**：
 
@@ -397,7 +397,7 @@ OPTIONS:
 
 **子命令**：
 
-### bitxhub cert ca
+### 6.1. 生成根CA证书
 
 `bitxhub cert ca`命令用于生成根CA证书。
 
@@ -422,7 +422,7 @@ $ bitxhub cert ca
 ├── ca.priv
 ```
 
-### bitxhub cert priv
+### 6.2. 管理证书私钥
 
 `bitxhub cert priv`命令用于生成或展示用于p2p网络通信的私钥。
 
@@ -445,7 +445,7 @@ OPTIONS:
 
 **子命令**：
 
-#### bitxhub cert priv gen
+#### 6.2.1. 生成私钥
 
 `bitxhub cert priv gen`命令用于生成p2p网络通信私钥。
 
@@ -472,7 +472,7 @@ $ bitxhub cert priv gen --name test --target .
 test.priv key is generated under directory /Users/xxx/.bitxhub/certs
 ```
 
-#### bitxhub cert priv pid
+#### 6.2.2. 显示私钥pid
 
 `bitxhub cert priv pid`命令用于获取libp2p节点pid。
 
@@ -498,7 +498,7 @@ $ bitxhub cert priv pid --path ./test.priv
 QmWw4hPtm51jpxzKjyYMe3E7bNei9wdoug6B1rZqSwVSL4
 ```
 
-### bitxhub cert csr
+### 6.3. 生成csr文件
 
 `bitxhub cert csr`命令用于生成CSR描述信息。
 
@@ -532,7 +532,7 @@ $ cd ~/.bitxhub/certs
 $ bitxhub cert csr --key test.priv --org test --target .
 ```
 
-### bitxhub cert issue
+### 6.4. 签发证书
 
 `bitxhub cert issue`命令用于证书签发。
 
@@ -570,7 +570,7 @@ $ cd ~/.bitxhub/certs
 $ bitxhub cert issue --csr test.csr --is_ca true --key ca.priv --cert ca.cert --target .
 ```
 
-### bitxhub cert parse
+### 6.5. 解析证书
 
 `bitxhub cert parse`命令用于证书解析。
 
@@ -600,7 +600,7 @@ $ bitxhub cert parse --path ca.cert
 {"Raw":"MIICkjCCAjegAwIBAgICIKUwCgYIKoZIzj0EAwIwgaExCzAJBgNVBAYTAkNOMREwDwYDVQQIEwhaaGVKaWFuZzERMA8GA1UEBxMISGFuZ1pob3UxHzANBgNVBAkTBnN0cmVldDAOBgNVBAkTB2FkZHJlc3MxDzANBgNVBBETBjMyNDAwMDETMBEGA1UEChMKSHlwZXJjaGFpbjEQMA4GA1UECxMHQml0WEh1YjETMBEGA1UEAxMKYml0eGh1Yi5jbjAgFw0yMjAxMTQwNTQzNTNaGA8yMDcyMDEwMjA1NDM1M1owgZsxCzAJBgNVBAYTAkNOMREwDwYDVQQIEwhaaGVKaWFuZzERMA8GA1UEBxMISGFuZ1pob3UxHzANBgNVBAkTBnN0cmVldDAOBgNVBAkTB2FkZHJlc3MxDzANBgNVBBETBjMyNDAwMDEQMA4GA1UEChMHdGVzdE9yZzEQMA4GA1UECxMHQml0WEh1YjEQMA4GA1UEAxMHQml0WEh1YjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLasY+fj/B1NnEThaYgWOsH8vya9js0hdZ4B9t6CXbLXIUvHWNIXTsjXleHAsi6EzCFmGTSGfqMIkGXZ4pYDxrGjYTBfMA4GA1UdDwEB/wQEAwIBpjAPBgNVHSUECDAGBgRVHSUAMA8GA1UdEwEB/wQFMAMBAf8wKwYDVR0jBCQwIoAgALrjuzAzMBMHVnRjgANMbl/Bl7jmmXmfIUksD+50s7kwCgYIKoZIzj0EAwIDSQAwRgIhAMMYaKjIiDHG7LTqiA2J3DmGUZDwb3VQnFx3ItXKpqozAiEAwBn1I2JmXMcBkCFFwNGxyrfCnmHuezumNNB2AuokKvU=","RawTBSCertificate":"MIICN6ADAgECAgIgpTAKBggqhkjOPQQDAjCBoTELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZUppYW5nMREwDwYDVQQHEwhIYW5nWmhvdTEfMA0GA1UECRMGc3RyZWV0MA4GA1UECRMHYWRkcmVzczEPMA0GA1UEERMGMzI0MDAwMRMwEQYDVQQKEwpIeXBlcmNoYWluMRAwDgYDVQQLEwdCaXRYSHViMRMwEQYDVQQDEwpiaXR4aHViLmNuMCAXDTIyMDExNDA1NDM1M1oYDzIwNzIwMTAyMDU0MzUzWjCBmzELMAkGA1UEBhMCQ04xETAPBgNVBAgTCFpoZUppYW5nMREwDwYDVQQHEwhIYW5nWmhvdTEfMA0GA1UECRMGc3RyZWV0MA4GA1UECRMHYWRkcmVzczEPMA0GA1UEERMGMzI0MDAwMRAwDgYDVQQKEwd0ZXN0T3JnMRAwDgYDVQQLEwdCaXRYSHViMRAwDgYDVQQDEwdCaXRYSHViMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtqxj5+P8HU2cROFpiBY6wfy/Jr2OzSF1ngH23oJdstchS8dY0hdOyNeV4cCyLoTMIWYZNIZ+owiQZdnilgPGsaNhMF8wDgYDVR0PAQH/BAQDAgGmMA8GA1UdJQQIMAYGBFUdJQAwDwYDVR0TAQH/BAUwAwEB/zArBgNVHSMEJDAigCAAuuO7MDMwEwdWdGOAA0xuX8GXuOaZeZ8hSSwP7nSzuQ==","RawSubjectPublicKeyInfo":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEtqxj5+P8HU2cROFpiBY6wfy/Jr2OzSF1ngH23oJdstchS8dY0hdOyNeV4cCyLoTMIWYZNIZ+owiQZdnilgPGsQ==","RawSubject":"MIGbMQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlSmlhbmcxETAPBgNVBAcTCEhhbmdaaG91MR8wDQYDVQQJEwZzdHJlZXQwDgYDVQQJEwdhZGRyZXNzMQ8wDQYDVQQREwYzMjQwMDAxEDAOBgNVBAoTB3Rlc3RPcmcxEDAOBgNVBAsTB0JpdFhIdWIxEDAOBgNVBAMTB0JpdFhIdWI=","RawIssuer":"MIGhMQswCQYDVQQGEwJDTjERMA8GA1UECBMIWmhlSmlhbmcxETAPBgNVBAcTCEhhbmdaaG91MR8wDQYDVQQJEwZzdHJlZXQwDgYDVQQJEwdhZGRyZXNzMQ8wDQYDVQQREwYzMjQwMDAxEzARBgNVBAoTCkh5cGVyY2hhaW4xEDAOBgNVBAsTB0JpdFhIdWIxEzARBgNVBAMTCmJpdHhodWIuY24=","Signature":"MEYCIQDDGGioyIgxxuy06ogNidw5hlGQ8G91UJxcdyLVyqaqMwIhAMAZ9SNiZlzHAZAhRcDRscq3wp5h7ns7pjTQdgLqJCr1","SignatureAlgorithm":10,"PublicKeyAlgorithm":3,"PublicKey":{"Curve":{"P":115792089210356248762697446949407573530086143415290314195533631308867097853951,"N":115792089210356248762697446949407573529996955224135760342422259061068512044369,"B":41058363725152142129326129780047268409114441015993725554835256314039467401291,"Gx":48439561293906451759052585252797914202762949526041747995844080717082404635286,"Gy":36134250956749795798585127919587881956611106672985015071877198253568414405109,"BitSize":256,"Name":"P-256"},"X":82625525661941981250491613743007096153774500696862681832425790330116014715607,"Y":15060213375229657175963991955251470872818906153418440931864025589557900854961},"Version":3,"SerialNumber":8357,"Issuer":{"Country":["CN"],"Organization":["Hyperchain"],"OrganizationalUnit":["BitXHub"],"Locality":["HangZhou"],"Province":["ZheJiang"],"StreetAddress":["street","address"],"PostalCode":["324000"],"SerialNumber":"","CommonName":"bitxhub.cn","Names":[{"Type":[2,5,4,6],"Value":"CN"},{"Type":[2,5,4,8],"Value":"ZheJiang"},{"Type":[2,5,4,7],"Value":"HangZhou"},{"Type":[2,5,4,9],"Value":"street"},{"Type":[2,5,4,9],"Value":"address"},{"Type":[2,5,4,17],"Value":"324000"},{"Type":[2,5,4,10],"Value":"Hyperchain"},{"Type":[2,5,4,11],"Value":"BitXHub"},{"Type":[2,5,4,3],"Value":"bitxhub.cn"}],"ExtraNames":null},"Subject":{"Country":["CN"],"Organization":["testOrg"],"OrganizationalUnit":["BitXHub"],"Locality":["HangZhou"],"Province":["ZheJiang"],"StreetAddress":["street","address"],"PostalCode":["324000"],"SerialNumber":"","CommonName":"BitXHub","Names":[{"Type":[2,5,4,6],"Value":"CN"},{"Type":[2,5,4,8],"Value":"ZheJiang"},{"Type":[2,5,4,7],"Value":"HangZhou"},{"Type":[2,5,4,9],"Value":"street"},{"Type":[2,5,4,9],"Value":"address"},{"Type":[2,5,4,17],"Value":"324000"},{"Type":[2,5,4,10],"Value":"testOrg"},{"Type":[2,5,4,11],"Value":"BitXHub"},{"Type":[2,5,4,3],"Value":"BitXHub"}],"ExtraNames":null},"NotBefore":"2022-01-14T05:43:53Z","NotAfter":"2072-01-02T05:43:53Z","KeyUsage":101,"Extensions":[{"Id":[2,5,29,15],"Critical":true,"Value":"AwIBpg=="},{"Id":[2,5,29,37],"Critical":false,"Value":"MAYGBFUdJQA="},{"Id":[2,5,29,19],"Critical":true,"Value":"MAMBAf8="},{"Id":[2,5,29,35],"Critical":false,"Value":"MCKAIAC647swMzATB1Z0Y4ADTG5fwZe45pl5nyFJLA/udLO5"}],"ExtraExtensions":null,"UnhandledCriticalExtensions":null,"ExtKeyUsage":[0],"UnknownExtKeyUsage":null,"BasicConstraintsValid":true,"IsCA":true,"MaxPathLen":-1,"MaxPathLenZero":false,"SubjectKeyId":null,"AuthorityKeyId":"ALrjuzAzMBMHVnRjgANMbl/Bl7jmmXmfIUksD+50s7k=","OCSPServer":null,"IssuingCertificateURL":null,"DNSNames":null,"EmailAddresses":null,"IPAddresses":null,"URIs":null,"PermittedDNSDomainsCritical":false,"PermittedDNSDomains":null,"ExcludedDNSDomains":null,"PermittedIPRanges":null,"ExcludedIPRanges":null,"PermittedEmailAddresses":null,"ExcludedEmailAddresses":null,"PermittedURIDomains":null,"ExcludedURIDomains":null,"CRLDistributionPoints":null,"PolicyIdentifiers":null}
 ```
 
-### bitxhub cert verify
+### 6.6. 验证证书
 
 `bitxhub cert verify`用于验证证书。
 
@@ -630,7 +630,7 @@ OPTIONS:
 $ bitxhub cert verify --sub test.cert --ca ca.cert
 ```
 
-## 7. bitxhub client
+## 7. 中继链客户端
 
 **功能**：
 
@@ -673,7 +673,7 @@ OPTIONS:
 
 **子命令**：
 
-### bitxhub client account
+### 7.1. 查询账户信息
 
 `bitxhub client account`命令用于账户信息查询。
 
@@ -708,7 +708,7 @@ $ bitxhub client account --address 0x79a1215469FaB6f9c63c1816b45183AD3624bE34
 }
 ```
 
-### bitxhub client chain
+### 7.2. 查询中继链信息和状态
 
 `bitxhub client chain`命令用于中继链信息查询和状态。
 
@@ -731,7 +731,7 @@ OPTIONS:
 
 **子命令**：
 
-#### bitxhub client chain meta
+#### 7.2.1. 查询中继链信息
 
 `bitxhub client chain meta`用于查询中继链信息。
 
@@ -753,7 +753,7 @@ $ bitxhub client chain meta
 {"height":"1","block_hash":"0x47dBBdcE25e2ab4BbA8ee325Db8502Aa6c2A065Af1350450F0917d5e139465A1"}
 ```
 
-#### bitxhub client chain status
+#### 7.2.2. 查询中继链状态
 
 `bitxhub client chain status`命令用于查询中继链状态是否可用。
 
@@ -777,7 +777,7 @@ $ bitxhub client chain status
 normal
 ```
 
-### bitxhub client block
+### 7.3. 查询区块信息
 
 `bitxhub client block`命令用于区块信息查询，**可指定区块号或区块Hash**。
 
@@ -799,7 +799,7 @@ $ bitxhub client block 1
 {"block_header":{"number":"1","state_root":"0x5B8A0f51c912c38501C263DEC58542453F1a6B399a491C27363dF1D9c3029328","tx_root":"0x0000000000000000000000000000000000000000000000000000000000000000","receipt_root":"0x0000000000000000000000000000000000000000000000000000000000000000","parent_hash":"0x0000000000000000000000000000000000000000000000000000000000000000","timestamp":"1642052145652059000","Bloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},"transactions":{},"block_hash":"0x47dBBdcE25e2ab4BbA8ee325Db8502Aa6c2A065Af1350450F0917d5e139465A1","signature":"7B4yjNFnnQO+mw2poSnrsGkXMxMkDcGyzXlPioahKo1MCirTQ1hc+imoIr6d/59ZD//62N5asPQjEwVLpOBuowE="}
 ```
 
-### bitxhub client network
+### 7.4. 查询网络信息
 
 `bitxhub client network`命令用于查询全网节点信息。
 
@@ -854,7 +854,7 @@ $ bitxhub client network
 }
 ```
 
-### bitxhub client transfer
+### 7.5. 发送转账交易
 
 `bitxhub client transfer`命令用于发送转账交易。
 
@@ -890,7 +890,7 @@ $ bitxhub client transfer --key ~/.bitxhub/key.json --to 0x134213199d40c4b26cB8B
 {"tx_hash":"0xB3D1365F0154dB1294B718c57F9DAC6E59b34F75496082B4C57C8Cc9900Eb087"}
 ```
 
-### bitxhub client receipt
+### 7.7. 查询交易回执
 
 `bitxhub client receipt`命令用于交易回执查询。
 
@@ -913,7 +913,7 @@ $ bitxhub client receipt 0xB3D1365F0154dB1294B718c57F9DAC6E59b34F75496082B4C57C8
 {"tx_hash":"0xB3D1365F0154dB1294B718c57F9DAC6E59b34F75496082B4C57C8Cc9900Eb087","ret":"aW5zdWZmaWNlaWVudCBiYWxhbmNlOiBhZGRyZXNzIDB4NUYyZTdCNTJEQ2Y4NTAyMmIwQjk3MDAzQkFhMjBhOTIxNDEyNUQwRCBoYXZlIDAgd2FudCAxMDUwMDAwMDAw","status":1,"gas_used":"21000","bloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"}
 ```
 
-### bitxhub client tx
+### 7.8. 查询交易
 
 `bitxhub client tx`命令用于交易查询。
 
@@ -936,7 +936,7 @@ $ bitxhub client tx 0xB3D1365F0154dB1294B718c57F9DAC6E59b34F75496082B4C57C8Cc990
 {"tx":{"from":"0x5F2e7B52DCf85022b0B97003BAa20a9214125D0D","to":"0x134213199d40c4b26cB8B0E5D53d71E309223403","timestamp":"1655714692398511000","transaction_hash":"0xB3D1365F0154dB1294B718c57F9DAC6E59b34F75496082B4C57C8Cc9900Eb087","payload":"EhMxMDAwMDAwMDAwMDAwMDAwMDAw","signature":"A1YUuO0Rv62WBpxXMe1Wc0kqvv9Sz6UjGCmlYjoJBeXpD4jeFpmChbMjQmYY3I6wZcbcS6RNxFqwzLS5Usq/jGAB"},"tx_meta":{"block_hash":"U+U0l8GbZHFNf11pzMZpXkzZ/yD69V72T2YTmYkhJ70=","block_height":"3"}}
 ```
 
-### bitxhub client validators
+### 7.9. 查询全网验证者
 
 `bitxhub client validators`命令用于查询全网验证人信息。
 
@@ -963,9 +963,9 @@ $ bitxhub client validators
 ]
 ```
 
-### bitxhub client governance
+### 7.10. 治理
 
-`bitxhub client governance`命令用于提案治理。
+`bitxhub client governance`命令用于治理。
 
 ```shell
 $ bitxhub client governance -h
@@ -993,7 +993,7 @@ OPTIONS:
 
 **子命令**：
 
-#### bitxhub client governance vote
+#### 7.10.1. 投票
 
 `bitxhub client governance vote`命令用于提案投票。
 
@@ -1032,9 +1032,9 @@ vote successfully!
 
 注：对于提案，都需要超过半数管理员投同意票，提案才算通过。
 
-#### bitxhub client governance proposal
+#### 7.10.2. 管理提案
 
-`bitxhub client governance proposals`命令用于提案查询。查询中继链提案的内容以及相关的状态。
+`bitxhub client governance proposals`命令用于提案管理。
 
 ```shell
 $ bitxhub client governance proposal -h
@@ -1055,7 +1055,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance proposal query
+##### 查询提案
 
 `bitxhub client governance proposal query`命令用于提案查询。查询中继链提案的内容以及相关的状态。
 
@@ -1099,7 +1099,7 @@ Id                                            ManagedObjectId  Type          Eve
 * Special/Super：is special proposal / is super admin voted
 ```
 
-##### bitxhub client governance proposal withdraw
+##### 撤回提案
 
 `bitxhub client governance proposal withdraw`命令用于提案撤回。
 
@@ -1132,7 +1132,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance proposal withdraw --id 0x13
 withdraw proposal successfully!
 ```
 
-#### bitxhub client governance appchain
+#### 7.10.3. 管理应用链
 
 `bitxhub client governance appchain`命令用于应用链管理。
 
@@ -1157,7 +1157,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance appchain info
+##### 查询应用链信息
 
 `bitxhub client governance appchain info`命令用于查询应用链信息。
 
@@ -1189,7 +1189,7 @@ Id         Name  DID                      Type  Broker                          
 appchain1  test  did:bitxhub:appchain1:.  ETH   0x857133c5C69e6Ce66F7AD46F200B9B3573e77582  available  desc  0
 ```
 
-##### bitxhub client governance appchain status
+##### 查询应用链状态
 
 `bitxhub client governance appchain status`命令用于查询应用链状态。
 
@@ -1218,7 +1218,7 @@ $ bitxhub client governance appchain status --id appchain1
 appchain appchain1 is available
 ```
 
-##### bitxhub client governance appchain freeze
+##### 冻结应用链
 
 `bitxhub client governance appchain freeze`命令用于冻结应用链。
 
@@ -1252,7 +1252,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance appchain fr
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
 ```
 
-##### bitxhub client governance appchain activate
+##### 激活应用链
 
 `bitxhub client governance appchain activate`命令用于激活应用链。
 
@@ -1286,7 +1286,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance appchain ac
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 ```
 
-#### bitxhub client governance rule
+#### 7.10.4. 管理验证规则
 
 `bitxhub client governance rule`命令用于验证规则管理。
 
@@ -1310,7 +1310,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance rule all
+##### 查询所有验证规则
 
 `bitxhub client governance rule all`命令用于查询某条应用链所有的验证规则。
 
@@ -1341,7 +1341,7 @@ ChainID    RuleAddress                                 Status     Master  Create
 appchain1  0x00000000000000000000000000000000000000a2  available  true    1655777266993908000
 ```
 
-##### bitxhub client governance rule master
+##### 查询主验证规则
 
 `bitxhub client governance rule master`命令用于查询某条应用链的主验证规则。
 
@@ -1370,7 +1370,7 @@ $ bitxhub client governance rule master --id appchain1
 available rule address is 0x00000000000000000000000000000000000000a2
 ```
 
-##### bitxhub client governance rule status
+##### 查询验证规则状态
 
 `bitxhub client governance rule status`命令用于查询某条应用链的某条验证规则的状态。
 
@@ -1401,7 +1401,7 @@ $ bitxhub client governance rule status --id appchain1 --addr 0x0000000000000000
 the rule 0x00000000000000000000000000000000000000a2 is available
 ```
 
-#### bitxhub client governance node
+#### 7.10.5. 管理节点
 
 `bitxhub client governance node`命令用于节点管理。
 
@@ -1427,7 +1427,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance node status
+##### 查询节点状态
 
 `bitxhub client governance node status`命令用于查询节点状态。
 
@@ -1456,7 +1456,7 @@ $ bitxhub client governance node status --account 0xc7F999b83Af6DF9e67d0a37Ee7e9
 node QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL is available
 ```
 
-##### bitxhub client governance node register
+##### 注册节点
 
 `bitxhub client governance node register`命令用于注册节点。
 
@@ -1500,7 +1500,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance node regist
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-2
 ```
 
-##### bitxhub client governance node update
+##### 更新节点信息
 
 `bitxhub client governance node update`命令用于更新审计节点相关信息。
 
@@ -1538,7 +1538,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance node update
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-3
 ```
 
-##### bitxhub client governance node logout
+##### 注销节点
 
 `bitxhub client governance node logout`命令用于注销节点。
 
@@ -1572,7 +1572,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance node logout
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-4
 ```
 
-##### bitxhub client governance node all
+##### 查询所有节点
 
 `bitxhub client governance node all`命令用于查询所有节点信息。
 
@@ -1600,7 +1600,7 @@ Account                                     Type     Pid                        
 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                             available
 ```
 
-#### bitxhub client governance role
+#### 7.10.6. 管理角色
 
 `bitxhub client governance role`命令用于角色管理。
 
@@ -1628,7 +1628,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance role all
+##### 查询所有角色
 
 `bitxhub client governance role all`命令用于查询所有角色信息。
 
@@ -1656,7 +1656,7 @@ RoleId                                      type                  Status     Nod
 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  superGovernanceAdmin  available
 ```
 
-##### bitxhub client governance role status
+##### 查询角色状态
 
 `bitxhub client governance role status`命令用于查询角色状态。
 
@@ -1685,7 +1685,7 @@ $ bitxhub client governance role status --id 0x79a1215469FaB6f9c63c1816b45183AD3
 role 0x79a1215469FaB6f9c63c1816b45183AD3624bE34 is available
 ```
 
-##### bitxhub client governance role register
+##### 注册角色
 
 `bitxhub client governance role register`命令用于注册角色。
 
@@ -1723,7 +1723,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role regist
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
 ```
 
-##### bitxhub client governance role freeze
+##### 冻结角色
 
 `bitxhub client governance role freeze`命令用于冻结角色。
 
@@ -1757,7 +1757,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role freeze
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 ```
 
-##### bitxhub client governance role activate
+##### 激活角色
 
 `bitxhub client governance role activate`命令用于激活角色。
 
@@ -1791,7 +1791,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role activa
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-2
 ```
 
-##### bitxhub client governance role logout
+##### 注销角色
 
 `bitxhub client governance role logout`命令用于注销角色。
 
@@ -1825,7 +1825,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role logout
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-3
 ```
 
-##### bitxhub client governance role bind
+##### 绑定角色
 
 `bitxhub client governance role bind`命令用于审计管理员与审计节点绑定，当审计节点注销后，与之绑定的审计管理员会变为冻结状态，审计管理员需要重新与审计节点绑定才能恢复正常状态。
 
@@ -1861,7 +1861,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role bind -
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-8
 ```
 
-#### bitxhub client governance dapp
+#### 7.10.7. 管理dapp
 
 `bitxhub client governance dapp`命令用于Dapp管理。
 
@@ -1893,7 +1893,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance dapp all
+##### 查询所有dapp
 
 `bitxhub client governance dapp all`命令用于查询所有dapp。
 
@@ -1918,7 +1918,7 @@ Id                                            Name          Type  Owner         
 0x66A442010FD68A57bb2e835A869b23C3220981F0-0  dapp_example  tool  0x66A442010FD68A57bb2e835A869b23C3220981F0  1642124785975579000  0      available
 ```
 
-##### bitxhub client governance dapp permission
+##### 查询dapp权限列表
 
 `bitxhub client governance dapp permission`命令用于查询dapp权限列表，返回某地址所有能够使用的dapp信息。
 
@@ -1950,7 +1950,7 @@ Id                                            Name          Type  Owner         
 0x66A442010FD68A57bb2e835A869b23C3220981F0-0  dapp_example  tool  0x66A442010FD68A57bb2e835A869b23C3220981F0  1642124785975579000  0      availabl
 ```
 
-##### bitxhub client governance dapp status
+##### 查询dapp状态
 
 `bitxhub client governance dapp status`命令用于查询某个dapp状态。
 
@@ -1979,7 +1979,7 @@ $ bitxhub client governance dapp status --id 0x66A442010FD68A57bb2e835A869b23C32
 dapp 0x66A442010FD68A57bb2e835A869b23C3220981F0-0 is available
 ```
 
-##### bitxhub client governance dapp myDapps
+##### 查询特定用户的dapp
 
 `bitxhub client governance dapp myDapps`命令用于查询某个用户的所有dapp。
 
@@ -2011,7 +2011,7 @@ Id                                            Name          Type  Owner         
 0x66A442010FD68A57bb2e835A869b23C3220981F0-0  dapp_example  tool  0x66A442010FD68A57bb2e835A869b23C3220981F0  1642124785975579000  0      available
 ```
 
-##### bitxhub client governance dapp register
+##### 注册dapp
 
 `bitxhub client governance dapp register`命令用于注册dapp。
 
@@ -2055,7 +2055,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp register --name dapp_e
 proposal id is 0x66A442010FD68A57bb2e835A869b23C3220981F0-0, dapp id is 0x66A442010FD68A57bb2e835A869b23C3220981F0-0
 ```
 
-##### bitxhub client governance dapp update
+##### 更新dapp信息
 
 `bixthub client governance dapp update`命令用于更新dapp信息。
 
@@ -2099,7 +2099,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp update --id 0x66A44201
 proposal id is 0x66A442010FD68A57bb2e835A869b23C3220981F0-1
 ```
 
-##### bitxhub client governance dapp freeze
+##### 冻结dapp
 
 `bitxhub client governance dapp freeze`命令用于冻结dapp。
 
@@ -2133,7 +2133,7 @@ $ bitxhub --repo $BITXHUB_HOME/script/build/node1 client governance dapp freeze 
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-0
 ```
 
-##### bitxhub client governance dapp activate
+##### 激活dapp
 
 `bitxhub client governance dapp activate`命令用于激活dapp。
 
@@ -2167,7 +2167,7 @@ $ bitxhub --repo $BITXHUB_HOME/script/build/node1 client governance dapp activat
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 ```
 
-##### bitxhub client governance dapp transfer
+##### 转让dapp
 
 `bitxhub client governance dapp transfer`命令用于将某dapp所有权转给其他用户。
 
@@ -2202,7 +2202,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp transfer --id 0x66A442
 proposal id is 0x66A442010FD68A57bb2e835A869b23C3220981F0-2
 ```
 
-##### bitxhub client governance dapp confirm
+##### 确认转让
 
 `bitxhub client governance dapp confirm`命令用于被转让人确认dapp转让。
 
@@ -2233,7 +2233,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp confirm --id 0x66A4420
 confirm dapp transfer success
 ```
 
-##### bitxhub client governance dapp evaluate
+##### 评价dapp
 
 `bitxhub client governance dapp evaluate`命令用于评价某dapp。
 
@@ -2267,7 +2267,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp evaluate --id 0x66A442
 evaluate dapp success
 ```
 
-#### bitxhub client governance service
+#### 7.10.8. 管理服务
 
 `bitxhub client governance service`命令用于服务管理。
 
@@ -2293,7 +2293,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance service status
+##### 查询服务状态
 
 `bitxhub client governance service status`命令用于查询服务状态。
 
@@ -2322,7 +2322,7 @@ $ bitxhub client governance service status --id chain0:0x6DCB3337cd4Ec41d88E62A9
 service chain0:0x6DCB3337cd4Ec41d88E62A96123bF3a4E06A7e13 is available
 ```
 
-##### bitxhub client governance service appServices
+##### 查询特定应用链的服务
 
 `bitxhub client governance service appServices`命令用于查询某条应用链所有服务的信息。
 
@@ -2354,7 +2354,7 @@ ChainID  ServiceID                                   Name  Type          Intro  
 chain0   0x6DCB3337cd4Ec41d88E62A96123bF3a4E06A7e13  d0    CallContract  i      true     1642129992547460000  0      available
 ```
 
-##### bitxhub client governance service freeze
+##### 冻结服务
 
 `bitxhub client governance service freeze`命令用于冻结服务。
 
@@ -2387,7 +2387,7 @@ $ bitxhub --repo $BITXHUB_HOME/script/build/node1 client governance service free
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-2
 ```
 
-##### bitxhub client governance service activate
+##### 激活服务
 
 `bitxhub client governance service activate`命令用于激活服务。
 
@@ -2420,7 +2420,7 @@ $ bitxhub --repo $BITXHUB_HOME/script/build/node1 client governance service acti
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-3
 ```
 
-##### bitxhub client governance service evaluate
+##### 评价服务
 
 `bitxhub client governance service evaluate`命令用于评价服务。
 
@@ -2454,7 +2454,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance service evaluate --id chain
 evaluate service success
 ```
 
-#### bitxhub client governance strategy
+#### 7.10.9. 管理投票策略
 
 `bitxhub client governance strategy`命令用于投票策略管理。
 
@@ -2477,7 +2477,7 @@ OPTIONS:
 
 **子命令**：
 
-##### bitxhub client governance strategy all
+##### 查询所有投票策略
 
 `bitxhub client governance strategy all`命令用于查询所有模块投票策略。
 
@@ -2507,7 +2507,7 @@ service_mgr            SimpleMajority  a > 0.5 * t  available
 proposal_strategy_mgr  SimpleMajority  a > 0.5 * t  available
 ```
 
-##### bitxhub client governance strategy update
+##### 更新投票策略
 
 `bitxhub client governance strategy update`命令用于更新某模块投票策略。
 
