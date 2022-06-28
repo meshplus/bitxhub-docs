@@ -26,7 +26,7 @@
 
 === "Ethereum"
 
-    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v2.0.0/example)的exampe文件夹中获取。
+    在Ethereum上部署合约的工具有很多，您可以使[Remix](https://remix.ethereum.org/)进行合约的编译和部署，这里关键的是跨链合约的获取。可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的exampe文件夹中获取。
 
     **说明：**
     1. 合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约；
