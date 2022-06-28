@@ -12,10 +12,10 @@ goduck init
 ```
 ### Step2: 获取部署合约
 === "Ethereum"
-    合约文件可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum/blob/v2.0.0/example)的exampe文件夹中获取。合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约。
+    合约文件可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的exampe文件夹中获取。合约文件就在项目的example目录下，broker.sol是跨链管理合约，transfer.sol是示例业务合约。
 
 === "Fabric"
-    合约文件可以在[pier-client-fabric项目](https://github.com/meshplus/pier-client-fabric/blob/v2.0.0/example)的exampe文件夹中获取。合约文件就在项目的example目录下，broker是跨链管理合约，transfer是示例业务合约。
+    合约文件可以在[pier-client-fabric项目](https://github.com/meshplus/pier-client-fabric)的exampe文件夹中获取。合约文件就在项目的example目录下，broker是跨链管理合约，transfer是示例业务合约。
 
 ### Step3: 部署broker跨链管理合约
 

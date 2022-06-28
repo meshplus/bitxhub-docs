@@ -162,7 +162,7 @@ reinitializing would overwrite your configuration, Y/N?
 y
 ```
 
-注：初始化后，会在目录下生成节点的配置文件，可参考[部署使用-单中继架构部署-中继链部署](../../usage/single_bitxhub/deploy_bitxhub)修改相关配置。其中，bitxhub.toml文件定义了管理员节点。
+注：初始化后，会在目录下生成节点的配置文件，可参考[部署使用-单中继架构部署-中继链部署](../../../usage/single_bitxhub/deploy_bitxhub)修改相关配置。其中，bitxhub.toml文件定义了管理员节点。
 
 ## 3. 启动
 
