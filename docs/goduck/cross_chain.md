@@ -2,7 +2,7 @@
 
 以一个基本的以太坊和fabric之间的跨链为例，其中bitxhub和pier均以二进制方式启动。
 
-在进行跨链操作前，需要先安装好goduck比完成初始化
+在进行跨链操作前，需要先安装好goduck并完成初始化
 ```shell
 $ git checkout release-1.23.0
 $ git pull

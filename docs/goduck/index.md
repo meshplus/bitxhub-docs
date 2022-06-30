@@ -353,7 +353,11 @@ GoDuck ether command [command options] [arguments...]
 
 （1）启动以太坊
 注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
+#### goduck ether start
+- --type：可选参数，指定启动模式，默认为docker模式，可指定为binary模式;
+- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别;
 
+示例说明：
 ```shell
 goduck ether start --bxh-version v1.23.0
 
@@ -467,9 +471,19 @@ goduck fabric start
 注意启动过程中可能需要科学上网。 如果出现报错或fabric-samples下载失败，建议删除fabric-samples文件，重新执行fabric启动命令。
 
 （2）部署fabric合约
+#### goduck fabric contract chaincode
+
+参数解释
+
+- --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
+
+- --code-path：可选参数，指定部署合约文件，默认为$goduck_repo/contracts，如合约文件不存在会根据--bxh-version参数下载相应版本的默认合约文件
+
+- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别
+
 我们会提供已经准备好的fabric跨链合约contract文件，但部署时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
 
-执行以下命令可以直接下载相应版本合约并部署：
+示例如下
 ```shell
 goduck fabric contract chaincode --bxh-version v1.23.0
 
@@ -542,6 +556,7 @@ Installing chaincode data_swapper on org[org2] peers:
 #### goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
 
 参数解释
+
 - --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
 
 示例如下：
