@@ -101,30 +101,25 @@ nav:
           - 产品架构: bitxhub/architecture/flexible_arch.md
           - 技术架构: bitxhub/architecture/arch.md
       - 快速开始:
-          - 交易流程: bitxhub/architecture/tx_flow.md
-          - 快速体验: bitxhub/quick_start.md
+          - 跨链交易流程介绍: bitxhub/quick_start/tx_flow.md
+          - 使用Goduck快速体验: bitxhub/quick_start/quick_start.md
           - 搭建第一个跨链网络:
-              - 环境准备: bitxhub/usage/env.md
-              - 整体说明: bitxhub/usage/overall_description.md
-              - 跨链环境部署:
-                  - 单中继架构部署:
-                      - 1. 中继链部署: bitxhub/usage/single_bitxhub/deploy_bitxhub.md
-                      - 2. 应用链部署: bitxhub/usage/single_bitxhub/deploy_bitxhub.md
-                      - 3. 应用链跨链合约部署: bitxhub/usage/single_bitxhub/deploy_contract.md
-                      - 4. 跨链网关部署: bitxhub/usage/single_bitxhub/deploy_pier.md
-                      - 5. 注册应用链: bitxhub/usage/single_bitxhub/deploy_pier.md
-                  - 跨链网关直连模式部署:
-                      - 1. 应用链部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
-                      - 2. 应用链跨链合约部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
-                      - 3. 跨链网关部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
-                      - 4. 注册应用链: bitxhub/usage/single_bitxhub/deploy_pier.md
-
-
+              - 整体说明: bitxhub/quick_start/build_cross_network/overall_description.md
+              - 环境准备: bitxhub/quick_start/build_cross_network/env.md
+              - 单中继架构部署:
+                  - 1. 中继链部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_bitxhub.md
+                  - 2. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_broker.md
+                  - 3. 跨链网关部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_pier.md
+                  - 4. 注册应用链: bitxhub/quick_start/build_cross_network/single_bitxhub/register_appchain.md
+              - 跨链网关直连模式部署:
+                  - 1. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
+                  - 2. 跨链网关部署: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
+                  - 3. 注册应用链: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
           - 开始第一笔跨链交易:
-              - 使用说明: bitxhub/usage/single_bitxhub/deploy_pier.md
-              - 1. 部署业务合约: bitxhub/usage/single_bitxhub/deploy_pier.md
-              - 2. 注册服务: bitxhub/usage/single_bitxhub/deploy_pier.md
-              - 3. 发起跨链交易: bitxhub/usage/single_bitxhub/deploy_pier.md
+              - 使用说明: bitxhub/quick_start/start_transaction/usage_description.md
+              - 1. 部署业务合约: bitxhub/quick_start/start_transaction/deploy_business_contract.md
+              - 2. 注册服务: bitxhub/quick_start/start_transaction/register_service.md
+              - 3. 发起跨链交易: bitxhub/quick_start/start_transaction/start_transaction.md
       - 开发应用:
           - 使用说明: bitxhub/usage/single_bitxhub/deploy_pier.md
           - 使用场景:
