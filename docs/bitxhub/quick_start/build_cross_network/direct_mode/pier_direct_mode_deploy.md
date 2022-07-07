@@ -1,4 +1,4 @@
-# 跨链网关直连模式部署
+# 2. 跨链网关部署
 
 跨链网关Pier能够支持跨链消息格式转换、跨链消息的路由、跨链操作的调用等核心功能，不仅保证不同格式的跨链消息能够安全可信的到达目标应用链，而且保证了跨链交易异常情况下来源链的安全。跨链网关为区块链互联形成网络提供了便捷的接入方式，旨在降低跨链互联的使用成本。在之前的文档中介绍了中继模式的pier安装步骤，下面介绍直连模式下pier的安装步骤。请注意，pier直连不依赖于中继链节点，所以本文档不赘述bitxhub的部署了。
 
@@ -147,7 +147,7 @@ Fabric插件配置的模板在`pier-client-fabric`项目中，并且已经在Git
 
 ```shell
 # 转到pier-client-fabric项目路径下
-git clone https://github.com/meshplus/pier-client-fabric.git 
+git clone https://github.com/meshplus/pier-client-fabric.git
 cd pier-client-fabric && git checkout v1.18.0
 cp ./config $HOME/.pier1/fabric
 ```
@@ -170,7 +170,7 @@ cp ./config $HOME/.pier1/fabric
   ```shell
   # 复制你所部署的Fabric所产生的crypto-config文件夹
   cp -r /path/to/crypto-config $HOME/.pier1/fabric/
-  
+
   # 复制Fabric上验证人证书
   cp $HOME/.pier1/fabric/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp/signcerts/peer1.org2.example.com-cert.pem $HOME/.pier1/fabric/fabric.validators
   ```
@@ -240,7 +240,7 @@ ethereum插件配置的模板在`pier-client-ethereum`项目中，并且已经�
 
 ```shell
 # 转到pier-client-ethereum项目路径下
-git clone https://github.com/meshplus/pier-client-ethereum.git 
+git clone https://github.com/meshplus/pier-client-ethereum.git
 cd pier-client-ethereum && git checkout v1.18.0
 cp ./config $HOME/.pier2/ether
 ```

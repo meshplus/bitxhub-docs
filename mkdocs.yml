@@ -102,7 +102,7 @@ nav:
           - 技术架构: bitxhub/architecture/arch.md
       - 快速开始:
           - 跨链交易流程介绍: bitxhub/quick_start/tx_flow.md
-          - 使用Goduck快速体验: bitxhub/quick_start/quick_start.md
+          - 使用Goduck快速体验: bitxhub/quick_start/goduck_quick_start.md
           - 搭建第一个跨链网络:
               - 整体说明: bitxhub/quick_start/build_cross_network/overall_description.md
               - 环境准备: bitxhub/quick_start/build_cross_network/env.md
@@ -112,24 +112,22 @@ nav:
                   - 3. 跨链网关部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_pier.md
                   - 4. 注册应用链: bitxhub/quick_start/build_cross_network/single_bitxhub/register_appchain.md
               - 跨链网关直连模式部署:
-                  - 1. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
-                  - 2. 跨链网关部署: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
-                  - 3. 注册应用链: bitxhub/quick_start/build_cross_network/direct_mode_pier/pier_direct_mode_deploy.md
+                  - 1. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/direct_mode/deploy_broker.md
+                  - 2. 跨链网关部署: bitxhub/quick_start/build_cross_network/direct_mode/pier_direct_mode_deploy.md
+                  - 3. 注册应用链: bitxhub/quick_start/build_cross_network/direct_mode/register_appchain.md
           - 开始第一笔跨链交易:
               - 使用说明: bitxhub/quick_start/start_transaction/usage_description.md
               - 1. 部署业务合约: bitxhub/quick_start/start_transaction/deploy_business_contract.md
               - 2. 注册服务: bitxhub/quick_start/start_transaction/register_service.md
               - 3. 发起跨链交易: bitxhub/quick_start/start_transaction/start_transaction.md
       - 开发应用:
-          - 使用说明: bitxhub/usage/single_bitxhub/deploy_pier.md
+          - 使用说明: bitxhub/dev_application/usage_description.md
           - 使用场景:
-              - 接入应用链: bitxhub/usage/single_bitxhub/deploy_pier.md
-              - 开发业务合约: bitxhub/usage/single_bitxhub/deploy_pier.md
-              - 更新验证规则: bitxhub/usage/single_bitxhub/deploy_pier.md
+              - 接入应用链: bitxhub/dev_application/use_case/new_appchain.md
+              - 开发业务合约: bitxhub/dev_application/use_case/deploy_business_contract.md
+              - 更新验证规则: bitxhub/dev_application/use_case/update_rule.md
       - 产品功能:
-        - 应用链管理:
-          - 中继模式管理: bitxhub/function/relay_manager.md
-          - 直连模式管理: bitxhub/function/direct_manager.md
+        - 应用链管理: bitxhub/function/relay_manager.md
         - 证书管理: bitxhub/function/cert_manage.md
         - 节点管理: bitxhub/function/node_manager.md
         - 统一身份管理: bitxhub/function/role_manager.md

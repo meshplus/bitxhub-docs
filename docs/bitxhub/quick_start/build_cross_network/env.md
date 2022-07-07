@@ -58,12 +58,13 @@ export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 若您已部署好应用链，可跳过当前步骤；若您想快速部署一条新应用链，可以参考[Goduck快速部署应用链](../../../../goduck/)。
 
-目前中继链和跨链网关已经支持以下5种应用链，如果您有兴趣，也可以参与开发适配其它种类应用链的插件和合约：
+然后，您还需要准备应用链对应的应用链插件和跨链合约，目前已有以下5种应用链的插件和合约：
 
-- **Fabric**
-- **Ethereum**
-- **BCOS**
-- **CITA**
-- **Hyperchain**
+- [Fabric](https://github.com/meshplus/pier-client-fabric)
+- [Ethereum](https://github.com/meshplus/pier-client-ethereum)
+- BCOS(商业版)
+- [CITA](https://github.com/meshplus/pier-client-cita)
+- Hyperchain(商业版)
 
+另外，您也可以开发适配其它种类应用链的插件和合约，具体参考[应用链插件编写](../../../dev/plugin)和[应用链跨链合约编写](../../../dev/cross_contract)。
 恭喜您！环境确认和准备完成，接下来可以愉快地开始部署BitXHub平台啦！！！

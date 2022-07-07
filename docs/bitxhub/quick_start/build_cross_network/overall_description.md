@@ -38,6 +38,6 @@
 
 除了无需部署中继链节点之外，部署的流程与上一章基本一致，具体的部署流程如下：
 
-1. **[应用链跨链合约部署](../direct_mode_pier/pier_direct_mode_deploy)**；
-2. **[跨链网关部署](../direct_mode_pier/pier_direct_mode_deploy)**；
-3. **[注册应用链](../direct_mode_pier/pier_direct_mode_deploy)**。
+1. **[应用链跨链合约部署](../direct_mode/deploy_broker)**；
+2. **[跨链网关部署](../direct_mode/pier_direct_mode_deploy)**；
+3. **[注册应用链](../direct_mode/register_appchain)**。

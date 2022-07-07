@@ -1,13 +1,14 @@
-# 快速开始
+# 使用Goduck快速体验
+
 我们提供了Goduck运维小工具来快速体验跨链流程。
 
 ## 1 环境准备
 
-> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](../usage/env/)。
+> Goduck快速开始依赖于Docker和Docker-Compose，需要提前准备好[docker环境](../build_cross_network/env)。
 
 ## 2 下载 Goduck
 
-> **！！！注意：** 
+> **！！！注意：**
 >
 > 1. 执行上述命令的路径下应该没有goduck同名目录
 >

@@ -2,11 +2,11 @@
 
 这一步需将业务合约部署到应用链上，并让broker合约审核业务合约。
 
-若业务合约已部署，可跳过部署步骤，直接进行审核。若暂无业务合约，可使用我们提供的示例业务合约transfer进行体验。
+若业务合约已部署，可跳过部署步骤，直接进行审核。
+
+接下来，将以Ethereum和Fabric部署、审核示例业务合约transfer为例进行介绍，其它类型应用链的步骤基本上一致。
 
 ## 部署业务合约
-
-接下来，将以Ethereum和Fabric部署示例业务合约transfer为例进行介绍：
 
 ### Ethereum
 
@@ -103,13 +103,11 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
 业务合约部署完成后，需要broker合约审核通过，才能发起或接受跨链交易，具体方法是：调用broker合约的audit方法，其参数依次是业务合约地址和合约状态（数字1表示审核通过，数字2表示审核失败）。
 
-接下来以Ethereum和Fabric上，审核示例业务合约transfer为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
-
 ### Ethereum
 
-=== "Remix"
+对于Ethereum，可以使用Remix和Goduck，调用broker合约的audit方法，传入业务合约地址、合约状态完成审核。
 
-    对于Ethereum，可以使用[Remix](https://remix.ethereum.org/)调用broker合约的audit方法，传入业务合约地址完成审核，示例如下：
+=== "Remix"
 
     ![!](../../../assets/set_audit.png)
 
@@ -117,16 +115,19 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
     ```shell
     # abi-path指定abi文件
+    # "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"为broker合约地址
+    # "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11"^"1"是传入audit方法的参数，第一个参数为业务合约地址
     goduck ether contract invoke \
     --address http://localhost:8545 \
     --key-path account.key \
     --psd-path password \
-    --abi-path broker.abi
+    --abi-path broker.abi \
     "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582" audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11"^"1"
-    # 调用合约需要提供合约地址，即"0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11"，1代表审核通过，0代表审核不通过,只有审核通过的业务合约才能参与跨链交易
     ```
 
 ### Fabric
+
+对于Fabric，可以使用Fabric-cli和Goduck，调用broker合约的audit方法，参数依次为：通道名称（默认mychannel）、业务合约名称、合约状态。
 
 === "Fabric-cli"
 

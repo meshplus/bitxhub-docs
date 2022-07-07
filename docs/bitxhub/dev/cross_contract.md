@@ -38,7 +38,7 @@ function getOuterMeta() public view returns (string[] memory, uint64[] memory)
 
 // getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。
 // 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 
+// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5;
 // 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
 // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，
 // key值为当前应用链的服务ID和目标服务ID组成的service pair，
@@ -49,7 +49,7 @@ function getCallbackMeta() public view returns (string[] memory, uint64[] memory
 
 // getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。
 // 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5;
 // 同时由于跨链请求中支持超时回滚，
 // 需要记录中继链超时块高后未收到目的链跨链回执的场景下目的链回滚的信息.
 // 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
@@ -88,13 +88,13 @@ function initialize() public
 
 ### 重要接口说明
 
-- `emitInterchainEvent` 
+- `emitInterchainEvent`
 
 该接口是业务合约发起通用的跨链调用的接口。接收的参数有：目的服务ID，跨链调用目的服务方法和参数，收到跨链成功回执后进行回调所需的方法和参数，收到跨链失败回执后进行回滚所需的方法和参数，跨链过程中是否需要加密payload。
 
 Broker会记录跨链交易相应的元信息，对跨链交易进行编号，保证跨链交易有序进行, 并且抛出跨链事件，以通知跨链网关跨链交易的产生。
 
-- `invokeInterchain` 
+- `invokeInterchain`
 
 该接口是跨链网关对业务合约进行跨链调用接口。 接收参数有：来源服务ID，目的服务合约地址，IBTP index，IBTP type，对目的服务进行跨链调用的方法，对目的服务跨链调用的参数，中继链上该跨链交易事务的状态，中继链对上述所有字段的多签。
 
@@ -203,7 +203,7 @@ contract DataSwapper {
     function get(string memory destChainServiceID, string memory key) public {
         bytes[] memory args = new bytes[](1);
         args[0] = abi.encodePacked(key);
-        
+
         bytes[] memory argsCb = new bytes[](1);
         argsCb[0] = abi.encodePacked(key);
 
@@ -230,21 +230,21 @@ abstract contract Broker {
 
 ```solidity
 contract DataSwapper {
-    
+
     ...
 
     modifier onlyBroker {
         require(msg.sender == BrokerAddr, "Invoker are not the Broker");
         _;
     }
-    
+
     function interchainGet(bytes[] memory args, bool isRollback) public onlyBroker returns(bytes[] memory) {
         require(args.length == 1, "interchainGet args' length is not correct, expect 1");
         string memory key = string(args[0]);
-        
+
         bytes[] memory result = new bytes[](1);
         result[0] = abi.encodePacked(dataM[key]);
-        
+
         return result;
     }
 }
@@ -421,32 +421,31 @@ func (s *DataSwapper) interchainSet(stub shim.ChaincodeStubInterface, args []str
 
 **跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
 
-1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../usage/single_bitxhub/deploy_contract/)。
-
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../quick_start/build_cross_network/single_bitxhub/deploy_broker)和[部署业务合约](../../quick_start/start_transaction/deploy_business_contract)。
 2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
 3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。
 4. `transfer`业务合约调用`setBalance`方法初始化账户。
 5. `transfer`业务合约调用`transfer`方法发起跨链交易。
 
 ```
-1.1 appchainA deploy ==> brokerA addr：0xe4067Aab511D7eAD1d481A8491666249C2860209  
-					 	 businessA addr: 0x919289F66Ce642a7598F76c34005dD813Ccafc20					 						 
-1.2 appchainB deploy ==> brokerB addr：0xCAbAb560aD08a30cd11e8e2AB8dd1353a0d6EA35  
+1.1 appchainA deploy ==> brokerA addr：0xe4067Aab511D7eAD1d481A8491666249C2860209
+					 	 businessA addr: 0x919289F66Ce642a7598F76c34005dD813Ccafc20
+1.2 appchainB deploy ==> brokerB addr：0xCAbAb560aD08a30cd11e8e2AB8dd1353a0d6EA35
 					 	 businessB addr: 0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
 
 2.1 brokerA register ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20 //部署的业务合约地址
 2.2 brokerB register ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5 //部署的业务合约地址
 
-3.1 brokerA audit ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20  
+3.1 brokerA audit ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20
 					  status: 1
-3.2 brokeB audit ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5  
-					 status: 1	
-														
-4.1 transferA setBalance ==> id: Alice 
+3.2 brokeB audit ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
+					 status: 1
+
+4.1 transferA setBalance ==> id: Alice
                              amount: 100
-4.2 transferB setBalance ==> id: Bob 
+4.2 transferB setBalance ==> id: Bob
                              amount: 0
-													 
+
 // destChainServiceID为B链的服务ID，由bxhID，chainId，serviceId构成
 // 应用链和服务需要先在中继链上注册才能进行跨链
 5 transferA transfer ==> destChainServiceID: 1356:chain1:0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
