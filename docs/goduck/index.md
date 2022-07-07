@@ -353,7 +353,11 @@ GoDuck ether command [command options] [arguments...]
 
 （1）启动以太坊
 注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
+#### goduck ether start
+- --type：可选参数，指定启动模式，默认为docker模式，可指定为binary模式;
+- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别;
 
+示例说明：
 ```shell
 goduck ether start --bxh-version v1.23.0
 
@@ -409,10 +413,10 @@ ethereum docker container cleaned
 
 - --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
 
-目前最新版本智能合约可在#HOME/goduck/scripts/example下找到，部署示例如下
+目前最新版本智能合约可在$HOME/goduck/scripts/example下找到，部署示例如下
 
 ```shell
-goduck ether contract deploy --code-path "#HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
+goduck ether contract deploy --code-path "$HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
 
 ======= /goduck/scripts/example/broker.sol:Broker =======
 Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
@@ -435,7 +439,7 @@ Contract JSON ABI
 
 调用示例如下
 ```shell
-goduck ether contract invoke  --abi-path "#HOME/goduck/scripts/example/broker.abi  0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
+goduck ether contract invoke  --abi-path $HOME/goduck/scripts/example/broker.abi  0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
 ```
 
 
@@ -467,9 +471,19 @@ goduck fabric start
 注意启动过程中可能需要科学上网。 如果出现报错或fabric-samples下载失败，建议删除fabric-samples文件，重新执行fabric启动命令。
 
 （2）部署fabric合约
+#### goduck fabric contract chaincode
+
+参数解释
+
+- --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
+
+- --code-path：可选参数，指定部署合约文件，默认为$goduck_repo/contracts，如合约文件不存在会根据--bxh-version参数下载相应版本的默认合约文件
+
+- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别
+
 我们会提供已经准备好的fabric跨链合约contract文件，但部署时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
 
-执行以下命令可以直接下载相应版本合约并部署：
+示例如下
 ```shell
 goduck fabric contract chaincode --bxh-version v1.23.0
 
@@ -542,6 +556,7 @@ Installing chaincode data_swapper on org[org2] peers:
 #### goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
 
 参数解释
+
 - --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
 
 示例如下：
