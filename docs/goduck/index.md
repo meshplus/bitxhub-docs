@@ -413,10 +413,10 @@ ethereum docker container cleaned
 
 - --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
 
-目前最新版本智能合约可在#HOME/goduck/scripts/example下找到，部署示例如下
+目前最新版本智能合约可在$HOME/goduck/scripts/example下找到，部署示例如下
 
 ```shell
-goduck ether contract deploy --code-path "#HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
+goduck ether contract deploy --code-path "$HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
 
 ======= /goduck/scripts/example/broker.sol:Broker =======
 Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
@@ -439,7 +439,7 @@ Contract JSON ABI
 
 调用示例如下
 ```shell
-goduck ether contract invoke  --abi-path "#HOME/goduck/scripts/example/broker.abi  0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
+goduck ether contract invoke  --abi-path $HOME/goduck/scripts/example/broker.abi  0x857133c5C69e6Ce66F7AD46F200B9B3573e77582 audit "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11^1"
 ```
 
 
