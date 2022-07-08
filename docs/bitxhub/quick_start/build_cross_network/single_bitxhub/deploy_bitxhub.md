@@ -1,4 +1,4 @@
-# 中继链部署
+# 1. 中继链部署
 
 中继链用于应用链的跨链管理，以及跨链交易的可信验证与可靠路由，是一种实现IBTP协议的开放许可链。部署中继链节点主要是三个步骤：安装包获取（准备）、配置文件修改和程序启动，下面依次进行说明。
 
@@ -7,7 +7,7 @@
 === "源码编译"
 
     您可以自行拉取BitXHub项目的源码，然后在本地编译BitXHub及插件的二进制文件，具体操作步骤可参考如下：
-    
+
     ```shell
     # 1. 首先拉取bitxhub项目源代码
     mkdir ~/bitxhub-v2.0.0 && git clone https://github.com/meshplus/bitxhub.git
@@ -18,9 +18,9 @@
     ./bin/bitxhub version
     # 注意⚠️：v1.18.0以上版本的bitxhub共识通过模块化的方式提供
     ```
-    
+
     **提示：在bitxhub v1.7.0及以上的版本，我们也提供了一键生成部署所需的文件包的make命令：make release-binary，执行完成后可以在项目的dist目录看到符合您系统的压缩包，解压即可使用。**
-    
+
     经过以上的步骤，相信您已经编译出了部署中继链节点所需的二进制文件，中继链节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，方便之后的操作。
 
 === "二进制下载"
@@ -46,7 +46,7 @@
     ```
     # 1. 解压二进制压缩包
     mkdir -r ~/bitxhub-v2.0.0/bitxhub && cd bitxhub
-    
+
     # 注意更改为二进制文件所在路径
     cp ~/Downloads/bitxhub_darwin_x86_64_v2.0.0.tar.gz .
     # 2. 解压配置文件压缩包(以raft共识为例)
@@ -60,17 +60,17 @@
     # 注意⚠️：节点2、3、4也需要执行上面拷贝操作，对于Linux系统依赖库文件是libwasmer.so
     # 以上操作均是示例，执行时二进制和配置文件压缩包的名称可能存在差异，需要根据实际情况进行调整
     ```
-    
+
     拷贝完成后，可以进入各个节点的配置目录，依次启动BitXHub节点即可，启动操作如下：
-    
+
     ```
     cd bitxhub/raft-nodes/node1
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
     bitxhub --repo ./ start
-    
+
     ...
     ...
-    
+
     cd bitxhub/raft-nodes/node4
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
     bitxhub --repo ./ start
@@ -130,7 +130,7 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 
 ```toml
 [order]
-  type = "raft" 
+  type = "raft"
 ```
 
 3. 模块投票策略选择
@@ -226,7 +226,7 @@ order.toml文件是bitxhub共识配置文件。各配置项说明如下：
 ```toml
 [timed_gen_block]
 enable = false
-block_timeout = "2s" 
+block_timeout = "2s"
 [raft]
 batch_timeout               = "0.3s"  # Block packaging time period.
 tick_timeout                = "0.1s" # TickTimeout is the internal logical clock for the Node by a single tick, Election timeouts and heartbeat timeouts are in units of ticks.

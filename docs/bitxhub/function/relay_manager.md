@@ -1,4 +1,4 @@
-# 中继模式管理
+# 中继模式应用链管理
 
 ## pier appchain
 
@@ -29,7 +29,7 @@ COMMANDS:
 
 
 ## 2. 应用链注册
-### pier appchain register 
+### pier appchain register
 对于需要加入跨链网络使用中继链进行跨链的应用链，需要首先由应用链管理员向中继链注册应用链，参数说明如下：
 
 ```shell
@@ -296,7 +296,7 @@ fabappchain  fabric2  Fabric V1.4.3  {"channel_id":"mychannel","chaincode_id":"b
 
 以上示例说明应用链注销成功。
 
-### Pier appchain get 
+### Pier appchain get
 
 获取应用链注册后的相关信息。命令如下：
 

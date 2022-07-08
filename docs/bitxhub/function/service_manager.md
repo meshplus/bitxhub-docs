@@ -269,7 +269,7 @@ _（注意，如果使用`ZeroPermission`投票策略，无法明显看到中间
 
 ### 6.2 使用方法
 
-#### pier appchain service update
+#### pier appchain service logout
 
 参数解释：
 

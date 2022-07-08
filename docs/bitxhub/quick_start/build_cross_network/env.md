@@ -4,18 +4,18 @@
 
 ## 硬件
 
-配置| 推荐配置 | 最低配置 
+配置| 推荐配置 | 最低配置
 ---|---|---
 CPU | 2.4GHz *8核或以上 |1.5GHz *4核
- 内存 | 16GB或以上                 | 8GB         
- 存储 | 500G或以上（需要支持扩容） |100G
+内存 | 8GB或以上       | 4GB
+存储 | 500G或以上（需要支持扩容） |100G
 带宽 | 10Mb |2Mb
 
 ## 操作系统支持
 
 目前BitXHub支持的操作系统以及对应版本号如下：
 
-操作系统| 发行版本 | 系统架构 
+操作系统| 发行版本 | 系统架构
 ---|---|---
 RHEL | 6或更新 |amd64，386
 CentOS | 6或更新| amd64，386
@@ -27,7 +27,7 @@ MacOS |10.8或更新|amd64，386
 
 ## 软件依赖
 
-#### Go环境
+### Go环境
 
 BitXHub作为golang项目，需要安装和配置Go环境，您可以在这里下载适用于您的平台的最新版本Go二进制文件：[下载](https://golang.org/dl/) -（请下载 1.13.x 或更新的稳定版本），也可以下载Go源代码并从源代码进行安装，这里不再赘述。
 
@@ -48,10 +48,23 @@ export PATH=$PATH:$GOPATH/bin:$GOROOT/bin
 
 **说明：以上配置均是参考，您可以根据自己的实际情况进行安装配置。**
 
-#### Docker
+### Docker
 
 如果您想使用容器来部署bitxhub平台，则需要提前安装好Docker，推荐安装18.03或更新的稳定版本，具体的安装方法可以参考官方文档：[安装Docker](https://docs.docker.com/engine/install/)
 
+### 应用链
 
+在部署BitXHub跨链平台之前，需要有已经部署且可接入的应用链。
 
+若您已部署好应用链，可跳过当前步骤；若您想快速部署一条新应用链，可以参考[Goduck快速部署应用链](../../../../goduck/)。
+
+然后，您还需要准备应用链对应的应用链插件和跨链合约，目前已有以下5种应用链的插件和合约：
+
+- [Fabric](https://github.com/meshplus/pier-client-fabric)
+- [Ethereum](https://github.com/meshplus/pier-client-ethereum)
+- BCOS(商业版)
+- [CITA](https://github.com/meshplus/pier-client-cita)
+- Hyperchain(商业版)
+
+另外，您也可以开发适配其它种类应用链的插件和合约，具体参考[应用链插件编写](../../../dev/plugin)和[应用链跨链合约编写](../../../dev/cross_contract)。
 恭喜您！环境确认和准备完成，接下来可以愉快地开始部署BitXHub平台啦！！！

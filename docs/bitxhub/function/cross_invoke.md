@@ -5,7 +5,7 @@ BitXHub跨链系统中，跨链合约有两个概念：
 1. 应用链上部署的跨链管理合约broker
 1. 中继链上用于处理跨链交易的内置合约
 
-应用链上的跨链管理合约的调用可以参见[跨链合约](../dev/cross_contract.md)。本文主要讲解如何调用BitXHub内置的跨链合约。
+应用链上的跨链管理合约的调用可以参见[跨链合约](../dev/cross_contract)。本文主要讲解如何调用BitXHub内置的跨链合约。
 
 ## 合约接口
 中继链的跨链合约提供了以下接口可以客户端调用：
@@ -16,10 +16,10 @@ BitXHub跨链系统中，跨链合约有两个概念：
 
     // Interchain returns information of the interchain count, Receipt count and SourceReceipt count
     func Interchain() *boltvm.Response
-    
+
     // GetInterchain returns information of the interchain count, Receipt count and SourceReceipt count by id
     func GetInterchain(id string) *boltvm.Response
-    
+
     // GetIBTPByID get the transaction hash which contains the IBTP by IBTP id
     func GetIBTPByID(id string) *boltvm.Response
 ```

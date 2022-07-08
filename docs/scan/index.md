@@ -44,11 +44,11 @@ https://testnet-1.bitxhub.cn:8881
 
 ### 部署跨链合约
 
-可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#_2)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本）
+可以参考BitXHub文档站[链接](../bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_broker)进行跨链合约部署。（注意：文档中提到的二进制或开源项目，均是要对应 v1.18.0的版本）
 
 ### 获取Pier部署包和修改配置
 
-可以参考BitXHub文档站[链接](../bitxhub/usage/single_bitxhub/deploy_pier/#pier)。
+可以参考BitXHub文档站[链接](../bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_pier)。
 
 **注意：**
 
@@ -113,17 +113,17 @@ BitXHub测试网络下，新用户首次点击【登陆】，需要完成手机�
 1. 节点ID：系统根据钱包地址自动生成；
 
 2. 应用链名称：自定义应用链的名称；
-   
+
 3. 应用链类型：分为fabric1.4.3、fabric1.4.4 、hyperchain和其他四类；
-   
+
 4. 版本号：应用链对应的版本号；
-   
+
 5. 共识算法：应用链采用的共识算法；
-   
+
 6. 验证者信息：请参考[验证者信息生成](../bitxhub/dev/validator)；
 
 7. 验证规则：分为fabric1.4.3、fabric1.4.4 、无验证规则和 其他 四类（用户可选择无验证规则模式进行快速跨链体验），根据对应应用链类型选择合适的验证规则。注意其他类型需要提交自定义的验证规则，并附带源码链接。编写规则请参考[验证规则编写](../bitxhub/dev/rule)；
-   
+
 7. 申请理由：填写申请接入跨链系统的理由。
 
 应用链接入BitXHub跨链系统需要获得中继链管理员的准入审批，中继链管理员会在24h内完成应用链注册申请审，审核通过即可接入应用链。
@@ -156,7 +156,7 @@ pier --repo=~/.pier start
 
 具体调用说明如下：
 
-**跨链存证** 
+**跨链存证**
 
 调用自己应用链上的data_swapper合约向我们内部的测试应用链发起跨链存证交易，调用方法是 set ，其参数有3个，依次是目的链合约的did、要存储的key，要存储的value。
 

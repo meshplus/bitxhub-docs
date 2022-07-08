@@ -49,7 +49,7 @@ function getOuterMeta() public view returns (string[] memory, uint64[] memory)
 
 // getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。
 // 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 
+// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5;
 // 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
 // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，
 // key值为当前应用链的服务ID和目标服务ID组成的service pair，
@@ -60,7 +60,7 @@ function getCallbackMeta() public view returns (string[] memory, uint64[] memory
 
 // getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。
 // 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5;
 // 同时由于跨链请求中支持超时回滚，
 // 需要记录中继链超时块高后未收到目的链跨链回执的场景下目的链回滚的信息.
 // 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
@@ -121,12 +121,12 @@ function initialize() public
 
 broker合约初始化时需要添加中继链的相关信息：
 
-- 中继链ID：用于抛出跨链交易时获得当前的full service ID
-- 应用链ID：用于抛出跨链交易时获得当前full service ID
-- 验证人地址集合：用于验证中继链多签
-- 验签通过的最少验证人数量：如果是直连模式，改值为0
-- 应用链管理员集合
-- 投票通过的最少应用链管理员数量
+- 中继链ID：填入中继链ID，通常是1356，用于抛出跨链交易时获得当前的full service ID；
+- 应用链ID：填入应用链ID，需与后续pier配置、注册时的应用链ID一致，用于抛出跨链交易时获得当前full service ID；
+- 验证人地址集合：需填入中继链上所有管理员节点的地址，用于验证中继链多签；
+- 验签通过的最少验证人数量：如果中继链有4个管理员，可填入3，如果是直连模式，填入0；
+- 应用链管理员集合：创建合约的账户的地址；
+- 投票通过的最少应用链管理员数量：如果创建合约的账户只有1个，填入1。
 
 因此，broker的构造函数如下：
 ```solidity
@@ -137,7 +137,7 @@ uint64 valThreashold;
 address[] admins;
 uint64 adminThreashold;
 
-constructor(string memory _bxhID, 
+constructor(string memory _bxhID,
 	    string memory _appchainID,
 	    address[] memory _validators,
 	    uint64 _valThreashold,
@@ -264,7 +264,7 @@ function getOuterMeta() public view returns (string[] memory, uint64[] memory)
 
 // getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。
 // 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 
+// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5;
 // 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
 // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，
 // key值为当前应用链的服务ID和目标服务ID组成的service pair，
@@ -275,7 +275,7 @@ function getCallbackMeta() public view returns (string[] memory, uint64[] memory
 
 // getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。
 // 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5;
 // 同时由于跨链请求中支持超时回滚，
 // 需要记录中继链超时块高后未收到目的链跨链回执的场景下目的链回滚的信息.
 // 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
@@ -288,13 +288,13 @@ function getDstRollbackMeta() public view returns (string[] memory, uint64[] mem
 Pier从维护的index恢复了各个服务的跨链状态以后，要从应用链查询未发送的IBTP或者IBTP Receipt，因此broker需要提供相关的信息以便应用链可以很方便的查询IBTP或者IBTP Receipt。
 
 ```solidity
-// 跨链事件调用信息    
+// 跨链事件调用信息
 
     struct CallFunc {
         string func;
         string[] args;
     }
-    
+
     struct InterchainInvoke {
         CallFunc callFunc;
         CallFunc callback;
@@ -395,7 +395,7 @@ function invokeInterchain(
         uint64 txStatus,
         bytes[] memory signatures,
         bool isEncrypt) payable external {
-        
+
         checkIndex();
 
         checkMultiSigns();

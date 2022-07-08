@@ -100,21 +100,34 @@ nav:
       - 整体架构:
           - 产品架构: bitxhub/architecture/flexible_arch.md
           - 技术架构: bitxhub/architecture/arch.md
-          - 交易流程: bitxhub/architecture/tx_flow.md
-      - 快速开始: bitxhub/quick_start.md
-      - 部署使用:
-          - 环境准备: bitxhub/usage/env.md
-          - 整体说明: bitxhub/usage/overall_description.md
-          - 单中继架构部署:
-            - 中继链部署: bitxhub/usage/single_bitxhub/deploy_bitxhub.md
-            - 跨链网关部署: bitxhub/usage/single_bitxhub/deploy_pier.md
-            - 合约部署: bitxhub/usage/single_bitxhub/deploy_contract.md
-          - 跨链网关直连模式部署: bitxhub/usage/direct_mode_pier/pier_direct_mode_deploy.md
-          - 系统验证与交易流程体验: bitxhub/usage/status_verification.md
+      - 快速开始:
+          - 跨链交易流程介绍: bitxhub/quick_start/tx_flow.md
+          - 使用Goduck快速体验: bitxhub/quick_start/goduck_quick_start.md
+          - 搭建第一个跨链网络:
+              - 整体说明: bitxhub/quick_start/build_cross_network/overall_description.md
+              - 环境准备: bitxhub/quick_start/build_cross_network/env.md
+              - 单中继架构部署:
+                  - 1. 中继链部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_bitxhub.md
+                  - 2. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_broker.md
+                  - 3. 跨链网关部署: bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_pier.md
+                  - 4. 注册应用链: bitxhub/quick_start/build_cross_network/single_bitxhub/register_appchain.md
+              - 跨链网关直连模式部署:
+                  - 1. 应用链跨链合约部署: bitxhub/quick_start/build_cross_network/direct_mode/deploy_broker.md
+                  - 2. 跨链网关部署: bitxhub/quick_start/build_cross_network/direct_mode/pier_direct_mode_deploy.md
+                  - 3. 注册应用链: bitxhub/quick_start/build_cross_network/direct_mode/register_appchain.md
+          - 开始第一笔跨链交易:
+              - 使用说明: bitxhub/quick_start/start_transaction/usage_description.md
+              - 1. 部署业务合约: bitxhub/quick_start/start_transaction/deploy_business_contract.md
+              - 2. 注册服务: bitxhub/quick_start/start_transaction/register_service.md
+              - 3. 发起跨链交易: bitxhub/quick_start/start_transaction/start_transaction.md
+      - 开发应用:
+          - 使用说明: bitxhub/dev_application/usage_description.md
+          - 使用场景:
+              - 接入应用链: bitxhub/dev_application/use_case/new_appchain.md
+              - 开发业务合约: bitxhub/dev_application/use_case/deploy_business_contract.md
+              - 更新验证规则: bitxhub/dev_application/use_case/update_rule.md
       - 产品功能:
-        - 应用链管理:
-          - 中继模式管理: bitxhub/function/relay_manager.md
-          - 直连模式管理: bitxhub/function/direct_manager.md
+        - 应用链管理: bitxhub/function/relay_manager.md
         - 证书管理: bitxhub/function/cert_manage.md
         - 节点管理: bitxhub/function/node_manager.md
         - 统一身份管理: bitxhub/function/role_manager.md
@@ -143,18 +156,18 @@ nav:
           - 直连架构跨链事务方案: bitxhub/design/direct_transaction.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
-          - 区块链浏览器后台设计: bitxhub/design/luka.md
+#          - 区块链浏览器后台设计: bitxhub/design/luka.md
       - 运维:
         - 查看日志: bitxhub/operation/node_log_view.md
         - 节点状态检测: bitxhub/operation/node_status_check.md
         - 异常问题处理: bitxhub/operation/exception_problem_handling.md
-      - 版本发布记录:
-          - BitXHub v1.18.0: bitxhub/changelog/bitxhub_v1.18.0.md
-          - BitXHub v1.11.0: bitxhub/changelog/bitxhub_v1.11.0.md
-          - BitXHub v1.6.0: bitxhub/changelog/bitxhub_v1.6.0.md
-          - BitXHub v1.5.0: bitxhub/changelog/bitxhub_v1.5.0.md
-          - BitXHub v1.4.0: bitxhub/changelog/bitxhub_v1.4.0.md
-          - BitXHub v1.3.0: bitxhub/changelog/bitxhub_v1.3.0.md
+#      - 版本发布记录:
+#          - BitXHub v1.18.0: bitxhub/changelog/bitxhub_v1.18.0.md
+#          - BitXHub v1.11.0: bitxhub/changelog/bitxhub_v1.11.0.md
+#          - BitXHub v1.6.0: bitxhub/changelog/bitxhub_v1.6.0.md
+#          - BitXHub v1.5.0: bitxhub/changelog/bitxhub_v1.5.0.md
+#          - BitXHub v1.4.0: bitxhub/changelog/bitxhub_v1.4.0.md
+#          - BitXHub v1.3.0: bitxhub/changelog/bitxhub_v1.3.0.md
       - 社区介绍: bitxhub/community_introduction.md
       - 加入我们: bitxhub/join_us.md
       - FAQ: bitxhub/faq.md
