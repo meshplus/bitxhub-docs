@@ -300,28 +300,10 @@ cp ./config $HOME/.pier2/ether
 ## 启动程序
 
 准备工作：
-1. 两条应用链上A和B都部署broker合约和业务合约transfer和dataSwapper
-  - 部署broker合约时需要指定应用链的chainID、admin，将Validator置为空等，admin为自己的账户地址。
-  - 部署业务合约时，需要在address输入对应的broker合约地址
-配置如下所示：
 
-```text
-"","appchain1",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
-"","appchain2",[],"0",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
-```
-![!](../../../assets/direct1.png)
+1. 两条应用链上A和B都部署broker合约，此外与中继模式不同的是直连模式需要在两条应用链上额外部署transaction合约
 
-2. 本链业务合约注册到broker合约并审核通过
-  - `register`: 在本链的业务合约注册到本链的broker合约（addr为本连链业务合约地址）
-  ![!](../../../assets/direct2.png)
-  - `audit` : Admin管理员审核通过
-  ![!](../../../assets/direct3.png)
-
-3. 本链注册对方应用链和服务
-
-应用链和服务的注册的流程参照直连模式下[应用链管理](../../../function/direct_manager/)
-
-4.启动跨链网关
+2. 启动跨链网关
 
 ```shell
 #以用户目录下的pier1为例
