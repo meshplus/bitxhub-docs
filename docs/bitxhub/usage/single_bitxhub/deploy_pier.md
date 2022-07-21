@@ -44,7 +44,7 @@
     Step2: 获取需要部署的合约文件并解压
     ```shell
     git clone https://github.com/meshplus/pier-client-fabric.git 
-    cd pier-client-fabric && git checkout v1.11.2
+    cd pier-client-fabric && git checkout release-1.11
     # 需要部署的合约文件就在example目录下
     # 解压即可
     unzip -q contracts.zip
@@ -74,7 +74,7 @@
 # 编译跨链网关本身
 cd ~/bitxhub-v1.11
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout v1.11.2
+cd pier && git checkout release-1.11
 make prepare && make install
 ```
 
@@ -109,7 +109,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Ethereum 插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout v1.11.2
+    cd pier-client-ethereum && git checkout release-1.11
     make eth
     
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成eth-client文件；
@@ -130,7 +130,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Fabric插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout v1.11.2
+    cd pier-client-fabric && git checkout release-1.11
     make fabric1.4
     
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
