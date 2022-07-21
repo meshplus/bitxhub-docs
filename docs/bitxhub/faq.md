@@ -1,6 +1,92 @@
 # FAQ
 
+## 跨链体验
+
+### 1. M1芯片部署新版本中继链报错
+
+```shell
+# github.com/bytecodealliance/wasmtime-go
+ld: library not found for -lwasmtime
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [install] Error 2
+```
+
+`wasmtime-go`默认并不支持arm架构，需要单独编译`wasmtime`，流程如下：
+
+**（注意！！！需要根据bitxhub go.mod文件中所依赖的`wasmtime-go`版本进行单独编译）**
+
+1. 查看依赖的`wasmtime-go`版本
+
+    ```shell
+    # 切换到bitxhub目录
+    $ git checkout release-2.0 
+    # 查询wastime-go版本
+    $ cat go.mod | grep wasmtime-go | awk '{print $2}'
+    v0.34.0
+    ```
+
+2. 部署rust编译环境
+
+    ```shell
+    # 下载安装rust
+    $ curl https://sh.rustup.rs -sSf | sh
+    # 检查是否是arm版本
+    $ rustup show
+    Default host: aarch64-apple-darwin
+    rustup home:  /Users/xxx/.rustup
+    
+    stable-aarch64-apple-darwin (default)
+    rustc 1.59.0 (9d1b2106e 2022-02-23)
+    (base)
+    ```
+
+3. 编译`wasmtime-c-api`
+
+    ```shell
+    # 在wasmtime中单独编译wasmtime-c-api,下载到$GOPATH/src目录下
+    $ cd $GOPATH/src && git clone https://github.com/bytecodealliance/wasmtime.git 
+    
+    # 切换到与所依赖的wasmtime-go一致的版本
+    $ cd wasmtime && git checkout v0.34.0
+    # 当使用git clone下来的工程中带有submodule时，初始的时候，submodule的内容并不会自动下载下来的，此时，只需执行如下命令下载所有子模块
+    $ git submodule update --init
+    $ sudo cargo build -p wasmtime-c-api --release
+    ```
+
+4. 更新go.mod依赖的`wasmtime-go`
+
+    ```shell
+    # 切换到go.mod的wasmtime-go路径下
+    $ cd $GOPATH/pkg/mod/github.com/bytecodealliance
+    # 使用脚本将编译好的文件拷贝到wasmtime-go项目的build目录下
+    $ cd ../wasmtime-go@v0.34.0 && sudo bash ./ci/local.sh $GOPATH/src/wasmtime
+    ```
+
+    最后重新编译`bitxhub`即可，值得注意的是，如果不同bitxhub的版本依赖不同的`wasmtime-go`，需要重复上述步骤对指定版本的`wasmtime-go`进行编译。
+
+### 2. geth部署以太坊私链导致跨链流程阻塞
+
+由于以太坊采用非确定性共识算法，可能会有区块分叉现象存在，因此在以太坊插件配置中设置了`min_confirm` 字段用于等待区块得到确认，该参数可更改。如果在本地使用geth、goduck等工具搭建以太坊私链，如果没有非跨链交易上链，以太坊将不会继续出块。因此跨链交易将一直等待交易得到确认。
+
+**因此，实际使用时，需要把pier的配置目录下的`ethereum.toml`下的`min_confirm` 改为0即可。**
+
+```shell
+$ vim $HOME/.pier/ether/ethereum.toml
+
+[ether]
+…………
+key_path = "account.key"
+password = "password"
+# 修改为0
+min_confirm = 0
+…………
+```
+
+
+
 ## 跨链技术
+
+
 
 ### 1. 跨链的必要性
 

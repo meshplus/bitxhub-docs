@@ -1233,12 +1233,12 @@ $ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction/0xa56b0b7fcDBCea002D871173
 ### pbBlock
 
 | **Name**     | **Type**                        | **Description** |
-| ------------ |---------------------------------| --------------- |
-| block_header | [pbBlockHeader](#pbblockheader) | 区块头          |
-| transactions | byte                            | 交易列表        |
-| block_hash   | byte                            | 交易哈希        |
-| signature    | byte                            | 签名            |
-| extra        | byte                            | 扩展字段        |
+| ------------ |---------------------------------|-----------------|
+| block_header | [pbBlockHeader](#pbblockheader) | 区块头             |
+| transactions | byte                            | 交易列表            |
+| block_hash   | byte                            | 区块哈希            |
+| signature    | byte                            | 区块签名            |
+| extra        | byte                            | 扩展字段            |
 
 ### pbBlockHeader
 
