@@ -9,38 +9,92 @@
 
 ## 注册应用链
 
-以下是以Ethereum为例进行说明：
+=== "Ethereum"
 
-1. Pier命令行发起应用链注册
+    ```shell
+    #在进行应用链注册之前首先需要向目标地址进行转账，保障该地址可以进行应用链注册
+    #获得admin的id
+    pier --repo ~/bitxhub-v2.0.0/.pier/ id
+    #向目标地址转账
+    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xFbB01EcDFFc6033e2aa205987696C3fd72f436B2 --amount 100000000000000000
+    ```
 
-```shell
-# 以用户目录下的pier为例
-pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "ethappchain" --name "ethereum" \
- --type "ETH" --trustroot "ethereum/ether.validators" --broker \
- 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582  --desc "desc" --master-rule \
- "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" \
- --admin 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --reason "reason"
-# 0x00000000000000000000000000000000000000a2 HappyRuleAddr
-# 发起注册后会打印出应用链id和提案id
-appchain register successfully, chain id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31, proposal id is 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0
-```
+    1. Pier命令行发起应用链注册
 
-！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
+    ```shell
+    # 以用户目录下的pier为例
+    #注意：命令中的broker地址需要更改为remix编译部署的broker地址，以及admin需要修改为
+    #之前转账的地址
+    pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "ethappchain" --name "ethereum" \
+    --type "ETH" --trustroot "ethereum/ether.validators" --broker \
+     0x857133c5C69e6Ce66F7AD46F200B9B3573e77582  --desc "desc" --master-rule \
+     "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" \
+     --admin 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --reason "reason"
+    # 0x00000000000000000000000000000000000000a2 HappyRuleAddr
+    # 发起注册后会打印出提案id
+    Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 to finish.
+    ```
 
-2. 中继链节点依次投票
+    ！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
 
-```shell
-# 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
-bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 --info approve --reason approve
-# 投票完后会打印：vote successfully!
-# 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
-```
+    2.中继链节点依次投票
 
-**当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
+    ```shell
+    # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
+    bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 --info approve --reason approve
+    # 投票完后会打印：vote successfully!
+    # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
+    ```
 
-```shell
-bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance proposals --type AppchainMgr
-```
+    **当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
+
+    ```shell
+    bitxhub --repo  $HOME/bitxhub/scripts/build/node1 client governance appchain info --name "ethereum"
+    ```
+
+=== "Fabric"
+
+    ```shell
+    #在进行应用链注册之前首先需要向目标地址进行转账，保障该地址可以进行应用链注册
+    #获得admin的id
+    pier --repo ~/bitxhub-v2.0.0/.pier/ id
+    #向目标地址转账
+    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xFbB01EcDFFc6033e2aa205987696C3fd72f436B2 --amount 100000000000000000
+    ```
+   
+    1. Pier命令行发起应用链注册
+
+    ```shell
+    # 以用户目录下的pier为例
+    #注意：admin需要修改为之前转账的地址
+    pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "fabappchain" \
+    --name "fabric" --type "Fabric V1.4.3" --trustroot fabric/fabric.validators --broker-cid mychanncel \
+    --broker-ccid broker --broker-v 1 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" \
+    --rule-url "http://github.com" --admin 0x321E49c58eC76a5cA02F3E801f303D1E8E0379d0 --reason "reason" 
+
+    # 0x00000000000000000000000000000000000000a2 HappyRuleAddr
+    # 发起注册后会打印出提案id
+    Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 to finish.
+    ```
+
+    ！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
+
+    2.中继链节点依次投票
+
+    ```shell
+    # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
+    bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 --info approve --reason approve
+    # 投票完后会打印：vote successfully!
+    # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
+    ```
+
+    **当BitXHub集群超过半数的管理员投票通过后，应用链注册成功（如果BitXHub是solo模式，则只需要一票同意即可）**，可以通过如下命令查询提案状态：
+
+    ```shell
+    bitxhub --repo  $HOME/bitxhub/scripts/build/node1 client governance appchain info --name "fabric"
+    ```
+
+    
 
 ## 注册验证规则（可选）
 

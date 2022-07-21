@@ -12,7 +12,7 @@
     # 1. 首先拉取bitxhub项目源代码
     mkdir ~/bitxhub-v2.0.0 && git clone https://github.com/meshplus/bitxhub.git
     # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
-    cd bitxhub && git checkout v2.0.0 && make build
+    cd bitxhub && git checkout release-2.0 && make build
     # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
     # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v2.0.0
     ./bin/bitxhub version

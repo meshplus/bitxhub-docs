@@ -14,13 +14,18 @@ broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pi
 
 === "Remix"
 
-    broker合约构造参数如下：
+    broker合约构造参数示例如下：
 
     ```
-    "1356","appchain1",["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"],"3",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
+    "1356","ethappchain",["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"],"3",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
     ```
 
     ![!](../../../../assets/eth_deploy_broker_remix.png)
+    ![!](../../../../assets/eth_deploy_broker_remix3.png)
+
+    ```
+    注意：填写参数时，需要将ADMINS参数使用账户ACCOUNT代替
+    ```
 
 === "Goduck"
 
@@ -60,7 +65,7 @@ broker合约可以在[pier-client-fabric项目](https://github.com/meshplus/pier
 
 ```shell
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout v2.0.0
+cd pier-client-fabric && git checkout release-2.0-mock
 # 需要部署的合约文件就在example目录下
 # 解压即可
 cd example && unzip -q contracts.zip
@@ -80,7 +85,7 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
     ```shell
     # --gopath 为pier-client-fabric/exmaple目录下的contracts目录
-    # 安装和示例化broker合约，其中${CONFIG_YAML}为fabric配置文件的路径
+    # 安装和示例化broker合约，其中${CONFIG_YAML}为fabric配置文件的路径，初始文件路径为pier-client-fabric/config/config.yaml
     fabric-cli chaincode install --gopath ./contracts --ccp broker --ccid broker --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
     fabric-cli chaincode instantiate --ccp broker --ccid broker \
     --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
@@ -90,6 +95,12 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
     --args='{"Func":"initialize", "Args":["1356", "fabappchain"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
     ```
+
+    ```shell
+    注意：config.yaml文件不可以直接使用，需要修改所有${CONFIG_PATH}为启动的fabric
+    所生成的配置文件的路径，以fabric—samples为例，生成的配置文件路径为fabric-samples/first-network/crypto-config
+    ```
+    
 
 === "Goduck"
 
