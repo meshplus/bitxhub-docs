@@ -13,7 +13,7 @@
     mkdir ~/bitxhub-v1.6 && git clone https://github.com/meshplus/bitxhub.git
     
     # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
-    cd bitxhub && git checkout v1.6.4 && make install
+    cd bitxhub && git checkout release-1.6 && make install
     
     # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
     # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v1.6.4
