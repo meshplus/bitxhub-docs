@@ -10,7 +10,7 @@
 # 编译跨链网关本身
 cd ~/bitxhub-v2.0.0
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout v2.0.0
+cd pier && git checkout release-2.0
 make prepare && make build
 ```
 
@@ -21,6 +21,9 @@ make prepare && make build
 ```shell
 CONFIG_PATH=$HOME/bitxhub-v2.0.0
 pier --repo $CONFIG_PATH/.pier init relay
+#注意：如果想要同时启动两条链，例如以太坊和Fabric，需要使用pier再次初始化一个文件夹，例如
+#pier --repo $CONFIG_PATH/.pier1 init relay
+#再将另一条链对应的命令的.pier修改为.pier1
 ```
 
 该命令会生成跨链网关的一些基础配置文件模板，使用 tree 命令可查看目录信息：
@@ -45,7 +48,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Ethereum 插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout v2.0.0
+    cd pier-client-ethereum && git checkout release-2.0
     make eth
 
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成二进制插件文件eth-client；
@@ -66,7 +69,7 @@ tree -L 1 $CONFIG_PATH/.pier
     # 编译Fabric插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout v2.0.0
+    cd pier-client-fabric && git checkout release-2.0
     make fabric1.4
 
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
@@ -183,8 +186,6 @@ gas_limit = 0x5f5e100
 === "Fabric"
 
     ```shell
-    # 将fabric插件拷贝到plugins目录下
-    cp fabric-client-1.4 $CONFIG_PATH/.pier/plugins/
     # 切换到pier-client-fabric项目路径下
     cd pier-client-fabric
     cp ./config $CONFIG_PATH/.pier/fabric

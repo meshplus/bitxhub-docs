@@ -15,6 +15,8 @@
     ![!](../../../assets/transfer.png)
 
     在示例跨链交易请求中，输入的destChainServiceID是`1356:ethappchain2:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11`。其中，1356为中继链id，ethappchain2为目的链id，0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11为应用链2上transfer合约的地址。
+    
+    假如目标链为fabric时，示例destChainServiceID为`1356:fabappchain:mychannel&transfer`。其中，1356为中继链id，fabappchain为目的链id，mychannel&transfer为fabric应用链上service-id。
 
 3. 发起跨链交易请求成功后，通过调用应用链上transfer合约的getBalance方法可以得到此时alice和bob账户的金额。
     ![!](../../../assets/getbalance_forchain1.png)
