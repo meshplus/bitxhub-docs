@@ -127,6 +127,7 @@ nav:
               - 开发业务合约: bitxhub/dev_application/use_case/deploy_business_contract.md
               - 更新验证规则: bitxhub/dev_application/use_case/update_rule.md
       - 产品功能:
+        - 提案管理: bitxhub/function/proposal_manager.md
         - 应用链管理: bitxhub/function/relay_manager.md
         - 证书管理: bitxhub/function/cert_manage.md
         - 节点管理: bitxhub/function/node_manager.md
