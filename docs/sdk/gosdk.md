@@ -76,7 +76,7 @@ result, err := cli.InvokeXVMContract(addr, "a", nil, Int32(1), Int32(2)) // 方�
 例如：
 
 ```go
-if cli.CheckReceipt(result) {
+if CheckReceipt(result) {
     fmt.Println(string(result.Ret))
 }
 ```
@@ -94,7 +94,7 @@ addr, _ := cli.DeployContract(contract, nil)
 result, _ := cli.InvokeXVMContract(addr, "a", nil, Int32(1), Int32(2))
 
 //判断合约调用交易成功与否，打印合约调用数据
-if cli.CheckReceipt(result) {
+if CheckReceipt(result) {
     fmt.Println(string(result.Ret))
 }
 ```
@@ -546,7 +546,7 @@ func GetBlocks(start uint64, end uint64) (*pb.GetBlocksResponse, error)
 - `blockType` 查询类型。
 
 ```go
-GetBlock(value string, blockType pb.GetBlockRequest_Type) (*pb.Block, error)
+func GetBlock(value string, blockType pb.GetBlockRequest_Type) (*pb.Block, error)
 ```
 
 #### 3.4.4 查询区块链状态
