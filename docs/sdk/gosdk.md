@@ -515,7 +515,7 @@ func GenerateContractTx(vmType pb.TransactionData_VMType, address *types.Address
 
 ### 3.4 区块接口
 
-##### 3.4.1 查询当前区块链信息
+#### 3.4.1 查询当前区块链信息
 
 用途：获取当前链信息，返回的chainMeta中包含当前区块高度、当前区块哈希以及当前区块跨链交易数。
 
