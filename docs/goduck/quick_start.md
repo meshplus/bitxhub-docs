@@ -25,7 +25,7 @@ Init goduck successfully in $HOME/.goduck!
 ```
 在goduck同级目录可以看到生成的.goduck文件夹
 
-## 4启动跨链网络
+## 4 启动跨链网络
 在本地启动两条以太坊私链并在其上部署相应的智能合约，此外还会启动一个solo版本的BitXHub节点以及与以太坊私链对应的两个跨链网关，启动命令如下：
 ```shell
 goduck playground start
@@ -65,7 +65,12 @@ goduck playground start
   invoke contract success, tx hash is: 0xf9d58b285c394ea91d4b34d0d4f9c6c61931160c7b280fc375bb2100e0f75333
   aduit contract aduit:successful
   ```
-如果打印结果有误，请检查$HOME/goduck/scripts/example下的brokerAddr与transferAddr，如果文件内容与以下日志不符，请检查本地安装的solc版本
+
+
+> **注意！！！** 如果打印结果有误，请检查$HOME/goduck/scripts/example下的brokerAddr与transferAddr，如果文件内容与以下日志不符，请检查本地安装的solc版本（solc版本支持0.6.9~0.7.6），solc安装教程可参考：[solc多版本安装](https://protective-jodhpur-ccb.notion.site/solc-682749e953bc4881a2f97f13e51b8d2b)。
+
+
+
   ```
   ======= $HOME/.goduck/scripts/example/broker.sol:Broker =======
   Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
@@ -145,7 +150,7 @@ pier-ethereum-1    | time="2022-06-20T03:55:48.290" level=info msg="Exchanger st
 pier-ethereum-2    | time="2022-06-20T03:55:48.291" level=info msg="Exchanger started" module=exchanger
 ```
 
-## 5跨链交易
+## 5 跨链交易
 
 分别在两条以太坊应用链上发起跨链交易，执行命令如下：
 
@@ -158,6 +163,6 @@ goduck playground transfer
 - 从ethereum-2的Alice账户转账1到ethereum-1的Alice账户
 
 执行结果如下图所示
-![!](../../../assets/quick_start_result.png)
+![!](../assets/quick_start_result.png)
 
 此外还可通过remix载入以上操作过程中部署的以太坊智能合约，直接通过remix调用合约方法的方式来进行跨链转账，执行过程可参考[交易流程体验](../../bitxhub/quick_start/start_transaction/start_transaction)。
