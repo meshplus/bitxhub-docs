@@ -8,7 +8,7 @@
 
 broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
 
-部署broker合约需要有构造参数，具体参数含义可以参考[broker合约的说明](../../../design/broker/#broker_1)。
+部署broker合约需要有构造参数，具体参数含义可以参考[broker合约的说明](../../../../design/broker/#broker_1)。
 
 在Ethereum上部署合约的工具有很多，您可以使用[Remix](https://remix.ethereum.org/)进行合约的编译和部署，也可以使用Goduck进行部署：
 
