@@ -6,6 +6,6 @@
 
 准备好业务合约后，请按照以下流程进行：
 
-1. **[部署业务合约](./deploy_business_contract)**：将待跨链的业务合约部署到应用链上；
-2. **[注册服务](./register_service)**：将业务合约代表的服务注册到BitXHub上；
-3. **[发起跨链交易](./start_transaction)**：发起第一笔跨链交易。
+1. **[部署业务合约](../deploy_business_contract)**：将待跨链的业务合约部署到应用链上；
+2. **[注册服务](../register_service)**：将业务合约代表的服务注册到BitXHub上；
+3. **[发起跨链交易](../start_transaction)**：发起第一笔跨链交易。
