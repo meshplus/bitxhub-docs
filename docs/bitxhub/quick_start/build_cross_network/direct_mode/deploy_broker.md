@@ -22,6 +22,11 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     ```
 
     ![!](../../../../assets/eth_deploy_broker_remix_direct.png)
+    ![!](../../../../assets/eth_deploy_broker_remix3.png)
+
+    ```
+    注意：填写参数时，需要将ADMINS参数使用账户ACCOUNT代替
+    ```
 
     transaction合约构造参数如下
     
@@ -89,7 +94,9 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
     Step1: 安装部署合约的工具fabric-cli
 
     ```shell
-    cd ~/bitxhub-v2.0.0 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
+    Ps:由于fabric官方没有继续维护，可能导致go1.16及以上版本使用go install安装出错
+    可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 部署broker合约
@@ -101,7 +108,7 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
     fabric-cli chaincode instantiate --ccp broker --ccid broker \
     --config "${CONFIG_YAML}" --orgid org2 --user Admin --cid mychannel
 
-    # 初始化合约参数(以中继链id=1356和应用链id=fabappchain为例)
+    # 初始化合约参数(直连模式下不需要中继链的chainId,只需应用链id即可)
     fabric-cli chaincode invoke --cid mychannel --ccid=broker \
     --args='{"Func":"initialize", "Args":["", "fabappchain","1"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
@@ -147,7 +154,7 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
     --ccid broker \
     --version 1
 
-    # 初始化broker合约需要提供BitXHub的chainId，以及对应应用链的ID
+    # 初始化直连broker合约不需要提供BitXHub的chainId，只需对应应用链的ID
     goduck fabric contract invoke --config-path config.yaml broker initialize "",fabappchain,1
     ```
 
