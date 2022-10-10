@@ -12,19 +12,19 @@
 # 编译跨链网关本身
 cd $HOME
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout v1.18.0
+cd pier && git checkout release-2.0
 make prepare && make install
 
 # 编译Fabric
 cd $HOME
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout v1.18.0
+cd pier-client-fabric && git checkout release-2.0
 make fabric1.4
 
 # 编译以太坊私链插件
 cd $HOME
 git clone https://github.com/meshplus/pier-client-ethereum.git
-cd pier-client-ethereum && git checkout v1.18.0
+cd pier-client-ethereum && git checkout release-2.0
 make eth
 
 # 插件执行make的编译之后，都会在项目目录的之下的build目录生成相应的二进制文件
@@ -40,10 +40,10 @@ pier version
 如果正常安装会打印出类似下面的说明
 
 ```text
-Pier version: dev-release-1.18-3826f39
-App build date: 2022-01-11T14:16:56
-System version: linux/amd64
-Golang version: go1.14.13
+Pier version: dev-release-2.0-c8660b2
+App build date: 2022-09-28T17:50:24
+System version: darwin/amd64
+Golang version: go1.18.2
 ```
 
 ### **二进制安装**
@@ -53,7 +53,7 @@ Golang version: go1.14.13
 - [Pier二进制安装](https://github.com/meshplus/pier/releases)：根据需要的版本进行下载即可。
 - 网关插件安装：[pier-client-fabric](https://github.com/meshplus/pier-client-fabric/releases) 和 [pier-client-ethereum](https://github.com/meshplus/pier-client-ethereum/releases)  的应用链插件的二进制。
 
-注意：网关与网关插件对应大版本号一致即可。如pier v1.18.x对应pier-client-ethereum v1.18.x。
+注意：网关与网关插件对应大版本号一致即可。如pier v2.0.x对应pier-client-ethereum v2.0.x。
 
 ## 修改配置文件
 
@@ -74,10 +74,12 @@ tree -L 1 ~/.pier1
 ├── api
 ├── certs
 ├── key.json
+├── network.toml
+├── node.csr
 ├── node.priv
 └── pier.toml
 
-1 directory, 4 files
+1 directory, 6 files
 ```
 
 导入插件二进制（hyperchain的插件二进制和配置文件示例需要内部授权）
@@ -122,10 +124,8 @@ type = "direct" # relay or direct
 ...
 ...
 [mode.direct]
-peers = ["/ip4/127.0.0.1/tcp/3003/p2p/QmXfAngyiAkb44ofp1633Ak4nKTKWaBhmQbvE1tsPJzQTX", "/ip4/127.0.0.1/tcp/3004/p2p/QmWLrVrbJxkZxBZsr2UmNEz7eLgCExW6KTax89wDRMXaWw"]
+    gas_limit = 100000000
 ```
-
-**注意：上面peers字段需要配置两方的pier的p2p地址，其中后面那一段是根据pier私钥生成的id，可以使用`pier p2p id `命令来获取，这也是直连模式区别于中继模式的关键配置。**
 
 - 修改应用链信息
 
@@ -139,6 +139,27 @@ id = "fabappchain"
 plugin = "fabric-client-1.4"
 ```
 
+network.toml 文件描述链跨链网关启动的必要的网络配置，具体的配置项和说明如下：
+
+| 配置项     | 说明                             |
+| ---------- | --------------------------------|
+| [host]     | p2p网络地址                        |
+| [pid]      | p2p网络的ID                |
+
+- 修改跨链网关网络信息
+
+```toml
+[[piers]]
+hosts = ["/ip4/127.0.0.1/tcp/4321/p2p/"]
+pid = "QmZBXPKmBSs45PuzbPpuZV6QzZpAQmqZa8AzJ6HNQX9wJh"
+
+[[piers]]
+hosts = ["/ip4/127.0.0.1/tcp/4322/p2p/"]
+pid = "QmbmD1kzdsxRiawxu7bRrteDgW1ituXupR8GH6E2EUAHY4"
+```
+
+**注意：上面peers字段需要配置两方的pier的p2p地址，其中pid可以使用`pier p2p id `命令来获取，这也是直连模式区别于中继模式的关键配置。**
+
 网关pier适配以太坊插件的配置仿照上述步骤即可。
 
 ### 修改fabric插件配置
@@ -148,7 +169,7 @@ Fabric插件配置的模板在`pier-client-fabric`项目中，并且已经在Git
 ```shell
 # 转到pier-client-fabric项目路径下
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout v1.18.0
+cd pier-client-fabric && git checkout release-2.0
 cp ./config $HOME/.pier1/fabric
 ```
 
@@ -241,7 +262,7 @@ ethereum插件配置的模板在`pier-client-ethereum`项目中，并且已经�
 ```shell
 # 转到pier-client-ethereum项目路径下
 git clone https://github.com/meshplus/pier-client-ethereum.git
-cd pier-client-ethereum && git checkout v1.18.0
+cd pier-client-ethereum && git checkout release-2.0
 cp ./config $HOME/.pier2/ether
 ```
 
@@ -249,13 +270,10 @@ cp ./config $HOME/.pier2/ether
 
 ```text
 ├── account.key
-├── broker.abi
-├── data_swapper.abi
 ├── ether.validators
 ├── ethereum.toml
 ├── password
 ├── pier.toml // 仅作参考，无需配置
-├── transfer.abi
 └── validating.wasm
 ```
 
@@ -277,14 +295,15 @@ cp ./config $HOME/.pier2/ether
 
   | 配置项           | 说明                                 |
   | ---------------- | ------------------------------------|
-  | addr             | ethereum 区块链所在的服务器地址和端口 |
+  | addr             | ethereum 区块链所在的服务器地址和端口    |
   | name             | 以太坊链名称                          |
   | contract_address | 部署的broker合约地址                  |
   | key_path         | 账户信息文件路径                      |
   | password         | 账户密码文件路径                      |
   | min_confirm      | 最低确认区块数                        |
-  | timeout_height   | 超时回滚的区块数                       |
-
+  | timeout_height   | 中继模式超时回滚的区块数                |
+  | timeout_period   | 直连模式超时回滚的时间                 |
+  
   示例配置
 
   ```toml
@@ -294,8 +313,9 @@ cp ./config $HOME/.pier2/ether
   contract_address = "0x09f0a8c66bc8bC6e29bF0A425CDD7aa133F40571"
   key_path = "account.key"
   password = "password"
-  min_confirm = 1
+  min_confirm = 0
   timeout_height = 100
+  timeout_period = 60
   ```
 ## 启动程序
 

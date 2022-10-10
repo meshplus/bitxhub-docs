@@ -54,7 +54,9 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
     Step1: 安装部署合约的工具fabric-cli
 
     ```shell
-    cd ~/bitxhub-v2.0.0 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
+    Ps:由于fabric官方没有继续维护，可能导致go1.16及以上版本使用go install安装出错
+    可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 注册应用链
