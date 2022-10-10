@@ -148,44 +148,63 @@ gas_limit = 0x5f5e100
 === "Ethereum"
 
     ```shell
-    # 切换到pier-client-ethereum项目路径下
-    cd  pier-client-ethereum
-    cp -r ./config $CONFIG_PATH/.pier/ether
+    cd $CONFIG_PATH/.pier && mkdir ether
+
+    # 将pier-client-ethereum的config目录下的文件拷贝到pier的配置路径
+    cp $CONFIG_PATH/pier-client-ethereum/config $CONFIG_PATH/.pier/ether
     ```
     其中重要配置如下：
-    ```text
+    ```shell
+    tree -L 1 $CONFIG_PATH/.pier/ether
     ├── account.key
     ├── broker.abi
+    ├── data_swapper.abi
     ├── ether.validators
     ├── ethereum.toml
     ├── password
+    ├── pier.toml
+    ├── transfer.abi
     └── validating.wasm
     ```
+    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到`${pier_repo}/ehter`目录下：**
+    ```shell
+    cp $CONFIG_PATH/.goduck/pier/ethereum/1.3.0/* $CONFIG_PATH/.pier/ether
+    ```
+
     **说明**：
 
-    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）
+    - account.key和password建议换成应用链上的真实账户，且须保证有一定金额（ethereum上调用合约需要gas费）;
     - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
-    - ether.validators和validating.wasm一般不需要修改。
-    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写**ethereum网络地址**、broker合约地址及业务合约abi**，账户的key等，示例如下：
+    - ether.validators和validating.wasm一般不需要修改,pier.toml为pier配置模板，暂未使用，可不做更改；
+    - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
+        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
+        - `nanme`：应用链名称，用户可自定义；
+        - `contract_address`：broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
+        - `abi_path`:`broker.abi`文件路径；
+        - `key_path`：以太坊账户私钥，如果为本地启动的以太坊私链，地址为`${datadir}/data/keystore`；
+        - `password`：以太坊账户密码；
+        - `min_confirm`：最小区块确认数；
+        - `[contract_abi]`:填写业务合约地址，如：`0x668a209Dc6562707469374B8235e37b8eC25db08="transfer.abi"`
 
     ```toml
     [ether]
-    addr = "wss://kovan.infura.io/ws/v3/cc512c8c74c94938aef1c833e1b50b9a"
-    name = "ether-kovan"
+    addr = "ws://localhost:8546"
+    name = "ether"
     ## 此处合约地址需要替换成变量代表的实际字符串
-    contract_address = "$brokerAddr"
+    contract_address = "0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4"
+    abi_path = "broker.abi"
     key_path = "account.key"
     password = "password"
     min_confirm = 1
-    timeout_height = 100
-    timeout_period = 60
-    offchain_addr = ""
-    offchain_path = ""
+
+    [contract_abi]
+    "0x668a209Dc6562707469374B8235e37b8eC25db08"="transfer.abi"
     ```
 
 === "Fabric"
-
     ```shell
+    # 将fabric插件拷贝到plugins目录下
+    cp fabric-client-1.4 $CONFIG_PATH/.pier/plugins/
     # 切换到pier-client-fabric项目路径下
     cd pier-client-fabric
     cp ./config $CONFIG_PATH/.pier/fabric
@@ -215,28 +234,19 @@ gas_limit = 0x5f5e100
     `config.yaml`文件记录的Fabric网络配置（用您的网络拓扑配置文件替换这个样例文件），需要使用绝对路径，把所有的路径都修改为 `crypto-config`文件夹所在的绝对路径。
     ```shell
     {CONFIG_PATH}/fabric/crypto-config =>$CONFIG_PATH/.pier/fabric/crypto-config
-    # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric的IP地址，如：
+    # 替换为您部署的Fabric网络的拓扑设置文件即可，同时需要修改所有的Fabric 的IP地址，如：
     url: grpcs://localhost:7050 => url: grpcs://10.1.16.48:7050
     ```
     3. **修改Plugin配置文件 fabric.toml**
 
     示例是以官方部署脚本进行配置：
     ```toml
-    [fabric]
+    addr = "localhost:7053" // 若Fabric部署在服务器上，该为服务器地址
+    event_filter = "interchain-event-name"
     username = "Admin"
-    ccid = "broker"
+    ccid = "broker" // 若部署跨链broker合约名字不是broker需要修改
     channel_id = "mychannel"
     org = "org2"
-    timeout_height = 30
-    chain_id = "3"
-
-    [[services]]
-    id = "mychannel&transfer"
-    name = "transfer"
-
-    [[services]]
-    id = "mychannel&data_swapper"
-    name = "data_swapper"
     ```
 
 ## 启动跨链网关节点
