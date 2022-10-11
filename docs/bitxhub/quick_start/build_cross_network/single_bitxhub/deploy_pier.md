@@ -178,27 +178,28 @@ gas_limit = 0x5f5e100
     - ether.validators和validating.wasm一般不需要修改,pier.toml为pier配置模板，暂未使用，可不做更改；
     - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
         - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
-        - `nanme`：应用链名称，用户可自定义；
-        - `contract_address`：broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
-        - `abi_path`:`broker.abi`文件路径；
-        - `key_path`：以太坊账户私钥，如果为本地启动的以太坊私链，地址为`${datadir}/data/keystore`；
-        - `password`：以太坊账户密码；
-        - `min_confirm`：最小区块确认数；
-        - `[contract_abi]`:填写业务合约地址，如：`0x668a209Dc6562707469374B8235e37b8eC25db08="transfer.abi"`
+        - `nanme`: 应用链名称，用户可自定义；
+        - `contract_address`: broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
+        - `key_path`: 以太坊账户私钥，如果为本地启动的以太坊私链，地址为`${datadir}/data/keystore`；
+        - `password`: 以太坊账户密码；
+        - `min_confirm`: 最小区块确认数（部署以太坊私链时，若遇到阻塞问题，可尝试将该值设置为0，具体参考：[2. geth部署以太坊私链导致跨链流程阻塞](../../../faq.md#2-geth)）；
+        - `timeout_height`: 中继模式下，超时回滚的块高；
+        - `timeout_period`: 直连模式下，超时回滚的时间间隔；
+        - `offchain_addr`: 链下文件传输的相关地址；
+        - `offchain_path`: 链下文件传输的相关路径。
 
     ```toml
     [ether]
-    addr = "ws://localhost:8546"
+    addr = "ws://host.docker.internal:8546"
     name = "ether"
-    ## 此处合约地址需要替换成变量代表的实际字符串
     contract_address = "0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4"
-    abi_path = "broker.abi"
     key_path = "account.key"
     password = "password"
-    min_confirm = 1
-
-    [contract_abi]
-    "0x668a209Dc6562707469374B8235e37b8eC25db08"="transfer.abi"
+    min_confirm = 15
+    timeout_height = 100
+    timeout_period = 60
+    offchain_addr = ""
+    offchain_path = ""
     ```
 
 === "Fabric"
