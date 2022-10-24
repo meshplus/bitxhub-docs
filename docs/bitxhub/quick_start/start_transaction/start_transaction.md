@@ -8,7 +8,7 @@
 
 2. 设置账户以及金额成功之后便可以发起跨链交易请求。在此，我们以alice向bob转账100做一个示例。
 
-    在remix调用ethappchain1的transfer合约中的transfer方法，transfer合约中的四个参数分别为destChainServiceID，sender，receiver以及amount。需要注意的是，destChainServiceID参数的格式为: `中级链id:目的链id:transfer合约地址`。
+    在remix调用ethappchain1的transfer合约中的transfer方法，transfer合约中的四个参数分别为destChainServiceID，sender，receiver以及amount。需要注意的是，destChainServiceID参数的格式为: `中继链id:目的链id:transfer合约地址`。
 
     示例如下图：
 

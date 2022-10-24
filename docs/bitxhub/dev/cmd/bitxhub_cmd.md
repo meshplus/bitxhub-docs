@@ -199,7 +199,7 @@ OPTIONS:
 # 若未指定`--repo`，则默认至`~/.bitxhub/`路径下寻找
 $ bitxhub start
 
-BitXHub version: dev-release-1.18-9222137
+BitXHub version: dev-release-2.0-9222137
 App build date: 2022-01-13T11:02:55
 System version: darwin/amd64
 Golang version: go1.14.15
