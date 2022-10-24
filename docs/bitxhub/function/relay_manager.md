@@ -2,7 +2,7 @@
 
 ## pier appchain
 
-在V1.18版本，中继链IBTP2.0模式将跨链单位从应用链级别细粒度为应用链某个服务。中继链支持对应用链与服务的管理，包括注册、更新、冻结、注销应用链等功能。
+在V2.0版本，中继链IBTP2.0模式将跨链单位从应用链级别细粒度为应用链某个服务。中继链支持对应用链与服务的管理，包括注册、更新、冻结、注销应用链等功能。
 
 ```shell
 NAME:
@@ -90,7 +90,7 @@ bitxhub [--repo <repository>] client governance vote --id <proposal id> --info <
 比如进行fabric应用链的注册,现在 --doc-addr 和 --doc-hash 、--rule-url没有真正用到，使用下面示例的即可，验证规则需要提前注册（也可使用示例中内置验证规则地址）。验证者信息需要提前拷贝到repo目录下。注意在注册应用链时，确保已经正常启动中继链：
 ```shell
 # 具体样例
-$ CONFIG_PATH=$(HOME)/bitxhub-v1.18
+$ CONFIG_PATH=$(HOME)/bitxhub-v2.0
 $ cd $CONFIG_PATH/bitxhub && make install
 
 # 启动bitxhub
