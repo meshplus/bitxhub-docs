@@ -27,7 +27,7 @@
 - `Index`：跨链交易的索引，每一对From和To维护一个严格递增的索引值，它是中继链按序执行跨链交易的依据；
 - `Type`：该字段标识IBTP类型，来源服务发到目的服务的跨链请求类型为`IBTP_INTERCHAIN`，目的服务发回来源服务的跨链回执类型可能为`IBTP_RECEIPT_SUCCESS`、`IBTP_RECEIPT_FAILURE`或`IBTP_RECEIPT_ROLLBACK`，具体由跨链交易的执行状态决定；
 - `Payload`：该字段是跨链调用的内容编码，支持定向加密，根据应用链的业务需求确定；
-- `Proof`：该字段存储了跨链交易证明。跨链消息证明用于验证每笔跨链交易IBTP的有效性和存在性，其内容因应用链链类型而异。对于部分应用链跨链消息证明文件较大的情况，为了保证IBTP结构精简，Proof字段也可存储跨链证明信息的哈希；
+- `Proof`：该字段存储了跨链交易证明。跨链交易证明用于验证每笔跨链交易IBTP的有效性和存在性，其内容因应用链链类型而异。对于部分应用链跨链消息证明文件较大的情况，为了保证IBTP结构精简，Proof字段也可存储跨链证明信息的哈希；
 - `TimeoutHeight`：字段为IBTP在中继链上的超时块高，仅对跨链请求（`IBTP_INTERCHAIN`类型）的类型有效，该字段主要用于事务超时回滚；详见<a href="../../design/interchain_transaction/#txManagerAnchor">事务管理机制</a>；
 - `Group`：该字段包含了一对多场景中同一跨链事务中其他IBTP的信息，关于一对多事务场景详见<a href="../../design/interchain_transaction/#txManagerAnchor">事务管理机制</a>；
 - `VerSion`：该字段为跨链协议的版本信息；
