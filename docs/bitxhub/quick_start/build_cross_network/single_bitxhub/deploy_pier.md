@@ -177,7 +177,7 @@ gas_limit = 0x5f5e100
     - broker.abi可以使用示例，也可以使用您自己编译/部署broker合约时返回的abi；
     - ether.validators和validating.wasm一般不需要修改,pier.toml为pier配置模板，暂未使用，可不做更改；
     - ethereum.toml是需要重点修改的，需要根据应用链实际情况填写 **ethereum网络地址**、**broker合约地址及业务合约abi**，**账户的key**，示例如下：
-        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动的应用链，地址应为`ws://localhost:8546`；如果，地址应为`ws://host.docker.internal:8546`；
+        - `addr`: 如果是本地启动的以太坊私链或者参考[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动的应用链，地址应为`ws://localhost:8546`；如果是使用docker启动的应用链，地址应为`ws://host.docker.internal:8546`；
         - `nanme`: 应用链名称，用户可自定义；
         - `contract_address`: broker合约地址，如果是本地启动的以太坊私链，地址更换为正确的合约地址，如果使用goduck启动应用链，地址为`0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4`；
         - `key_path`: 以太坊账户私钥，如果为本地启动的以太坊私链，地址为`${datadir}/data/keystore`；

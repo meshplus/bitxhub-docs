@@ -82,7 +82,22 @@ min_confirm = 0
 …………
 ```
 
+### 3. packr包的相关报错
 
+需要将当前的packr包进行更新。
+
+```shell
+# 方法一：自行下载packr2包
+# 查询当前go的版本号：
+$ go env GOVERSION
+# go版本小于1.16时执行：
+$ go install github.com/gobuffalo/packr/v2/packr2@v2.8.3
+# go版本大于1.16时执行：
+$ go get github.com/gobuffalo/packr/v2/packr2@v2.8.3
+
+# 方法二：使用项目内置脚本更新packr包
+$ make prepare
+```
 
 ## 跨链技术
 
