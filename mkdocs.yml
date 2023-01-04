@@ -84,6 +84,10 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js
+
 #extra_javascript:
 #  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js
 #  - javascripts/config.js
@@ -152,9 +156,13 @@ nav:
           - 通用跨链协议IBTP: bitxhub/design/ibtp.md
           - 跨链管理合约设计: bitxhub/design/broker.md
           - 共识算法插件方案: bitxhub/design/consensus_plugin.md
-          - 跨链事务方案: bitxhub/design/interchain_transaction.md
+          - 跨链事务方案:
+            - 中继架构:
+              - 一对一事务方案: bitxhub/design/interchain_transaction.md
+              - 一对多事务方案: bitxhub/design/one2multi_transaction.md
+            - 直连架构: bitxhub/design/direct_transaction.md
+            - 全链路事务一致性方案: bitxhub/design/cross_counter.md
           - 跨链网关设计方案: bitxhub/design/pier_design.md
-          - 直连架构跨链事务方案: bitxhub/design/direct_transaction.md
           - 隐私保护方案: bitxhub/design/privacy_protection.md
           - API流控设计: bitxhub/design/rate-limiter.md
 #          - 区块链浏览器后台设计: bitxhub/design/luka.md
