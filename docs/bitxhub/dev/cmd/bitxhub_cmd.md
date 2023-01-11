@@ -797,6 +797,10 @@ USAGE:
 $ bitxhub client block 1
 
 {"block_header":{"number":"1","state_root":"0x5B8A0f51c912c38501C263DEC58542453F1a6B399a491C27363dF1D9c3029328","tx_root":"0x0000000000000000000000000000000000000000000000000000000000000000","receipt_root":"0x0000000000000000000000000000000000000000000000000000000000000000","parent_hash":"0x0000000000000000000000000000000000000000000000000000000000000000","timestamp":"1642052145652059000","Bloom":"0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"},"transactions":{},"block_hash":"0x47dBBdcE25e2ab4BbA8ee325Db8502Aa6c2A065Af1350450F0917d5e139465A1","signature":"7B4yjNFnnQO+mw2poSnrsGkXMxMkDcGyzXlPioahKo1MCirTQ1hc+imoIr6d/59ZD//62N5asPQjEwVLpOBuowE="}
+
+# 查询最新区块
+$ bitxhub client block
+{"block_header": { "number": "1", "state_root": "0x4e9781F52F46eF1E1BE918F57469C9e28B8E706cE5e38eA9f821598Bf7751842", "tx_root": "0x0000000000000000000000000000000000000000000000000000000000000000", "receipt_root": "0x0000000000000000000000000000000000000000000000000000000000000000", "parent_hash": "0x0000000000000000000000000000000000000000000000000000000000000000", "timestamp": "1673417754854410000", "Bloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" }, "transactions": {}, "block_hash": "0x0ad3187dCBa835EEc70C2C3844E8fED56d21A639fB6c1ca03879e6F3c2195C8f", "signature": "TEMhM1Xzv7+dKjtPwP3g4aHZABdRRGwhXyBqVavby4VguFPXXI4oEVZoQFhsi5qDjp7VWPBD6ZCYBIWVP1krzgE=" }
 ```
 
 ### 7.4. 查询网络信息
@@ -898,7 +902,7 @@ $ bitxhub client transfer --key ~/.bitxhub/key.json --to 0x134213199d40c4b26cB8B
 $ bitxhub client receipt -h
 
 NAME:
-   BitXHub client receipt - Query receipt
+   BitXHub client receipt - Query transaction receipt by transaction hash
 
 USAGE:
    BitXHub client receipt [arguments...]
@@ -977,15 +981,16 @@ USAGE:
    BitXHub client governance command [command options] [arguments...]
 
 COMMANDS:
-   vote      Vote to a proposal
-   proposal  Proposal manage command
-   appchain  Appchain manage command
-   rule      Rule manage command
-   node      Node manage command
-   role      Role manage command
-   dapp      Dapp manage command
-   service   Service manage command
-   strategy  Proposal strategy command
+   vote        Vote to a proposal
+   proposal    Proposal manage command
+   appchain    Appchain manage command
+   interchain  Interchain manage command
+   rule        Rule manage command
+   node        Node manage command
+   role        Role manage command
+   dapp        Dapp manage command
+   service     Service manage command
+   strategy    Proposal strategy command
 
 OPTIONS:
    --help, -h  show help
@@ -1285,8 +1290,106 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance appchain ac
 
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-1
 ```
+#### 7.10.4. Interchain信息查询
 
-#### 7.10.4. 管理验证规则
+`bitxhub client governance interchain` 命令用于查询Interchain信息。
+
+```shell
+$ bitxhub client governance interchain -h
+
+NAME:
+   BitXHub client governance interchain - Interchain manage command
+
+USAGE:
+   BitXHub client governance interchain command [command options] [arguments...]
+
+COMMANDS:
+   counter  Query interchain counter by full ibtp id
+   tx       Query tx hash by full ibtp id
+
+OPTIONS:
+   --help, -h  show help
+```
+
+**子命令**：
+
+##### 查询counter信息
+
+`bitxhub client governance interchain counter`命令用于通过IBTP id查询交易的counter信息。
+
+```shell
+$ bitxhub client governance interchain counter -h
+
+NAME:
+   BitXHub client governance interchain counter - Query interchain counter by full ibtp id
+
+USAGE:
+   BitXHub client governance interchain counter [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify full ibtp id
+```
+
+**参数解释**：
+
+- `--id`: IBTP的完整id。
+
+**示例**
+
+```shell
+$ bitxhub --repo=/Users/xxx/github.com/meshplus/bitxhub/scripts/build/node1 client governance interchain counter --id 1356:eth1:0x5AE7C57eC31AD0c391cCA6d64127C714d6d39Ba3
+
+{
+  "ID": "1356:eth1:0x5AE7C57eC31AD0c391cCA6d64127C714d6d39Ba3",
+  "InterchainCounter": {
+    "1356:eth2:0x1f552e0d2939BfDd29a40c6Ad3785801A3b7683F": 49,
+    "1356:eth2:0xea375610055446aEBacA9173b764048D4Bb8B7D8": 49
+  },
+  "ReceiptCounter": {
+    "1356:eth2:0x1f552e0d2939BfDd29a40c6Ad3785801A3b7683F": 49,
+    "1356:eth2:0xea375610055446aEBacA9173b764048D4Bb8B7D8": 49
+  },
+  "SourceInterchainCounter": {},
+  "SourceReceiptCounter": {}
+}
+```
+
+##### 查询Interchain的交易Hash
+
+`bitxhub client governance interchain tx`命令用于查询interchain交易的hash。
+
+```shell
+$ bitxhub client governance interchain tx -h
+
+NAME:
+   BitXHub client governance interchain tx - Query tx hash by full ibtp id
+
+USAGE:
+   BitXHub client governance interchain tx [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify full ibtp id
+   --is_req    Specify interchain or receipt
+```
+
+**参数解释**：
+
+- `--id`: IBTP的完整id。
+- `is_req`: 用于区别查询interchain还是receipt类型，不加该option则默认为查询receipt，反之则查询interchain。
+
+**示例**
+
+```shell
+$ bitxhub --repo=/Users/xxx/github.com/meshplus/bitxhub/scripts/build/node1 client governance interchain tx --id 1356:eth1:0x5AE7C57eC31AD0c391cCA6d64127C714d6d39Ba3-1356:eth2:0x1f552e0d2939BfDd29a40c6Ad3785801A3b7683F-10
+
+0x3168cF3eEB8fa74c59bb168b1D299B4ee5Cf192276e62c27711c76E7965b9DE7
+
+$ bitxhub --repo=/Users/xxx/github.com/meshplus/bitxhub/scripts/build/node1 client governance interchain tx --id 1356:eth1:0x5AE7C57eC31AD0c391cCA6d64127C714d6d39Ba3-1356:eth2:0x1f552e0d2939BfDd29a40c6Ad3785801A3b7683F-10 --is_req
+
+0x7BF0EB037eAEE04D4bA8C6635e17D330C57E98e622BbaFFb4a9205ba22f87FC4
+```
+
+#### 7.10.5. 管理验证规则
 
 `bitxhub client governance rule`命令用于验证规则管理。
 
@@ -1401,7 +1504,7 @@ $ bitxhub client governance rule status --id appchain1 --addr 0x0000000000000000
 the rule 0x00000000000000000000000000000000000000a2 is available
 ```
 
-#### 7.10.5. 管理节点
+#### 7.10.6. 管理节点
 
 `bitxhub client governance node`命令用于节点管理。
 
@@ -1600,7 +1703,7 @@ Account                                     Type     Pid                        
 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013  vpNode   QmXi58fp9ZczF3Z5iz1yXAez3Hy5NYo1R8STHWKEM9XnTL  1                             available
 ```
 
-#### 7.10.6. 管理角色
+#### 7.10.7. 管理角色
 
 `bitxhub client governance role`命令用于角色管理。
 
@@ -1861,7 +1964,7 @@ $ bitxhub --repo $BITXHUB_HOME/scripts/build/node1 client governance role bind -
 proposal id is 0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013-8
 ```
 
-#### 7.10.7. 管理dapp
+#### 7.10.8. 管理dapp
 
 `bitxhub client governance dapp`命令用于Dapp管理。
 
@@ -2267,7 +2370,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance dapp evaluate --id 0x66A442
 evaluate dapp success
 ```
 
-#### 7.10.8. 管理服务
+#### 7.10.9. 管理服务
 
 `bitxhub client governance service`命令用于服务管理。
 
@@ -2454,7 +2557,7 @@ $ bitxhub --repo $NODE_CONFIG_PATH client governance service evaluate --id chain
 evaluate service success
 ```
 
-#### 7.10.9. 管理投票策略
+#### 7.10.10. 管理投票策略
 
 `bitxhub client governance strategy`命令用于投票策略管理。
 
