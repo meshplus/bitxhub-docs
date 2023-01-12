@@ -890,6 +890,133 @@ $ curl -X 'GET' \
 ```
 
 
+### 根据区块哈希和index查询交易
+
+**基本信息**
+
+<table>
+    <tr>
+        <td><b>接口地址</b></td>
+        <td>/v1/transaction_by_block_hash_index/{block_hash}/{index}</td>
+    </tr>
+    <tr>
+        <td><b>请求方式</b></td>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <td><b>Content-Type</b></td>
+        <td>application/json</td>
+    </tr>
+</table>
+
+**请求参数**
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- |------| -------- | ---- |
+| block_hash | path | 区块哈希 | Yes | string |
+| index | path | 交易在区块中的索引 | Yes | uint64 |
+
+**返回参数**
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | A successful response. | [pbGetTransactionResponse](#pbgettransactionresponse) |
+| default | An unexpected error response. | [runtimeError](#runtimeerror) |
+
+**示例**
+
+```shell
+# success Response
+$ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction_by_block_hash_index/0x6db66b95EE37C19b7d38F76F953816Be3E34e822Eb5233aaf451CfD141E678F4/0' -H 'accept: application/json' | jq
+{
+    "tx": {
+        "from": "0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013",
+        "to": "0x450c8A57bae0AA50Fa5122C84419D2B2924f205d",
+        "timestamp": "1673506402263713000",
+        "transaction_hash": "0x488b47005201B7eA2b7bECC618d176f284A197aF0091Ef9995396445a819C7ed",
+        "payload": "EhsxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA=",
+        "signature": "A8RlpVrrvhilVjNmW3OfaysthIxFAFluTovS4vAfamvWRSP3UGmEduoEM3Hmy9cYoKsZxYgrxwDuIHrwG/e9lXcA"
+    },
+    "tx_meta": {
+        "block_hash": "bbZrle43wZt9OPdvlTgWvj406CLrUjOq9FHP0UHmePQ=",
+        "block_height": "2"
+    }
+}
+
+# bad Response
+$ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction_by_block_hash_index/0x6db66b95EE37C19b7d38F76F953816Be3E34e822Eb5233aaf451CfD141E678F4/2' -H 'accept: application/json' | jq
+{
+	"error": "invalid format of tx index for querying transaction in a specified block",
+	"code": 2,
+	"message": "invalid format of tx index for querying transaction in a specified block"
+}
+```
+
+
+
+### 根据区块高度和index查询交易
+
+**基本信息**
+
+<table>
+    <tr>
+        <td><b>接口地址</b></td>
+        <td>/v1/transaction_by_block_number_index/{block_number}/{index}</td>
+    </tr>
+    <tr>
+        <td><b>请求方式</b></td>
+        <td>GET</td>
+    </tr>
+    <tr>
+        <td><b>Content-Type</b></td>
+        <td>application/json</td>
+    </tr>
+</table>
+
+**请求参数**
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- |-------------| -------- | ---- |
+| block_number | path | 区块高度 | Yes | uint64 |
+| index | path | 交易在区块中的索引   | Yes | uint64 |
+
+**返回参数**
+
+| Code | Description | Schema |
+| ---- | ----------- | ------ |
+| 200 | A successful response. | [pbGetTransactionResponse](#pbgettransactionresponse) |
+| default | An unexpected error response. | [runtimeError](#runtimeerror) |
+
+**示例**
+
+```shell
+# success Response
+$ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction_by_block_number_index/2/0' -H 'accept: application/json' | jq
+{
+	"tx": {
+		"from": "0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013",
+		"to": "0x450c8A57bae0AA50Fa5122C84419D2B2924f205d",
+		"timestamp": "1673506402263713000",
+		"transaction_hash": "0x488b47005201B7eA2b7bECC618d176f284A197aF0091Ef9995396445a819C7ed",
+		"payload": "EhsxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA=",
+		"signature": "A8RlpVrrvhilVjNmW3OfaysthIxFAFluTovS4vAfamvWRSP3UGmEduoEM3Hmy9cYoKsZxYgrxwDuIHrwG/e9lXcA"
+	},
+	"tx_meta": {
+		"block_hash": "bbZrle43wZt9OPdvlTgWvj406CLrUjOq9FHP0UHmePQ=",
+		"block_height": "2"
+	}
+}
+
+# bad Response
+$ curl -X 'GET' 'http://127.0.0.1:9091/v1/transaction_by_block_number_index/3/0' -H 'accept: application/json' | jq
+{
+	"error": "invalid format of blockNumber for querying block",
+	"code": 2,
+	"message": "invalid format of blockNumber for querying block"
+}
+```
+
+
 
 ### 根据交易哈希查询回执
 
