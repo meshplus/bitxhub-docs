@@ -724,6 +724,7 @@ USAGE:
 COMMANDS:
    meta    Query BitXHub chain meta
    status  Query BitXHub chain status
+   tps     Query BitXHub tps
 
 OPTIONS:
    --help, -h  show help
@@ -775,6 +776,32 @@ USAGE:
 $ bitxhub client chain status
 
 normal
+```
+
+#### 7.2.3. 查询中继链tps
+
+`bitxhub client chain tps`命令用于查询中继链的tps信息。
+
+```shell
+$ bitxhub client chain tps -h
+
+NAME:
+   BitXHub client chain tps - Query BitXHub tps
+
+USAGE:
+   BitXHub client chain tps [command options] [arguments...]
+
+OPTIONS:
+   --begin value  Specify begin block number (default: 0)
+   --end value    Specify end block num (default: 0)
+```
+
+**示例**：
+
+```shell
+$ bitxhub client chain tps --begin 200 --end 300
+
+total tx count:19300, tps is 5874.662702
 ```
 
 ### 7.3. 查询区块信息
@@ -1306,6 +1333,7 @@ USAGE:
 COMMANDS:
    counter  Query interchain counter by full ibtp id
    tx       Query tx hash by full ibtp id
+   status   Query tx status by full ibtp id
 
 OPTIONS:
    --help, -h  show help
@@ -1387,6 +1415,35 @@ $ bitxhub --repo=/Users/xxx/github.com/meshplus/bitxhub/scripts/build/node1 clie
 $ bitxhub --repo=/Users/xxx/github.com/meshplus/bitxhub/scripts/build/node1 client governance interchain tx --id 1356:eth1:0x5AE7C57eC31AD0c391cCA6d64127C714d6d39Ba3-1356:eth2:0x1f552e0d2939BfDd29a40c6Ad3785801A3b7683F-10 --is_req
 
 0x7BF0EB037eAEE04D4bA8C6635e17D330C57E98e622BbaFFb4a9205ba22f87FC4
+```
+
+##### 查询Interchain的交易状态
+
+`bitxhub client governance interchain status`命令用于查询interchain交易的状态。
+
+```shell
+$ bitxhub client governance interchain status -h
+
+NAME:
+   BitXHub client governance interchain status - Query tx status by full ibtp id
+
+USAGE:
+   BitXHub client governance interchain status [command options] [arguments...]
+
+OPTIONS:
+   --id value  Specify full ibtp id
+```
+
+**参数解释**：
+
+- `--id`: IBTP的完整id。
+
+**示例**
+
+```shell
+bitxhub --repo=/Users/liruoxin/goproject/github.com/meshplus/bitxhub/scripts/build/node1 client governance interchain status --id 1356:eth1:0xC4c9B16dF41ED50146480344e9fB53aDCA81168b-1356:eth2:0x4483A114Da3E28fC957e687577Fff9f71F0C08dB-2
+
+status is: SUCCESS
 ```
 
 #### 7.10.5. 管理验证规则
