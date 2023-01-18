@@ -4,19 +4,14 @@
 
 跨链接入方无需对broker合约进行修改，直接部署使用即可；同时为了简化业务合约的编写，我们设计了业务合约的相应接口。
 
-以下以以太坊上的solidity合约为例。
+以下以以太坊上中继模式下的solidity合约为例。
 
 ## Broker 合约接口
 
 ```solidity
 // 注册本链服务，由本链服务管理员调用，并生成proposal由应用链管理员投票
-// addr： 本链业务合约地址
-function register(address addr) public
-
-// 直连模式下注册其他链的服务, 由当前应用链管理员调用
-// serviceID: 对方应用链上要对本链进行跨链调用的服务ID
-// banList：不允许对方服务调用的本链服务列表
-function registerRemoteService(string memory chainID, string memory serviceID, address[] memory whiteList) public onlyAdmin
+// ordered： 是否复杂事务
+function register(bool ordered) public
 
 // 管理员对本地服务proposal投票，
 // status：1 - 同意， 0 - 拒绝，其他 - 不计票
@@ -38,7 +33,7 @@ function getOuterMeta() public view returns (string[] memory, uint64[] memory)
 
 // getCallbackMeta 是获取当前链服务作为来源服务，接收到其他链服务跨链回执的记录。
 // 以Broker所在的区块链为来源链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5;
+// 如果Broker在A链，则A可能和多条链进行跨链，如A->B:3; A->C:5; 
 // 同时由于跨链请求中支持回调操作，即A->B->A为一次完整的跨链操作，
 // 我们需要记录回调请求的序号信息，如A->B->:2; A->C—>A:4。返回的map中，
 // key值为当前应用链的服务ID和目标服务ID组成的service pair，
@@ -49,7 +44,7 @@ function getCallbackMeta() public view returns (string[] memory, uint64[] memory
 
 // getDstRollbackMeta 是获取当前链服务作为目的服务，在当前链上回滚的index记录。
 // 以Broker所在的区块链为目的链的一系列跨链请求的序号信息。
-// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5;
+// 如果Broker在A链，则可能有多条链和A进行跨链，如B->A:3; C->A:5; 
 // 同时由于跨链请求中支持超时回滚，
 // 需要记录中继链超时块高后未收到目的链跨链回执的场景下目的链回滚的信息.
 // 我们需要记录超时回滚的序号信息。返回的map中，key值为来源服务ID和当前服务ID组成的service pair，
@@ -60,49 +55,67 @@ function getDstRollbackMeta() public view returns (string[] memory, uint64[] mem
 // getReceiptMessage 获取当前应用链执行的某个id对应的跨链交易的回执信息。
 // 查询键值中inServicePair为来源链的来源服务ID和当前服务ID组成的service pair，idx指定序号，
 // 查询结果为目的服务执行跨链交易后返回的回执信息。
-function getReceiptMessage(string memory inServicePair, uint64 idx) public view returns (bytes[] memory, uint64, bool)
+function getReceiptMessage(string memory inServicePair, uint64 idx) public view returns (bytes[][] memory, uint64, bool, bool[] memory)
 
 // getOutMessage 获取从当前应用链抛出的某个id对应的跨链交易的payload信息。
 // 查询键值中outServicePair为当前链的来源服务ID和目的服务ID组成的service pair，
 // idx指定序号，查询结果为该跨链事件的调用/回调/回滚信息。
-function getOutMessage(string memory outServicePair, uint64 idx) public view returns (string memory, bytes[] memory, bool)
+function getOutMessage(string memory outServicePair, uint64 idx) public view returns (string memory, bytes[] memory, bool, string[] memory)
 
 // getLocalServiceList 获取审核通过的本链服务ID列表
 function getLocalServiceList() public view returns (string[] memory)
 
-// gteRemoteServiceList 获取其他应用链向本链注册的应用链服务ID列表
-function getRemoteServiceList() public view returns (string[] memory)
+// 提供给跨链网关调用的接口，仅针对简单事务，跨链网关会调用该接口批量提交跨链请求
+function invokeInterchains(string[] memory srcFullID, string[] memory destAddr, uint64[] memory index, uint64[] memory typ, string[] memory callFunc, bytes[][] memory args, uint64[] memory txStatus, bytes[][] memory signatures, bool[] memory isEncrypt) payable external
 
-// 提供给跨链网关调用的接口，跨链网关收到跨链请求时会调用该接口。
-function invokeInterchain(string memory srcFullID, address destAddr, uint64 index, uint64 typ, string memory callFunc, bytes[] memory args, uint64 txStatus, bytes[] memory signatures, bool isEncrypt) payable external
+// 提供给跨链网关调用的接口，跨链网关收到跨链请求时会调用该接口
+function invokeInterchain(string memory srcFullID, string memory destAddr, uint64 index, uint64 typ, string memory callFunc, bytes[] memory args, uint64 txStatus, bytes[] memory signatures, bool isEncrypt) payable public
 
-// 提供给跨链网关调用的接口，跨链网关收到跨链请求回执时会调用该接口。
-function invokeReceipt(address srcAddr, string memory dstFullID, uint64 index, uint64 typ, bytes[] memory result, uint64 txStatus, bytes[] memory signatures) payable external
+// 提供给跨链网关调用的接口，跨链网关收到跨链请求回执时会调用该接口
+function invokeReceipt(string memory srcAddr, string memory dstFullID, uint64 index, uint64 typ, bytes[][] memory results, uint64 txStatus, bytes[] memory signatures) payable external
 
-// 提供给业务合约发起通用的跨链交易的接口。
-function emitInterchainEvent(string memory destFullServiceID, string memory funcCall, bytes[] memory args, string memory funcCb, bytes[] memory argsCb, string memory funcRb, bytes[] memory argsRb, bool isEncrypt) public onlyWhiteList
+// 提供给跨链网关调用的接口，针对含有多跨链请求标识的跨链交易，跨链网关会调用该接口提交跨链交易
+function invokeMultiInterchain(string memory srcFullID, string memory destAddr, uint64 index, uint64 typ, string memory callFunc, bytes[][] memory args, uint64 txStatus, bytes[] memory signatures, bool isEncrypt) payable public
+
+// 提供给跨链网关调用接口，针对含有多跨链请求标识的跨链交易回执，跨链网关会调用该接口提交跨链交易回执
+function invokeMultiReceipt(string memory srcAddr, string memory dstFullID, uint64 index, uint64 typ, bytes[][] memory results, bool[] memory multiStatus, uint64 txStatus, bytes[] memory signatures) payable external
+
+// 提供给业务合约发起通用的跨链交易的接口
+function emitInterchainEvent(string memory destFullServiceID, string memory funcCall, bytes[] memory args, string memory funcCb, bytes[] memory argsCb, string memory funcRb, bytes[] memory argsRb, bool isEncrypt, string[] memory group) public onlyWhiteList
 
 // 提供给合约部署初始化使用
-function initialize() public
+function initialize() public onlyAdmin
 ```
 
 ### 重要接口说明
 
-- `emitInterchainEvent`
+- `emitInterchainEvent` 
 
-该接口是业务合约发起通用的跨链调用的接口。接收的参数有：目的服务ID，跨链调用目的服务方法和参数，收到跨链成功回执后进行回调所需的方法和参数，收到跨链失败回执后进行回滚所需的方法和参数，跨链过程中是否需要加密payload。
+该接口是业务合约发起通用的跨链调用的接口。接收的参数有：目的服务ID，跨链调用目的服务方法和参数，收到跨链成功回执后进行回调所需的方法和参数，收到跨链失败回执后进行回滚所需的方法和参数，跨链过程中是否需要加密payload以及一对多跨链同组IBTP ID。
 
 Broker会记录跨链交易相应的元信息，对跨链交易进行编号，保证跨链交易有序进行, 并且抛出跨链事件，以通知跨链网关跨链交易的产生。
 
-- `invokeInterchain`
+- `invokeInterchain` 
 
-该接口是跨链网关对业务合约进行跨链调用接口。 接收参数有：来源服务ID，目的服务合约地址，IBTP index，IBTP type，对目的服务进行跨链调用的方法，对目的服务跨链调用的参数，中继链上该跨链交易事务的状态，中继链对上述所有字段的多签。
+该接口是跨链网关对业务合约进行跨链调用接口。 接收参数有：来源服务ID，目的服务合约地址，IBTP index，IBTP type，对目的服务进行跨链调用的方法，对目的服务跨链调用的参数，中继链上该跨链交易事务的状态，中继链对上述所有字段的多签以及跨链交易回执中是否需要加密payload的标识。
 
 跨链网关对要调用的目的合约的方法和参数进行封装，通过该接口实现对不同目的合约的灵活调用，并返回目的合约的调用函数的返回值。
 
 - `invokeReceipt`
 
 该接口是跨链网关对业务合约进行跨链回调或回滚的接口。接收参数有：来源服务ID，目的服务ID，IBTP index，IBTP type，调用目的链服务返回的内容，中继链上该跨链交易事务的状态，中继链多签。
+
+- `invokeInterchains`
+
+该接口是跨链网关针对简单事务批量处理对业务合约的跨链调用的接口。接收参数有：来源链服务ID列表，目的服务合约地址列表，IBTP index列表，IBTP type列表，对目的服务进行跨链调用的方法列表，对目的服务跨链调用的参数列表，中继链上该跨链交易事务的状态列表，中继链对上述所有字段的多签列表以及跨链交易回执中是否需要加密payload的标识列表。
+
+- `invokeMultiInterchain`
+
+该接口是跨链网关针对含有多跨链请求标识的跨链交易，对业务合约进行多次跨链调用的接口。接收的参数有：来源链服务ID，目的服务合约地址，IBTP index，IBTP type，对目的服务进行跨链调用的方法，对目的服务跨链调用的参数列表，中继链上该跨链交易事务的状态，中继链对上述所有字段的多签以及跨链交易回执中是否需要加密payload的标识。
+
+- `invokeMultiReceipt`
+
+该接口是跨链网关针对含有多跨链请求标识的跨链交易，对业务合约进行多次跨链回调或回滚的接口。接收的参数有：来源链服务ID，目的服务ID，IBTP index， IBTP type，调用目的链服务返回的内容列表，中继链上对该跨链交易事务的状态，中继链多签。
 
 ## 业务合约接口
 
@@ -114,11 +127,23 @@ Broker会记录跨链交易相应的元信息，对跨链交易进行编号，�
   // 发起一笔跨链交易的接口
   function transfer(string memory destChainServiceID, string memory sender, string memory receiver, uint64 amount) public
 
+  // 发起一笔含多跨链请求的跨链交易的接口
+  function multiTransfer(string memory destChainServiceID, string[] memory sender, string[] memory receiver, uint64[] memory amount) public
+  
+  // 发起一笔一对多跨链交易的接口
+  function transferOne2Multi(string[] memory destChainServiceIDs, string[] memory senders, string[] memory receivers, uint64[] memory amounts) public
+
   // 提供给Broker合约收到跨链请求所调用的接口
   function interchainCharge(bytes[] memory args, bool isRollback) public onlyBroker returns (bytes[] memory)
 
+  // 提供给Broker合约收到含多跨链请求标识的跨链交易所调用的接口
+  function interchainMultiCharge(bytes[][] memory args, bool isRollback) public onlyBroker returns (bytes[][] memory results, bool[] memory multiStatus         )
+
   // 跨链交易失败之后，提供给Broker合约进行回滚的接口
   function interchainRollback(bytes[] memory args) public onlyBroker
+  
+  // 含有多跨链请求标识的跨链交易失败之后，提供给Broker合约进行回滚的接口
+  function interchainMultiRollback(bytes[] memory args, bool[] memory multiStatus) public onlyBroker
 
   // 获取transfer合约中某个账户的余额
   function getBalance(string memory id) public view returns(uint64)
@@ -193,25 +218,29 @@ contract DataSwapper {
 contract DataSwapper {
     // broker合约地址
 	address BrokerAddr;
-	// 通过构造器初始化broker合约地址
+	// 通过构造器初始化broker合约地址，并向broker合约进行注册
     constructor(address _brokerAddr) public {
         BrokerAddr = _brokerAddr;
+        Broker(BrokerAddr).register(false); // 若为复杂事务则为true
     }
 
 	...
 
     function get(string memory destChainServiceID, string memory key) public {
-        bytes[] memory args = new bytes[](1);
+        bytes[] memory args = new bytes[](2);
+        args[0] = abi.encodePacked(uint64(0)); // 是否含有多跨链请求
         args[0] = abi.encodePacked(key);
-
+        
         bytes[] memory argsCb = new bytes[](1);
         argsCb[0] = abi.encodePacked(key);
 
-        Broker(BrokerAddr).emitInterchainEvent(destChainServiceID, "interchainGet", args, "interchainSet", argsCb, "", new bytes[](0), false);
+        Broker(BrokerAddr).emitInterchainEvent(destChainServiceID, "interchainGet", args, "interchainSet", argsCb, "", new bytes[](0), false，new string[](0));
     }
 }
 
 abstract contract Broker {
+    function regitser(bool ordered) public virtual;
+
     function emitInterchainEvent(
         string memory destFullServiceID,
         string memory func,
@@ -230,21 +259,21 @@ abstract contract Broker {
 
 ```solidity
 contract DataSwapper {
-
+    
     ...
 
     modifier onlyBroker {
         require(msg.sender == BrokerAddr, "Invoker are not the Broker");
         _;
     }
-
+    
     function interchainGet(bytes[] memory args, bool isRollback) public onlyBroker returns(bytes[] memory) {
         require(args.length == 1, "interchainGet args' length is not correct, expect 1");
         string memory key = string(args[0]);
-
+        
         bytes[] memory result = new bytes[](1);
         result[0] = abi.encodePacked(dataM[key]);
-
+        
         return result;
     }
 }
@@ -293,11 +322,11 @@ func (s *DataSwapper) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Printf("invoke: %s\n", function)
 	switch function {
 	case "get":
-		return s.get(stub, args)
+	    return s.get(stub, args)
 	case "set":
-		return s.set(stub, args)
+	    return s.set(stub, args)
 	default:
-		return shim.Error("invalid function: " + function + ", args: " + strings.Join(args, ","))
+	    return shim.Error("invalid function: " + function + ", args: " + strings.Join(args, ","))
 	}
 }
 
@@ -305,7 +334,7 @@ func (s *KVStore) get(stub shim.ChaincodeStubInterface, args []string) peer.Resp
 	// args[0]: key
 	value, err := stub.GetState(args[0])
 	if err != nil {
-		return shim.Error(err.Error())
+	    return shim.Error(err.Error())
 	}
 
 	return shim.Success(value)
@@ -313,12 +342,12 @@ func (s *KVStore) get(stub shim.ChaincodeStubInterface, args []string) peer.Resp
 
 func (s *DataSwapper) set(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	if len(args) != 2 {
-		return shim.Error("incorrect number of arguments")
+	    return shim.Error("incorrect number of arguments")
 	}
 
 	err := stub.PutState(args[0], []byte(args[1]))
 	if err != nil {
-		return shim.Error(err.Error())
+	    return shim.Error(err.Error())
 	}
 
 	return shim.Success(nil)
@@ -327,7 +356,7 @@ func (s *DataSwapper) set(stub shim.ChaincodeStubInterface, args []string) pb.Re
 func main() {
 	err := shim.Start(new(DataSwapper))
 	if err != nil {
-		fmt.Printf("Error starting chaincode: %s", err)
+	    fmt.Printf("Error starting chaincode: %s", err)
 	}
 }
 ```
@@ -348,38 +377,41 @@ const (
 func (s *DataSwapper) get(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 	switch len(args) {
 	case 1:
-		// args[0]: key
-		value, err := stub.GetState(args[0])
-		if err != nil {
-			return shim.Error(err.Error())
-		}
+	    // args[0]: key
+	    value, err := stub.GetState(args[0])
+	    if err != nil {
+	        return shim.Error(err.Error())
+	    }
 
-		return shim.Success(value)
+	    return shim.Success(value)
 	case 2:
-		// args[0]: destination service id
-		// args[1]: key
-		var callArgs, argsCb [][]byte
-		callArgs = append(callArgs, []byte(args[1]))
-		argsCb = append(argsCb, []byte(args[1]))
+	    // args[0]: destination service id
+	    // args[1]: key
+	    var callArgs, argsCb [][]byte
+	    typ := make([]byte, 8)
+	    binary.BigEndian.PutUint64(typ, 0)
+	    callArgs = append(callArgs, typ)
+	    callArgs = append(callArgs, []byte(args[1]))
+	    argsCb = append(argsCb, []byte(args[1]))
 
-		callArgsBytes, err := json.Marshal(callArgs)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
-		argsCbBytes, err := json.Marshal(argsCb)
-		if err != nil {
-			return shim.Error(err.Error())
-		}
+	    callArgsBytes, err := json.Marshal(callArgs)
+	    if err != nil {
+	        return shim.Error(err.Error())
+	    }
+	    argsCbBytes, err := json.Marshal(argsCb)
+	    if err != nil {
+	        return shim.Error(err.Error())
+	    }
 
-		b := util.ToChaincodeArgs(emitInterchainEventFunc, args[0], "interchainGet", string(callArgsBytes), "interchainSet", string(argsCbBytes), "", "", strconv.FormatBool(false))
-		response := stub.InvokeChaincode(brokerContractName, b, channelID)
-		if response.Status != shim.OK {
-			return shim.Error(fmt.Errorf("invoke broker chaincode %s error: %s", brokerContractName, response.Message).Error())
-		}
+	    b := util.ToChaincodeArgs(emitInterchainEventFunc, args[0], "interchainGet", string(callArgsBytes), "interchainSet", string(argsCbBytes), "", "", strconv.FormatBool(false))
+	    response := stub.InvokeChaincode(brokerContractName, b, channelID)
+	    if response.Status != shim.OK {
+	        return shim.Error(fmt.Errorf("invoke broker chaincode %s error: %s", brokerContractName, response.Message).Error())
+	    }
 
-		return shim.Success(nil)
+	    return shim.Success(nil)
 	default:
-		return shim.Error("incorrect number of arguments")
+	    return shim.Error("incorrect number of arguments")
 	}
 }
 ```
@@ -421,31 +453,32 @@ func (s *DataSwapper) interchainSet(stub shim.ChaincodeStubInterface, args []str
 
 **跨链场景**：以以太坊为例，位于A链的账户Alice向位于B链的Bob发起转账交易。
 
-1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../quick_start/build_cross_network/single_bitxhub/deploy_broker)和[部署业务合约](../../quick_start/start_transaction/deploy_business_contract)。
+1. 在应用链部署broker合约与业务合约，具体部署流程参考[部署跨链合约](../../usage/single_bitxhub/deploy_pier/)。
+
 2. 调用`register`方法注册业务合约。入参为需要进行跨链的业务合约地址。
 3. 调用`audit`对已经注册的业务合约进行审核，status为1说明审核通过。
 4. `transfer`业务合约调用`setBalance`方法初始化账户。
 5. `transfer`业务合约调用`transfer`方法发起跨链交易。
 
 ```
-1.1 appchainA deploy ==> brokerA addr：0xe4067Aab511D7eAD1d481A8491666249C2860209
-					 	 businessA addr: 0x919289F66Ce642a7598F76c34005dD813Ccafc20
-1.2 appchainB deploy ==> brokerB addr：0xCAbAb560aD08a30cd11e8e2AB8dd1353a0d6EA35
+1.1 appchainA deploy ==> brokerA addr：0xe4067Aab511D7eAD1d481A8491666249C2860209  
+					 	 businessA addr: 0x919289F66Ce642a7598F76c34005dD813Ccafc20					 						 
+1.2 appchainB deploy ==> brokerB addr：0xCAbAb560aD08a30cd11e8e2AB8dd1353a0d6EA35  
 					 	 businessB addr: 0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
 
 2.1 brokerA register ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20 //部署的业务合约地址
 2.2 brokerB register ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5 //部署的业务合约地址
 
-3.1 brokerA audit ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20
+3.1 brokerA audit ==> addr：0x919289F66Ce642a7598F76c34005dD813Ccafc20  
 					  status: 1
-3.2 brokeB audit ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
-					 status: 1
-
-4.1 transferA setBalance ==> id: Alice
+3.2 brokeB audit ==> addr：0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5  
+					 status: 1	
+														
+4.1 transferA setBalance ==> id: Alice 
                              amount: 100
-4.2 transferB setBalance ==> id: Bob
+4.2 transferB setBalance ==> id: Bob 
                              amount: 0
-
+													 
 // destChainServiceID为B链的服务ID，由bxhID，chainId，serviceId构成
 // 应用链和服务需要先在中继链上注册才能进行跨链
 5 transferA transfer ==> destChainServiceID: 1356:chain1:0xc12AF1d0473D5d489aDFd87cbbe5bb66C4FFA3f5
