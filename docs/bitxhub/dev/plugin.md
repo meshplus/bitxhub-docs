@@ -26,19 +26,19 @@
 ```go
 type Client interface {
 	
-	// 初始化Plugin服务
-    Initialize(configPath string extra []byte) error
+    // 初始化Plugin服务。
+    Initialize(configPath string, extra []byte, mode string) error
     
-    // 启动Plugin服务的接口
+    // 启动Plugin服务的接口。
     Start() error
 
-    // 停止Plugin服务的接口
+    // 停止Plugin服务的接口。
     Stop() error
 
-    // Plugin负责将区块链上产生的跨链事件转化为标准的IBTP格式，Pier通过GetIBTP接口获取跨链请求再进行处理
+    // Plugin负责将区块链上产生的跨链事件转化为标准的IBTP格式，Pier通过GetIBTP接口获取跨链请求再进行处理。
     GetIBTPCh() chan *pb.IBTP
     
-    // Plugin负责将区块链上信任根变更的信息传递给中继链
+    // Plugin负责将区块链上信任根变更的信息传递给中继链。
     GetUpdateMeta() chan *pb.UpdateMeta
 
     // Plugin 负责执行来源链过来的跨链请求，Pier调用SubmitIBTP提交收到的跨链请求。
@@ -48,8 +48,18 @@ type Client interface {
     // ibtpType: 跨链交易类型<IBTP_INTERCHAIN, IBTP_RECEIPT_SUCCESS, IBTP_RECEIPT_FAILURE, IBTP_RECEIPT_ROLLBACK>
     // content: 跨链调用内容编码
     // proof: 中继链多签数据
-    // isEncrypted: content.payload是否加密
-	SubmitIBTP(from string, index uint64, serviceID string, ibtpType pb.IBTP_Type, content *pb.Content, proof *pb.BxhProof, isEncrypted bool) (*pb.SubmitIBTPResponse, error)
+    // isEncrypted: content.payload是否加密标识列表
+    SubmitIBTP(from string, index uint64, serviceID string, ibtpType pb.IBTP_Type, content *pb.Content, proof *pb.BxhProof, isEncrypted bool) (*pb.SubmitIBTPResponse, error)
+
+    // Plugin 负责执行来源链过来的跨链请求，Pier针对简单事务调用SubmitIBTPBatch批量提交收到的跨链请求。
+    // from: 来源链服务ID列表
+    // index: 跨链交易索引列表
+    // serviceID: 目的链服务ID列表
+    // ibtpType: 跨链交易类型列表<IBTP_INTERCHAIN, IBTP_RECEIPT_SUCCESS, IBTP_RECEIPT_FAILURE, IBTP_RECEIPT_ROLLBACK>
+    // content: 跨链调用内容编码列表
+    // proof: 中继链多签数据列表
+    // isEncrypted: content.payload是否加密标识列表
+    SubmitIBTPBatch(from []string, index []uint64, serviceID []string, ibtpType []pb.IBTP_Type, content []*pb.Content, proof []*pb.BxhProof, isEncrypted []bool) (*pb.SubmitIBTPResponse, error)
 
     // Plugin 负责执行来源链过来的跨链请求，Pier调用SubmitIBTP提交收到的跨链请求。
     // to: 目的链服务ID
@@ -58,35 +68,55 @@ type Client interface {
     // ibtpType: 跨链交易类型<IBTP_INTERCHAIN, IBTP_RECEIPT_SUCCESS, IBTP_RECEIPT_FAILURE, IBTP_RECEIPT_ROLLBACK>
     // result: 跨链调用结果编码
     // proof: 中继链多签数据
-   SubmitReceipt(to string, index uint64, serviceID string, ibtpType pb.IBTP_Type, result *pb.Result, proof *pb.BxhProof) (*pb.SubmitIBTPResponse, error)
+    SubmitReceipt(to string, index uint64, serviceID string, ibtpType pb.IBTP_Type, result *pb.Result, proof *pb.BxhProof) (*pb.SubmitIBTPResponse, error)
 
+    // Plugin 负责执行来源链过来的跨链请求，Pier针对简单事务，调用SubmitReceiptBatch批量提交收到的跨链请求。
+    // 目前未启用
+    SubmitReceipt(to string, index uint64, serviceID string, ibtpType pb.IBTP_Type, result *pb.Result, proof *pb.BxhProof) (*pb.SubmitIBTPResponse, error)
 
     // GetOutMessage 负责在跨链合约中查询历史跨链请求。查询键值中servicePair指定服务对，idx指定序号，查询结果为以Plugin负责的区块链作为来源链的跨链请求。
-	GetOutMessage(servicePair string, idx uint64) (*pb.IBTP, error)
+    GetOutMessage(servicePair string, idx uint64) (*pb.IBTP, error)
 
     // GetReceiptMessage 负责在跨链合约中查询历史跨链回执。查询键值中servicePair指定服务对，idx指定序号，查询结果为以Plugin负责的区块链作为目的链的跨链回执。
-	GetReceiptMessage(servicePair string, idx uint64) (*pb.IBTP, error)
+    GetReceiptMessage(servicePair string, idx uint64) (*pb.IBTP, error)
 
     // GetInMeta 是获取跨链回执相关的Meta信息的接口。以Plugin负责的区块链为目的链服务的一系列跨链请求的序号信息。如果Plugin负责A链服务，则A可能和多条链服务进行跨链，如A->B:3; A->C:5。返回的map中，key值为服务对（来源链服务ID+目的链服务ID），value对应已发送到该目的链的最新跨链请求的序号，如{A+B:3, A+C:5}。
     GetInMeta() (map[string]uint64, error
 
-    // GetOutMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为来源链服务的一系列跨链请求的序号信息。如果Plugin负责A链服务，则A可能和多条链服务进行跨链，如A->B:3; A->C:5。返回的map中，key值为服务对（来源链服务ID+目的链服务ID），value对应已发送到该目的链的最新跨链请求的序号，如{A+B:3, A+C:5}。。
+    // GetOutMeta 是获取跨链请求相关的Meta信息的接口。以Plugin负责的区块链为来源链服务的一系列跨链请求的序号信息。如果Plugin负责A链服务，则A可能和多条链服务进行跨链，如A->B:3; A->C:5。返回的map中，key值为服务对（来源链服务ID+目的链服务ID），value对应已发送到该目的链的最新跨链请求的序号，如{A+B:3, A+C:5}。
     GetOutMeta() (map[string]uint64, error)
-
    
     // GetCallbackMeta 是获取跨链请求相关的Meta信息的接口。
     GetCallbackMeta() (map[string]uint64, error)
-
-    // CommitCallback 执行完IBTP包之后进行一些回调操作。
-    CommitCallback(ibtp *pb.IBTP) error
-
-    // GetReceipt 获取一个已被执行IBTP的回执
-    GetReceipt(ibtp *pb.IBTP) (*pb.IBTP, error)
+    
+    // GetDstRollbackMeta 是获取最新已回滚交易的序号的接口。
+    GetDstRollbackMeta() (map[string]uint64, error)
+    
+    // GetDirectTransactionMeta 是直连模式下返回对应交易的事务信息的接口。
+    GetDirectTransactionMeta(string) (uint64, uint64, uint64, error)
+    
+    // GetServices 是获取跨链管理合约中所有合法服务的信息的接口。
+    GetServices() ([]string, error)
+    
+    // GetChainID 是获取跨链管理合约中设置的chainID与BitxhubID的接口。
+    GetChainID() (string, string, error)
+    
+    // GetAppchainInfo 是直连模式下获取已注册的目的链服务的信息的接口。
+    GetAppchainInfo(chainID string) (string, []byte, string, error)
+    
+    // GetOffChainData 是链下文件传输时获取指定文件信息的接口。
+    GetOffChainData(request *pb.GetDataRequest) (*pb.OffChainDataInfo, error)
+    
+    // Plugin负责识别链下文件传输标识，并生成对应链下文件传输请求，Pier通过GetOffChainDataReq接口获取链下文件传输请求再进行处理。
+    GetOffChainDataReq() chan *pb.GetDataRequest
+    
+    // SubmitOffChainData 是链下文件传输时处理指定文件的接口。
+    SubmitOffChainData(response *pb.GetDataResponse) error
 
     // Name 描述Plugin负责的区块链的自定义名称，一般和业务相关，如司法链等。
     Name() string
 
-    // Type 描述Plugin负责的区块链类型，比如Fabric
+    // Type 描述Plugin负责的区块链类型，比如Fabric。
     Type() string
 }
 ```
@@ -116,56 +146,70 @@ Plugin的配置文件路径是通过Initialize的方法动态传入的，这意�
 package main
 
 import (
-   "path/filepath"
-   "strings"
+    "path/filepath"
+    "strings"
 
-   "github.com/spf13/viper"
+    "github.com/spf13/viper"
 )
 
 const (
-   ConfigName = "fabric.toml"
+    ConfigName = "fabric.toml"
 )
 
+type Config struct {
+    Fabric   Fabric    `toml:"fabric" json:"fabric"`
+    Services []Service `mapstructure:"services" json:"services"`
+}
 type Fabric struct {
-   Addr        string `toml:"addr" json:"addr"`
-   Name        string `toml:"name" json:"name"`
-   EventFilter string `mapstructure:"event_filter" toml:"event_filter" json:"event_filter"`
-   Username    string `toml:"username" json:"username"`
-   CCID        string `toml:"ccid" json:"ccid"`
-   ChannelId   string `mapstructure:"channel_id" toml:"channel_id" json:"channel_id"`
-   Org         string `toml:"org" json:"org"`
+    Name          string `toml:"name" json:"name"`
+    Username      string `toml:"username" json:"username"`
+    CCID          string `toml:"ccid" json:"ccid"`
+    ChannelId     string `mapstructure:"channel_id" toml:"channel_id" json:"channel_id"`
+    Org           string `toml:"org" json:"org"`
+    ServerPort    string `toml:"server_port" json:"server_port"`
+    TimeoutHeight int64  `mapstructure:"timeout_height" json:"timeout_height"`
+    TimeoutPeriod uint64 `mapstructure:"timeout_period" json:"timeout_period"`
 }
 
-func DefaultConfig() *Fabric {
-   return &Fabric{
-      Addr:        "localhost:10053",
-      Name:        "fabric",
-      EventFilter: "CrosschainEventName",
-      Username:    "Admin",
-      CCID:        "Broker-001",
-      ChannelId:   "mychannel",
-      Org:         "org2",
-   }
+type Service struct {
+    ID   string `toml:"id" json:"id"`
+    Name string `toml:"name" json:"name"`
+    Type string `toml:"type" json:"type"`
 }
 
-func UnmarshalConfig(configPath string) (*Fabric, error) {
-   viper.SetConfigFile(filepath.Join(configPath, ConfigName))
-   viper.SetConfigType("toml")
-   viper.AutomaticEnv()
-   viper.SetEnvPrefix("FABRIC")
-   replacer := strings.NewReplacer(".", "_")
-   viper.SetEnvKeyReplacer(replacer)
-   if err := viper.ReadInConfig(); err != nil {
-      return nil, err
-   }
+func DefaultConfig() *Config {
+    return &Config{
+    	Fabric: Fabric{
+    		Name:          "fabric",
+    		Username:      "Admin",
+    		CCID:          "broker",
+    		ChannelId:     "mychannel",
+    		Org:           "org2",
+    		TimeoutHeight: 30,
+    		TimeoutPeriod: 60,
+    	},
+    	Services: nil,
+    }
+}
 
-   config := DefaultConfig()
+func UnmarshalConfig(configPath string) (*Config, error) {
+    viper.SetConfigFile(filepath.Join(configPath, ConfigName))
+    viper.SetConfigType("toml")
+    viper.AutomaticEnv()
+    viper.SetEnvPrefix("FABRIC")
+    replacer := strings.NewReplacer(".", "_")
+    viper.SetEnvKeyReplacer(replacer)
+    if err := viper.ReadInConfig(); err != nil {
+    	return nil, err
+    }
 
-   if err := viper.Unmarshal(config); err != nil {
-      return nil, err
-   }
+    config := DefaultConfig()
 
-   return config, nil
+    if err := viper.Unmarshal(config); err != nil {
+    	return nil, err
+    }
+
+    return config, nil
 }
 ```
 
@@ -183,22 +227,25 @@ func UnmarshalConfig(configPath string) (*Fabric, error) {
 
 ```go
 type ContractMeta struct {
-	EventFilter string `json:"event_filter"`
-	Username    string `json:"username"`
-	CCID        string `json:"ccid"`
-	ChannelID   string `json:"channel_id"`
-	ORG         string `json:"org"`
+    EventFilter string `json:"event_filter"`
+    Username    string `json:"username"`
+    CCID        string `json:"ccid"`
+    ChannelID   string `json:"channel_id"`
+    ORG         string `json:"org"`
 }
 
 type Client struct {
-	meta       *ContractMeta
-	consumer   *Consumer
-	eventC     chan *pb.IBTP
-	appchainID string
-	name       string
-	outMeta    map[string]uint64
-	ticker     *time.Ticker
-	done       chan bool
+    meta          *ContractMeta
+    consumer      *Consumer
+    eventC        chan *pb.IBTP
+    appchainID    string
+    bitxhubID     string
+    name          string
+    serviceMeta   map[string]*pb.Interchain
+    ticker        *time.Ticker
+    done          chan bool
+    timeoutHeight int64
+    config        *Config
 }
 ```
 
@@ -212,53 +259,52 @@ type Client struct {
 
 - `appchainID`：跨链网关注册在跨链平台中后产生的唯一ID，作为应用链的标识。
 
+- `bitxhubID`: 跨链网关所连接的中继链的唯一ID。
+
+- `timeoutHeight`: 跨链交易超时块高，中继链在出块该值后未收到目的链回执便会触发超时回滚。
+
 然后应该提供一个Client的实例化的接口（类似于构造函数），具体代码如下：
 
 ```go
-func (c *Client) Initialize(configPath, appchainID string, extra []byte) error {
-	eventC := make(chan *pb.IBTP)
-	fabricConfig, err := UnmarshalConfig(configPath)
-	if err != nil {
-		return fmt.Errorf("unmarshal config for plugin :%w", err)
-	}
+func (c *Client) Initialize(configPath string, extra []byte, mode string) error {
+    eventC := make(chan *pb.IBTP)
+    config, err := UnmarshalConfig(configPath)
+    if err != nil {
+    	return fmt.Errorf("unmarshal config for plugin :%w", err)
+    }
+    fabricConfig := config.Fabric
+    contractmeta := &ContractMeta{
+    	Username:  fabricConfig.Username,
+    	CCID:      fabricConfig.CCID,
+    	ChannelID: fabricConfig.ChannelId,
+    	ORG:       fabricConfig.Org,
+    }
 
-	contractmeta := &ContractMeta{
-		EventFilter: fabricConfig.EventFilter,
-		Username:    fabricConfig.Username,
-		CCID:        fabricConfig.CCID,
-		ChannelID:   fabricConfig.ChannelId,
-		ORG:         fabricConfig.Org,
-	}
+    m := make(map[string]*pb.Interchain)
 
-	m := make(map[string]uint64)
-	if err := json.Unmarshal(extra, &m); err != nil {
-		return fmt.Errorf("unmarshal extra for plugin :%w", err)
-	}
-	if m == nil {
-		m = make(map[string]uint64)
-	}
+    mgh, err := newFabricHandler(contractmeta.EventFilter, eventC)
+    if err != nil {
+    	return err
+    }
 
-	mgh, err := newFabricHandler(contractmeta.EventFilter, eventC, appchainID)
-	if err != nil {
-		return err
-	}
+    done := make(chan bool)
+    csm, err := NewConsumer(configPath, contractmeta, mgh, done)
+    if err != nil {
+    	return err
+    }
 
-	done := make(chan bool)
-	csm, err := NewConsumer(configPath, contractmeta, mgh, done)
-	if err != nil {
-		return err
-	}
-
-	c.consumer = csm
-	c.eventC = eventC
-	c.meta = contractmeta
-	c.appchainID = appchainID
-	c.name = fabricConfig.Name
-	c.outMeta = m
-	c.ticker = time.NewTicker(2 * time.Second)
-	c.done = done
-
-	return nil
+    c.consumer = csm
+    c.eventC = eventC
+    c.meta = contractmeta
+    c.name = fabricConfig.Name
+    c.serviceMeta = m
+    c.ticker = time.NewTicker(2 * time.Second)
+    c.done = done
+    c.timeoutHeight = fabricConfig.TimeoutHeight
+    c.config = config
+    c.appchainID = ""
+    c.bitxhubID = ""
+    return nil
 }
 ```
 
@@ -302,13 +348,13 @@ type Consumer struct {
 
 ```go
 type Event struct {
-	Index     uint64   `json:"index"`
-	DstFullID string   `json:"dst_full_id"`
-	SrcFullID string   `json:"src_full_id"`
-	Encrypt   bool     `json:"encrypt"`
-	CallFunc  CallFunc `json:"call_func"`
-	CallBack  CallFunc `json:"callback"`
-	RollBack  CallFunc `json:"rollback"`
+    Index     uint64   `json:"index"`
+    DstFullID string   `json:"dst_full_id"`
+    SrcFullID string   `json:"src_full_id"`
+    Encrypt   bool     `json:"encrypt"`
+    CallFunc  CallFunc `json:"call_func"`
+    CallBack  CallFunc `json:"callback"`
+    RollBack  CallFunc `json:"rollback"`
 }
 ```
 
@@ -321,18 +367,35 @@ Event结构也是自定义的，需要和在你的跨链合约中抛出的事件
 
 ```go
 func (c *Client) SubmitIBTP(from string, index uint64, serviceID string, ibtpType pb.IBTP_Type, content *pb.Content, proof *pb.BxhProof, isEncrypted bool) (*pb.SubmitIBTPResponse, error) {
-	ret := &pb.SubmitIBTPResponse{Status: true}
+    ret := &pb.SubmitIBTPResponse{Status: true}
 
-	_, resp, err := c.InvokeInterchain(from, index, serviceID, uint64(ibtpType), content.Func, content.Args, uint64(proof.TxStatus), proof.MultiSign, isEncrypted)
-	if err != nil {
-		ret.Status = false
-		ret.Message = fmt.Sprintf("invoke interchain foribtp to call %s: %w", content.Func, err)
-		return ret, nil
-	}
-	ret.Status = resp.OK
-	ret.Message = resp.Message
+    typ := int64(binary.BigEndian.Uint64(content.Args[0]))
+    if typ == int64(pb.IBTP_Multi) {
+    	return ret, fmt.Errorf("multi IBTP is not supported yet")
+    }
 
-	return ret, nil
+    _, resp, err := c.InvokeInterchain(from, index, serviceID, uint64(ibtpType), content.Func, content.Args[1:], uint64(proof.TxStatus), proof.MultiSign, isEncrypted)
+    if err != nil {
+    	ret.Status = false
+    	ret.Message = fmt.Sprintf("invoke interchain foribtp to call %s: %w", content.Func, err)
+    	return ret, nil
+    }
+    ret.Status = resp.OK
+    ret.Message = resp.Message
+
+    if c.bitxhubID == "" || c.appchainID == "" {
+    	c.bitxhubID, c.appchainID, err = c.GetChainID()
+    	if err != nil {
+    		ret.Status = false
+    		ret.Message = fmt.Sprintf("get id err: %s", err)
+    		return ret, nil
+    	}
+    }
+    destFullID := c.bitxhubID + ":" + c.appchainID + ":" + serviceID
+    servicePair := from + "-" + destFullID
+    ibtp, err := c.GetReceiptMessage(servicePair, index)
+    ret.Result = ibtp
+    return ret, nil
 }
 ```
 
