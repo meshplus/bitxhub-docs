@@ -188,6 +188,7 @@ nav:
     - 使用文档: premo/usage.md
   - SDK文档:
       - GoSDK使用文档: sdk/gosdk.md
+      - GoEthSDK使用文档: sdk/goethsdk.md
       - JavaSDK使用: sdk/javasdk.md
       - JsSDK使用文档: sdk/jssdk.md
   - 跨链浏览器体验指南:
