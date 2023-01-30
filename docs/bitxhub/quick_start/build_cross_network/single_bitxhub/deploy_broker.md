@@ -8,8 +8,6 @@
 
 跨链合约broker和数据合约broker_data可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
 
-部署broker合约需要有构造参数，具体参数含义可以参考[broker合约的说明](../../../../design/broker/#broker_1)。
-
 在Ethereum上部署合约的工具有很多，您可以使用[Remix](https://remix.ethereum.org/)进行合约的编译和部署，也可以使用Goduck进行部署：
 
 === "Remix"
@@ -17,6 +15,8 @@
     broker_data合约构造参数如下：
     ```
     ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    # 0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
     ```
     ![!](../../../../assets/eth_deploy_broker_data_remix.png)
 
@@ -24,6 +24,13 @@
 
     ```
     "1356","ethappchain",["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"],"3",["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"],"1","0xFB2dedaDC34eE08De344BbB2344f4513b7be433F"
+    # 1356是中继链的链id
+    # ethappchain是应用链在中继链上的链id
+    # ["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]是中继链创世管理员的地址
+    # 3是合约验证中继链多签的阈值，阈值必须严格小于等于中继链创世管理员数量
+    # ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
+    # 0xFB2dedaDC34eE08De344BbB2344f4513b7be433F是broker_data合约地址
     ```
     ![!](../../../../assets/eth_deploy_broker_remix.png)
     ![!](../../../../assets/eth_deploy_broker_remix3.png)
@@ -52,7 +59,8 @@
     --psd-path password \
     --code-path broker_data.sol \
     ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^"1"
-
+    # 0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
     ```
 
     Step3：部署broker合约
@@ -70,6 +78,13 @@
     --psd-path password \
     --code-path broker.sol \
     "1356"^"ethappchain"^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^"3"^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^"1"^"0xFB2dedaDC34eE08De344BbB2344f4513b7be433F"
+    # 1356是中继链的链id
+    # ethappchain是应用链在中继链上的链id
+    # ["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]是中继链创世管理员的地址
+    # 3是合约验证中继链多签的阈值，阈值必须严格小于等于中继链创世管理员数量
+    # ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
+    # 0xFB2dedaDC34eE08De344BbB2344f4513b7be433F是broker_data合约地址
     ```
 
     ![!](../../../../assets/eth_deploy_broker.png)

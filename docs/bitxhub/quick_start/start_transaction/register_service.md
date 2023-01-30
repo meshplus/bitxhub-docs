@@ -10,7 +10,7 @@
 
     ```shell
     # service-id 为业务合约地址
-    pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id ethappchain --service-id "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11" --name "ethServer" --intro "" --type CallContract --permit "" --details "test" --reason "reason"
+    pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id "ethappchain" --service-id "0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11" --name "ethServer" --intro "" --type CallContract --permit "" --details "test" --reason "reason" --ordered 1
     # 发起注册服务后会打印应用链服务id与提案id
     Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 to finish.
     ```
@@ -27,7 +27,8 @@
     1.Pier命令行进行服务注册
 
     ```shell
-    pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id "fabappchain" --service-id "mychannel&transfer" --name "fabServer" --intro "" --type CallContract --permit "" --details "test"--reason "reason"
+    # service-id 为业务合约地址
+    pier --repo $CONFIG_PATH/.pier appchain service register --appchain-id "fabappchain" --service-id "mychannel&transfer" --name "fabServer" --intro "" --type CallContract --permit "" --details "test"--reason "reason" --ordered 1
     # 发起注册服务后会打印应用链服务id与提案id
     Register appchain service for ethappchain1:0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11 successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 to finish.
     ```

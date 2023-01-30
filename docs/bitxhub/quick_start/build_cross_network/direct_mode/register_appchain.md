@@ -61,7 +61,7 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
     Step2: 注册应用链
     ```shell
-     fabric-cli chaincode invoke --cid mychannel --ccid=broker \
+    fabric-cli chaincode invoke --cid mychannel --ccid=broker \
     --args='{"Func":"initialize", "Args":["ethappchain1",0x857133c5C69e6Ce66F7AD46F200B9B3573e77582,"","0x00000000000000000000000000000000000000a2"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
     ```

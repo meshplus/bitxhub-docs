@@ -16,7 +16,7 @@
 
 === "Remix"
 
-    部署示例业务合约transfer时，然后将broker合约的合约地址填入transfer合约中的`BrokerAddr`字段，这样业务合约才能正确跨链调用。
+    部署示例业务合约transfer时，然后将broker合约的合约地址填入transfer合约中的`BrokerAddr`字段以及`Ordered`字段，这样业务合约才能正确跨链调用。
 
 === "Goduck"
 
@@ -26,8 +26,8 @@
     --key-path account.key \
     --psd-path password \
     --code-path transfer.sol \
-    "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"
-    # 部署transfer合约需要提供broker合约的地址，即"0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"
+    "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"^"true"
+    # 部署transfer合约需要提供broker合约的地址，即"0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"，true代表合约调用需要按序执行
     ```
     ![!](../../../assets/eth_deploy_transfer.png)
 
@@ -39,19 +39,22 @@ transfer合约可以在[pier-client-fabric项目](https://github.com/meshplus/pi
 
 ```shell
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout v2.0.0
+cd pier-client-fabric && git checkout v2.8.0
 # 需要部署的合约文件就在example目录下
 # 解压即可
 cd example && unzip -q contracts.zip
 ```
 
-Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric-cli)，也可以使用Goduck：
+Fabric部署合约可以使用[fabric-cli](https://github.com/securekey/fabric-examples/tree/master/fabric-cli)，也可以使用Goduck：
 
 === "Fabric-cli"
 
-    Step1: 安装部署合约的工具fabric-cli（若已安装，可跳过）
+    Step1: 安装部署合约的工具fabric-cli
+
     ```shell
-    cd ~/bitxhub-v2.0.0 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
+    # ps：由于fabric-cli这个项目后续没有再维护导致go1.16及以上通过go install获取会产生编译问题
+    # 可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 部署transfer合约

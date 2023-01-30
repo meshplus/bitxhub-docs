@@ -19,13 +19,20 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     broker_data合约构造参数如下：
     ```
     ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    # 0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
     ```
     ![!](../../../../assets/eth_deploy_broker_data_remix.png)
 
     broker合约构造参数如下：
 
     ```
-    ""^ethappchain1^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
+    ""^ethappchain^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
+    # ""原本是中继链的链id，因为直连模式没有中继链，所以这里填空
+    # ethappchain是应用链在中继链上的链id
+    # ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
+    # 0xFB2dedaDC34eE08De344BbB2344f4513b7be433F是broker_data合约地址
     ```
 
     ![!](../../../../assets/eth_deploy_broker_remix_direct.png)
@@ -65,6 +72,8 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     --psd-path password \
     --code-path transaction.sol \
     ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    # 0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
     ```
 
     Step3：部署broker合约
@@ -81,7 +90,12 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     --key-path account.key \
     --psd-path password \
     --code-path broker.sol \
-    ""^ethappchain1^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
+    ""^ethappchain^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
+    # ""原本是中继链的链id，因为直连模式没有中继链，所以这里填空
+    # ethappchain是应用链在中继链上的链id
+    # ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]是管理员的地址，一般使用部署合约的账户地址
+    # 1是投票通过的最少应用链管理员数量，如果创建合约的账户只有1个，填入1
+    # 0xFB2dedaDC34eE08De344BbB2344f4513b7be433F是broker_data合约地址
     ```
 
     ![!](../../../../assets/eth_deploy_broker.png)
@@ -95,6 +109,7 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     --psd-path password \
     --code-path transaction.sol \
     "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"
+    # 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582为broker合约地址
     ```
 
 
