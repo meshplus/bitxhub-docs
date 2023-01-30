@@ -1,25 +1,30 @@
 # 2. 应用链跨链合约部署
 
-当前步骤是要在应用链上部署跨链合约broker。
+当前步骤是要在应用链上部署跨链合约broker和数据合约broker_data。
 
 我们提供了针对不同应用链的跨链合约，下面以Ethereum和Fabric为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
 
 ## Ethereum部署跨链合约
 
-broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
+跨链合约broker和数据合约broker_data可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
 
 部署broker合约需要有构造参数，具体参数含义可以参考[broker合约的说明](../../../../design/broker/#broker_1)。
 
 在Ethereum上部署合约的工具有很多，您可以使用[Remix](https://remix.ethereum.org/)进行合约的编译和部署，也可以使用Goduck进行部署：
 
 === "Remix"
+    PS：在部署broker合约之前需要部署broker_data合约  
+    broker_data合约构造参数如下：
+    ```
+    ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    ```
+    ![!](../../../../assets/eth_deploy_broker_data_remix.png)
 
     broker合约构造参数示例如下：
 
     ```
-    "1356","ethappchain",["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"],"3",["0xe7826817f96e6218A0a89100414F41022650c537"],"1"
+    "1356","ethappchain",["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"],"3",["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"],"1","0xFB2dedaDC34eE08De344BbB2344f4513b7be433F"
     ```
-
     ![!](../../../../assets/eth_deploy_broker_remix.png)
     ![!](../../../../assets/eth_deploy_broker_remix3.png)
 
@@ -29,7 +34,7 @@ broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pi
 
 === "Goduck"
 
-    Step1: 获取goduck工具（若已获取可跳过）
+    Step1：获取goduck工具（若已获取可跳过）
 
     ```shell
     git clone https://github.com/meshplus/goduck.git
@@ -38,7 +43,19 @@ broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pi
     goduck init
     ```
 
-    Step2: 部署broker合约
+    Step2：部署broker_data合约
+
+    ```shell
+    goduck ether contract deploy \
+    --address http://localhost:8545 \
+    --key-path account.key \
+    --psd-path password \
+    --code-path broker_data.sol \
+    ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^"1"
+
+    ```
+
+    Step3：部署broker合约
 
     ```shell
     # address指定以太坊地址
@@ -52,12 +69,12 @@ broker合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pi
     --key-path account.key \
     --psd-path password \
     --code-path broker.sol \
-    "1356"^"ethappchain"^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^"3"^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^"1"
+    "1356"^"ethappchain"^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^"3"^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^"1"^"0xFB2dedaDC34eE08De344BbB2344f4513b7be433F"
     ```
 
     ![!](../../../../assets/eth_deploy_broker.png)
 
-**说明**：部署broker合约后，需要 **记住broker合约的地址** ，后续业务合约可能需要引用broker合约的地址，才能正确完成跨链调用。
+**说明**：部署broker合约后，需要 **记住broker合约的地址**，后续业务合约可能需要引用broker合约的地址，才能正确完成跨链调用。
 
 ## Fabric部署跨链合约
 
@@ -65,20 +82,22 @@ broker合约可以在[pier-client-fabric项目](https://github.com/meshplus/pier
 
 ```shell
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout release-2.0-mock
+cd pier-client-fabric && git checkout release-2.8
 # 需要部署的合约文件就在example目录下
 # 解压即可
 cd example && unzip -q contracts.zip
 ```
 
-Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric-cli)，也可以使用Goduck：
+Fabric部署合约可以使用[fabric-cli](https://github.com/securekey/fabric-examples/tree/master/fabric-cli)，也可以使用Goduck：
 
 === "Fabric-cli"
 
     Step1: 安装部署合约的工具fabric-cli
 
     ```shell
-    cd ~/bitxhub-v2.0.0 && go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli
+    go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
+    # ps：由于fabric-cli这个项目后续没有再维护导致go1.16及以上通过go install获取会产生编译问题
+    # 可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 部署broker合约

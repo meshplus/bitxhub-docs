@@ -1,11 +1,11 @@
 # 1. 应用链跨链合约部署
 
-当前步骤是要在应用链上部署跨链合约broker与事务合约transaction。
+当前步骤是要在应用链上部署跨链合约broker_direct、事务合约transaction和数据合约broker_data。
 
 我们提供了针对不同应用链的跨链合约和事务合约，下面以Ethereum和Fabric为例进行介绍，其它类型的应用链部署跨链合约的步骤基本上是一致的。
 
 ## Ethereum部署跨链合约
-broker合约以及transacrion合约可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
+跨链合约broker_direct、事务合约transaction和数据合约broker_data可以在[pier-client-ethereum项目](https://github.com/meshplus/pier-client-ethereum)的example目录下获取。
 
 部署broker合约需要有构造参数，具体参数含义可以参考[broker合约的说明](../../../design/broker/#broker_1)。
 
@@ -15,10 +15,17 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
 
 === "Remix"
 
+    PS：在部署broker合约之前需要部署broker_data合约  
+    broker_data合约构造参数如下：
+    ```
+    ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    ```
+    ![!](../../../../assets/eth_deploy_broker_data_remix.png)
+
     broker合约构造参数如下：
 
     ```
-    """^ethappchain1^[]^0^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1"
+    ""^ethappchain1^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
     ```
 
     ![!](../../../../assets/eth_deploy_broker_remix_direct.png)
@@ -31,8 +38,8 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     transaction合约构造参数如下
     
     ```
-    #该地址为部署完成后的broker合约地址
     0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
+    # 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582为broker合约地址
     ```
 
     ![!](../../../../assets/eth_deploy_transaction_remix_direct.png)
@@ -40,7 +47,7 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
 
 === "Goduck"
 
-    Step1: 获取goduck工具（若已获取可跳过）
+    Step1：获取goduck工具（若已获取可跳过）
 
     ```shell
     git clone https://github.com/meshplus/goduck.git
@@ -49,7 +56,18 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     goduck init
     ```
 
-    Step2: 部署broker合约
+    Step2：部署broker_data合约
+
+    ```shell
+    goduck ether contract deploy \
+    --address http://localhost:8545 \
+    --key-path account.key \
+    --psd-path password \
+    --code-path transaction.sol \
+    ["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1
+    ```
+
+    Step3：部署broker合约
 
     ```shell
     # address指定以太坊地址
@@ -63,13 +81,13 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     --key-path account.key \
     --psd-path password \
     --code-path broker.sol \
-    """^ethappchain1^[]^0^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1"
+    ""^ethappchain1^["0x20f7fac801c5fc3f7e20cfbadaa1cdb33d818fa3"]^1^0xFB2dedaDC34eE08De344BbB2344f4513b7be433F
     ```
 
     ![!](../../../../assets/eth_deploy_broker.png)
 
     
-    Step2: 部署transaction合约
+    Step4：部署transaction合约
     ```shell
     goduck ether contract deploy \
     --address http://localhost:8545 \
@@ -87,7 +105,7 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
 ## Fabric部署跨链合约
 broker合约以及transacrion合约可以在[pier-client-fabric项目](https://github.com/meshplus/pier-client-fabric)的example目录下获取。
 
-Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric-cli)，也可以使用Goduck：
+Fabric部署合约可以使用[fabric-cli](https://github.com/securekey/fabric-examples/tree/master/fabric-cli)，也可以使用Goduck：
 
 === "Fabric-cli"
 
@@ -95,8 +113,8 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
     ```shell
     go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
-    Ps:由于fabric官方没有继续维护，可能导致go1.16及以上版本使用go install安装出错
-    可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
+    # ps：由于fabric-cli这个项目后续没有再维护导致go1.16及以上通过go install获取会产生编译问题
+    # 可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 部署broker合约

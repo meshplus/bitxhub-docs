@@ -12,27 +12,26 @@
 === "Ethereum"
 
     ```shell
-    #在进行应用链注册之前首先需要向目标地址进行转账，保障该地址可以进行应用链注册
-    #获得admin的id
-    pier --repo ~/bitxhub-v2.0.0/.pier/ id
-    #向目标地址转账
-    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xFbB01EcDFFc6033e2aa205987696C3fd72f436B2 --amount 100000000000000000
+    # 在进行应用链注册之前首先需要向目标地址进行转账，保障该地址有足够的BXH支付交易所需的费用
+    pier --repo $CONFIG_PATH/pier1/ id
+    # 向目标地址转账
+    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --amount 100000000000000000
     ```
 
     1. Pier命令行发起应用链注册
 
     ```shell
-    # 以用户目录下的pier为例
-    #注意：命令中的broker地址需要更改为remix编译部署的broker地址，以及admin需要修改为
-    #之前转账的地址
-    pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "ethappchain" --name "ethereum" \
+    # 以用户目录下的pier1为例
+    # 注意：命令中的broker地址需要更改为remix编译部署的broker地址，以及admin需要修改为
+    # 之前转账的地址
+    pier --repo $CONFIG_PATH/pier1 appchain register --appchain-id "ethappchain" --name "ethereum" \
     --type "ETH" --trustroot "ethereum/ether.validators" --broker \
      0x857133c5C69e6Ce66F7AD46F200B9B3573e77582  --desc "desc" --master-rule \
      "0x00000000000000000000000000000000000000a2" --rule-url "http://github.com" \
      --admin 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --reason "reason"
     # 0x00000000000000000000000000000000000000a2 HappyRuleAddr
     # 发起注册后会打印出提案id
-    Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 to finish.
+    # Register appchain successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 to finish.
     ```
 
     ！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
@@ -55,11 +54,10 @@
 === "Fabric"
 
     ```shell
-    #在进行应用链注册之前首先需要向目标地址进行转账，保障该地址可以进行应用链注册
-    #获得admin的id
-    pier --repo ~/bitxhub-v2.0.0/.pier/ id
-    #向目标地址转账
-    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xFbB01EcDFFc6033e2aa205987696C3fd72f436B2 --amount 100000000000000000
+    # 在进行应用链注册之前首先需要向目标地址进行转账，保障该地址有足够的BXH支付交易所需的费用
+    pier --repo $CONFIG_PATH/pier1/ id
+    # 向目标地址转账
+    bitxhub client transfer --key $HOME/bitxhub/scripts/build/node1/key.json --to 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --amount 100000000000000000
     ```
    
     1. Pier命令行发起应用链注册
@@ -70,11 +68,11 @@
     pier --repo $CONFIG_PATH/.pier appchain register --appchain-id "fabappchain" \
     --name "fabric" --type "Fabric V1.4.3" --trustroot fabric/fabric.validators --broker-cid mychanncel \
     --broker-ccid broker --broker-v 1 --desc "desc" --master-rule "0x00000000000000000000000000000000000000a2" \
-    --rule-url "http://github.com" --admin 0x321E49c58eC76a5cA02F3E801f303D1E8E0379d0 --reason "reason" 
+    --rule-url "http://github.com" --admin 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31 --reason "reason" 
 
     # 0x00000000000000000000000000000000000000a2 HappyRuleAddr
     # 发起注册后会打印出提案id
-    Register appchain successfully, wait for proposal 0xDa5cF4F0adb9B75bc6FEADeb7ddbf0769399a2ed-0 to finish.
+    # Register appchain successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-0 to finish.
     ```
 
     ！！！需要注意的是v1.18.0以上版本的网关注册时会将提供的验证规则地址注册为主验证规则，同时也支持配置多个应用链管理员。
@@ -104,10 +102,10 @@
 
     ```shell
     # 以用户目录下的pier为例
-    $ pier --repo $CONFIG_PATH/.pier rule deploy --path=$CONFIG_PATH/.pier/ether/validating.wasm
+    $ pier --repo $CONFIG_PATH/pier1 rule deploy --path=$CONFIG_PATH/.pier/ether/validating.wasm
     # 部署验证规则后会打印：Deploy rule successfully: 0xed97cBf32C16551604f0017f9aA776bF96809b87
 
-    $ pier --repo $CONFIG_PATH/.pier rule register --appchain-id ethappchain --rule \
+    $ pier --repo $CONFIG_PATH/pier1 rule register --appchain-id ethappchain --rule \
     0xed97cBf32C16551604f0017f9aA776bF96809b87 --rule-url "http://github.com"
     # 注册成功后会打印: Register rule to bitxhub for appchain ethappchain successfully.
     ```
@@ -115,7 +113,7 @@
 
     ```shell
     # 以用户目录下的pier为例
-    $ pier --repo $CONFIG_PATH/.pier rule deploy --path=$CONFIG_PATH/.pier/fabric/validating.wasm
+    $ pier --repo $CONFIG_PATH/pier1 rule deploy --path=$CONFIG_PATH/.pier/fabric/validating.wasm
     # 部署验证规则后会打印：Deploy rule successfully: 0xed97cBf32C16551604f0017f9aA776bF96809b87
 
     $ pier --repo $CONFIG_PATH/.pier rule register --appchain-id fabappchain --rule \
@@ -123,3 +121,33 @@
     # 注册成功后会打印: Register rule to bitxhub for appchain ethappchain successfully.
     ```
 
+## 更新主验证规则（可选）
+
+应用链在注册完验证规则后，只有成为主验证规则才能生效，接下来在Pier端发起更新主验证规则的命令
+
+=== "Ethereum"
+
+    ```shell
+    # 以用户目录下的pier为例
+    $ pier --repo $CONFIG_PATH/pier1 rule update --addr 0xed97cBf32C16551604f0017f9aA776bF96809b87 --appchain-id "ethappchain"
+    # 发起更新主验证规则后会打印出提案id
+    # Register appchain successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 to finish.
+    
+    # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
+    bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 --info approve --reason approve
+    # 投票完后会打印：vote successfully!
+    # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
+    ```
+=== "Fabric"
+
+    ```shell
+    # 以用户目录下的pier为例
+    $ pier --repo $CONFIG_PATH/pier1 rule update --addr 0xed97cBf32C16551604f0017f9aA776bF96809b87 --appchain-id "fabappchain"
+    # 发起更新主验证规则后会打印出提案id
+    # Register appchain successfully, wait for proposal 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 to finish.
+
+    # 进入bitxhub节点的安装目录，用上一步得到的提案id进行投票
+    bitxhub --repo $CONFIG_PATH/bitxhub/scripts/build/node1 client governance vote --id 0xcb33b10104cd217aAB4b302e9BbeEd1957EDaA31-1 --info approve --reason approve
+    # 投票完后会打印：vote successfully!
+    # 如果是多个bitxhub节点组成的集群，依次指定各节点的安装目录进行投票
+    ```
