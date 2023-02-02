@@ -114,6 +114,9 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/securekey/fabric-e
 
     ![!](../../../assets/set_audit.png)
 
+    - `addr`：业务合约地址
+    - `status`：合约审计状态，1代表通过，2代表不通过
+
 === "Goduck"
 
     ```shell

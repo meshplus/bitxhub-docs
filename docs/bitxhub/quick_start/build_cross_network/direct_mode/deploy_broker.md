@@ -15,7 +15,7 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
 
 === "Remix"
 
-    ### 2.1 部署broker_data合约
+    Step1：部署broker_data合约
     
     在部署broker合约之前需要部署broker_data合约，broker_data合约构造参数如下：
     ```
@@ -27,7 +27,7 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     
     ![!](../../../../assets/eth_deploy_broker_data_remix.png)
     
-    ### 2.2 部署Broker合约
+    Step2： 部署Broker合约
     
     broker合约构造参数如下：
     
@@ -53,8 +53,21 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     ```
     注意：填写参数时，需要将ADMINS参数使用账户ACCOUNT代替
     ```
-    
-    ### 2.2 部署transaction合约
+
+    Step3： broker_data合约审计broker合约
+
+    broker_data合约调用参数如下：
+    ```
+    "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"^"1"
+    ```
+
+    ![!](../../../../assets/eth_deploy_broker_remix4.png)
+
+    - `addr`：broker合约地址
+    - `status`：合约审计状态，1代表通过，2代表不通过 
+
+
+    Step4： 部署transaction合约
     
     transaction合约构造参数如下
     
@@ -126,6 +139,20 @@ transaction合约由broker调用，用以维护直连模式下注册服务与跨
     --code-path transaction.sol \
     "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"
     # 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582为broker合约地址
+    ```
+
+    Step5：broker_data合约审计broker合约
+
+    ```shell
+    # abi-path指定abi文件
+    # "0xFB2dedaDC34eE08De344BbB2344f4513b7be433F"为broker_data合约地址
+    # "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"^"1"是传入audit方法的参数，第一个参数为业务合约地址
+    goduck ether contract invoke \
+    --address http://localhost:8545 \
+    --key-path account.key \
+    --psd-path password \
+    --abi-path broker_data.abi \
+    "0xFB2dedaDC34eE08De344BbB2344f4513b7be433F" audit "0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"^"1"
     ```
 
 
