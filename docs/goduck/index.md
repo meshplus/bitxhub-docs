@@ -3,11 +3,11 @@
 ## 1 安装
 
 ### 1.1 获取源码
-下载源码并切到稳定版本release-1.23
+下载源码并切到稳定版本release-2.8
 ```
 git clone git@github.com:meshplus/goduck.git
 cd goduck
-git checkout release-1.23
+git checkout release-2.8
 ```
 
 ### 1.2 编译安装
@@ -69,10 +69,10 @@ goduck bitxhub command [command options] [arguments...]
 #### 2.2.1 启动BitXHub节点
 
 ```
-goduck bitxhub start --version v1.23.0
+goduck bitxhub start --version v2.8.0
 ```
 
-该命令会初始化并启动1.23.0版本的BitXHub节点，如果有已启动的BitXHub节点会执行失败。执行成功后提示如下：
+该命令会初始化并启动2.8.0版本的BitXHub节点，如果有已启动的BitXHub节点会执行失败。执行成功后提示如下：
 
 ```
 ======> Start bitxhub cluster
@@ -92,7 +92,7 @@ You can use the "goduck status list" command to check the status of the startup 
 - `--version value, -v value`  BitXHub版本
 - `--help, -h`
 
-如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.23.0/bxh_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v2.8.0/bxh_modify_config.toml配置文件相关参数进行调整。
 该文件中部分参数配置如下：
 
 ```shell
@@ -123,7 +123,7 @@ You can use the "goduck status list" command to check the status of the startup 
 #### 2.2.2 为BitXHub节点生成配置文件
 
 ```
-goduck bitxhub config --version v1.23.0
+goduck bitxhub config --version v2.8.0
 
 # 成功最后的日志打印如下：
 ...
@@ -174,7 +174,7 @@ goduck bitxhub config --version v1.23.0
 - `--version value, -v value`  BitXHub版本
 - `--help, -h`
 
-如果想以更具体的自定义方式生成配置，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v1.23.0/bxh_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式生成配置，可以对--configPath参数指定文件信息进行修改，即对$repo/bxh_config/v2.8.0/bxh_modify_config.toml配置文件相关参数进行调整。
 该文件中参数配置同2.2.1节中的介绍
 
 #### 2.2.3 关闭BitXHub节点
@@ -239,7 +239,7 @@ GoDuck pier command [command options] [arguments...]
 #### 2.3.1 启动pier
 
 ```shell
-goduck pier start --version v1.23.0
+goduck pier start --version v2.8.0
 
 # 启动成功后打印日志大致如下：
 ======> Generate configuration files for pier_ethereum
@@ -257,13 +257,13 @@ You can use the "goduck status list" command to check the status of the startup 
 
 可以携带参数对启动方式进行简单调整：
 - `--appchain value`           应用链类型，ethereum或fabric，默认"ethereum"
-- `--target value`             启动配置路径，默认为$repo/pier/.pier_$chainType
+- `--target value`             启动配置路径，默认为$repo/pier/.pier_chainType
 - `--upType value`             启动方式类型，binary或docker，默认"binary"
 - `--configPath value`         可修改配置路径，默认为$repo/pier_config/$VERSION/pier_modify_config.toml
 - `--version value, -v value`  Pier版本
 - `--help, -h`
 
-如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/pier_config/v1.23.0/pier_modify_config.toml配置文件相关参数进行调整。
+如果想以更具体的自定义方式启动，可以对--configPath参数指定文件信息进行修改，即对$repo/pier_config/v2.8.0/pier_modify_config.toml配置文件相关参数进行调整。
 该文件中部分参数配置如下：
 
 ```shell
@@ -338,7 +338,7 @@ goduck pier clean
 #### 2.3.4 生成Pier的配置文件
 
 ```
-goduck pier config --version "v1.23.0"
+goduck pier config --version "v2.8.0"
 ``` 
 
 ### 2.4 关于应用链的操作
@@ -353,13 +353,14 @@ GoDuck ether command [command options] [arguments...]
 
 （1）启动以太坊
 注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
-#### goduck ether start
+
+goduck ether start
 - --type：可选参数，指定启动模式，默认为docker模式，可指定为binary模式;
 - --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别;
 
 示例说明：
 ```shell
-goduck ether start --bxh-version v1.23.0
+goduck ether start --bxh-version v2.8.0
 
 # 启动成功后打印示例如下：
 exec:  /bin/bash ethereum.sh docker 1.2.0
@@ -370,7 +371,7 @@ start ethereum private chain with data directory in /Users/xxx/.goduck/ethereum/
 
 该命令会以docker模式启动一条以太坊私链，如果想以二进制模式启动也可以通过指定参数实现，命令如下：
 ```shell
-goduck ether start --bxh-version v1.23.0 --type binary
+goduck ether start --bxh-version v2.8.0 --type binary
 ```
 
 （2）关闭以太坊
@@ -401,7 +402,7 @@ ethereum docker container cleaned
 
 （3）部署智能合约
 
-#### goduck ether contract deploy
+goduck ether contract deploy
 
 参数解释
 
@@ -427,7 +428,7 @@ Contract JSON ABI
 
 （4）以太坊合约调用
 
-#### goduck ether contract invoke
+goduck ether contract invoke
 
 - --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
 
@@ -471,7 +472,7 @@ goduck fabric start
 注意启动过程中可能需要科学上网。 如果出现报错或fabric-samples下载失败，建议删除fabric-samples文件，重新执行fabric启动命令。
 
 （2）部署fabric合约
-#### goduck fabric contract chaincode
+goduck fabric contract chaincode
 
 参数解释
 
@@ -485,7 +486,7 @@ goduck fabric start
 
 示例如下
 ```shell
-goduck fabric contract chaincode --bxh-version v1.23.0
+goduck fabric contract chaincode --bxh-version v2.8.0
 
 # 部署成功后会依次打印出几个步骤的日志，日志中有部分报错不影响，只要没有红色报错，且能大致打印出以下日志即可：
 install default interchain chaincode
@@ -516,7 +517,7 @@ Installing chaincode data_swapper on org[org2] peers:
 ***** |  Response[1]:
 ***** |  |  Payload: 
 ****************************************************************************************************
-===> 3. Set (key: path, value: /Users/weiyijie/.goduck) in data_swapper chaincode
+===> 3. Set (key: path, value: /Users/xxx/.goduck) in data_swapper chaincode
 ****************************************************************************************************
 ***** |  Response[0]:
 ***** |  |  Payload: 
@@ -553,7 +554,7 @@ Installing chaincode data_swapper on org[org2] peers:
 
 （3）fabric合约调用
 
-#### goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
+goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
 
 参数解释
 

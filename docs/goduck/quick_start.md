@@ -7,11 +7,11 @@
 
 
 ## 2 获取源码
-下载源码并切到稳定版本release-1.23
+下载源码并切到稳定版本release-2.8
 ```shell
 git clone git@github.com:meshplus/goduck.git
 cd goduck
-git checkout release-1.23
+git checkout release-2.8
 ```
 
 ## 3 初始化
@@ -42,32 +42,29 @@ goduck playground start
 
 - 在以太坊私链上部署对应的智能合约并进行审计
 
-如果两条以太坊智能私链的智能合约部署成功并完成对transfer合约的审计，最终会打印出日志如下：
+如果以太坊智能私链的智能合约部署成功并完成对transfer合约的审计，最终会打印出日志如下：
   ```shell
   Deploy Contract in ethereum1
+  Deploy broker_data contract
+  broker_data1 contract address: 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
   Deploy broker contract
-  broker contract address: 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
-  Deploy transfer contract
-  transfer contract address: 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11
+  broker1 contract address: 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11
   aduit contract
 
   ======= invoke function audit =======
-  invoke contract success, tx hash is: 0xf9d58b285c394ea91d4b34d0d4f9c6c61931160c7b280fc375bb2100e0f75333
+  invoke contract success, tx hash is: 0xf64d965e119c9b590fb409129c3e030430fa4c0a56202f26b2d206c806a3cfbe
   aduit contract aduit:successful
-  Deploy Contract in ethereum2
-  Deploy broker contract
-  broker contract address: 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
   Deploy transfer contract
-  transfer contract address: 0x30c5D3aeb4681af4D13384DBc2a717C51cb1cc11
+  transfer1 contract address: 0xb00AC45963879cb9118d13120513585873f81Cdb
   aduit contract
 
   ======= invoke function audit =======
-  invoke contract success, tx hash is: 0xf9d58b285c394ea91d4b34d0d4f9c6c61931160c7b280fc375bb2100e0f75333
+  invoke contract success, tx hash is: 0xbbc85fe9b7b89a7c1733875037c8f7423a8c58e52ca1cad07bd34abb1c156870
   aduit contract aduit:successful
   ```
 
 
-> **注意！！！** 如果打印结果有误，请检查$HOME/goduck/scripts/example下的brokerAddr与transferAddr，如果文件内容与以下日志不符，请检查本地安装的solc版本（solc版本支持0.6.9~0.7.6），solc安装教程可参考：[solc多版本安装](https://protective-jodhpur-ccb.notion.site/solc-682749e953bc4881a2f97f13e51b8d2b)。
+> **注意！！！** 如果打印结果有误，请检查$HOME/goduck/scripts/example下的brokerAddr、brokerDataAddr和transferAddr文件，如果文件内容与以下日志不符，请检查本地安装的solc版本（solc版本支持0.6.9~0.7.6），solc安装教程可参考：[solc多版本安装](https://protective-jodhpur-ccb.notion.site/solc-682749e953bc4881a2f97f13e51b8d2b)。
 
 
 
@@ -85,10 +82,10 @@ goduck playground start
   ```
 - 获取pier网关镜像并创建相应容器
   ```shell
-  Creating pier-ethereum-1 ...
-  Creating pier-ethereum-2 ...
-  Creating pier-ethereum-1 ... done
-  Creating pier-ethereum-2 ... done
+  Creating pier-ethereum1 ...
+  Creating pier-ethereum2 ...
+  Creating pier-ethereum1 ... done
+  Creating pier-ethereum2 ... done
   ```
 
 - 获取两个pier网关的账户地址并且向两个地址转账
@@ -130,8 +127,8 @@ vote successfully!
 
   以太坊私链启动成功结果如下：
 ```shell
-ethereum-2         | INFO [04-02|02:41:57.348] Sealing paused, waiting for transactions
-ethereum-1         | INFO [04-02|02:41:57.349] Sealing paused, waiting for transactions
+ethereum2         | INFO [04-02|02:41:57.348] Sealing paused, waiting for transactions
+ethereum1         | INFO [04-02|02:41:57.349] Sealing paused, waiting for transactions
 ```
   bitxhub-solo中继链启动成功日志如下：
 ```shell
@@ -146,8 +143,7 @@ bitxhub_solo       | =======================================================
 ```
   网关启动成功结果日志如下：
 ```shell
-pier-ethereum-1    | time="2022-06-20T03:55:48.290" level=info msg="Exchanger started" module=exchanger
-pier-ethereum-2    | time="2022-06-20T03:55:48.291" level=info msg="Exchanger started" module=exchanger
+2023-02-01 02:34:52 [INFO] [github.com/meshplus/pier/internal/app/pier.go:250] pier HA manager start
 ```
 
 ## 5 跨链交易
