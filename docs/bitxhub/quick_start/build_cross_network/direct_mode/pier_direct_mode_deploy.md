@@ -12,19 +12,19 @@
 # 编译跨链网关本身
 cd $HOME
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout release-2.0
+cd pier && git checkout release-2.8
 make prepare && make install
 
 # 编译Fabric
 cd $HOME
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout release-2.0
+cd pier-client-fabric && git checkout release-2.8
 make fabric1.4
 
 # 编译以太坊私链插件
 cd $HOME
 git clone https://github.com/meshplus/pier-client-ethereum.git
-cd pier-client-ethereum && git checkout release-2.0
+cd pier-client-ethereum && git checkout release-2.8
 make eth
 
 # 插件执行make的编译之后，都会在项目目录的之下的build目录生成相应的二进制文件
@@ -38,10 +38,9 @@ pier version
 ```
 
 如果正常安装会打印出类似下面的说明
-
-```text
-Pier version: dev-release-2.0-c8660b2
-App build date: 2022-09-28T17:50:24
+```
+Pier version: dev-release-2.8-a568b03
+App build date: 2023-01-30T09:28:13
 System version: darwin/amd64
 Golang version: go1.18.2
 ```
@@ -62,7 +61,7 @@ Golang version: go1.18.2
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录
 
 ```shell
-#以用户目录下的pier为例
+# 以用户目录下的pier为例
 pier --repo=~/pier1 init
 ```
 
@@ -169,7 +168,7 @@ Fabric插件配置的模板在`pier-client-fabric`项目中，并且已经在Git
 ```shell
 # 转到pier-client-fabric项目路径下
 git clone https://github.com/meshplus/pier-client-fabric.git
-cd pier-client-fabric && git checkout release-2.0
+cd pier-client-fabric && git checkout release-2.8
 cp ./config $HOME/.pier1/fabric
 ```
 
@@ -262,7 +261,7 @@ ethereum插件配置的模板在`pier-client-ethereum`项目中，并且已经�
 ```shell
 # 转到pier-client-ethereum项目路径下
 git clone https://github.com/meshplus/pier-client-ethereum.git
-cd pier-client-ethereum && git checkout release-2.0
+cd pier-client-ethereum && git checkout release-2.8
 cp ./config $HOME/.pier2/ether
 ```
 
@@ -335,7 +334,9 @@ pier --repo=~/pier2 start
 
 观察日志信息没有报错信息，pier启动成功
 
- **说明：1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**
+ **说明：**  
+ **1. 因为跨链合约和验证规则的部署涉及到不同应用链的细节，且需依赖应用链的安装部署，具体操作请见快速开始手册或使用文档，这里不再赘述。**  
+ **2. 本文是以一方的跨链网关为例进行部署，而另一方的跨链网关的部署与之基本一样，这里不再赘述。**  
 
 直连模式下，两边的跨链网关对应
 

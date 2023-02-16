@@ -10,22 +10,22 @@
 
     ```shell
     # 1. 首先拉取bitxhub项目源代码
-    mkdir ~/bitxhub-v2.0.0 && git clone https://github.com/meshplus/bitxhub.git
+    git clone https://github.com/meshplus/bitxhub.git
     # 2. 进入bitxhub目录，切换到指定的分支或版本后编译bitxhub二进制
-    cd bitxhub && git checkout release-2.0 && make build
+    cd bitxhub && git checkout v2.8.0 && make build
     # 注意⚠️：首次编译需要在build之前先执行 make prepare 完成依赖安装
-    # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v2.0.0
+    # 编译完成后可以在项目的bin目录下看到刚刚生成的bitxhub二进制文件，可以确认下bitxhub版本是v2.8.0
     ./bin/bitxhub version
-    # 注意⚠️：v1.18.0以上版本的bitxhub共识通过模块化的方式提供
+    # 注意⚠️：v2.8.0版本的bitxhub共识通过模块化的方式提供
     ```
 
     **提示：在bitxhub v1.7.0及以上的版本，我们也提供了一键生成部署所需的文件包的make命令：make release-binary，执行完成后可以在项目的dist目录看到符合您系统的压缩包，解压即可使用。**
 
-    经过以上的步骤，相信您已经编译出了部署中继链节点所需的二进制文件，中继链节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，方便之后的操作。
+    经过以上的步骤，相信您已经编译出了部署中继链节点所需的二进制文件。
 
 === "二进制下载"
 
-    除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v2.0.0)，链接中已经包含了所需的二进制和依赖库，您只需跟据实际情况选择合适的版本和系统下载即可，建议使用最新的BitXHub发布版本。
+    除了源码编译外，我们也提供了直接下载BitXHub二进制的方式，下载地址链接如下：[BitXHub二进制包下载](https://github.com/meshplus/bitxhub/releases/tag/v2.8.0)，链接中已经包含了所需的二进制和依赖库，您只需跟据实际情况选择合适的版本和系统下载即可，建议使用最新的BitXHub发布版本。
 
 
 
@@ -45,19 +45,18 @@
 
     ```
     # 1. 解压二进制压缩包
-    mkdir -r ~/bitxhub-v2.0.0/bitxhub && cd bitxhub
-
+    mkdir  ~/bitxhub && cd bitxhub
+    
     # 注意更改为二进制文件所在路径
-    cp ~/Downloads/bitxhub_darwin_x86_64_v2.0.0.tar.gz .
+    cp ~/Downloads/bitxhub_darwin_x86_64_v2.8.0.tar.gz .
     # 2. 解压配置文件压缩包(以raft共识为例)
-    tar -zxvf bitxhub_darwin_x86_64_v2.0.0.tar.gz
+    tar -zxvf bitxhub_darwin_x86_64_v2.8.0.tar.gz
 
     mkdir raft-nodes
-    tar -zxvf example_bitxhub_v2.0.0.tar.gz -C raft-nodes/
+    tar -zxvf example_bitxhub_v2.8.0.tar.gz -C raft-nodes/
     # 3. 将bitxhub和依赖库文件分别拷贝到4个节点的配置目录（以node1为例）
     cp bitxhub raft-nodes/node1/
-    cp libwasmer.dylib raft-nodes/node1/
-    # 注意⚠️：节点2、3、4也需要执行上面拷贝操作，对于Linux系统依赖库文件是libwasmer.so
+    # 注意⚠️：节点2、3、4也需要执行上面拷贝操作
     # 以上操作均是示例，执行时二进制和配置文件压缩包的名称可能存在差异，需要根据实际情况进行调整
     ```
 
@@ -65,15 +64,14 @@
 
     ```
     cd bitxhub/raft-nodes/node1
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
     bitxhub --repo ./ start
 
     ...
     ...
 
     cd bitxhub/raft-nodes/node4
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)
     bitxhub --repo ./ start
+    # 注意上述启动方式是前台启动，如果需要后台启动，请自行使用nohup命令
     ```
 
 待节点集群打印出bitxhub的LOGO，表示BitXHub集群开始正常工作
@@ -116,7 +114,6 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
 **在快速体验部署流程中，需要修改的配置一般只有port、order的信息，其它配置默认即可。** 以下为示例参考：
 
 1. 根据您机器实际分配的端口进行变更：
-
 ```toml
 [port]
   jsonrpc = 8881
@@ -125,47 +122,43 @@ bitxhub.toml文件是BitXHub节点启动的主要配置文件。各配置项说�
   pprof = 53121
   monitor = 40011
 ```
-
 2. 共识算法类型选择（开源版本目前支持raft和solo）：
-
 ```toml
 [order]
-  type = "raft"
+ type = "raft" 
 ```
-
-3. 模块投票策略选择
-ZeroPermission代表简单治理策略，不需要管理员投票通过，提案在发起后自动通过
-SimpleMajority代表简单多数策略，需要管理员投票通过，根据自定义公式决定参与投票的人数，a代表同意人数，r代表不同意人数，t代表管理员人数
-
+3. 模块投票策略选择：  
+`ZeroPermission`代表简单治理策略，不需要管理员投票通过，提案在发起后自动通过  
+`SimpleMajority`代表简单多数策略，需要管理员投票通过，根据公式决定参与投票的人数，`a`代表通过的提案数，`t`代表总提案数，例如：`a > 0.5 * t` 代表通过提案超过半数  
 ```shell
 [[genesis.strategy]]
     module = "appchain_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "proposal_strategy_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "rule_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "node_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "service_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "role_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
   [[genesis.strategy]]
     module = "dapp_mgr"
-    typ = "SimpleMajority"
-    extra = "a > 0.5 * t"
+    typ = "ZeroPermission"
+    extra = ""
 ```
 
 

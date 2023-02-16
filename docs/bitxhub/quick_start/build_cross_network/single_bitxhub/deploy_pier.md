@@ -8,9 +8,8 @@
 
 ```shell
 # 编译跨链网关本身
-cd ~/bitxhub-v2.0.0
 git clone https://github.com/meshplus/pier.git
-cd pier && git checkout release-2.0
+cd pier && git checkout release-2.8
 make prepare && make install
 ```
 
@@ -19,7 +18,7 @@ make prepare && make install
 在进行应用链注册、验证规则部署等步骤之前，需要初始化跨链网关的配置目录，以用户目录下的pier为例：
 
 ```shell
-CONFIG_PATH=$HOME/bitxhub-v2.0.0
+# CONFIG_PATH是网关所在的路径
 pier --repo $CONFIG_PATH/pier1 init relay
 #注意：如果想要同时启动两条链，例如以太坊和Fabric，需要使用pier再次初始化一个文件夹，例如
 pier --repo $CONFIG_PATH/pier2 init relay
@@ -48,7 +47,7 @@ tree -L 1 $CONFIG_PATH/pier1
     # 编译Ethereum 插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-ethereum.git
-    cd pier-client-ethereum && git checkout release-2.0
+    cd pier-client-ethereum && git checkout release-2.8
     make eth
     
     # 说明：1.ethereum插件编译之后会在插件项目的build目录生成二进制插件文件eth-client；
@@ -59,7 +58,7 @@ tree -L 1 $CONFIG_PATH/pier1
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.0.0) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v2.0.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.8.0) 和 [ethereum插件二进制包下载](https://github.com/meshplus/pier-client-ethereum/releases/tag/v2.8.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
 === "Fabric"
 
@@ -69,7 +68,7 @@ tree -L 1 $CONFIG_PATH/pier1
     # 编译Fabric插件
     cd $CONFIG_PATH
     git clone https://github.com/meshplus/pier-client-fabric.git
-    cd pier-client-fabric && git checkout release-2.0
+    cd pier-client-fabric && git checkout release-2.8
     make fabric1.4
     
     # 说明：1.fabric插件编译之后会在插件项目的build目录生成fabric-client-1.4文件；
@@ -80,9 +79,9 @@ tree -L 1 $CONFIG_PATH/pier1
     
     **二进制下载**
     
-    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.0.0) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
+    除了源码编译外，我们也提供了直接下载Pier及其插件二进制的方式，下载地址链接如下：[Pier二进制包下载](https://github.com/meshplus/pier/releases/tag/v2.8.0) 和 [fabric插件二进制包下载](https://github.com/meshplus/pier-client-fabric/releases/tag/v2.8.0)链接中已经包含了所需的二进制程序和依赖库，您只需跟据操作系统的实际情况进行选择和下载即可。
 
-经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件，Pier节点运行还需要外部依赖库，均在项目build目录下（Macos使用libwasmer.dylib，Linux使用libwasmer.so）,建议将得到的二进制和适配的依赖库文件拷贝到同一目录，然后使用 `export LD_LIBRARY_PATH=$(pwd)`命令指定依赖文件的路径，方便之后的操作。
+经过以上的步骤，相信您已经编译出了部署Pier和fabric/ethereum应用链插件的二进制文件。
 
 ## 修改pier配置
 
@@ -149,7 +148,6 @@ gas_limit = 0x5f5e100
 
     ```shell
     cd $CONFIG_PATH/pier1 && mkdir ether
-    
     # 将pier-client-ethereum的config目录下的文件拷贝到pier的配置路径
     cp $CONFIG_PATH/pier-client-ethereum/config $CONFIG_PATH/pier1/ether
     ```
@@ -166,7 +164,7 @@ gas_limit = 0x5f5e100
     ├── transfer.abi
     └── validating.wasm
     ```
-    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到`${pier_repo}/ehter`目录下：**
+    **注意：如果使用[goduck关于应用链的操作](../../../../goduck/appchain/#_1)启动应用链，需要将`${goduck_repo}/pier/ethereum/1.3.0/`文件夹下的文件拷贝到`${pier_repo}/ether`目录下：**
     ```shell
     cp $CONFIG_PATH/.goduck/pier/ethereum/1.3.0/* $CONFIG_PATH/pier1/ether
     ```
@@ -195,7 +193,7 @@ gas_limit = 0x5f5e100
     contract_address = "0xD3880ea40670eD51C3e3C0ea089fDbDc9e3FBBb4"
     key_path = "account.key"
     password = "password"
-    min_confirm = 15
+    min_confirm = 0
     timeout_height = 100
     timeout_period = 60
     offchain_addr = ""
@@ -204,11 +202,9 @@ gas_limit = 0x5f5e100
 
 === "Fabric"
     ```shell
-    # 将fabric插件拷贝到plugins目录下
-    cp fabric-client-1.4 $CONFIG_PATH/pier1/plugins/
-    # 切换到pier-client-fabric项目路径下
-    cd pier-client-fabric
-    cp ./config $CONFIG_PATH/pier1/fabric
+    cd $CONFIG_PATH/pier1 && mkdir fabric
+    # 将pier-client-ethereum的config目录下的文件拷贝到pier的配置路径
+    cp $CONFIG_PATH/pier-client-fabric/config $CONFIG_PATH/pier1/fabric
     ```
     其中重要配置如下：
     ```shell

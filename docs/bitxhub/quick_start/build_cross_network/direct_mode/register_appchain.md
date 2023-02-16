@@ -55,13 +55,13 @@ Fabric部署合约可以使用[fabric-cli](https://github.com/hyperledger/fabric
 
     ```shell
     go get github.com/securekey/fabric-examples/fabric-cli/cmd/fabric-cli(go1.16版本以下)
-    Ps:由于fabric官方没有继续维护，可能导致go1.16及以上版本使用go install安装出错
-    可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
+    # ps：由于fabric-cli这个项目后续没有再维护导致go1.16及以上通过go install获取会产生编译问题
+    # 可以通过该链接下载编译好的二进制https://github.com/meshplus/pier-client-fabric/releases/tag/v2.0.0
     ```
 
     Step2: 注册应用链
     ```shell
-     fabric-cli chaincode invoke --cid mychannel --ccid=broker \
+    fabric-cli chaincode invoke --cid mychannel --ccid=broker \
     --args='{"Func":"initialize", "Args":["ethappchain1",0x857133c5C69e6Ce66F7AD46F200B9B3573e77582,"","0x00000000000000000000000000000000000000a2"]}' \
     --user Admin --orgid org2 --payload --config "${CONFIG_YAML}"
     ```
