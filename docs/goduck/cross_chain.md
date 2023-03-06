@@ -4,7 +4,8 @@
 
 在进行跨链操作前，需要先安装好goduck并完成初始化
 ```shell
-$ git checkout release-1.23.0
+$ cd $HOME && git clone https://github.com/meshplus/goduck.git
+$ cd $HOME/goduck && git checkout release-1.23
 $ git pull
 $ make install && goduck init
 ```
