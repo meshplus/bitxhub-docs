@@ -343,7 +343,7 @@ goduck pier config --version "v2.8.0"
 
 ### 2.4 关于应用链的操作
 
-#### 2.2.1 以太坊
+#### 2.4.1 以太坊
 
 ```shell
 GoDuck ether command [command options] [arguments...]
@@ -354,9 +354,12 @@ GoDuck ether command [command options] [arguments...]
 （1）启动以太坊
 注意启动时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有差别。
 
+```shell
 goduck ether start
-- --type：可选参数，指定启动模式，默认为docker模式，可指定为binary模式;
-- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别;
+```
+
+- `--type`：可选参数，指定启动模式，默认为docker模式，可指定为binary模式;
+- `--bxh-version`：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别;
 
 示例说明：
 ```shell
@@ -376,6 +379,7 @@ goduck ether start --bxh-version v2.8.0 --type binary
 
 （2）关闭以太坊
 关闭以太坊有stop和clean两个命令，推荐使用clean命令，在停止以太坊运行的同时会清除容器（如果是二进制模式启动会清除相关配置文件）
+
 ```shell
 goduck ether stop
 
@@ -401,42 +405,49 @@ ethereum docker container cleaned
 ```
 
 （3）部署智能合约
-
-goduck ether contract deploy
+部署智能合约需要使用goduck提供的命令，命令如下：
+```shell
+goduck ether contract deploy [command options] [arguments...]
+```
 
 参数解释
 
-- --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
+- `--address`：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
 
-- --key-path：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
+- `--key-path`：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
 
-- --psd-path：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
+- `--psd-path`：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
 
-- --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
+- `--code-path`：指定部署solidity合约地址，如有多个合约可以逗号隔开
 
-目前最新版本智能合约可在$HOME/goduck/scripts/example下找到，部署示例如下
+目前最新版本智能合约可在 `$HOME/goduck/scripts/example` 下找到，部署示例如下
 
 ```shell
-goduck ether contract deploy --code-path "$HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1" 
+goduck ether contract deploy --code-path "$HOME/goduck/scripts/example/broker.sol" "1356^ethappchain1^["0xc7F999b83Af6DF9e67d0a37Ee7e900bF38b3D013","0x79a1215469FaB6f9c63c1816b45183AD3624bE34","0x97c8B516D19edBf575D72a172Af7F418BE498C37","0xc0Ff2e0b3189132D815b8eb325bE17285AC898f8"]^1^["0x20F7Fac801C5Fc3f7E20cFbADaA1CDb33d818Fa3"]^1^0x857133c5C69e6Ce66F7AD46F200B9B3573e77582"
 
 ======= /goduck/scripts/example/broker.sol:Broker =======
 Deployed contract address is 0x857133c5C69e6Ce66F7AD46F200B9B3573e77582
 Contract JSON ABI
 [{"inputs":[{"internalType":"string","name":"_bitxhubID","type":"string"},{"internalType":"string","name":"_appchainID","type":"string"},{"internalType":"address[]","name":"_validators","type":"address[]"},{"internalType":"uint64","name":"_valThreshold","type":"uint64"},{"internalType":"address[]","name":"_admins","type":"address[]"},{"internalType":"uint64","name":"_adminThreshold","type":"uint64"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint64","name":"index","type":"uint64"},{"indexed":false,"internalType":"string","name":"dstFullID","type":"string"},{"indexed":false,"internalType":"string","name":"srcFullID","type":"string"},{"indexed":false,"internalType":"string","name":"func","type":"string"},{"indexed":false,"internalType":"bytes[]","name":"args","type":"bytes[]"},{"indexed":false,"internalType":"bytes32","name":"hash","type":"bytes32"}],"name":"throwInterchainEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint64","name":"index","type":"uint64"},{"indexed":false,"internalType":"string","name":"dstFullID","type":"string"},{"indexed":false,"internalType":"string","name":"srcFullID","type":"string"},{"indexed":false,"internalType":"uint64","name":"typ","type":"uint64"},{"indexed":false,"internalType":"bool","name":"status","type":"bool"},{"indexed":false,"internalType":"bytes[]","name":"result","type":"bytes[]"},{"indexed":false,"internalType":"bytes32","name":"hash","type":"bytes32"}],"name":"throwReceiptEvent","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bool","name":"","type":"bool"}],"name":"throwReceiptStatus","type":"event"},{"inputs":[{"internalType":"address","name":"addr","type":"address"},{"internalType":"int64","name":"status","type":"int64"}],"name":"audit","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"destFullServiceID","type":"string"},{"internalType":"string","name":"funcCall","type":"string"},{"internalType":"bytes[]","name":"args","type":"bytes[]"},{"internalType":"string","name":"funcCb","type":"string"},{"internalType":"bytes[]","name":"argsCb","type":"bytes[]"},{"internalType":"string","name":"funcRb","type":"string"},{"internalType":"bytes[]","name":"argsRb","type":"bytes[]"},{"internalType":"bool","name":"isEncrypt","type":"bool"}],"name":"emitInterchainEvent","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"}],"name":"getAppchainInfo","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"bytes","name":"","type":"bytes"},{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getCallbackMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getChainID","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"id","type":"string"}],"name":"getDirectTransactionMeta","outputs":[{"internalType":"uint256","name":"","type":"uint256"},{"internalType":"uint64","name":"","type":"uint64"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getDstRollbackMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getInnerMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getLocalServiceList","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"addr","type":"address"}],"name":"getLocalWhiteList","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"outServicePair","type":"string"},{"internalType":"uint64","name":"idx","type":"uint64"}],"name":"getOutMessage","outputs":[{"internalType":"string","name":"","type":"string"},{"internalType":"bytes[]","name":"","type":"bytes[]"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getOuterMeta","outputs":[{"internalType":"string[]","name":"","type":"string[]"},{"internalType":"uint64[]","name":"","type":"uint64[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"remoteAddr","type":"string"}],"name":"getRSWhiteList","outputs":[{"internalType":"address[]","name":"","type":"address[]"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"inServicePair","type":"string"},{"internalType":"uint64","name":"idx","type":"uint64"}],"name":"getReceiptMessage","outputs":[{"internalType":"bytes[]","name":"","type":"bytes[]"},{"internalType":"uint64","name":"","type":"uint64"},{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getRemoteServiceList","outputs":[{"internalType":"string[]","name":"","type":"string[]"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"srcFullID","type":"string"},{"internalType":"string","name":"destAddr","type":"string"},{"internalType":"uint64","name":"index","type":"uint64"},{"internalType":"uint64","name":"typ","type":"uint64"},{"internalType":"string","name":"callFunc","type":"string"},{"internalType":"bytes[]","name":"args","type":"bytes[]"},{"internalType":"uint64","name":"txStatus","type":"uint64"},{"internalType":"bytes[]","name":"signatures","type":"bytes[]"},{"internalType":"bool","name":"isEncrypt","type":"bool"}],"name":"invokeInterchain","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"string","name":"srcAddr","type":"string"},{"internalType":"string","name":"dstFullID","type":"string"},{"internalType":"uint64","name":"index","type":"uint64"},{"internalType":"uint64","name":"typ","type":"uint64"},{"internalType":"bytes[]","name":"result","type":"bytes[]"},{"internalType":"uint64","name":"txStatus","type":"uint64"},{"internalType":"bytes[]","name":"signatures","type":"bytes[]"}],"name":"invokeReceipt","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"register","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"},{"internalType":"string","name":"broker","type":"string"},{"internalType":"address","name":"ruleAddr","type":"address"},{"internalType":"bytes","name":"trustRoot","type":"bytes"}],"name":"registerAppchain","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"registerDirectTransaction","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"chainID","type":"string"},{"internalType":"string","name":"serviceID","type":"string"},{"internalType":"address[]","name":"whiteList","type":"address[]"}],"name":"registerRemoteService","outputs":[],"stateMutability":"nonpayable","type":"function"}]
 ```
+
+其中，broker合约的部署参数可参考：[Ethereum部署跨链合约](../../bitxhub/quick_start/build_cross_network/single_bitxhub/deploy_broker/#ethereum)。
+
 上述示例中，合约部署地址为0x857133c5C69e6Ce66F7AD46F200B9B3573e77582，同时也打印出了合约部署生成的abi详情。
 
 （4）以太坊合约调用
 
+```shell
 goduck ether contract invoke
+```
 
-- --address：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
+- `--address`：可选参数，指定以太坊应用链地址，默认启动地址为http://localhost:8545
 
-- --key-path：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
+- `--key-path`：可选参数，指定部署合约账户私钥地址，默认为$goduck_repo/ethereum/account.key
 
-- --psd-path：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
+- `--psd-path`：可选参数，指定部署合约账户密码地址，默认为$goduck_repo/ethereum/password
 
-- --code-path：指定部署solidity合约地址，如有多个合约可以逗号隔开
+- `--code-path`：指定部署solidity合约地址，如有多个合约可以逗号隔开
 
 调用示例如下
 ```shell
@@ -444,7 +455,7 @@ goduck ether contract invoke  --abi-path $HOME/goduck/scripts/example/broker.abi
 ```
 
 
-#### 2.2.2 fabric
+#### 2.4.2 fabric
 
 ```shell
 GoDuck fabric command [command options] [arguments...]
@@ -472,15 +483,17 @@ goduck fabric start
 注意启动过程中可能需要科学上网。 如果出现报错或fabric-samples下载失败，建议删除fabric-samples文件，重新执行fabric启动命令。
 
 （2）部署fabric合约
+```shell
 goduck fabric contract chaincode
+```
 
 参数解释
 
-- --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
+- `--config-path`：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
 
-- --code-path：可选参数，指定部署合约文件，默认为$goduck_repo/contracts，如合约文件不存在会根据--bxh-version参数下载相应版本的默认合约文件
+- `--code-path`：可选参数，指定部署合约文件，默认为$goduck_repo/contracts，如合约文件不存在会根据--bxh-version参数下载相应版本的默认合约文件
 
-- --bxh-version：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别
+- `--bxh-version`：指定连接的bitxhub版本，不同版本的bitxhub对应的跨链合约可能有差别
 
 我们会提供已经准备好的fabric跨链合约contract文件，但部署时需要注明需要跨链的bitxhub版本，因为不同版本的bitxhub对应的跨链合约可能有查别。
 
@@ -554,11 +567,13 @@ Installing chaincode data_swapper on org[org2] peers:
 
 （3）fabric合约调用
 
+```shell
 goduck fabric contract invoke [chaincode_id] [function] [args(optional)]
+```
 
 参数解释
 
-- --config-path：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
+- `--config-path`：可选参数，指定fabric链的config.yaml文件，默认为$goduck_repo/fabric/config.yaml
 
 示例如下：
 
